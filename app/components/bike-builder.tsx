@@ -5,11 +5,11 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { FormControl, MenuItem, InputLabel, Select, Button } from "@mui/material";
-import { apiData } from "../lib/apiData";
+import { frameSet } from "../lib/apiData";
 
 export default function BikeBuilder() {
     const [brand, setBrand] = useState("");
-    const [allBrands] = useState(apiData);
+    const [allBrands] = useState(frameSet);
     const [model, setModel] = useState("");
     const [allModels, setAllModels] = useState([]);
     const imageRef = useRef(null);
@@ -25,22 +25,21 @@ export default function BikeBuilder() {
     function setImage() {
         var canvas = document.getElementById("canvas");
         var context = canvas.getContext("2d");
-        var x = 150;
+        var x = 300;
         var y = 150;
-        var width = 150;
-        var height = 150;
+        // var width = document.getElementById('preview').width;
+        // var height = document.getElementById('preview').height;
 
         var image = document.getElementById('preview');
         // image.src = srcValue;
         // image.alt = srcValue
         // context.globalCompositeOperation = 'destination-over';
-        context.drawImage(image, x, y, width, height);
-        console.log('I am setting image', image, imageRef.current)
+        context.drawImage(image, x, y, image.width, image.height);
     }
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
-        const models = apiData.filter(itemBrand => itemBrand.brand === e.target.value)[0].model;
+        const models = allBrands.filter(itemBrand => itemBrand.brand === e.target.value)[0].model;
         setAllModels(models);
     }
 
@@ -53,16 +52,9 @@ export default function BikeBuilder() {
     return (
         <main className="">
             <div className="h-screen mr-[25rem] bg-blue-100 w-[calc(100% - 25rem)] p-5">
-                <canvas id="canvas" className="border-black bg-white border rounded-lg w-full h-[500px]" />
+                <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg" width={1000} height={480} />
             </div>
             <div className="fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5">
-                {/* <p>Select file <input type="file" onChange={previewImage} /></p> */}
-                <p><Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto" }} width={50} height={50} alt="" /></p>
-                {/* <p>Enter x <input className="border-2 border-black" id="x" /></p>
-                <p>Enter y <input className="border-2 border-black" id="y" /></p>
-                <p>Enter width <input className="border-2 border-black" id="width" /></p>
-                <p>Enter height <input className="border-2 border-black" id="height" /></p>
-                <p><button onClick={setImage}>Set image</button></p> */}
                 <div className="flex flex-col gap-8">
                     <h1 className="text-4xl font-bold">Frame Set</h1>
                     <FormControl fullWidth>
@@ -100,7 +92,8 @@ export default function BikeBuilder() {
                                 </Select>
                             </FormControl> : null
                     }
-                    <Button variant="contained" onClick={setImage}>Set Image</Button>
+                    <Button variant="contained" onClick={setImage}>Set Frame</Button>
+                    <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto" }} alt="" />
                 </div>
             </div>
         </main>
