@@ -4,23 +4,14 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { FormControl, MenuItem, InputLabel, Select, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { frameSet } from "../lib/apiData";
+import FrameSet from "./frame-set";
+import WheelSet from "./wheel-set";
 
 export default function BikeBuilder() {
-    const [brand, setBrand] = useState("");
-    const [allBrands] = useState(frameSet);
-    const [model, setModel] = useState("");
-    const [allModels, setAllModels] = useState([]);
-    const imageRef = useRef(null);
-
-    // function previewImage(event) {
-    //     var reader = new FileReader();
-    //     reader.onload = function (e) {
-    //         imageRef.current?.setAttribute("src", e.target.result);
-    //     };
-    //     reader.readAsDataURL(event.target.files[0])
-    // }
+    const [canvasState, setCanvasState] = useState(1);
+    const [selectionLevel, setSelectionLevel] = useState(1)
 
     function setImage() {
         var canvas = document.getElementById("canvas");
@@ -35,18 +26,30 @@ export default function BikeBuilder() {
         // image.alt = srcValue
         // context.globalCompositeOperation = 'destination-over';
         context.drawImage(image, x, y, image.width, image.height);
+        setCanvasState(prevState => {
+            prevState++;
+            return prevState;
+        });
     }
 
-    const handleBrandChange = (e) => {
-        setBrand(e.target.value);
-        const models = allBrands.filter(itemBrand => itemBrand.brand === e.target.value)[0].model;
-        setAllModels(models);
-    }
-
-    const handleModelChange = (e) => {
-        setModel(e.target.value);
-        console.log('inputValue', e.target.value, e.target.outerHTML);
-        imageRef.current?.setAttribute("src", e.target.value);
+    const handleSelectionLevel = (e) => {
+        let newSelectionLevel = selectionLevel;
+        if (/Prev/i.test(e.target.textContent)) {
+            if (selectionLevel > 1) {
+                newSelectionLevel--;
+            } else {
+                alert("you're at the beginning")
+            }
+        }
+        
+        if (/Next/i.test(e.target.textContent)) {
+            if (canvasState > selectionLevel) {
+                newSelectionLevel++;
+            } else {
+                alert('Complete selection before proceeding');
+            }
+        }
+        setSelectionLevel(newSelectionLevel)
     }
 
     return (
@@ -54,46 +57,24 @@ export default function BikeBuilder() {
             <div className="h-screen mr-[25rem] bg-blue-100 w-[calc(100% - 25rem)] p-5">
                 <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg" width={1000} height={480} />
             </div>
-            <div className="fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5">
-                <div className="flex flex-col gap-8">
-                    <h1 className="text-4xl font-bold">Frame Set</h1>
-                    <FormControl fullWidth>
-                        <InputLabel id="BrandLabel">Brands</InputLabel>
-                        <Select
-                            labelId="BrandLabel"
-                            id="BrandId"
-                            value={brand}
-                            label="Brands"
-                            onChange={handleBrandChange}
-                        >
-                            {
-                                allBrands.map(item => (
-                                    <MenuItem value={item.brand} key={item.brand}>{item.brand}</MenuItem>
-                                ))
-                            }
-                        </Select>
-                    </FormControl>
-                    {
-                        allModels.length > 0 ? 
-                            <FormControl fullWidth>
-                                <InputLabel id="ModelLabel">Models</InputLabel>
-                                <Select
-                                    labelId="ModelLabel"
-                                    id="ModelId"
-                                    value={model}
-                                    label="Models"
-                                    onChange={handleModelChange}
-                                >
-                                    {
-                                        allModels.map(item => (
-                                            <MenuItem value={item.src} key={item.name}>{item.name}</MenuItem>
-                                        ))
-                                    }
-                                </Select>
-                            </FormControl> : null
+            <div className="flex flex-col justify-between fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5">
+                {/* <div style={{ display: selectionLevel === 1 ? 'block' : 'none' }}>
+                    <FrameSet setImage={setImage} />
+                </div>
+                <div style={{ display: selectionLevel === 2 ? 'block' : 'none' }}>
+                    <WheelSet setImage={setImage} />
+                </div> */}
+                {
+                    selectionLevel === 1 ?
+                        <FrameSet setImage={setImage} />:null
                     }
-                    <Button variant="contained" onClick={setImage}>Set Frame</Button>
-                    <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto" }} alt="" />
+                {
+                    selectionLevel === 2 ?
+                        <WheelSet setImage={setImage} />:null
+                    }
+                <div className="flex justify-between">
+                    <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
+                    <Button variant="contained" onClick={handleSelectionLevel}>Next</Button>
                 </div>
             </div>
         </main>
