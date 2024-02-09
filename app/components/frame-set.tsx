@@ -3,8 +3,8 @@
 import { frameSet } from "../lib/apiData";
 import SelectionTemplate from "./selection-template";
 
-export default function FrameSet({ setImage }) {
+export default function FrameSet({ setImage, show }) {
     return (
-        <SelectionTemplate setImage={setImage} dataSet={frameSet} label="Frame Set" />
+        <SelectionTemplate setImage={setImage} show={show} dataSet={frameSet} label="Frame Set" />
     )
 }

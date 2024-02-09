@@ -3,8 +3,8 @@
 import { wheelSet } from "../lib/apiData";
 import SelectionTemplate from "./selection-template";
 
-export default function WheelSet({ setImage }) {
+export default function WheelSet({ setImage, show }) {
     return (
-        <SelectionTemplate setImage={setImage} dataSet={wheelSet} label="Wheel Set" />
+        <SelectionTemplate setImage={setImage} show={show} dataSet={wheelSet} label="Wheel Set" />
     )
 }

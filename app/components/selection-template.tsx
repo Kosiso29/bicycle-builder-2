@@ -3,11 +3,11 @@
 'use client'
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MenuItem, Button } from "@mui/material";
 import SelectElement from "../ui/select";
 
-export default function SelectionTemplate({ setImage, dataSet, label }) {
+export default function SelectionTemplate({ setImage, dataSet, label, show }) {
     const [brand, setBrand] = useState("");
     const [allBrands] = useState(dataSet);
     const [model, setModel] = useState("");
@@ -24,6 +24,15 @@ export default function SelectionTemplate({ setImage, dataSet, label }) {
         setModel(e.target.value);
         imageRef.current?.setAttribute("src", e.target.value);
     }
+    
+    useEffect(() => {
+        imageRef.current?.setAttribute("src", model);
+    }, [ show, model ])
+
+    if (!show) {
+        return null;
+    }
+
     return (
         <div className="flex flex-col gap-8">
             <h1 className="text-4xl font-bold">{ label }</h1>
