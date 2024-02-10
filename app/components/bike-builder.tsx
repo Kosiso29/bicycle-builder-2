@@ -3,7 +3,7 @@
 'use client'
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@mui/material";
 import { frameSet } from "../lib/apiData";
 import FrameSet from "./frame-set";
@@ -11,25 +11,25 @@ import WheelSet from "./wheel-set";
 
 export default function BikeBuilder() {
     const [canvasState, setCanvasState] = useState(1);
-    const [selectionLevel, setSelectionLevel] = useState(1)
+    const [selectionLevel, setSelectionLevel] = useState(1);
 
-    function setImage() {
-        var canvas = document.getElementById("canvas");
-        var context = canvas.getContext("2d");
-        var x = 100;
-        var y = 100;
-        // var width = document.getElementById('preview').width;
-        // var height = document.getElementById('preview').height;
+    const [canvasContext, setCanvasContext] = useState(null);
 
-        var image = document.getElementById('preview');
-        // image.src = srcValue;
-        // image.alt = srcValue
-        // context.globalCompositeOperation = 'destination-over';
-        context.drawImage(image, x, y, image.width * 2, image.height * 2);
+    function setImage(drawImageProps) {
+
+        const { image, x, y, width, height } = drawImageProps;
+        
+        canvasContext.drawImage(image, x, y, width, height);
         setCanvasState(prevState => {
             prevState++;
             return prevState;
         });
+    }
+
+    const getCanvasContext = () => {
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+        return context;
     }
 
     const handleSelectionLevel = (e) => {
@@ -51,6 +51,11 @@ export default function BikeBuilder() {
         }
         setSelectionLevel(newSelectionLevel)
     }
+    
+    useEffect(() => {
+        const context = getCanvasContext();
+        setCanvasContext(context);
+    }, [])
 
     return (
         <main className="">
@@ -58,22 +63,8 @@ export default function BikeBuilder() {
                 <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg" width={1000} height={680} />
             </div>
             <div className="flex flex-col justify-between fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5">
-                {/* <div style={{ display: selectionLevel === 1 ? 'block' : 'none' }}>
-                    <FrameSet setImage={setImage} />
-                </div>
-                <div style={{ display: selectionLevel === 2 ? 'block' : 'none' }}>
-                    <WheelSet setImage={setImage} />
-                </div> */}
-                {/* {
-                    selectionLevel === 1 ?
-                        <FrameSet setImage={setImage} />:null
-                    }
-                {
-                    selectionLevel === 2 ?
-                        <WheelSet setImage={setImage} />:null
-                } */}
-                <FrameSet setImage={setImage} show={selectionLevel === 1} />
-                <WheelSet setImage={setImage} show={selectionLevel === 2} />
+                <FrameSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 1} />
+                <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 2} />
                 <div className="flex justify-between">
                     <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
                     <Button variant="contained" onClick={handleSelectionLevel}>Next</Button>

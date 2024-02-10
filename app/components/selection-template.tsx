@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { MenuItem, Button } from "@mui/material";
 import SelectElement from "../ui/select";
 
-export default function SelectionTemplate({ setImage, dataSet, label, show }) {
+export default function SelectionTemplate({ setImage, dataSet, label, show, updateDrawImageProps }) {
     const [brand, setBrand] = useState("");
     const [allBrands] = useState(dataSet);
     const [model, setModel] = useState("");
@@ -23,6 +23,11 @@ export default function SelectionTemplate({ setImage, dataSet, label, show }) {
     const handleModelChange = (e) => {
         setModel(e.target.value);
         imageRef.current?.setAttribute("src", e.target.value);
+    }
+
+    const updateCanvasImage = () => {
+        const imageProps = updateDrawImageProps();
+        setImage(imageProps);
     }
     
     useEffect(() => {
@@ -53,7 +58,7 @@ export default function SelectionTemplate({ setImage, dataSet, label, show }) {
                         }
                     </SelectElement> : null
             }
-            <Button variant="contained" onClick={setImage}>Set Frame</Button>
+            <Button variant="contained" onClick={updateCanvasImage}>Set Frame</Button>
             <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto" }} alt="" />
         </div>
     )
