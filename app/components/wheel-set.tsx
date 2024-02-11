@@ -1,12 +1,12 @@
 // @ts-nocheck
 
-import { wheelSet } from "../lib/apiData";
+import { frontWheelSet, backWheelSet } from "../lib/apiData";
 import SelectionTemplate from "./selection-template";
 
-export default function WheelSet({ setImage, show, canvasContext }) {
+export default function WheelSet({ setImage, show, canvasContext, label, canvasX, canvasY }) {
     const updateDrawImageProps = () => {
-        const x = 210;
-        const y = 250;
+        const x = canvasX;
+        const y = canvasY;
 
         const image = document.getElementById('preview');
         
@@ -15,6 +15,6 @@ export default function WheelSet({ setImage, show, canvasContext }) {
     }
 
     return (
-        <SelectionTemplate setImage={setImage} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={wheelSet} label="Wheel Set" />
+        <SelectionTemplate setImage={setImage} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={/Front/i.test(label) ? frontWheelSet : backWheelSet} label={label} />
     )
 }

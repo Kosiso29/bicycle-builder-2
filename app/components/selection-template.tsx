@@ -58,7 +58,7 @@ export default function SelectionTemplate({ setImage, dataSet, label, show, upda
                         }
                     </SelectElement> : null
             }
-            <Button variant="contained" onClick={updateCanvasImage}>Set Frame</Button>
+            <Button variant="contained" onClick={updateCanvasImage}>{ `Add ${label}` }</Button>
             <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto" }} alt="" />
         </div>
     )

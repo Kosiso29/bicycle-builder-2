@@ -5,7 +5,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@mui/material";
-import { frameSet } from "../lib/apiData";
 import FrameSet from "./frame-set";
 import WheelSet from "./wheel-set";
 
@@ -64,7 +63,8 @@ export default function BikeBuilder() {
             </div>
             <div className="flex flex-col justify-between fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5">
                 <FrameSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 1} />
-                <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 2} />
+                <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 2} label="Front Wheel Set" canvasX={520} canvasY={250} />
+                <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 3} label="Back Wheel Set" canvasX={210} canvasY={250} />
                 <div className="flex justify-between">
                     <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
                     <Button variant="contained" onClick={handleSelectionLevel}>Next</Button>
