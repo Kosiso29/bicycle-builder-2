@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { MenuItem, Button } from "@mui/material";
 import SelectElement from "../ui/select";
 
-export default function SelectionTemplate({ setImage, dataSet, label, show, updateDrawImageProps }) {
+export default function SelectionTemplate({ setImage, dataSet, label, show, updateDrawImageProps, setActualWidth }) {
     const [brand, setBrand] = useState("");
     const [allBrands] = useState(dataSet);
     const [model, setModel] = useState("");
@@ -20,9 +20,12 @@ export default function SelectionTemplate({ setImage, dataSet, label, show, upda
         setAllModels(models);
     }
 
-    const handleModelChange = (e) => {
+    const handleModelChange = (e, inputData) => {
         setModel(e.target.value);
         imageRef.current?.setAttribute("src", e.target.value);
+        if (setActualWidth) {
+            setActualWidth(inputData?.props?.['data-actual-width']);
+        }
     }
 
     const updateCanvasImage = () => {
@@ -53,7 +56,7 @@ export default function SelectionTemplate({ setImage, dataSet, label, show, upda
                     <SelectElement value={model} onChange={handleModelChange} label="Models">
                         {
                             allModels.map(item => (
-                                <MenuItem value={item.src} key={item.name}>{item.name}</MenuItem>
+                                <MenuItem value={item.src} key={item.name} data-actual-width={item.actualWidth || "0"}>{item.name}</MenuItem>
                             ))
                         }
                     </SelectElement> : null
