@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@mui/material";
 import FrameSet from "./frame-set";
 import WheelSet from "./wheel-set";
+import Stem from "./stem";
 
 export default function BikeBuilder() {
     const [canvasState, setCanvasState] = useState(1);
@@ -64,8 +65,9 @@ export default function BikeBuilder() {
             </div>
             <div className="flex flex-col justify-between fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5">
                 <FrameSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} />
-                <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 2} label="Front Wheel Set" canvasX={550} canvasY={260} frameSetDimensions={frameSetDimensions} />
-                <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 3} label="Back Wheel Set" canvasX={40} canvasY={260} frameSetDimensions={frameSetDimensions} />
+                <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={260} frameSetDimensions={frameSetDimensions} label="Front Wheel Set" />
+                <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={40} canvasY={260} frameSetDimensions={frameSetDimensions} label="Back Wheel Set" />
+                <Stem setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={600} canvasY={160} frameSetDimensions={frameSetDimensions} />
                 <div className="flex justify-between">
                     <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
                     <Button variant="contained" onClick={handleSelectionLevel}>Next</Button>

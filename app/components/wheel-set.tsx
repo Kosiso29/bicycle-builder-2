@@ -14,7 +14,6 @@ export default function WheelSet({ setImage, show, canvasContext, label, canvasX
 
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = image?.height * (width / image?.width);
-        console.log('canvas', width, height);
         
         canvasContext.globalCompositeOperation = 'destination-over';
         return { image, x, y, width, height };

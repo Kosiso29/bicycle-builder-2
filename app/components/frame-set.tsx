@@ -16,7 +16,7 @@ export default function FrameSet({ setImage, show, canvasContext, setFrameSetDim
 
         setFrameSetDimensions({ width, height, actualWidth })
         
-        canvasContext.globalCompositeOperation = 'destination-over';
+        canvasContext.globalCompositeOperation = 'copy';
         return { image, x, y, width, height };
     }
 
