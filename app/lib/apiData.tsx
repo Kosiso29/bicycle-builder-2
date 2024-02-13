@@ -65,3 +65,12 @@ export const handleBar = [
         ]
     }
 ]
+
+export const saddle = [
+    {
+        brand: "Cadex",
+        model: [
+            { name: "Boost", src: "/Cadex-Saddle.png", actualWidth: "248" },
+        ]
+    }
+]

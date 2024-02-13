@@ -9,6 +9,7 @@ import FrameSet from "./frame-set";
 import WheelSet from "./wheel-set";
 import Stem from "./stem";
 import HandleBar from "./handle-bar";
+import Saddle from "./saddle";
 
 export default function BikeBuilder() {
     const [canvasState, setCanvasState] = useState(1);
@@ -70,6 +71,7 @@ export default function BikeBuilder() {
                 <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={40} canvasY={260} frameSetDimensions={frameSetDimensions} label="Back Wheel Set" />
                 <Stem setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={600} canvasY={155} frameSetDimensions={frameSetDimensions} />
                 <HandleBar setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={640} canvasY={160} frameSetDimensions={frameSetDimensions} />
+                <Saddle setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={250} canvasY={85} frameSetDimensions={frameSetDimensions} />
                 <div className="flex justify-between">
                     <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
                     <Button variant="contained" onClick={handleSelectionLevel}>Next</Button>
