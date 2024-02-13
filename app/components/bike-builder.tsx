@@ -8,6 +8,7 @@ import { Button } from "@mui/material";
 import FrameSet from "./frame-set";
 import WheelSet from "./wheel-set";
 import Stem from "./stem";
+import HandleBar from "./handle-bar";
 
 export default function BikeBuilder() {
     const [canvasState, setCanvasState] = useState(1);
@@ -67,7 +68,8 @@ export default function BikeBuilder() {
                 <FrameSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} />
                 <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={260} frameSetDimensions={frameSetDimensions} label="Front Wheel Set" />
                 <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={40} canvasY={260} frameSetDimensions={frameSetDimensions} label="Back Wheel Set" />
-                <Stem setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={600} canvasY={160} frameSetDimensions={frameSetDimensions} />
+                <Stem setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={600} canvasY={155} frameSetDimensions={frameSetDimensions} />
+                <HandleBar setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={640} canvasY={160} frameSetDimensions={frameSetDimensions} />
                 <div className="flex justify-between">
                     <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
                     <Button variant="contained" onClick={handleSelectionLevel}>Next</Button>

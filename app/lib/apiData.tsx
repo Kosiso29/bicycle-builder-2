@@ -42,6 +42,12 @@ export const backWheelSet = [
 
 export const stem = [
     {
+        brand: "Cadex",
+        model: [
+            { name: "Race", src: "/Cadex-Stem.png", actualWidth: "150" },
+        ]
+    },
+    {
         brand: "Specialized",
         model: [
             { name: "S-Works Venge", src: "https://assets.specialized.com/i/specialized/20019-160_CMPNT_SW-VENGE-STEM_BLK_HERO?$scom-pdp-product-image$&fmt=auto" },
@@ -49,10 +55,13 @@ export const stem = [
             { name: "S-Works SL7", src: "https://assets.specialized.com/i/specialized/20021-111_CMPNT_SW-TARMAC-STEM-BLK-318X110-12D_DETAIL-1?$scom-pdp-product-image$&fmt=auto" },
         ]
     },
+]
+
+export const handleBar = [
     {
         brand: "Cadex",
         model: [
-            { name: "Race", src: "/Cadex-Stem.png", actualWidth: "150" },
+            { name: "Race", src: "/Cadex-Handlebar.png", actualWidth: "150" },
         ]
     }
 ]
