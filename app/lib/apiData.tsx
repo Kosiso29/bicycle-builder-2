@@ -74,3 +74,12 @@ export const saddle = [
         ]
     }
 ]
+
+export const tire = [
+    {
+        brand: "Cadex",
+        model: [
+            { name: "Aero Tubeless", src: "/Cadex-Tire.png", actualWidth: "672" },
+        ]
+    }
+]
