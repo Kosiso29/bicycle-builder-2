@@ -13,8 +13,8 @@ import Saddle from "./saddle";
 import Tire from "./tire";
 
 export default function BikeBuilder() {
-    const [canvasState, setCanvasState] = useState(1);
     const [selectionLevel, setSelectionLevel] = useState(1);
+    const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
     const [frameSetDimensions, setFrameSetDimensions] = useState({});
 
     const [canvasContext, setCanvasContext] = useState(null);
@@ -29,7 +29,7 @@ export default function BikeBuilder() {
             
             canvasContext.drawImage(image2, x2, y2, width2, height2);
         }
-        setCanvasState(prevState => {
+        setCanvasSelectionLevelState(prevState => {
             prevState++;
             return prevState;
         });
@@ -52,7 +52,7 @@ export default function BikeBuilder() {
         }
         
         if (/Next/i.test(e.target.textContent)) {
-            if (canvasState > selectionLevel) {
+            if (canvasSelectionLevelState > selectionLevel) {
                 newSelectionLevel++;
             } else {
                 alert('Complete selection before proceeding');
