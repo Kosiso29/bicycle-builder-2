@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // @ts-nocheck
 
 'use client'
@@ -16,19 +17,44 @@ export default function BikeBuilder() {
     const [selectionLevel, setSelectionLevel] = useState(1);
     const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
     const [frameSetDimensions, setFrameSetDimensions] = useState({});
+    const [canvasDrawImageProps, setCanvasDrawImageProps] = useState({
+        frameSet: {},
+        frontWheelSet: {},
+        backWheelSet: {},
+        stem: {},
+        handleBar: {},
+        saddle: {},
+        tire: {},
+    });
+    const [rerender, setRerender] = useState(false);
 
     const [canvasContext, setCanvasContext] = useState(null);
 
-    function setImage(drawImageProps) {
+    const parentProps = {
+        setRerender,
+        setCanvasDrawImageProps
+    }
 
-        const { image, x, y, width, height } = drawImageProps;
+    function setImage() {
 
-        canvasContext.drawImage(image, x, y, width, height);
-        if (drawImageProps.image2) {
-            const { image2, x2, y2, width2, height2 } = drawImageProps;
-            
-            canvasContext.drawImage(image2, x2, y2, width2, height2);
+        if (canvasContext) {
+            canvasContext.clearRect(0, 0, canvas.width, canvas.height);
         }
+        Object.values(canvasDrawImageProps).forEach(drawImageProps => {
+            if (drawImageProps.image) {
+                const { image, x, y, width, height, globalCompositeOperation } = drawImageProps;
+        
+                canvasContext.globalCompositeOperation = globalCompositeOperation;
+        
+                canvasContext.drawImage(image, x, y, width, height);
+                if (drawImageProps.image2) {
+                    const { image2, x2, y2, width2, height2 } = drawImageProps;
+                    
+                    canvasContext.drawImage(image2, x2, y2, width2, height2);
+                }
+            }
+        })
+
         setCanvasSelectionLevelState(prevState => {
             prevState++;
             return prevState;
@@ -66,19 +92,23 @@ export default function BikeBuilder() {
         setCanvasContext(context);
     }, [])
 
+    useEffect(() => {
+        setImage();
+    }, [rerender])
+
     return (
         <main className="">
             <div className="h-screen mr-[25rem] bg-blue-100 w-[calc(100% - 25rem)] p-5">
-                <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg" width={1000} height={680} />
+                <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg ml-auto mr-auto" width={1000} height={680} />
             </div>
             <div className="flex flex-col justify-between fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5">
-                <FrameSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} />
-                <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={260} frameSetDimensions={frameSetDimensions} label="Front Wheel Set" />
-                <WheelSet setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={40} canvasY={260} frameSetDimensions={frameSetDimensions} label="Back Wheel Set" />
-                <Stem setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={600} canvasY={155} frameSetDimensions={frameSetDimensions} />
-                <HandleBar setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={640} canvasY={160} frameSetDimensions={frameSetDimensions} />
-                <Saddle setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={250} canvasY={85} frameSetDimensions={frameSetDimensions} />
-                <Tire setImage={setImage} canvasContext={canvasContext} show={selectionLevel === 7} canvasX={535} canvasY={245} frameSetDimensions={frameSetDimensions} />
+                <FrameSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={260} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
+                <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={40} canvasY={260} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Back Wheel Set" />
+                <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={600} canvasY={155} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={640} canvasY={160} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={250} canvasY={75} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 7} canvasX={535} canvasY={245} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <div className="flex justify-between">
                     <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
                     <Button variant="contained" onClick={handleSelectionLevel}>Next</Button>

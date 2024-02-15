@@ -7,7 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import { MenuItem, Button } from "@mui/material";
 import SelectElement from "../ui/select";
 
-export default function SelectionTemplate({ setImage, dataSet, label, show, updateDrawImageProps, setActualWidth }) {
+export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth }) {
+    const { setRerender, setCanvasDrawImageProps } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrands] = useState(dataSet);
     const [model, setModel] = useState("");
@@ -30,7 +31,12 @@ export default function SelectionTemplate({ setImage, dataSet, label, show, upda
 
     const updateCanvasImage = () => {
         const imageProps = updateDrawImageProps();
-        setImage(imageProps);
+
+        setCanvasDrawImageProps(prevState => {
+            prevState = { ...prevState, ...imageProps };
+            return prevState;
+        });
+        setRerender(prevState => !prevState);
     }
     
     useEffect(() => {

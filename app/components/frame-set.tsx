@@ -4,7 +4,7 @@ import { useState } from "react";
 import { frameSet } from "../lib/apiData";
 import SelectionTemplate from "./selection-template";
 
-export default function FrameSet({ setImage, show, canvasContext, setFrameSetDimensions }) {
+export default function FrameSet({ parentProps, show, canvasContext, setFrameSetDimensions }) {
     const [ actualWidth, setActualWidth ] = useState("0")
     const updateDrawImageProps = () => {
         const x = 200;
@@ -16,11 +16,11 @@ export default function FrameSet({ setImage, show, canvasContext, setFrameSetDim
 
         setFrameSetDimensions({ width, height, actualWidth })
         
-        canvasContext.globalCompositeOperation = 'copy';
-        return { image, x, y, width, height };
+        // canvasContext.globalCompositeOperation = 'copy';
+        return { frameSet: { image, x, y, width, height } };
     }
 
     return (
-        <SelectionTemplate setImage={setImage} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={frameSet} label="Frame Set" setActualWidth={setActualWidth} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={frameSet} label="Frame Set" setActualWidth={setActualWidth} />
     )
 }

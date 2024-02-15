@@ -2,8 +2,8 @@ export const frameSet = [
     {
         brand: "Cervelo",
         model: [
-            { name: "SS", src: "/Cervelo-R5.png", actualWidth: "982" },
-            { name: "Soloist", src: "/Cervelo-Soloist.png", actualWidth: "982" },
+            { name: "SS", src: "/Cervelo-R5.png", actualWidth: "990" },
+            { name: "Soloist", src: "/Cervelo-Soloist.png", actualWidth: "990" },
             { name: "R5", src: "https://www.cervelo.com/_next/image?url=https%3A%2F%2Fimages.prismic.io%2Fcervelo%2F0049348d-0177-4245-aaca-95d0c6997961_0I0R5GFS3X-PROFILE.png%3Fauto%3Dcompress%2Cformat%26rect%3D0%2C0%2C3000%2C1629%26w%3D7000%26h%3D3800&w=2600&q=75" },
         ]
     },
