@@ -3,8 +3,7 @@
 
 'use client'
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import FrameSet from "./frame-set";
 import WheelSet from "./wheel-set";
@@ -56,7 +55,7 @@ export default function BikeBuilder() {
         })
 
         setCanvasSelectionLevelState(prevState => {
-            prevState++;
+            if (prevState === selectionLevel) prevState++;
             return prevState;
         });
     }
@@ -93,7 +92,9 @@ export default function BikeBuilder() {
     }, [])
 
     useEffect(() => {
-        setImage();
+        if (Object.keys(frameSetDimensions).length > 0) {
+            setImage();
+        }
     }, [rerender])
 
     return (
@@ -103,12 +104,12 @@ export default function BikeBuilder() {
             </div>
             <div className="flex flex-col justify-between fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5">
                 <FrameSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={260} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
-                <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={40} canvasY={260} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Back Wheel Set" />
+                <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
+                <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={40} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Back Wheel Set" />
                 <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={600} canvasY={155} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={640} canvasY={160} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={250} canvasY={75} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 7} canvasX={535} canvasY={245} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 7} canvasX={535} canvasY={252.5} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <div className="flex justify-between">
                     <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
                     <Button variant="contained" onClick={handleSelectionLevel}>Next</Button>

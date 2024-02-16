@@ -16,7 +16,6 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
 
         setFrameSetDimensions({ width, height, actualWidth })
         
-        // canvasContext.globalCompositeOperation = 'copy';
         return { frameSet: { image, x, y, width, height } };
     }
 
