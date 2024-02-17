@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MenuItem, Button } from "@mui/material";
 import SelectElement from "../ui/select";
+import Loader from "./loader";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth }) {
     const { setRerender, setCanvasDrawImageProps } = parentProps;
@@ -13,6 +14,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [allBrands] = useState(dataSet);
     const [model, setModel] = useState("");
     const [allModels, setAllModels] = useState([]);
+    const [imageLoaded, setImageLoaded] = useState(false);
     const imageRef = useRef(null);
 
     const handleBrandChange = (e) => {
@@ -67,8 +69,11 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                         }
                     </SelectElement> : null
             }
-            <Button variant="contained" onClick={updateCanvasImage}>{ `Add ${label}` }</Button>
-            <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto" }} alt="" />
+            <Button variant="contained" onClick={updateCanvasImage}>{`Add ${label}`}</Button>
+            {
+                imageLoaded ? null : <Loader />
+            }
+            <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", visibility: imageLoaded ? "visible" : "hidden" }} alt="" onLoadingComplete={() => setImageLoaded(true)} />
         </div>
     )
 }
