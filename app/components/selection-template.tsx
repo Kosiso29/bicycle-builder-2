@@ -29,6 +29,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         if (setActualWidth) {
             setActualWidth(inputData?.props?.['data-actual-width']);
         }
+        setImageLoaded(false);
     }
 
     const updateCanvasImage = () => {
