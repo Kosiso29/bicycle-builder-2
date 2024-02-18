@@ -35,9 +35,22 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const updateCanvasImage = () => {
         const imageProps = updateDrawImageProps();
 
+        const stemX = Object.values(imageProps)[0]?.stemX;
+        const stemY = Object.values(imageProps)[0]?.stemY;
         setCanvasDrawImageProps(prevState => {
-            prevState = { ...prevState, ...imageProps };
-            return prevState;
+            return {
+                ...prevState,
+                stem: {
+                    ...prevState.stem,
+                    x: stemX ? stemX : prevState.stem.x,
+                    y: stemY ? stemY : prevState.stem.y
+                },
+                handleBar: {
+                    ...prevState.handleBar,
+                    x: stemX ? stemX + 35 : prevState.handleBar.x,
+                    y: stemY ? stemY + 2 : prevState.handleBar.y
+                },
+            }
         });
         setRerender(prevState => !prevState);
     }

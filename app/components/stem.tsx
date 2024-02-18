@@ -7,8 +7,8 @@ import SelectionTemplate from "./selection-template";
 export default function Stem({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [ actualWidth, setActualWidth ] = useState("0")
     const updateDrawImageProps = () => {
-        const x = canvasX;
-        const y = canvasY;
+        const x = frameSetDimensions.stemX ? frameSetDimensions.stemX : canvasX;
+        const y = frameSetDimensions.stemY ? frameSetDimensions.stemY : canvasY;
 
         const image = document.getElementById('preview');
 
