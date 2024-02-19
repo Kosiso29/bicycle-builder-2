@@ -40,6 +40,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setCanvasDrawImageProps(prevState => {
             return {
                 ...prevState,
+                ...imageProps,
                 stem: {
                     ...prevState.stem,
                     x: stemX ? stemX : prevState.stem.x,
