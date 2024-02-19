@@ -100,7 +100,6 @@ export const saddle = [
     {
         brand: "Cadex",
         model: [
-            { name: "Boost", src: "/Cadex-Saddle.png", actualWidth: "248" },
             { name: "AMP", src: "/Cadex-AMP-modified.png", actualWidth: "248" },
         ]
     },
