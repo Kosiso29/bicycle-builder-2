@@ -35,12 +35,15 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const updateCanvasImage = () => {
         const imageProps = updateDrawImageProps();
 
+        setCanvasDrawImageProps(prevState => {
+            prevState = { ...prevState, ...imageProps };
+            return prevState;
+        });
         const stemX = Object.values(imageProps)[0]?.stemX;
         const stemY = Object.values(imageProps)[0]?.stemY;
         setCanvasDrawImageProps(prevState => {
             return {
                 ...prevState,
-                ...imageProps,
                 stem: {
                     ...prevState.stem,
                     x: stemX ? stemX : prevState.stem.x,
