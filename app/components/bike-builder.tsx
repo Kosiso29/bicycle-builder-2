@@ -38,8 +38,14 @@ export default function BikeBuilder() {
         if (canvasContext) {
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
         }
-        Object.values(canvasDrawImageProps).forEach(drawImageProps => {
+        Object.values(canvasDrawImageProps).forEach((drawImageProps, index) => {
             if (drawImageProps.image) {
+                if (index === 3 && frameSetDimensions.hasStem) {
+                    return
+                }
+                if (index === 4 && frameSetDimensions.hasHandleBar) {
+                    return
+                }
                 const { image, x, y, width, height, globalCompositeOperation } = drawImageProps;
         
                 canvasContext.globalCompositeOperation = globalCompositeOperation;

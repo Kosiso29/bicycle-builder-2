@@ -14,14 +14,14 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
         const frameSetModelData = frameSet.reduce((acc, item) => {
             return [...acc, ...item.model]
         }, []).filter(model => model.src === image?.getAttribute('src'))[0];
-        const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY } = frameSetModelData;
+        const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY, hasStem, hasHandleBar } = frameSetModelData;
         const width = (image?.width * 3) / 2;
         const height = (image?.height * 3) / 2;
 
         const offsets = { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY };
         changeObjectValuesToNumber(offsets);
 
-        setFrameSetDimensions({ width, height, actualWidth, ...offsets });
+        setFrameSetDimensions({ width, height, actualWidth, ...offsets, hasStem, hasHandleBar });
 
         return { frameSet: { image, x, y, width, height, ...offsets } };
     }
