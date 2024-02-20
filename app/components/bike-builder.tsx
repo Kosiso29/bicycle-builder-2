@@ -118,7 +118,7 @@ export default function BikeBuilder() {
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={40} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Back Wheel Set" />
                 <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={250} canvasY={75} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 7} canvasX={535} canvasY={252.5} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <div className="flex flex-col gap-5 mt-5">
                     <div className="flex justify-between">

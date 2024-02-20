@@ -39,8 +39,17 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             prevState = { ...prevState, ...imageProps };
             return prevState;
         });
-        const stemX = Object.values(imageProps)[0]?.stemX;
-        const stemY = Object.values(imageProps)[0]?.stemY;
+
+        const values = Object.values(imageProps)[0];
+        const stemX = values?.stemX;
+        const stemY = values?.stemY;
+        const saddleX = values?.saddleX;
+        const saddleY = values?.saddleY;
+        const frontWheelSetX = values?.frontWheelSetX;
+        const frontWheelSetY = values?.frontWheelSetY;
+        const backWheelSetX = values?.backWheelSetX;
+        const backWheelSetY = values?.backWheelSetY;
+        
         setCanvasDrawImageProps(prevState => {
             return {
                 ...prevState,
@@ -51,8 +60,23 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 },
                 handleBar: {
                     ...prevState.handleBar,
-                    x: stemX ? stemX + 35 : prevState.handleBar.x,
+                    x: stemX ? stemX + 30 : prevState.handleBar.x,
                     y: stemY ? stemY + 2 : prevState.handleBar.y
+                },
+                saddle: {
+                    ...prevState.saddle,
+                    x: saddleX ? saddleX : prevState.saddle.x,
+                    y: saddleY ? saddleY : prevState.saddle.y
+                },
+                frontWheelSet: {
+                    ...prevState.frontWheelSet,
+                    x: frontWheelSetX ? frontWheelSetX : prevState.frontWheelSet.x,
+                    y: frontWheelSetY ? frontWheelSetY : prevState.frontWheelSet.y
+                },
+                backWheelSet: {
+                    ...prevState.backWheelSet,
+                    x: backWheelSetX ? backWheelSetX : prevState.backWheelSet.x,
+                    y: backWheelSetY ? backWheelSetY : prevState.backWheelSet.y
                 },
             }
         });

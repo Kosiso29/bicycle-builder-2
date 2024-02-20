@@ -7,7 +7,7 @@ import SelectionTemplate from "./selection-template";
 export default function HandleBar({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [ actualWidth, setActualWidth ] = useState("0")
     const updateDrawImageProps = () => {
-        const x = frameSetDimensions.stemX ? frameSetDimensions.stemX + 35 : canvasX;
+        const x = frameSetDimensions.stemX ? frameSetDimensions.stemX + 30 : canvasX;
         const y = frameSetDimensions.stemY ? frameSetDimensions.stemY + 2 : canvasY;
 
         const image = document.getElementById('preview');

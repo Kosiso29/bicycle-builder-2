@@ -12,18 +12,27 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
 
         const image = document.getElementById('preview');
         const frameSetModelData = frameSet.reduce((acc, item) => {
-            return [ ...acc, ...item.model ]
+            return [...acc, ...item.model]
         }, []).filter(model => model.src === image?.getAttribute('src'))[0];
-        const { stemX, stemY } = frameSetModelData;
+        const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY } = frameSetModelData;
         const width = (image?.width * 3) / 2;
         const height = (image?.height * 3) / 2;
 
-        setFrameSetDimensions({ width, height, actualWidth, stemX: Number(stemX), stemY: Number(stemY) });
-        
-        return { frameSet: { image, x, y, width, height, stemX: Number(stemX), stemY: Number(stemY) } };
+        const offsets = { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY };
+        changeObjectValuesToNumber(offsets);
+
+        setFrameSetDimensions({ width, height, actualWidth, ...offsets });
+
+        return { frameSet: { image, x, y, width, height, ...offsets } };
     }
 
     return (
         <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={frameSet} label="Frame Set" setActualWidth={setActualWidth} />
     )
+}
+
+
+function changeObjectValuesToNumber(obj) {
+    Object.keys(obj).forEach(function (key) { obj[key] = Number(obj[key]) });
+    return obj;
 }
