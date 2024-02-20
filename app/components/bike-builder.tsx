@@ -26,7 +26,6 @@ export default function BikeBuilder() {
         tire: {},
     });
     const [rerender, setRerender] = useState(false);
-
     const [canvasContext, setCanvasContext] = useState(null);
 
     const parentProps = {
@@ -94,6 +93,16 @@ export default function BikeBuilder() {
 
 
         setSelectionLevel(newSelectionLevel)
+    };
+
+    const handleRemove = () => {
+        const removeKey = Object.keys(canvasDrawImageProps).filter((_, index) => index + 1 === selectionLevel);
+
+        setCanvasDrawImageProps(prevState => {
+            prevState[removeKey] = {};
+            return prevState;
+        });
+        setRerender(prevState => !prevState);
     }
     
     useEffect(() => {
@@ -122,7 +131,8 @@ export default function BikeBuilder() {
                 <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 7} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <div className="flex flex-col gap-5 mt-5">
                     <div className="flex justify-between">
-                        <Button variant="text" onClick={handleSelectionLevel}>Prev</Button>
+                        <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
+                        <Button variant="text" color="error" onClick={handleRemove}>Remove</Button>
                         <Button variant="contained" onClick={handleSelectionLevel}>Next</Button>
                     </div>
                     <Button variant="outlined" disabled={canvasSelectionLevelState > selectionLevel ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
