@@ -14,6 +14,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [allBrands] = useState(dataSet);
     const [model, setModel] = useState("");
     const [allModels, setAllModels] = useState([]);
+    const [src, setSrc] = useState("");
     const [imageLoaded, setImageLoaded] = useState(false);
     const imageRef = useRef(null);
 
@@ -24,7 +25,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }
 
     const handleModelChange = (e, inputData) => {
-        setModel(e.target.value);
+        setSrc(e.target.value);
+        setModel(inputData?.props?.['data-name']);
         imageRef.current?.setAttribute("src", e.target.value);
         if (setActualWidth) {
             setActualWidth(inputData?.props?.['data-actual-width']);
@@ -33,7 +35,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }
 
     const updateCanvasImage = () => {
-        const imageProps = updateDrawImageProps();
+        const imageProps = updateDrawImageProps(brand, model);
 
         setCanvasDrawImageProps(prevState => {
             prevState = { ...prevState, ...imageProps };
@@ -84,8 +86,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }
     
     useEffect(() => {
-        imageRef.current?.setAttribute("src", model);
-    }, [ show, model ])
+        imageRef.current?.setAttribute("src", src);
+    }, [ show, src ])
 
     if (!show) {
         return null;
@@ -103,10 +105,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             </SelectElement>
             {
                 allModels.length > 0 ?
-                    <SelectElement value={model} onChange={handleModelChange} label="Models">
+                    <SelectElement value={src} onChange={handleModelChange} label="Models">
                         {
                             allModels.map(item => (
-                                <MenuItem value={item.src} key={item.name} data-actual-width={item.actualWidth || "0"}>{item.name}</MenuItem>
+                                <MenuItem value={item.src} key={item.name} data-name={item.name} data-actual-width={item.actualWidth || "0"}>{item.name}</MenuItem>
                             ))
                         }
                     </SelectElement> : null

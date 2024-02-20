@@ -6,7 +6,7 @@ import SelectionTemplate from "./selection-template";
 
 export default function HandleBar({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [ actualWidth, setActualWidth ] = useState("0")
-    const updateDrawImageProps = () => {
+    const updateDrawImageProps = (brand, model) => {
         const x = frameSetDimensions.stemX ? frameSetDimensions.stemX + 30 : canvasX;
         const y = frameSetDimensions.stemY ? frameSetDimensions.stemY + 2 : canvasY;
 
@@ -15,7 +15,7 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = image?.height * (width / image?.width);
         
-        return { handleBar: { image, x, y, width, height, globalCompositeOperation: 'source-over' } };
+        return { handleBar: { image, x, y, width, height, globalCompositeOperation: 'source-over', brand, model } };
     }
 
     return (

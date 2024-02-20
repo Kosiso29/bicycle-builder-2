@@ -6,7 +6,7 @@ import SelectionTemplate from "./selection-template";
 
 export default function FrameSet({ parentProps, show, canvasContext, setFrameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
-    const updateDrawImageProps = () => {
+    const updateDrawImageProps = (brand, model) => {
         const x = 200;
         const y = 100;
 
@@ -23,7 +23,7 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
 
         setFrameSetDimensions({ width, height, actualWidth, ...offsets, hasStem, hasHandleBar });
 
-        return { frameSet: { image, x, y, width, height, ...offsets } };
+        return { frameSet: { image, x, y, width, height, brand, model, ...offsets } };
     }
 
     return (

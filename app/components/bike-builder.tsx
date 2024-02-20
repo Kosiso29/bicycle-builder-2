@@ -12,19 +12,10 @@ import HandleBar from "./handle-bar";
 import Saddle from "./saddle";
 import Tire from "./tire";
 
-export default function BikeBuilder() {
+export default function BikeBuilder({ canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
     const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
     const [frameSetDimensions, setFrameSetDimensions] = useState({});
-    const [canvasDrawImageProps, setCanvasDrawImageProps] = useState({
-        frameSet: {},
-        frontWheelSet: {},
-        backWheelSet: {},
-        stem: {},
-        handleBar: {},
-        saddle: {},
-        tire: {},
-    });
     const [rerender, setRerender] = useState(false);
     const [canvasContext, setCanvasContext] = useState(null);
 
@@ -47,13 +38,13 @@ export default function BikeBuilder() {
                     return
                 }
                 const { image, x, y, width, height, globalCompositeOperation } = drawImageProps;
-        
+
                 canvasContext.globalCompositeOperation = globalCompositeOperation;
-        
+
                 canvasContext.drawImage(image, x, y, width, height);
                 if (drawImageProps.image2) {
                     const { image2, x2, y2, width2, height2 } = drawImageProps;
-                    
+
                     canvasContext.drawImage(image2, x2, y2, width2, height2);
                 }
             }
@@ -80,7 +71,7 @@ export default function BikeBuilder() {
                 alert("you're at the beginning")
             }
         }
-        
+
         if (/Next/i.test(e.target.textContent)) {
             if (canvasSelectionLevelState > selectionLevel) {
                 newSelectionLevel++;
@@ -110,7 +101,13 @@ export default function BikeBuilder() {
         });
         setRerender(prevState => !prevState);
     }
-    
+
+    const handleSummary = () => {
+        const canvas = document.getElementById('canvas');
+        setCanvasImage(canvas.toDataURL());
+        setShowSummary(true);
+    }
+
     useEffect(() => {
         const context = getCanvasContext();
         setCanvasContext(context);
@@ -119,11 +116,12 @@ export default function BikeBuilder() {
     useEffect(() => {
         if (Object.keys(frameSetDimensions).length > 0) {
             setImage();
+            console.log('canvasDrawImage', canvasDrawImageProps)
         }
-    }, [rerender])
+    }, [rerender]);
 
     return (
-        <main className="">
+        <main className={`${showSummary ? "hidden" : ""}`}>
             <div className="h-screen mr-[25rem] bg-blue-100 w-[calc(100% - 25rem)] p-5">
                 <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg ml-auto mr-auto" width={1000} height={680} />
             </div>
@@ -139,9 +137,13 @@ export default function BikeBuilder() {
                     <div className="flex justify-between">
                         <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
                         <Button variant="text" color="error" onClick={handleRemove}>Remove</Button>
-                        <Button variant="contained" onClick={handleSelectionLevel}>Next</Button>
+                        {
+                            selectionLevel < 7 ?
+                                <Button variant="contained" onClick={handleSelectionLevel}>Next</Button> :
+                                <Button variant="contained" onClick={handleSummary}>Summary</Button>
+                        }
                     </div>
-                    <Button variant="outlined" disabled={canvasSelectionLevelState > selectionLevel ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
+                    <Button variant="outlined" disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 7 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
                 </div>
             </div>
         </main>

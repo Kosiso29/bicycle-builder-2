@@ -6,7 +6,7 @@ import SelectionTemplate from "./selection-template";
 
 export default function WheelSet({ parentProps, show, canvasContext, label, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
-    const updateDrawImageProps = () => {
+    const updateDrawImageProps = (brand, model) => {
         const x = canvasX;
         const y = canvasY;
 
@@ -16,9 +16,9 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
         const height = image?.height * (width / image?.width);
         
         if (/Front/i.test(label)) {
-            return { frontWheelSet: { image, x, y, width, height, globalCompositeOperation: 'destination-over' } };
+            return { frontWheelSet: { image, x, y, width, height, globalCompositeOperation: 'destination-over', brand, model } };
         } else {
-            return { backWheelSet: { image, x, y, width, height, globalCompositeOperation: 'destination-over' } };
+            return { backWheelSet: { image, x, y, width, height, globalCompositeOperation: 'destination-over', brand, model } };
         }
     }
 
