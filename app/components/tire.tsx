@@ -10,7 +10,7 @@ export default function Tire({ parentProps, show, canvasContext, canvasX, canvas
         const x = canvasX;
         const y = canvasY;
 
-        const x2 = 25;
+        const x2 = 35;
 
         const image = document.getElementById('preview');
 

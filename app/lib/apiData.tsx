@@ -115,13 +115,13 @@ export const tire = [
     {
         brand: "Cadex",
         model: [
-            { name: "Aero Tubeless", src: "/Cadex-Tire.png", actualWidth: "672" },
+            { name: "Aero Tubeless", src: "/Cadex-Tire.png", actualWidth: "662" },
         ]
     },
     {
         brand: "ENVE",
         model: [
-            { name: "SES Road", src: "/Tan_SES31_FullWheel-modified.png", actualWidth: "672" },
+            { name: "SES Road", src: "/Tan_SES31_FullWheel-modified.png", actualWidth: "662" },
         ]
     },
 ]
