@@ -5,6 +5,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
+import { toast } from 'react-toastify';
 import FrameSet from "./frame-set";
 import WheelSet from "./wheel-set";
 import Stem from "./stem";
@@ -68,7 +69,7 @@ export default function BikeBuilder({ canvasDrawImageProps, setCanvasDrawImagePr
             if (selectionLevel > 1) {
                 newSelectionLevel--;
             } else {
-                alert("you're at the beginning")
+                toast.info("You're at the beginning");
             }
         }
 
@@ -76,7 +77,7 @@ export default function BikeBuilder({ canvasDrawImageProps, setCanvasDrawImagePr
             if (canvasSelectionLevelState > selectionLevel) {
                 newSelectionLevel++;
             } else {
-                alert('Complete selection before proceeding or skip');
+                toast.error("Please either skip or complete selection before proceeding");
             }
         }
 
