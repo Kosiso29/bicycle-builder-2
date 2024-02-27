@@ -5,9 +5,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { MenuItem, Button } from "@mui/material";
+import { MenuItem, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import SelectElement from "../ui/select";
-import Loader from "./loader";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth }) {
     const { setRerender, setCanvasDrawImageProps } = parentProps;
@@ -18,21 +17,24 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [src, setSrc] = useState("");
     const [imageLoaded, setImageLoaded] = useState(false);
     const imageRef = useRef(null);
+    const [selectedIndex, setSelectedIndex] = useState(null);
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
         const models = allBrands.filter(itemBrand => itemBrand.brand === e.target.value)[0].model;
         setAllModels(models);
+        setSelectedIndex(null);
     }
 
-    const handleModelChange = (e, inputData) => {
-        setSrc(e.target.value);
-        setModel(inputData?.props?.['data-name']);
-        imageRef.current?.setAttribute("src", e.target.value);
+    const handleModelChange = (index, modelData) => {
+        setSrc(modelData?.src);
+        setModel(modelData?.name);
+        imageRef.current?.setAttribute("src", modelData?.src);
         if (setActualWidth) {
-            setActualWidth(inputData?.props?.['data-actual-width']);
+            setActualWidth(modelData?.actualWidth);
         }
         setImageLoaded(false);
+        setSelectedIndex(index);
     }
 
     const updateCanvasImage = () => {
@@ -52,7 +54,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         const frontWheelSetY = values?.frontWheelSetY;
         const backWheelSetX = values?.backWheelSetX;
         const backWheelSetY = values?.backWheelSetY;
-        
+
         setCanvasDrawImageProps(prevState => {
             return {
                 ...prevState,
@@ -85,7 +87,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         });
         setRerender(prevState => !prevState);
     }
-    
+
     useEffect(() => {
         imageRef.current?.setAttribute("src", src);
     }, [show, src]);
@@ -102,7 +104,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     return (
         <div className="flex flex-col gap-8">
-            <h1 className="text-4xl font-bold">{ label }</h1>
+            <h1 className="text-4xl font-bold">{label}</h1>
             <SelectElement value={brand} onChange={handleBrandChange} label="Brands">
                 {
                     allBrands.map(item => (
@@ -112,13 +114,33 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             </SelectElement>
             {
                 allModels.length > 0 ?
-                    <SelectElement value={src} onChange={handleModelChange} label="Models">
+                    <List sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}>
                         {
-                            allModels.map(item => (
-                                <MenuItem value={item.src} key={item.name} data-name={item.name} data-actual-width={item.actualWidth || "0"}>{item.name}</MenuItem>
+                            allModels.map((item, index) => (
+                                <ListItem
+                                    key={item.name + index}
+                                    disablePadding
+                                    sx={{
+                                        backgroundColor: selectedIndex === index ? "rgb(25, 118, 210)" : "initial",
+                                        color: selectedIndex === index ? "white" : "initial",
+                                        transition: ".2s ease-in"
+                                    }}>
+                                    <ListItemButton
+                                        divider={index !== (allModels.length - 1) ? true : false}
+                                        selected={selectedIndex === index}
+                                        data-value={item.src}
+                                        data-actual-width={item.actualWidth || "0"}
+                                        onClick={() => {
+                                            const { name, src, actualWidth } = item;
+                                            handleModelChange(index, { name, src, actualWidth })
+                                        }}>
+                                        <ListItemText primary={item.name} />
+                                    </ListItemButton>
+                                </ListItem>
                             ))
                         }
-                    </SelectElement> : null
+                    </List>
+                    : null
             }
             <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", visibility: imageLoaded ? "visible" : "hidden", display: "none" }} alt="" onLoadingComplete={() => setImageLoaded(true)} />
         </div>
