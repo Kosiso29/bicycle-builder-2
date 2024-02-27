@@ -117,7 +117,6 @@ export default function BikeBuilder({ canvasDrawImageProps, setCanvasDrawImagePr
     useEffect(() => {
         if (Object.keys(frameSetDimensions).length > 0) {
             setImage();
-            console.log('canvasDrawImage', canvasDrawImageProps)
         }
     }, [rerender]);
 

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { frameSet } from "../lib/apiData";
 import SelectionTemplate from "./selection-template";
 
+const PREDEFINED_FRAMESET_WIDTH = 528;
+
 export default function FrameSet({ parentProps, show, canvasContext, setFrameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
     const updateDrawImageProps = (brand, model) => {
@@ -15,8 +17,8 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
             return [...acc, ...item.model]
         }, []).filter(model => model.src === image?.getAttribute('src'))[0];
         const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY, hasStem, hasHandleBar } = frameSetModelData;
-        const width = (image?.width * 3) / 2;
-        const height = (image?.height * 3) / 2;
+        const width = PREDEFINED_FRAMESET_WIDTH;
+        const height = (image?.height * ( PREDEFINED_FRAMESET_WIDTH / image?.width ));
 
         const offsets = { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY };
         changeObjectValuesToNumber(offsets);

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // @ts-nocheck
 
 'use client'
@@ -87,7 +88,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     
     useEffect(() => {
         imageRef.current?.setAttribute("src", src);
-    }, [ show, src ])
+    }, [show, src]);
+
+    useEffect(() => {
+        if (model && imageLoaded) {
+            updateCanvasImage();
+        }
+    }, [model, imageLoaded])
 
     if (!show) {
         return null;
@@ -113,11 +120,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                         }
                     </SelectElement> : null
             }
-            <Button variant="contained" onClick={updateCanvasImage}>{`Add ${label}`}</Button>
-            {
-                imageLoaded ? null : <Loader />
-            }
-            <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", visibility: imageLoaded ? "visible" : "hidden" }} alt="" onLoadingComplete={() => setImageLoaded(true)} />
+            <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", visibility: imageLoaded ? "visible" : "hidden", display: "none" }} alt="" onLoadingComplete={() => setImageLoaded(true)} />
         </div>
     )
 }
