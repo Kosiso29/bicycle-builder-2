@@ -3,7 +3,7 @@ import React from 'react';
 import Image from "next/image";
 import { Button } from "@mui/material";
 
-export default function Summary({ canvasDrawImageProps, canvasImage, showSummary, setShowSummary }) {
+export default function Summary({ canvasDrawImageProps, canvasImage, showSummary, setShowSummary, frameSetDimensions }) {
     const titles = [ 'Frame Set', 'Front Wheel Set', 'Back Wheel Set', 'Stem', 'Handle Bar', 'Saddle', 'Tyre' ]
     const values = Object.values(canvasDrawImageProps);
 
@@ -24,7 +24,7 @@ export default function Summary({ canvasDrawImageProps, canvasImage, showSummary
                             <div key={item.brand + item.model}>
                                 <div className='flex py-5'>
                                     <h1 className='font-bold text-2xl basis-[50%]'>{ titles[index] }</h1>
-                                    <p className='basis-[50%]'>{ item.brand ? item.brand + " " + item.model : "---" }</p>
+                                    <p className='basis-[50%]'>{ item.brand && !(index === 3 && frameSetDimensions.hasStem) && !(index === 4 && frameSetDimensions.hasHandleBar) ? item.brand + " " + item.model : "---" }</p>
                                 </div>
                                 <hr className='h-[2px] bg-gray-400' />
                             </div>
