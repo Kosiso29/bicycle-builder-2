@@ -5,7 +5,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { MenuItem, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader } from "@mui/material";
 import SelectElement from "../ui/select";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth }) {
@@ -114,7 +114,14 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             </SelectElement>
             {
                 allModels.length > 0 ?
-                    <List sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}>
+                    <List
+                        sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}
+                        subheader={
+                            <ListSubheader id="nested-list-subheader" sx={{ backgroundColor: "rgb(156 163 175)", color: "white" }}>
+                                Models
+                            </ListSubheader>
+                        }
+                    >
                         {
                             allModels.map((item, index) => (
                                 <ListItem

@@ -62,11 +62,37 @@ export default function BikeBuilder({ canvasDrawImageProps, setCanvasDrawImagePr
         return context;
     }
 
+    const hasParts = (selectionLevel) => {
+        if (selectionLevel === 4 && frameSetDimensions.hasStem) {
+            return true;
+        }
+        if (selectionLevel === 5 && frameSetDimensions.hasHandleBar) {
+            return true;
+        };
+        return false;
+    }
+
+    const autoSkipExistingPartsSelection = (currentSelectionLevel, selectionButtonText) => {
+        if (hasParts(currentSelectionLevel) && /Next/i.test(selectionButtonText)) {
+            currentSelectionLevel++;
+            if (currentSelectionLevel > canvasSelectionLevelState) {
+                setCanvasSelectionLevelState(currentSelectionLevel);
+            };
+            return autoSkipExistingPartsSelection(currentSelectionLevel, selectionButtonText);
+        }
+        if (hasParts(currentSelectionLevel) && /Prev/i.test(selectionButtonText)) {
+            currentSelectionLevel--;
+            return autoSkipExistingPartsSelection(currentSelectionLevel, selectionButtonText);
+        }
+        return currentSelectionLevel;
+    }
+
     const handleSelectionLevel = (e) => {
         let newSelectionLevel = selectionLevel;
         if (/Prev/i.test(e.target.textContent)) {
             if (selectionLevel > 1) {
                 newSelectionLevel--;
+                newSelectionLevel = autoSkipExistingPartsSelection(newSelectionLevel, e.target.textContent);
             } else {
                 toast.info("You're at the beginning");
             }
@@ -75,6 +101,7 @@ export default function BikeBuilder({ canvasDrawImageProps, setCanvasDrawImagePr
         if (/Next/i.test(e.target.textContent)) {
             if (canvasSelectionLevelState > selectionLevel) {
                 newSelectionLevel++;
+                newSelectionLevel = autoSkipExistingPartsSelection(newSelectionLevel, e.target.textContent);
             } else {
                 toast.error("Please either skip or complete selection before proceeding");
             }
