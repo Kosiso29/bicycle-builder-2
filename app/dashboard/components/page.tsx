@@ -9,8 +9,8 @@ export default function Dashboard() {
                 <Link href="/login">
                     <Button variant="outlined">Logout</Button>
                 </Link>
-                <Link href="/dashboard">
-                    <Button variant="contained">Dashboard</Button>
+                <Link href="/dashboard/components">
+                    <Button variant="contained">Components</Button>
                 </Link>
             </div>
         </main>

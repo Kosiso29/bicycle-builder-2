@@ -2,10 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    margin: 0;
+}
+
 button.MuiButton-containedPrimary {
   background-color: #1976d2;
 }
 
-body {
-    margin: 0;
+:root {
+    --sidebar-width: 7rem;
+}
+
+* {
+    box-sizing: border-box;
 }
