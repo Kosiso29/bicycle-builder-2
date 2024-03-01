@@ -1,16 +1,16 @@
 import { Button } from "@mui/material";
 import Link from "next/link";
 
-export default function Home() {
+export default function Dashboard() {
 
     return (
         <main className="h-screen flex items-center justify-center bg-blue-100">
             <div className="flex gap-10">
-                <Link href="/build">
-                    <Button variant="outlined">New Build</Button>
-                </Link>
                 <Link href="/login">
-                    <Button variant="contained">Admin</Button>
+                    <Button variant="outlined">Logout</Button>
+                </Link>
+                <Link href="/dashboard">
+                    <Button variant="contained">Dashboard</Button>
                 </Link>
             </div>
         </main>
