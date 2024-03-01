@@ -1,34 +1,18 @@
-'use client'
-
-import BikeBuilder from "./components/bike-builder";
-import Summary from "./components/summary";
-import NoSSR from "./components/no-ssr";
-import { ToastContainer } from 'react-toastify';
-import { useState } from "react";
-import 'react-toastify/dist/ReactToastify.css';
+import { Button } from "@mui/material";
+import Link from "next/link";
 
 export default function Home() {
-    const [showSummary, setShowSummary] = useState(false);
-    const [canvasImage, setCanvasImage] = useState("");
-    const [frameSetDimensions, setFrameSetDimensions] = useState({});
-    const [canvasDrawImageProps, setCanvasDrawImageProps] = useState({
-        frameSet: {},
-        frontWheelSet: {},
-        backWheelSet: {},
-        stem: {},
-        handleBar: {},
-        saddle: {},
-        tire: {},
-    });
 
     return (
-        <main className="">
-            <NoSSR>
-                <BikeBuilder canvasDrawImageProps={canvasDrawImageProps} setCanvasDrawImageProps={setCanvasDrawImageProps} setCanvasImage={setCanvasImage} showSummary={showSummary} setShowSummary={setShowSummary} frameSetDimensions={frameSetDimensions} setFrameSetDimensions={setFrameSetDimensions} />
-                <Summary canvasDrawImageProps={canvasDrawImageProps} canvasImage={canvasImage} showSummary={showSummary} setShowSummary={setShowSummary} frameSetDimensions={frameSetDimensions} />
-                <ToastContainer autoClose={3500} position="bottom-left" />
-            </NoSSR>
+        <main className="h-screen flex items-center justify-center bg-blue-100">
+            <div className="flex gap-10">
+                <Link href="/build">
+                    <Button variant="outlined">New Build</Button>
+                </Link>
+                <Link href="/admin">
+                    <Button variant="contained">Admin</Button>
+                </Link>
+            </div>
         </main>
-
     );
 }
