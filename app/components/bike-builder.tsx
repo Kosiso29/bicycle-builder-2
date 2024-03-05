@@ -152,7 +152,7 @@ export default function BikeBuilder({ canvasDrawImageProps, setCanvasDrawImagePr
             <div className="h-screen mr-[25rem] bg-blue-100 w-[calc(100% - 25rem)] p-5">
                 <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg ml-auto mr-auto" width={1000} height={680} />
                 <Link href="/" className="block mt-4">
-                    <Button variant="outlined">Back</Button>
+                    <Button variant="outlined">Exit Builder</Button>
                 </Link>
             </div>
             <div className="flex flex-col justify-between fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5 overflow-auto">
