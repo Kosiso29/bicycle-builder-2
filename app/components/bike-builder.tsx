@@ -14,7 +14,10 @@ import HandleBar from "./handle-bar";
 import Saddle from "./saddle";
 import Tire from "./tire";
 
-export default function BikeBuilder({ canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary, frameSetDimensions, setFrameSetDimensions }) {
+export default function BikeBuilder({
+    canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary,
+    setShowSummary, frameSetDimensions, setFrameSetDimensions, categories
+}) {
     const [selectionLevel, setSelectionLevel] = useState(1);
     const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
     const [rerender, setRerender] = useState(false);
@@ -22,7 +25,8 @@ export default function BikeBuilder({ canvasDrawImageProps, setCanvasDrawImagePr
 
     const parentProps = {
         setRerender,
-        setCanvasDrawImageProps
+        setCanvasDrawImageProps,
+        categories
     }
 
     function setImage() {

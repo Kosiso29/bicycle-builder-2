@@ -21,6 +21,6 @@ export default function Tire({ parentProps, show, canvasContext, canvasX, canvas
     }
 
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={tire} label="Tire" setActualWidth={setActualWidth} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={tire} label="Tyre" setActualWidth={setActualWidth} />
     )
 }

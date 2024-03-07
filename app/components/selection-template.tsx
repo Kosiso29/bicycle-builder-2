@@ -9,9 +9,10 @@ import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader }
 import SelectElement from "../ui/select";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth }) {
-    const { setRerender, setCanvasDrawImageProps } = parentProps;
+    const { setRerender, setCanvasDrawImageProps, categories } = parentProps;
     const [brand, setBrand] = useState("");
-    const [allBrands] = useState(dataSet);
+    const [allBrandsData, setAllBrandsData] = useState([]);
+    const [uniqueBrands, setUniqueBrands] = useState([]);
     const [model, setModel] = useState("");
     const [allModels, setAllModels] = useState([]);
     const [src, setSrc] = useState("");
@@ -21,14 +22,14 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
-        const models = allBrands.filter(itemBrand => itemBrand.brand === e.target.value)[0].model;
+        const models = allBrandsData.filter(itemBrand => itemBrand.brand === e.target.value);
         setAllModels(models);
         setSelectedIndex(null);
     }
 
     const handleModelChange = (index, modelData) => {
         setSrc(modelData?.src);
-        setModel(modelData?.name);
+        setModel(modelData?.model);
         imageRef.current?.setAttribute("src", modelData?.src);
         if (setActualWidth) {
             setActualWidth(modelData?.actualWidth);
@@ -38,7 +39,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }
 
     const updateCanvasImage = () => {
-        const imageProps = updateDrawImageProps(brand, model);
+        const imageProps = updateDrawImageProps(brand, model, allModels);
 
         setCanvasDrawImageProps(prevState => {
             prevState = { ...prevState, ...imageProps };
@@ -96,7 +97,19 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         if (model && imageLoaded) {
             updateCanvasImage();
         }
-    }, [model, imageLoaded])
+    }, [model, imageLoaded]);
+
+    useEffect(() => {
+        const brands = categories.filter(item => item.category === label);
+        setAllBrandsData(brands);
+        const reducedBrands = [];
+        brands.forEach(brandItem => {
+            if (!reducedBrands.includes(brandItem.brand)) {
+                reducedBrands.push(brandItem.brand);
+            }
+        });
+        setUniqueBrands(reducedBrands);
+    }, [categories]);
 
     if (!show) {
         return null;
@@ -107,8 +120,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             <h1 className="text-4xl font-bold">{label}</h1>
             <SelectElement value={brand} onChange={handleBrandChange} label="Brands">
                 {
-                    allBrands.map(item => (
-                        <MenuItem value={item.brand} key={item.brand}>{item.brand}</MenuItem>
+                    uniqueBrands.map(brand => (
+                        <MenuItem value={brand} key={brand}>{brand}</MenuItem>
                     ))
                 }
             </SelectElement>
@@ -125,7 +138,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                         {
                             allModels.map((item, index) => (
                                 <ListItem
-                                    key={item.name + index}
+                                    key={item.model + index}
                                     disablePadding
                                     sx={{
                                         backgroundColor: selectedIndex === index ? "rgb(25, 118, 210)" : "initial",
@@ -138,10 +151,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         data-value={item.src}
                                         data-actual-width={item.actualWidth || "0"}
                                         onClick={() => {
-                                            const { name, src, actualWidth } = item;
-                                            handleModelChange(index, { name, src, actualWidth })
+                                            const { model, src, actualWidth } = item;
+                                            handleModelChange(index, { model, src, actualWidth })
                                         }}>
-                                        <ListItemText primary={item.name} />
+                                        <ListItemText primary={item.model} />
                                     </ListItemButton>
                                 </ListItem>
                             ))
