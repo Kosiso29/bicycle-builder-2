@@ -1,9 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // @ts-nocheck
-import React from 'react';
+'use client'
+
+import React, { useEffect } from 'react';
 import NavLink from "./nav-link";
 import Image from "next/image";
-// import { HomeModernIcon, ClockIcon, TableCellsIcon, Cog6ToothIcon, ArrowLeftEndOnRectangleIcon } from "@heroicons/react/24/outline";
 import { DashboardOutlined, ExtensionOutlined, GroupOutlined, GroupAddOutlined, LogoutOutlined } from '@mui/icons-material';
+import { useDispatch } from "react-redux";
+import { categoriesActions } from "../store/categories";
 
 const sideBarData = [
     { name: "DASHBOARD", href: "/dashboard", icon: DashboardOutlined },
@@ -12,7 +16,11 @@ const sideBarData = [
     { name: "CUSTOMERS", href: "/dashboard/customers", icon: GroupOutlined },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ categories }) {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(categoriesActions.updateCategories(categories));
+    }, [])
     return (
         <div className='hidden sm:flex w-[length:var(--sidebar-width)] fixed z-10 h-screen max-h-screen bg-primary flex-col justify-between py-12'>
             <Image

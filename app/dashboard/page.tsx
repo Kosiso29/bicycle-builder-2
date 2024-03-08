@@ -1,7 +1,12 @@
+'use client'
+
 import { Button } from "@mui/material";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export default function Dashboard() {
+    const categories = useSelector((state: any) => state.categoriesReducer.categories);
+    console.log('categories dashboard', categories);
 
     return (
         <main className="h-screen flex items-center justify-center">

@@ -9,6 +9,7 @@ export async function fetchCategories() {
             c.name AS category,
             b.name AS brand,
             m.name AS model,
+            m.id AS "modelId",
             m.image_url AS src,
             m.actual_width AS "actualWidth",
             m.has_stem AS "hasStem",
@@ -20,9 +21,7 @@ export async function fetchCategories() {
         JOIN
             models m ON c.id = m.category_id
         JOIN
-            brands b ON m.brand_id = b.id
-        ORDER BY
-            c.name, b.name, m.name;`;
+            brands b ON m.brand_id = b.id;`;
 
         const categories = data.rows.map((category) => ({
             ...category
