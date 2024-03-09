@@ -11,31 +11,31 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 export default function Components() {
-    const categories = useSelector((state: any) => state.categoriesReducer.categories);
+    const models = useSelector((state: any) => state.componentsReducer.models);
     const [uniqueCategories, setUniqueCategories] = useState([]);
     const [category, setCategory] = useState('All');
-    const [tableCategory, setTableCategory] = useState([]);
+    const [tableModels, setTableModels] = useState([]);
 
     useEffect(() => {
-        if (categories) {
-            setUniqueCategories(categories.reduce((acc, item) => {
+        if (models) {
+            setUniqueCategories(models.reduce((acc, item) => {
                 if (!acc.includes(item.category)) {
                     acc.push(item.category);
                 }
                 return acc;
             }, ['All']));
         }
-    }, [categories]);
+    }, [models]);
 
     useEffect(() => {
         if (category) {
             if (category !== 'All') {
-                setTableCategory(categories.filter(item => item.category === category));
+                setTableModels(models.filter(item => item.category === category));
             } else {
-                setTableCategory(categories);
+                setTableModels(models);
             }
         };
-    }, [category, categories])
+    }, [category, models])
 
     return (
         <div>
@@ -54,7 +54,7 @@ export default function Components() {
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
                 {/* <Search placeholder="Search schedules..." /> */}
                 <Link
-                href="/dashboard/schedule/create"
+                href="/dashboard/components/create"
                 className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
                 <span className="hidden md:block">Create Component</span>{' '}
@@ -62,7 +62,7 @@ export default function Components() {
                 </Link>
             </div>
             <div className='bg-white w-full mt-8 rounded-lg md:p-8 py-8 px-2 h-auto'>
-                <Table categories={tableCategory} />
+                <Table models={tableModels} />
             </div>
         </div>
     );

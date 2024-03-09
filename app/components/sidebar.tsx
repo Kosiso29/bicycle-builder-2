@@ -7,7 +7,7 @@ import NavLink from "./nav-link";
 import Image from "next/image";
 import { DashboardOutlined, ExtensionOutlined, GroupOutlined, GroupAddOutlined, LogoutOutlined } from '@mui/icons-material';
 import { useDispatch } from "react-redux";
-import { categoriesActions } from "../store/categories";
+import { componentsActions } from "../store/components";
 
 const sideBarData = [
     { name: "DASHBOARD", href: "/dashboard", icon: DashboardOutlined },
@@ -16,10 +16,10 @@ const sideBarData = [
     { name: "CUSTOMERS", href: "/dashboard/customers", icon: GroupOutlined },
 ]
 
-export default function Sidebar({ categories }) {
+export default function Sidebar({ models }) {
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(categoriesActions.updateCategories(categories));
+        dispatch(componentsActions.updateModels(models));
     }, [])
     return (
         <div className='hidden sm:flex w-[length:var(--sidebar-width)] fixed z-10 h-screen max-h-screen bg-primary flex-col justify-between py-12'>

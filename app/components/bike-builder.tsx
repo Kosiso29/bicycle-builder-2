@@ -16,7 +16,7 @@ import Tire from "./tire";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary,
-    setShowSummary, frameSetDimensions, setFrameSetDimensions, categories
+    setShowSummary, frameSetDimensions, setFrameSetDimensions, models
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
     const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
@@ -26,7 +26,7 @@ export default function BikeBuilder({
     const parentProps = {
         setRerender,
         setCanvasDrawImageProps,
-        categories
+        models
     }
 
     function setImage() {

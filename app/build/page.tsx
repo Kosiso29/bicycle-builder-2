@@ -1,13 +1,13 @@
 import Builder from "../components/builder";
-import { fetchCategories } from "@/app/lib/data";
+import { fetchModels } from "@/app/lib/data";
 
 export default async function Build() {
  
-    const categories = await fetchCategories();
+    const models = await fetchModels();
 
     return (
         <main>
-            <Builder categories={categories} />
+            <Builder models={models} />
         </main>
 
     );

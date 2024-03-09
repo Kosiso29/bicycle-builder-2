@@ -9,7 +9,7 @@ import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader }
 import SelectElement from "../ui/select";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth }) {
-    const { setRerender, setCanvasDrawImageProps, categories } = parentProps;
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -100,7 +100,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }, [model, imageLoaded]);
 
     useEffect(() => {
-        const brands = categories.filter(item => item.category === label);
+        const brands = databaseModels.filter(item => item.category === label);
         setAllBrandsData(brands);
         const reducedBrands = [];
         brands.forEach(brandItem => {
@@ -109,7 +109,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
         });
         setUniqueBrands(reducedBrands);
-    }, [categories]);
+    }, [databaseModels]);
 
     if (!show) {
         return null;
