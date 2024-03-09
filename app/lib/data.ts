@@ -1,8 +1,6 @@
 import { sql } from '@vercel/postgres';
-import { unstable_noStore as noStore } from "next/cache";
 
 export async function fetchModels() {
-    noStore();
     try {
         const data = await sql`
         SELECT
@@ -29,20 +27,32 @@ export async function fetchModels() {
         return models;
     } catch (error) {
         console.error('Database Error:', error);
-        throw new Error('Failed to fetch the categories.');
+        throw new Error('Failed to fetch the models.');
     }
 }
 
 export async function fetchCategories() {
-    noStore();
     try {
         const data = await sql`
         SELECT ARRAY_AGG(name) AS categories FROM categories;`;
 
-        const categories = data.rows;
+        const categories = data.rows[0].categories;
         return categories;
     } catch (error) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch the categories.');
+    }
+}
+
+export async function fetchBrands() {
+    try {
+        const data = await sql`
+        SELECT ARRAY_AGG(name) AS brands FROM brands;`;
+
+        const brands = data.rows[0].brands;
+        return brands;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the brands.');
     }
 }

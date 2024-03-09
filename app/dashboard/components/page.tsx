@@ -12,20 +12,16 @@ import { useEffect, useState } from "react";
 
 export default function Components() {
     const models = useSelector((state: any) => state.componentsReducer.models);
-    const [uniqueCategories, setUniqueCategories] = useState([]);
+    const categories = useSelector((state: any) => state.componentsReducer.categories);
+    const [uniqueCategories, setUniqueCategories] = useState(['All']);
     const [category, setCategory] = useState('All');
     const [tableModels, setTableModels] = useState([]);
 
     useEffect(() => {
-        if (models) {
-            setUniqueCategories(models.reduce((acc, item) => {
-                if (!acc.includes(item.category)) {
-                    acc.push(item.category);
-                }
-                return acc;
-            }, ['All']));
+        if (categories) {
+            setUniqueCategories(prevState => [ ...prevState, ...categories ]);
         }
-    }, [models]);
+    }, [categories]);
 
     useEffect(() => {
         if (category) {

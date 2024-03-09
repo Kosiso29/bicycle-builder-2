@@ -2,8 +2,11 @@
 
 import Link from 'next/link';
 import { CheckOutlined, TimerOutlined, PersonOutline, CalendarTodayOutlined, CancelOutlined } from '@mui/icons-material';
+import { useSelector } from "react-redux";
 
 export default function Form() {
+    const categories = useSelector((state: any) => state.componentsReducer.categories);
+    const brands = useSelector((state: any) => state.componentsReducer.brands);
     return (
         <div>
             <h1 className='text-4xl text-primary'>
@@ -15,7 +18,7 @@ export default function Form() {
                         {/* Customer Name */}
                         <div className="mb-4">
                             <label htmlFor="customer" className="mb-2 block text-sm font-medium">
-                                Component type
+                                Category
                             </label>
                             <div className="relative">
                                 <select
@@ -26,14 +29,13 @@ export default function Form() {
                                     aria-describedby="customer-error"
                                 >
                                     <option value="" disabled>
-                                        Select a type
+                                        Select a category
                                     </option>
-                                    <option>
-                                        Automatic
-                                    </option>
-                                    <option>
-                                        Manual
-                                    </option>
+                                    {
+                                        categories.map((item: string) => (
+                                            <option key={item} value={item}>{item}</option>
+                                        ))
+                                    }
                                 </select>
                                 <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
                             </div>
@@ -42,7 +44,33 @@ export default function Form() {
                         {/* Customer Name */}
                         <div className="mb-4">
                             <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-                                Component name
+                                Brand
+                            </label>
+                            <div className="relative">
+                                <select
+                                    id="customer"
+                                    name="customerId"
+                                    className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                    defaultValue=""
+                                    aria-describedby="customer-error"
+                                >
+                                    <option value="" disabled>
+                                        Select a brand
+                                    </option>
+                                    {
+                                        brands.map((item: string) => (
+                                            <option key={item} value={item}>{item}</option>
+                                        ))
+                                    }
+                                </select>
+                                <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                            </div>
+                        </div>
+
+                        {/* Invoice Amount */}
+                        <div className="mb-4">
+                            <label htmlFor="amount" className="mb-2 block text-sm font-medium">
+                                Model
                             </label>
                             <div className="relative mt-2 rounded-md">
                                 <div className="relative">
@@ -50,7 +78,7 @@ export default function Form() {
                                         id="amount"
                                         name="amount"
                                         type="text"
-                                        placeholder="Name of Component"
+                                        placeholder="Model name"
                                         className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                         aria-describedby="amount-error"
                                     />
@@ -62,39 +90,19 @@ export default function Form() {
                         {/* Invoice Amount */}
                         <div className="mb-4">
                             <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-                                Choose start time
+                                Actual width
                             </label>
                             <div className="relative mt-2 rounded-md">
                                 <div className="relative">
                                     <input
                                         id="amount"
                                         name="amount"
-                                        type="date"
-                                        placeholder="Enter USD amount"
+                                        type="number"
+                                        placeholder="Actual width"
                                         className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                         aria-describedby="amount-error"
                                     />
-                                    <CalendarTodayOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Invoice Amount */}
-                        <div className="mb-4">
-                            <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-                                Choose end time
-                            </label>
-                            <div className="relative mt-2 rounded-md">
-                                <div className="relative">
-                                    <input
-                                        id="amount"
-                                        name="amount"
-                                        type="date"
-                                        placeholder="Enter USD amount"
-                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                        aria-describedby="amount-error"
-                                    />
-                                    <CalendarTodayOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+                                    <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
                                 </div>
                             </div>
                         </div>
