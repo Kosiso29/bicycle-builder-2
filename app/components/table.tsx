@@ -5,8 +5,19 @@ import Loading from "./loading";
 import { EditOutlined, DeleteOutline } from '@mui/icons-material';
 import { deleteModel } from "../lib/actions";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Table({ models }) {
+    const [loading, setLoading] = useState("");
+
+    const handleDelete = (id) => {
+        setLoading(id);
+        deleteModel(id).then(() => {
+            setLoading(false);
+            window.location.reload()
+        })
+    }
+
     return (
         <div className="flow-root max-w-full">
             <div className="inline-block min-w-full align-middle max-w-full">
@@ -14,7 +25,7 @@ export default function Table({ models }) {
                     <div className="hidden">
                         {models?.map((model) => (
                             <div
-                                key={model.modelId}
+                                key={model.id}
                                 className="mb-2 w-full rounded-md bg-white p-4"
                             >
                                 <div className="flex flex-wrap items-center justify-between border-b pb-4 gap-4">
@@ -132,9 +143,11 @@ export default function Table({ models }) {
                                             </Link>
                                             <button
                                                 className="rounded-md border p-2 hover:bg-gray-100 cursor-pointer"
-                                                onClick={() => { deleteModel(model.id); window.location.reload() }}
+                                                onClick={() => handleDelete(model.id)}
                                             >
-                                                <DeleteOutline className="w-5" />
+                                                {
+                                                    model.id === loading ? <div className="self-center justify-self-end"><Loading small /></div> : <DeleteOutline className="w-5" />
+                                                }
                                             </button>
                                         </div>
                                     </td>

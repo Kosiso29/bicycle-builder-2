@@ -4,17 +4,32 @@ import Link from 'next/link';
 import { CheckOutlined, TimerOutlined, PersonOutline, CalendarTodayOutlined, CancelOutlined } from '@mui/icons-material';
 import { useSelector } from "react-redux";
 import { createComponent } from "../../../lib/actions";
+import Loading from "../../../components/loading";
+import { useState } from 'react';
 
 export default function Form() {
     const categories = useSelector((state: any) => state.componentsReducer.categories);
     const brands = useSelector((state: any) => state.componentsReducer.brands);
+    const [loading, setLoading] = useState(false);
+
+    const handleFormSubmission = (formData: any) => {
+        createComponent(formData)
+            .then(() => {
+                setLoading(false);
+            })
+            .then(() => {
+                window.location.href = "/dashboard/components"
+            })
+            .catch(error => console.log(error));
+    }
+
     return (
         <div>
             <h1 className='text-4xl text-primary'>
                 Create Component
             </h1>
             <div className='bg-white w-full mt-8 rounded-lg md:p-8 py-8 px-2 h-auto'>
-                <form aria-describedby="form-error" action={(formData) => { createComponent(formData); window.location.href = "/dashboard/components" }}>
+                <form aria-describedby="form-error" action={handleFormSubmission}>
                     <div className="rounded-md bg-gray-100 p-4 md:p-6">
                         {/* Category */}
                         <div className="mb-4">
@@ -137,9 +152,13 @@ export default function Form() {
                         </Link>
                         <button
                             className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                            onClick={() => setLoading(true)}
                         >
                             <span className="hidden md:block">Create Component</span>
                         </button>
+                        {
+                            loading ? <div className='self-center'><Loading small /></div> : null
+                        }
                     </div>
                 </form>
             </div>
