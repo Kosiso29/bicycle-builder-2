@@ -1,13 +1,15 @@
 import { sql } from '@vercel/postgres';
+import { unstable_noStore as noStore } from "next/cache";
 
 export async function fetchModels() {
+    noStore();
     try {
         const data = await sql`
         SELECT
             c.name AS category,
             b.name AS brand,
             m.name AS model,
-            m.id AS "modelId",
+            m.id,
             m.image_url AS src,
             m.actual_width AS "actualWidth",
             m.has_stem AS "hasStem",
@@ -32,11 +34,16 @@ export async function fetchModels() {
 }
 
 export async function fetchCategories() {
+    noStore();
     try {
         const data = await sql`
-        SELECT ARRAY_AGG(name) AS categories FROM categories;`;
+        SELECT * FROM categories;`;
 
-        const categories = data.rows[0].categories;
+        const categories = data.rows.reduce((acc, row) => {
+            acc[row.id] = row.name;
+            return acc;
+        }, {});
+
         return categories;
     } catch (error) {
         console.error('Database Error:', error);
@@ -45,11 +52,16 @@ export async function fetchCategories() {
 }
 
 export async function fetchBrands() {
+    noStore();
     try {
         const data = await sql`
-        SELECT ARRAY_AGG(name) AS brands FROM brands;`;
+        SELECT * FROM brands;`;
 
-        const brands = data.rows[0].brands;
+        const brands = data.rows.reduce((acc, row) => {
+            acc[row.id] = row.name;
+            return acc;
+        }, {});
+
         return brands;
     } catch (error) {
         console.error('Database Error:', error);

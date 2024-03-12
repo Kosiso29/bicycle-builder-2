@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Loading from "./loading";
 import { EditOutlined, DeleteOutline } from '@mui/icons-material';
+import { deleteModel } from "../lib/actions";
 import Image from "next/image";
 
 export default function Table({ models }) {
@@ -10,42 +11,42 @@ export default function Table({ models }) {
         <div className="flow-root max-w-full">
             <div className="inline-block min-w-full align-middle max-w-full">
                 <div className="rounded-lg bg-gray-100 p-2 max-w-full">
-                    <div className="lg:hidden">
-                    {models?.map((model) => (
-                        <div
-                            key={model.id}
-                            className="mb-2 w-full rounded-md bg-white p-4"
-                        >
-                            <div className="flex flex-wrap items-center justify-between border-b pb-4 gap-4">
-                                <div>
-                                    <div className="mb-2 flex items-center">
-                                        {model.schedule_name}
-                                    </div>
-                                    <div className='flex justify-between gap-2'>
-                                        <span>{model.schedule_type}</span>
-                                        <span>
-                                            {
-                                                model.status === 'active' ?
-                                                    <span
-                                                        className="w-fit flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                                    >
-                                                        {model.status}
-                                                    </span> :
-                                                    <span
-                                                        className="w-fit flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-400 px-3 py-1.5 text-xs font-medium text-white"
-                                                    >
-                                                        {model.status}
-                                                    </span>
-                                            }
-                                        </span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="mb-2 flex items-center">
-                                        {/* {model.switches.toString().replace(/[|]/g, "").replace(/,/g, ' ')} */}
+                    <div className="hidden">
+                        {models?.map((model) => (
+                            <div
+                                key={model.modelId}
+                                className="mb-2 w-full rounded-md bg-white p-4"
+                            >
+                                <div className="flex flex-wrap items-center justify-between border-b pb-4 gap-4">
+                                    <div>
+                                        <div className="mb-2 flex items-center">
+                                            {model.schedule_name}
+                                        </div>
+                                        <div className='flex justify-between gap-2'>
+                                            <span>{model.schedule_type}</span>
+                                            <span>
+                                                {
+                                                    model.status === 'active' ?
+                                                        <span
+                                                            className="w-fit flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                                        >
+                                                            {model.status}
+                                                        </span> :
+                                                        <span
+                                                            className="w-fit flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-400 px-3 py-1.5 text-xs font-medium text-white"
+                                                        >
+                                                            {model.status}
+                                                        </span>
+                                                }
+                                            </span>
+                                        </div>
                                     </div>
                                     <div>
-                                        {/* {
+                                        <div className="mb-2 flex items-center">
+                                            {/* {model.switches.toString().replace(/[|]/g, "").replace(/,/g, ' ')} */}
+                                        </div>
+                                        <div>
+                                            {/* {
                                             Object.entries(daysMap).map((entry, index) => {
                                                 if (model.days.includes(entry[0])) {
                                                     return <span key={entry[1] + index} className='mr-1 text-primary font-bold'>{entry[1]}</span>
@@ -53,18 +54,18 @@ export default function Table({ models }) {
                                                 return <span key={entry[1] + index} className='mr-1 text-gray-400'>{entry[1]}</span>
                                             })
                                         } */}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="flex flex-wrap gap-2 w-full items-center justify-between pt-4">
-                                <div>
-                                    <p className="text-xl font-medium">
-                                        {model.from} / {model.start_date}
-                                    </p>
-                                    <p>{model.to} / {model.end_date}</p>
-                                </div>
-                                <div className="flex justify-end gap-2">
-                                    {/* <Link
+                                <div className="flex flex-wrap gap-2 w-full items-center justify-between pt-4">
+                                    <div>
+                                        <p className="text-xl font-medium">
+                                            {model.from} / {model.start_date}
+                                        </p>
+                                        <p>{model.to} / {model.end_date}</p>
+                                    </div>
+                                    <div className="flex justify-end gap-2">
+                                        {/* <Link
                                         href={`/dashboard/model`}
                                         className="rounded-md border p-2 hover:bg-gray-100"
                                     >
@@ -76,11 +77,11 @@ export default function Table({ models }) {
                                     >
                                         <TrashIcon className="w-5" />
                                     </Link> */}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
                     <table className="hidden min-w-full text-gray-900 lg:table max-w-full">
                         <thead className="rounded-lg text-left text-sm font-normal">
                             <tr>
@@ -129,12 +130,12 @@ export default function Table({ models }) {
                                             >
                                                 <EditOutlined className="w-5" />
                                             </Link>
-                                            <Link
-                                                href={`/dashboard/delete`}
-                                                className="rounded-md border p-2 hover:bg-gray-100"
+                                            <button
+                                                className="rounded-md border p-2 hover:bg-gray-100 cursor-pointer"
+                                                onClick={() => { deleteModel(model.id); window.location.reload() }}
                                             >
                                                 <DeleteOutline className="w-5" />
-                                            </Link>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>

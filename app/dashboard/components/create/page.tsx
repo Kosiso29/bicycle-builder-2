@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { CheckOutlined, TimerOutlined, PersonOutline, CalendarTodayOutlined, CancelOutlined } from '@mui/icons-material';
 import { useSelector } from "react-redux";
+import { createComponent } from "../../../lib/actions";
 
 export default function Form() {
     const categories = useSelector((state: any) => state.componentsReducer.categories);
@@ -13,27 +14,27 @@ export default function Form() {
                 Create Component
             </h1>
             <div className='bg-white w-full mt-8 rounded-lg md:p-8 py-8 px-2 h-auto'>
-                <form aria-describedby="form-error">
+                <form aria-describedby="form-error" action={(formData) => { createComponent(formData); window.location.href = "/dashboard/components" }}>
                     <div className="rounded-md bg-gray-100 p-4 md:p-6">
-                        {/* Customer Name */}
+                        {/* Category */}
                         <div className="mb-4">
-                            <label htmlFor="customer" className="mb-2 block text-sm font-medium">
+                            <label htmlFor="category_id" className="mb-2 block text-sm font-medium">
                                 Category
                             </label>
                             <div className="relative">
                                 <select
-                                    id="customer"
-                                    name="customerId"
+                                    id="category_id"
+                                    name="category_id"
                                     className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                     defaultValue=""
-                                    aria-describedby="customer-error"
+                                    aria-describedby="category_id-error"
                                 >
                                     <option value="" disabled>
                                         Select a category
                                     </option>
                                     {
-                                        categories.map((item: string) => (
-                                            <option key={item} value={item}>{item}</option>
+                                        Object.entries(categories).map((item: any) => (
+                                            <option key={item[1]} value={item[0]}>{item[1]}</option>
                                         ))
                                     }
                                 </select>
@@ -41,25 +42,25 @@ export default function Form() {
                             </div>
                         </div>
 
-                        {/* Customer Name */}
+                        {/* Brand */}
                         <div className="mb-4">
-                            <label htmlFor="amount" className="mb-2 block text-sm font-medium">
+                            <label htmlFor="brand_id" className="mb-2 block text-sm font-medium">
                                 Brand
                             </label>
                             <div className="relative">
                                 <select
-                                    id="customer"
-                                    name="customerId"
+                                    id="brand_id"
+                                    name="brand_id"
                                     className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                     defaultValue=""
-                                    aria-describedby="customer-error"
+                                    aria-describedby="brand_id-error"
                                 >
                                     <option value="" disabled>
                                         Select a brand
                                     </option>
                                     {
-                                        brands.map((item: string) => (
-                                            <option key={item} value={item}>{item}</option>
+                                        Object.entries(brands).map((item: any) => (
+                                            <option key={item[1]} value={item[0]}>{item[1]}</option>
                                         ))
                                     }
                                 </select>
@@ -67,88 +68,65 @@ export default function Form() {
                             </div>
                         </div>
 
-                        {/* Invoice Amount */}
+                        {/* Model */}
                         <div className="mb-4">
-                            <label htmlFor="amount" className="mb-2 block text-sm font-medium">
+                            <label htmlFor="model" className="mb-2 block text-sm font-medium">
                                 Model
                             </label>
                             <div className="relative mt-2 rounded-md">
                                 <div className="relative">
                                     <input
-                                        id="amount"
-                                        name="amount"
+                                        id="model"
+                                        name="model"
                                         type="text"
                                         placeholder="Model name"
                                         className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                        aria-describedby="amount-error"
+                                        aria-describedby="model-error"
                                     />
                                     <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Invoice Amount */}
+                        {/* Image URL */}
                         <div className="mb-4">
-                            <label htmlFor="amount" className="mb-2 block text-sm font-medium">
+                            <label htmlFor="image_url" className="mb-2 block text-sm font-medium">
+                                Image URL
+                            </label>
+                            <div className="relative mt-2 rounded-md">
+                                <div className="relative">
+                                    <input
+                                        id="image_url"
+                                        name="image_url"
+                                        type="text"
+                                        placeholder="Image URL"
+                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                        aria-describedby="image_url-error"
+                                    />
+                                    <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Actual width */}
+                        <div className="mb-4">
+                            <label htmlFor="actual_width" className="mb-2 block text-sm font-medium">
                                 Actual width
                             </label>
                             <div className="relative mt-2 rounded-md">
                                 <div className="relative">
                                     <input
-                                        id="amount"
-                                        name="amount"
+                                        id="actual_width"
+                                        name="actual_width"
                                         type="number"
                                         placeholder="Actual width"
                                         className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                        aria-describedby="amount-error"
+                                        aria-describedby="actual_width-error"
                                     />
                                     <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
                                 </div>
                             </div>
                         </div>
-
-                        {/* Invoice Status */}
-                        <fieldset className='mb-4'>
-                            <legend className="mb-2 block text-sm font-medium">
-                                Set Component status
-                            </legend>
-                            <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                                <div className="flex gap-4">
-                                    <div className="flex items-center">
-                                        <input
-                                            id="pending"
-                                            name="status"
-                                            type="radio"
-                                            value="pending"
-                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                            aria-describedby="status-error"
-                                        />
-                                        <label
-                                            htmlFor="pending"
-                                            className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-400 px-3 py-1.5 text-xs font-medium text-white"
-                                        >
-                                            inactive <CancelOutlined className="h-4 w-4" />
-                                        </label>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <input
-                                            id="paid"
-                                            name="status"
-                                            type="radio"
-                                            value="paid"
-                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                            aria-describedby="status-error"
-                                        />
-                                        <label
-                                            htmlFor="paid"
-                                            className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                        >
-                                            active <CheckOutlined className="h-4 w-4" />
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
                     </div>
                     <div className="mt-6 flex justify-end gap-4">
                         <Link
@@ -157,12 +135,11 @@ export default function Form() {
                         >
                             Cancel
                         </Link>
-                        <Link
-                            href="/dashboard/components/create"
+                        <button
                             className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                         >
-                            <span className="hidden md:block">Create Schedule</span>
-                        </Link>
+                            <span className="hidden md:block">Create Component</span>
+                        </button>
                     </div>
                 </form>
             </div>

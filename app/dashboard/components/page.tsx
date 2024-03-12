@@ -19,7 +19,7 @@ export default function Components() {
 
     useEffect(() => {
         if (categories) {
-            setUniqueCategories(prevState => [ ...prevState, ...categories ]);
+            setUniqueCategories(['All', ...Object.values(categories)]);
         }
     }, [categories]);
 
