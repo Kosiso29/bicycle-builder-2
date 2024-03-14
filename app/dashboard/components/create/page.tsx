@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import { CheckOutlined, TimerOutlined, PersonOutline, CalendarTodayOutlined, CancelOutlined } from '@mui/icons-material';
+import { CheckOutlined, TimerOutlined, PersonOutline, AddOutlined } from '@mui/icons-material';
 import { useSelector } from "react-redux";
 import { createComponent } from "../../../lib/actions";
 import Loading from "../../../components/loading";
@@ -62,24 +62,33 @@ export default function Form() {
                             <label htmlFor="brand_id" className="mb-2 block text-sm font-medium">
                                 Brand
                             </label>
-                            <div className="relative">
-                                <select
-                                    id="brand_id"
-                                    name="brand_id"
-                                    className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                    defaultValue=""
-                                    aria-describedby="brand_id-error"
+                            <div className='relative flex gap-6 justify-between'>
+                                <div className="flex-grow">
+                                    <select
+                                        id="brand_id"
+                                        name="brand_id"
+                                        className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                        defaultValue=""
+                                        aria-describedby="brand_id-error"
+                                    >
+                                        <option value="" disabled>
+                                            Select a brand
+                                        </option>
+                                        {
+                                            Object.entries(brands).map((item: any) => (
+                                                <option key={item[1]} value={item[0]}>{item[1]}</option>
+                                            ))
+                                        }
+                                    </select>
+                                    <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                                </div>
+                                <Link
+                                    href="/dashboard/components/create/brands"
+                                    className="flex items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                                 >
-                                    <option value="" disabled>
-                                        Select a brand
-                                    </option>
-                                    {
-                                        Object.entries(brands).map((item: any) => (
-                                            <option key={item[1]} value={item[0]}>{item[1]}</option>
-                                        ))
-                                    }
-                                </select>
-                                <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                                    Add Brands
+                                    <AddOutlined className="pointer-events-none" />
+                                </Link>
                             </div>
                         </div>
 

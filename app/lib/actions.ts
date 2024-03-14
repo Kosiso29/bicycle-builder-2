@@ -35,3 +35,19 @@ export async function deleteModel(id: string) {
         console.log('error', error)
     }
 }
+
+export async function createBrands(brands: any) {
+
+    try {
+        for (const brand of brands) {
+            await sql`
+            INSERT INTO brands (name)
+            VALUES (${brand})
+            `;
+        }
+    } catch (error) {
+        console.log('error', error)
+    }
+
+    revalidatePath('/dashboard/components');
+}
