@@ -24,7 +24,7 @@ export default function Sidebar({ models, categories, brands }) {
         dispatch(componentsActions.updateBrands(brands));
     }, [])
     return (
-        <div className='hidden sm:flex w-[length:var(--sidebar-width)] fixed z-10 h-screen max-h-screen bg-primary flex-col justify-between py-12'>
+        <div className='hidden sm:flex w-[var(--sidebar-width)] fixed z-10 h-screen max-h-screen bg-primary flex-col justify-between py-12'>
             <Image
                 src="/Cadex_50_Disc_Ultra_F-modified.png"
                 width={60}

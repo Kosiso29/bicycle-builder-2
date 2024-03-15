@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Loading from "../../../../components/loading";
 import { CancelOutlined } from '@mui/icons-material';
 import { createBrands } from "@/app/lib/actions";
+import { ToastContainer } from 'react-toastify';
 
 const MultiItemTextField = () => {
     const [items, setItems] = useState([]);
@@ -25,7 +26,8 @@ const MultiItemTextField = () => {
     };
 
     const handleFormSubmission = () => {
-        createBrands(items)
+        const brands = items.length > 0 ? items : [inputValue];
+        createBrands(brands)
             .then(() => {
                 setLoading(false);
             })
@@ -96,6 +98,7 @@ const MultiItemTextField = () => {
                     </div>
                 </form>
             </div>
+            <ToastContainer autoClose={3500} position="bottom-left" />
         </div>
     );
 };
