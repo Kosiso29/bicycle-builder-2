@@ -51,3 +51,26 @@ export async function createBrands(brands: any) {
 
     revalidatePath('/dashboard/components');
 }
+
+export async function updateModel(id: string, formData: any) {
+    const formDataObject: any = {};
+
+    formData.forEach((value: any, key: any) => {
+        formDataObject[key] = value;
+    });
+
+    const { category_id, brand_id, model, image_url, actual_width } = formDataObject;
+
+    try {
+        await sql`
+        UPDATE models
+        SET category_id = ${category_id}, brand_id = ${brand_id}, name = ${model}, image_url = ${image_url}, actual_width = ${actual_width}
+        WHERE id = ${id};
+        `
+
+        revalidatePath('/dashboard/components');
+        revalidatePath(`/dashboard/components/${id}/edit`);
+    } catch (error) {
+        console.log('error', error);
+    }
+}

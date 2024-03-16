@@ -127,7 +127,7 @@ export default function Table({ models }) {
                                     </td>
                                     <td className="relative">
                                         <div className="relative my-[1px] w-auto h-12">
-                                            <Image src={model.src} layout="fill" objectFit="contain" alt={model.model} />
+                                            <Image src={model.src} sizes="100%" fill style={{ objectFit: "contain" }} alt={model.model} />
                                         </div>
                                     </td>
                                     <td className="px-3 py-3">
@@ -136,7 +136,7 @@ export default function Table({ models }) {
                                     <td className="whitespace-nowrap px-3 py-3">
                                         <div className="flex justify-center gap-3">
                                             <Link
-                                                href={`/dashboard/edit`}
+                                                href={`/dashboard/components/${model.id}/edit`}
                                                 className="rounded-md border p-2 hover:bg-gray-100"
                                             >
                                                 <EditOutlined className="w-5" />

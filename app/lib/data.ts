@@ -68,3 +68,20 @@ export async function fetchBrands() {
         throw new Error('Failed to fetch the brands.');
     }
 }
+
+export async function fetchModelById(id: string) {
+    noStore();
+    try {
+        const data = await sql`
+        SELECT * FROM models
+        WHERE models.id = ${id};
+        `
+
+        const model = data.rows[0];
+
+        return model;
+    } catch (error) {
+        console.log('Database Error:', error);
+        throw new Error('Failed to fetch the model.');
+    }
+}
