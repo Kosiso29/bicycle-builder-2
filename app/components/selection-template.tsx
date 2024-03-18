@@ -138,7 +138,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                         {
                             allModels.map((item, index) => (
                                 <ListItem
-                                    key={item.model + index}
+                                    key={label + item.model + index}
                                     disablePadding
                                     sx={{
                                         backgroundColor: selectedIndex === index ? "rgb(25, 118, 210)" : "initial",
@@ -162,7 +162,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     </List>
                     : null
             }
-            <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", visibility: imageLoaded ? "visible" : "hidden", display: "none" }} alt="" onLoadingComplete={() => setImageLoaded(true)} />
+            <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", visibility: imageLoaded ? "visible" : "hidden", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
         </div>
     )
 }
