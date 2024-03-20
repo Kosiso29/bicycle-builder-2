@@ -7,6 +7,9 @@ import { deleteModel } from "../lib/actions";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import YesNo from "./yesno";
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Table({ models }) {
     const [loading, setLoading] = useState(false);
@@ -24,9 +27,12 @@ export default function Table({ models }) {
                 setDeleteId("");
                 setLoading(false);
                 setAnswer("");
+                toast.success("Component deleted!")
             })
             .then(() => window.location.reload())
-            .catch(error => console.log(error));
+            .catch(error => {
+                toast.error(`Component failed to delete: ${error}`)
+            });
         }
         if (answer === "no") {
             setAnswer("");
@@ -179,6 +185,7 @@ export default function Table({ models }) {
                 </div>
             </div>
             <YesNo setAnswer={setAnswer} show={!!deleteId && !answer} message="Delete component?" />
+            <ToastContainer autoClose={3500} position="top-right" />
         </div>
     )
 }
