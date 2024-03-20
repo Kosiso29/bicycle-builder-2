@@ -5,18 +5,34 @@ import Loading from "./loading";
 import { EditOutlined, DeleteOutline } from '@mui/icons-material';
 import { deleteModel } from "../lib/actions";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import YesNo from "./yesno";
 
 export default function Table({ models }) {
-    const [loading, setLoading] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [answer, setAnswer] = useState("");
+    const [deleteId, setDeleteId] = useState("");
 
     const handleDelete = (id) => {
-        setLoading(id);
-        deleteModel(id).then(() => {
-            setLoading(false);
-            window.location.reload()
-        })
+        setDeleteId(id);
     }
+
+    useEffect(() => {
+        if (answer === "yes") {
+            setLoading(true);
+            deleteModel(deleteId).then(() => {
+                setDeleteId("");
+                setLoading(false);
+                setAnswer("");
+            })
+            .then(() => window.location.reload())
+            .catch(error => console.log(error));
+        }
+        if (answer === "no") {
+            setAnswer("");
+            setDeleteId("");
+        }
+    }, [answer, deleteId])
 
     return (
         <div className="flow-root max-w-full">
@@ -146,7 +162,7 @@ export default function Table({ models }) {
                                                 onClick={() => handleDelete(model.id)}
                                             >
                                                 {
-                                                    model.id === loading ? <div className="self-center justify-self-end"><Loading small /></div> : <DeleteOutline className="w-5" />
+                                                    loading && (model.id === deleteId) ? <div className="self-center justify-self-end"><Loading small /></div> : <DeleteOutline className="w-5" />
                                                 }
                                             </button>
                                         </div>
@@ -162,6 +178,7 @@ export default function Table({ models }) {
                     }
                 </div>
             </div>
+            <YesNo setAnswer={setAnswer} show={!!deleteId && !answer} message="Delete component?" />
         </div>
     )
 }
