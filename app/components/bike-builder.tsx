@@ -177,7 +177,7 @@ export default function BikeBuilder({
                                 <Button variant="contained" onClick={handleSummary}>Summary</Button>
                         }
                     </div>
-                    <Button variant="outlined" disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 7 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
+                    <Button variant="outlined" disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 7 || selectionLevel === 1 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
                 </div>
             </div>
         </div>
