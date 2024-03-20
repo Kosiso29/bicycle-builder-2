@@ -12,12 +12,12 @@ export async function createComponent(formData: FormData) {
         formDataObject[key] = value;
     });
 
-    const { category_id, brand_id, model, image_url, actual_width } = formDataObject;
+    const { category_id, brand_id, model, image_url, actual_width, stem_x, stem_y, has_stem, has_handle_bar } = formDataObject;
 
     try {
         await sql`
-        INSERT INTO models (category_id, brand_id, name, image_url, actual_width)
-        VALUES (${category_id}, ${brand_id}, ${model}, ${image_url}, ${Number(actual_width)})
+        INSERT INTO models (category_id, brand_id, name, image_url, actual_width, stem_x, stem_y, has_stem, has_handle_bar)
+        VALUES (${category_id}, ${brand_id}, ${model}, ${image_url}, ${Number(actual_width)}, ${stem_x}, ${stem_y}, ${!!has_stem}, ${!!has_handle_bar})
       `;
     } catch (error) {
         console.log('error', error)
