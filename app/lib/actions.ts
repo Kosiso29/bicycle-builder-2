@@ -59,12 +59,12 @@ export async function updateModel(id: string, formData: any) {
         formDataObject[key] = value;
     });
 
-    const { category_id, brand_id, model, image_url, actual_width } = formDataObject;
+    const { category_id, brand_id, model, image_url, actual_width, stem_x, stem_y, has_stem, has_handle_bar } = formDataObject;
 
     try {
         await sql`
         UPDATE models
-        SET category_id = ${category_id}, brand_id = ${brand_id}, name = ${model}, image_url = ${image_url}, actual_width = ${actual_width}
+        SET category_id = ${category_id}, brand_id = ${brand_id}, name = ${model}, image_url = ${image_url}, actual_width = ${actual_width}, stem_x = ${stem_x}, stem_y = ${stem_y}, has_stem = ${!!has_stem}, has_handle_bar = ${!!has_handle_bar}
         WHERE id = ${id};
         `
 
