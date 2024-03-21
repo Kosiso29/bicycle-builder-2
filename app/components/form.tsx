@@ -7,7 +7,7 @@ import { updateModel, createComponent } from "@/app/lib/actions";
 import Loading from "./loading";
 import { useState } from 'react';
 
-export default function Form({ model }: { model: any }) {
+export default function Form({ model }: { model?: any }) {
     const categories = useSelector((state: any) => state.componentsReducer.categories);
     const brands = useSelector((state: any) => state.componentsReducer.brands);
     const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ export default function Form({ model }: { model: any }) {
                             id="category_id"
                             name="category_id"
                             className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                            defaultValue={model.category_id}
+                            defaultValue={model?.category_id || ""}
                             aria-describedby="category_id-error"
                         >
                             <option value="" disabled>
@@ -76,7 +76,7 @@ export default function Form({ model }: { model: any }) {
                                 id="brand_id"
                                 name="brand_id"
                                 className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                defaultValue={model.brand_id}
+                                defaultValue={model?.brand_id || ""}
                                 aria-describedby="brand_id-error"
                             >
                                 <option value="" disabled>
@@ -111,7 +111,7 @@ export default function Form({ model }: { model: any }) {
                                 id="model"
                                 name="model"
                                 type="text"
-                                defaultValue={model.name}
+                                defaultValue={model?.name}
                                 placeholder="Model name"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                 aria-describedby="model-error"
@@ -132,7 +132,7 @@ export default function Form({ model }: { model: any }) {
                                 id="image_url"
                                 name="image_url"
                                 type="text"
-                                defaultValue={model.image_url}
+                                defaultValue={model?.image_url}
                                 placeholder="Image URL"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                 aria-describedby="image_url-error"
@@ -153,7 +153,7 @@ export default function Form({ model }: { model: any }) {
                                 id="actual_width"
                                 name="actual_width"
                                 type="number"
-                                defaultValue={model.actual_width}
+                                defaultValue={model?.actual_width}
                                 placeholder="Actual width"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                 aria-describedby="actual_width-error"
@@ -183,7 +183,7 @@ export default function Form({ model }: { model: any }) {
                                     id="has_stem"
                                     name="has_stem"
                                     type="checkbox"
-                                    defaultChecked={model.has_stem}
+                                    defaultChecked={model?.has_stem}
                                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                                     aria-describedby="has_stem-error"
                                 />
@@ -201,7 +201,7 @@ export default function Form({ model }: { model: any }) {
                                     id="has_handle_bar"
                                     name="has_handle_bar"
                                     type="checkbox"
-                                    defaultChecked={model.has_handle_bar}
+                                    defaultChecked={model?.has_handle_bar}
                                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                                     aria-describedby="has_handle_bar-error"
                                 />
@@ -221,7 +221,7 @@ export default function Form({ model }: { model: any }) {
                                             id="stem_x"
                                             name="stem_x"
                                             type="number"
-                                            defaultValue={model.stem_x || 600}
+                                            defaultValue={model?.stem_x || 600}
                                             placeholder="Stem X"
                                             className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                             aria-describedby="stem_x-error"
@@ -242,7 +242,7 @@ export default function Form({ model }: { model: any }) {
                                             id="stem_y"
                                             name="stem_y"
                                             type="number"
-                                            defaultValue={model.stem_y || 150}
+                                            defaultValue={model?.stem_y || 150}
                                             placeholder="Stem Y"
                                             className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                             aria-describedby="stem_y-error"
