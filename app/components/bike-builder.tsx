@@ -78,7 +78,7 @@ export default function BikeBuilder({
     }
 
     const autoSkipExistingPartsSelection = (currentSelectionLevel, selectionButtonText) => {
-        if (hasParts(currentSelectionLevel) && /Next/i.test(selectionButtonText)) {
+        if (hasParts(currentSelectionLevel) && /Next|Skip/i.test(selectionButtonText)) {
             currentSelectionLevel++;
             if (currentSelectionLevel > canvasSelectionLevelState) {
                 setCanvasSelectionLevelState(currentSelectionLevel);
@@ -114,10 +114,7 @@ export default function BikeBuilder({
 
         if (/Skip/i.test(e.target.textContent)) {
             newSelectionLevel++;
-            setCanvasSelectionLevelState(prevState => {
-                prevState++;
-                return prevState
-            });
+            newSelectionLevel = autoSkipExistingPartsSelection(newSelectionLevel, e.target.textContent);
         }
 
 
