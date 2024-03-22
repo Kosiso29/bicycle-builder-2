@@ -6,6 +6,9 @@ import { useSelector } from "react-redux";
 import { updateModel, createComponent } from "@/app/lib/actions";
 import Loading from "./loading";
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Form({ model }: { model?: any }) {
     const categories = useSelector((state: any) => state.componentsReducer.categories);
@@ -16,22 +19,28 @@ export default function Form({ model }: { model?: any }) {
         updateModel(model.id, formData)
             .then(() => {
                 setLoading(false);
+                toast.success("Component updated!")
             })
             .then(() => {
                 window.location.href = "/dashboard/components"
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                toast.error(`Component failed to update: ${error}`)
+            });
     }
 
     const handleFormCreation = (formData: any) => {
         createComponent(formData)
             .then(() => {
                 setLoading(false);
+                toast.success("Component created!")
             })
             .then(() => {
                 window.location.href = "/dashboard/components"
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                toast.error(`Component failed to create: ${error}`)
+            });
     }
 
     const handleFormSubmission = model ? handleFormUpdate : handleFormCreation;
@@ -254,6 +263,7 @@ export default function Form({ model }: { model?: any }) {
                     loading ? <div className='self-center'><Loading small /></div> : null
                 }
             </div>
+            <ToastContainer autoClose={3500} position="top-right" />
         </form>
     );
 }
