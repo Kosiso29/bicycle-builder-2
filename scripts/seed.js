@@ -120,12 +120,39 @@ async function seedModels(client) {
   }
 }
 
+async function addColumns(client) {
+    try {
+    const addColumn = await client.sql`
+        ALTER TABLE models 
+        ADD COLUMN IF NOT EXISTS saddle_x INTEGER,
+        ADD COLUMN IF NOT EXISTS saddle_y INTEGER,
+        ADD COLUMN IF NOT EXISTS front_wheel_x INTEGER,
+        ADD COLUMN IF NOT EXISTS front_wheel_y INTEGER,
+        ADD COLUMN IF NOT EXISTS back_wheel_x INTEGER,
+        ADD COLUMN IF NOT EXISTS back_wheel_y INTEGER;
+    `
+        
+    console.log(`Created columns in models`);
+        
+    const modelsTable = await client.sql`SELECT * FROM models;`;
+
+    return {
+        addColumn,
+        modelsTable
+    };
+  } catch (error) {
+    console.error('Error creating columns', error);
+    throw error;
+  }
+}
+
 async function main() {
   const client = await db.connect();
 
 //   await seedCategories(client);
 //   await seedBrands(client);
-  await seedModels(client);
+//   await seedModels(client);
+  await addColumns(client);
 
   await client.end();
 }

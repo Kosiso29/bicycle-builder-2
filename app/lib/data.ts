@@ -15,7 +15,13 @@ export async function fetchModels() {
             m.has_stem AS "hasStem",
             m.has_handle_bar AS "hasHandleBar",
             m.stem_x AS "stemX",
-            m.stem_y AS "stemY"
+            m.stem_y AS "stemY",
+            m.saddle_x AS "saddleX",
+            m.saddle_y AS "saddleY",
+            m.front_wheel_x AS "frontWheelSetX",
+            m.front_wheel_y AS "frontWheelSetY",
+            m.back_wheel_x AS "backWheelSetX",
+            m.back_wheel_y AS "backWheelSetY"
         FROM
             categories c
         JOIN
