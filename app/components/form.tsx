@@ -211,28 +211,28 @@ export default function Form({ model }: { model?: any }) {
                         <div className="flex flex-wrap gap-4 pt-5">
 
                             {/* Stem Offset X */}
-                            <OffsetTextField name='stem_x' defaultValue={model?.stem_x || 600} label='Stem Offset X' />
+                            <OffsetTextField name='stem_x' defaultValue={model?.stem_x || "600"} label='Stem Offset X' />
 
                             {/* Stem Offset Y */}
-                            <OffsetTextField name='stem_y' defaultValue={model?.stem_y || 150} label='Stem Offset Y' />
+                            <OffsetTextField name='stem_y' defaultValue={model?.stem_y || "150"} label='Stem Offset Y' />
 
                             {/* Saddle Offset X */}
-                            <OffsetTextField name='saddle_x' defaultValue={model?.saddle_x || 240} label='Saddle Offset X' />
+                            <OffsetTextField name='saddle_x' defaultValue={model?.saddle_x || "240"} label='Saddle Offset X' />
 
                             {/* Saddle Offset Y */}
-                            <OffsetTextField name='saddle_y' defaultValue={model?.saddle_y || 110} label='Saddle Offset Y' />
+                            <OffsetTextField name='saddle_y' defaultValue={model?.saddle_y || "110"} label='Saddle Offset Y' />
 
                             {/* Front Wheel Offset X */}
-                            <OffsetTextField name='front_wheel_x' defaultValue={model?.front_wheel_x || 550} label='Front Wheel Offset X' />
+                            <OffsetTextField name='front_wheel_x' defaultValue={model?.front_wheel_x || "550"} label='Front Wheel Offset X' />
 
                             {/* Front Wheel Offset Y */}
-                            <OffsetTextField name='front_wheel_y' defaultValue={model?.front_wheel_y || 265} label='Front Wheel Offset Y' />
+                            <OffsetTextField name='front_wheel_y' defaultValue={model?.front_wheel_y || "265"} label='Front Wheel Offset Y' />
 
                             {/* Back Wheel Offset X */}
-                            <OffsetTextField name='back_wheel_x' defaultValue={model?.back_wheel_x || 45} label='Back Wheel Offset X' />
+                            <OffsetTextField name='back_wheel_x' defaultValue={model?.back_wheel_x || "45"} label='Back Wheel Offset X' />
 
                             {/* Back Wheel Offset Y */}
-                            <OffsetTextField name='back_wheel_y' defaultValue={model?.back_wheel_y || 265} label='Back Wheel Offset Y' />
+                            <OffsetTextField name='back_wheel_y' defaultValue={model?.back_wheel_y || "265"} label='Back Wheel Offset Y' />
                         </div>
                     </div>
                 </fieldset>

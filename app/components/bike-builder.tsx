@@ -115,6 +115,9 @@ export default function BikeBuilder({
         if (/Skip/i.test(e.target.textContent)) {
             newSelectionLevel++;
             newSelectionLevel = autoSkipExistingPartsSelection(newSelectionLevel, e.target.textContent);
+            if (newSelectionLevel > canvasSelectionLevelState) {
+                setCanvasSelectionLevelState(newSelectionLevel);
+            }
         }
 
 
