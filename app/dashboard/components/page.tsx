@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 // import { PlusIcon } from "@heroicons/react/24/solid";
@@ -10,9 +9,12 @@ import SelectElement from "@/app/ui/select";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
+// Types
+import { Model } from "@/app/lib/definitions";
+
 export default function Components() {
     const models = useSelector((state: any) => state.componentsReducer.models);
-    const categories = useSelector((state: any) => state.componentsReducer.categories);
+    const categories: Array<string> = useSelector((state: any) => state.componentsReducer.categories);
     const [uniqueCategories, setUniqueCategories] = useState(['All']);
     const [category, setCategory] = useState('All');
     const [tableModels, setTableModels] = useState([]);
@@ -26,7 +28,7 @@ export default function Components() {
     useEffect(() => {
         if (category) {
             if (category !== 'All') {
-                setTableModels(models.filter(item => item.category === category));
+                setTableModels(models.filter((item: Model ) => item.category === category));
             } else {
                 setTableModels(models);
             }
@@ -39,7 +41,7 @@ export default function Components() {
                 Components
             </h1>
             <div className="mt-4 md:mt-10">
-                <SelectElement value={category} onChange={(e) => { setCategory(e.target.value) }} label="Categories">
+                <SelectElement value={category} onChange={(e: React.MouseEvent<HTMLButtonElement>) => { setCategory((e.target as HTMLInputElement).value) }} label="Categories">
                     {
                         uniqueCategories.map(category => (
                             <MenuItem value={category} key={category}>{category}</MenuItem>

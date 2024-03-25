@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 import React, { useState } from 'react';
@@ -9,19 +8,19 @@ import { createBrands } from "@/app/lib/actions";
 import { ToastContainer } from 'react-toastify';
 
 const MultiItemTextField = () => {
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const addItem = (e) => {
+    const addItem = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (inputValue.trim() !== '') {
-            setItems(prevItems => [...prevItems, inputValue]);
+            setItems((prevItems) => [...prevItems, inputValue]);
             setInputValue('');
         }
     };
 
-    const removeItem = (index) => {
+    const removeItem = (index: number) => {
         setItems(prevItems => prevItems.filter((_, i) => i !== index));
     };
 
