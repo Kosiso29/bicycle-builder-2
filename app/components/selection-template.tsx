@@ -84,6 +84,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     x: backWheelSetX ? backWheelSetX : prevState.backWheelSet.x,
                     y: backWheelSetY ? backWheelSetY : prevState.backWheelSet.y
                 },
+                tire: {
+                    ...prevState.tire,
+                    x: frontWheelSetX ? frontWheelSetX - 10 : prevState.tire.x,
+                    y: frontWheelSetY ? frontWheelSetY - 11 : prevState.tire.y,
+                    x2: backWheelSetX ? backWheelSetX - 10 : prevState.tire.x2,
+                    y2: backWheelSetY ? backWheelSetY - 11 : prevState.tire.y2
+                },
             }
         });
         setRerender(prevState => !prevState);
