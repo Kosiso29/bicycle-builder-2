@@ -1,7 +1,10 @@
-import { sql } from '@vercel/postgres';
+import { QueryResultRow, sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from "next/cache";
 
-export async function fetchModels() {
+// Types
+import { Models } from "@/app/lib/definitions";
+
+export async function fetchModels(): Promise<Models> {
     noStore();
     try {
         const data = await sql`
@@ -29,9 +32,9 @@ export async function fetchModels() {
         JOIN
             brands b ON m.brand_id = b.id;`;
 
-        const models = data.rows.map((model) => ({
+        const models = data.rows.map((model: QueryResultRow) => ({
             ...model
-        }));
+        })) as Models;
         return models;
     } catch (error) {
         console.error('Database Error:', error);

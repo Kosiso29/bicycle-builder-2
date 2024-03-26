@@ -19,10 +19,16 @@ export type Model = {
     model: string;
     src: string;
     actualWidth: number;
-    hasStem: boolean;
-    hasHandleBar: boolean;
-    stemX: number;
-    stemY: number;
+    hasStem?: boolean;
+    hasHandleBar?: boolean;
+    stemX?: number;
+    stemY?: number;
+    saddleX?: number;
+    saddleY?: number;
+    frontWheelSetX?: number;
+    frontWheelSetY?: number;
+    backWheelSetX?: number;
+    backWheelSetY?: number;
 }
 
 export type Models = Model[];

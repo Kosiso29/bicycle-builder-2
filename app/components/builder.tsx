@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 import BikeBuilder from "./bike-builder";
@@ -7,7 +6,10 @@ import { ToastContainer } from 'react-toastify';
 import { useState } from "react";
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Builder({ models }) {
+// Types
+import { Models } from "@/app/lib/definitions";
+
+export default function Builder({ models }: { models: Models }) {
     const [showSummary, setShowSummary] = useState(false);
     const [canvasImage, setCanvasImage] = useState("");
     const [frameSetDimensions, setFrameSetDimensions] = useState({});
