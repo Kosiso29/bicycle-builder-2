@@ -17,7 +17,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [allModels, setAllModels] = useState([]);
     const [src, setSrc] = useState("");
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [image2Loaded, setImage2Loaded] = useState(false);
     const imageRef = useRef(null);
+    const imageRef2 = useRef(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
 
     const handleBrandChange = (e) => {
@@ -31,6 +33,12 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setSrc(modelData?.src);
         setModel(modelData?.model);
         imageRef.current?.setAttribute("src", modelData?.src);
+        if (/Wheel Set/i.test(label)) {
+            const backWheetSet = databaseModels.filter(item => item.model === modelData.model && item.category === 'Back Wheel Set')[0];
+            console.log('backWheelSet', backWheetSet, modelData.model, databaseModels.filter(item => item.category === 'Back Wheel Set'))
+            imageRef2.current?.setAttribute("src", backWheetSet?.src);
+            setImage2Loaded(false);
+        }
         if (setActualWidth) {
             setActualWidth(modelData?.actualWidth);
         }
@@ -101,10 +109,16 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }, [show, src]);
 
     useEffect(() => {
-        if (model && imageLoaded) {
-            updateCanvasImage();
+        if ((model && imageLoaded)) {
+            if (/Wheel Set/i.test(label)) {
+                if (imageLoaded && image2Loaded) {
+                    updateCanvasImage();
+                }
+            } else {
+                updateCanvasImage();
+            }
         }
-    }, [model, imageLoaded]);
+    }, [model, imageLoaded, image2Loaded]);
 
     useEffect(() => {
         const brands = databaseModels.filter(item => item.category === label);
@@ -124,7 +138,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     return (
         <div className="flex flex-col gap-8">
-            <h1 className="text-4xl font-bold">{label}</h1>
+            <h1 className="text-4xl font-bold">{/Wheel Set/i.test(label) ? "Wheel Set" : label}</h1>
             <SelectElement value={brand} onChange={handleBrandChange} label="Brands">
                 {
                     uniqueBrands.map(brand => (
@@ -169,7 +183,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     </List>
                     : null
             }
-            <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", visibility: imageLoaded ? "visible" : "hidden", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
+            <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
+            <Image ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
         </div>
     )
 }
