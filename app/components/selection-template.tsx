@@ -72,7 +72,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 saddle: {
                     ...prevState.saddle,
                     x: saddleX ? saddleX : prevState.saddle.x,
-                    y: saddleY ? saddleY : prevState.saddle.y
+                    y: saddleY ? saddleY - prevState.saddle.height : prevState.saddle.y
                 },
                 frontWheelSet: {
                     ...prevState.frontWheelSet,
