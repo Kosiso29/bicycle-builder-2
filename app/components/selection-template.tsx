@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader } from "@mui/material";
 import SelectElement from "../ui/select";
+import Loading from "@/app/components/loading";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels } = parentProps;
@@ -32,17 +33,16 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const handleModelChange = (index, modelData) => {
         setSrc(modelData?.src);
         setModel(modelData?.model);
-        imageRef.current?.setAttribute("src", modelData?.src);
+        setImageLoaded(false);
         if (/Wheel Set/i.test(label)) {
-            const backWheetSet = databaseModels.filter(item => item.model === modelData.model && item.category === 'Back Wheel Set')[0];
-            console.log('backWheelSet', backWheetSet, modelData.model, databaseModels.filter(item => item.category === 'Back Wheel Set'))
-            imageRef2.current?.setAttribute("src", backWheetSet?.src);
             setImage2Loaded(false);
+            const backWheetSet = databaseModels.filter(item => item.model === modelData.model && item.category === 'Back Wheel Set')[0];
+            imageRef2.current?.setAttribute("src", backWheetSet?.src);
         }
+        imageRef.current?.setAttribute("src", modelData?.src);
         if (setActualWidth) {
             setActualWidth(modelData?.actualWidth);
         }
-        setImageLoaded(false);
         setSelectedIndex(index);
     }
 
@@ -172,8 +172,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         data-value={item.src}
                                         data-actual-width={item.actualWidth || "0"}
                                         onClick={() => {
-                                            const { model, src, actualWidth } = item;
-                                            handleModelChange(index, { model, src, actualWidth })
+                                            if (selectedIndex !== index) {
+                                                const { model, src, actualWidth } = item;
+                                                handleModelChange(index, { model, src, actualWidth })
+                                            }
                                         }}>
                                         <ListItemText primary={item.model} />
                                     </ListItemButton>
@@ -183,6 +185,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     </List>
                     : null
             }
+            {imageLoaded ? null : <div className='self-center'><Loading /></div>}
             <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <Image ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
         </div>
