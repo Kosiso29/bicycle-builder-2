@@ -10,7 +10,7 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
         const x = frameSetDimensions.stemX ? frameSetDimensions.stemX + 30 : canvasX;
         const y = frameSetDimensions.stemY ? frameSetDimensions.stemY + 2 : canvasY;
 
-        const image = document.getElementById('preview');
+        const image = document.querySelector('#selection > div:nth-child(2)')?.querySelector('#preview');
 
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = image?.height * (width / image?.width);

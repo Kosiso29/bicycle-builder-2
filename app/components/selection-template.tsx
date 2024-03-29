@@ -109,14 +109,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }, [show, src]);
 
     useEffect(() => {
-        if ((model && imageLoaded)) {
-            if (/Wheel Set/i.test(label)) {
-                if (imageLoaded && image2Loaded) {
-                    updateCanvasImage();
-                }
-            } else {
-                updateCanvasImage();
-            }
+        if ((model && imageLoaded && image2Loaded)) {
+            updateCanvasImage();
         }
     }, [model, imageLoaded, image2Loaded]);
 
