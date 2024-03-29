@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { frameSet } from "../lib/apiData";
 import SelectionTemplate from "./selection-template";
 
@@ -8,6 +8,8 @@ const PREDEFINED_FRAMESET_WIDTH = 528;
 
 export default function FrameSet({ parentProps, show, canvasContext, setFrameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
+    const { setSelectionLevelProps } = parentProps;
+    
     const updateDrawImageProps = (brand, model, allModels) => {
         const x = 200;
         const y = 100;
@@ -25,6 +27,12 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
 
         return { frameSet: { image, x, y, width, height, brand, model, ...offsets } };
     }
+
+    useEffect(() => {
+        if (show) {
+            setSelectionLevelProps(['frameSet'])
+        }
+    }, [setSelectionLevelProps, show])
 
     return (
         <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label="Frame Set" setActualWidth={setActualWidth} />

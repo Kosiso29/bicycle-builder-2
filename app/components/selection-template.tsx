@@ -5,7 +5,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader } from "@mui/material";
+import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
 import SelectElement from "../ui/select";
 import Loading from "@/app/components/loading";
 
@@ -131,24 +131,25 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }
 
     return (
-        <div className="flex flex-col gap-8">
-            <h1 className="text-4xl font-bold">{/Wheel Set/i.test(label) ? "Wheel Set" : label}</h1>
-            <SelectElement value={brand} onChange={handleBrandChange} label="Brands">
+        <div className="flex flex-col gap-4">
+            <h1 className="text-2xl font-bold">{/Wheel Set/i.test(label) ? "Wheel Set" : label}</h1>
+            <TextField select size="small" value={brand} onChange={handleBrandChange} label="Brands">
                 {
                     uniqueBrands.map(brand => (
                         <MenuItem value={brand} key={brand}>{brand}</MenuItem>
                     ))
                 }
-            </SelectElement>
+            </TextField>
             {
                 allModels.length > 0 ?
                     <List
                         sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}
                         subheader={
-                            <ListSubheader id="nested-list-subheader" sx={{ backgroundColor: "rgb(156 163 175)", color: "white" }}>
+                            <ListSubheader id="nested-list-subheader" sx={{ backgroundColor: "rgb(156 163 175)", color: "white", lineHeight: "2.5rem" }}>
                                 Models
                             </ListSubheader>
                         }
+                        dense
                     >
                         {
                             allModels.map((item, index) => (
@@ -171,7 +172,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                                 handleModelChange(index, { model, src, actualWidth })
                                             }
                                         }}>
-                                        <ListItemText primary={item.model} />
+                                        <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                     </ListItemButton>
                                 </ListItem>
                             ))
@@ -179,7 +180,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     </List>
                     : null
             }
-            {imageLoaded ? null : <div className='self-center'><Loading /></div>}
+            {imageLoaded ? null : <div className='self-center'><Loading small /></div>}
             <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <Image ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
         </div>

@@ -1,10 +1,12 @@
 // @ts-nocheck
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SelectionTemplate from "./selection-template";
 
 export default function WheelSet({ parentProps, show, canvasContext, label, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
+    const { setSelectionLevelProps } = parentProps;
+
     const updateDrawImageProps = (brand, model) => {
 
         const { models } = parentProps;
@@ -27,6 +29,12 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
             backWheelSet: { image: image2, x: x2, y: y2, width, height, globalCompositeOperation: 'destination-over', brand: backWheetSet.brand, model: backWheetSet.model }
         }
     }
+    
+    useEffect(() => {
+        if (!/Group Set/i.test(label) && show) {
+            setSelectionLevelProps(['frontWheelSet', 'backWheelSet'])
+        }
+    }, [setSelectionLevelProps, show, label])
 
     if (/Group Set/i.test(label) && show) { 
         return <h1 className="text-4xl font-bold">{label}</h1>

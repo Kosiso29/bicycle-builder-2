@@ -19,6 +19,7 @@ export default function BikeBuilder({
     setShowSummary, frameSetDimensions, setFrameSetDimensions, models
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
+    const [selectionLevelProps, setSelectionLevelProps] = useState([]);
     const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
     const [rerender, setRerender] = useState(false);
     const [canvasContext, setCanvasContext] = useState(null);
@@ -26,6 +27,7 @@ export default function BikeBuilder({
     const parentProps = {
         setRerender,
         setCanvasDrawImageProps,
+        setSelectionLevelProps,
         models
     }
 
@@ -127,10 +129,12 @@ export default function BikeBuilder({
     };
 
     const handleRemove = () => {
-        const removeKey = Object.keys(canvasDrawImageProps).filter((_, index) => index + 1 === selectionLevel);
+        const removeKey = Object.keys(canvasDrawImageProps).filter((_, index) => index + 1 === selectionLevel)[0];
 
         setCanvasDrawImageProps(prevState => {
-            prevState[removeKey] = {};
+            selectionLevelProps.forEach(selectionLevelProp => {
+                prevState[selectionLevelProp] = {};
+            })
             return prevState;
         });
         setRerender(prevState => !prevState);
@@ -164,10 +168,10 @@ export default function BikeBuilder({
             <div className="h-screen mr-[25rem] bg-blue-100 w-[calc(100% - 25rem)] p-5">
                 <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg ml-auto mr-auto" width={1000} height={680} />
                 <Link href="/" className="block mt-4">
-                    <Button variant="outlined">Exit Builder</Button>
+                    <Button size="small" variant="outlined">Exit Builder</Button>
                 </Link>
             </div>
-            <div id="selection" className="flex flex-col justify-between fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5 overflow-auto">
+            <div id="selection" className="flex flex-col gap-10 fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5 overflow-auto">
                 <FrameSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Group Set" />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
@@ -175,17 +179,17 @@ export default function BikeBuilder({
                 <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <div className="flex flex-col gap-5 mt-5">
+                <div className="flex flex-col gap-5 mt-5 absolute border-gray-400 left-0 bottom-0 w-full p-5">
                     <div className="flex justify-between">
-                        <Button variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
-                        <Button variant="text" color="error" onClick={handleRemove}>Remove</Button>
+                        <Button size="small" variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
+                        <Button size="small" variant="text" color="error" onClick={handleRemove}>Remove</Button>
                         {
-                            selectionLevel < 7 ?
-                                <Button variant="contained" onClick={handleSelectionLevel}>Next</Button> :
-                                <Button variant="contained" onClick={handleSummary}>Summary</Button>
+                            selectionLevel < 6 ?
+                                <Button size="small" variant="contained" onClick={handleSelectionLevel}>Next</Button> :
+                                <Button size="small" variant="contained" onClick={handleSummary}>Summary</Button>
                         }
                     </div>
-                    <Button variant="outlined" disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 7 || selectionLevel === 1 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
+                    <Button size="small" variant="outlined" disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 7 || selectionLevel === 1 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
                 </div>
             </div>
         </div>
