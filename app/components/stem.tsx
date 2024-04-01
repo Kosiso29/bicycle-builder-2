@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { stem } from "../lib/apiData";
 import SelectionTemplate from "./selection-template";
 
+const STEM_PROP = 'stem';
+
 export default function Stem({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [ actualWidth, setActualWidth ] = useState("0")
     const { setSelectionLevelProps } = parentProps;
@@ -21,11 +23,11 @@ export default function Stem({ parentProps, show, canvasContext, canvasX, canvas
 
     useEffect(() => {
         if (show) {
-            setSelectionLevelProps(['stem', 'handleBar'])
+            setSelectionLevelProps([STEM_PROP, 'handleBar'])
         }
     }, [setSelectionLevelProps, show])
 
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={stem} label="Stem" setActualWidth={setActualWidth} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={stem} label="Stem" setActualWidth={setActualWidth} identifier={STEM_PROP} />
     )
 }

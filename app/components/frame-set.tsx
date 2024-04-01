@@ -5,6 +5,7 @@ import { frameSet } from "../lib/apiData";
 import SelectionTemplate from "./selection-template";
 
 const PREDEFINED_FRAMESET_WIDTH = 528;
+const FRAMESET_PROP = 'frameSet';
 
 export default function FrameSet({ parentProps, show, canvasContext, setFrameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
@@ -30,12 +31,12 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
 
     useEffect(() => {
         if (show) {
-            setSelectionLevelProps(['frameSet'])
+            setSelectionLevelProps([FRAMESET_PROP])
         }
     }, [setSelectionLevelProps, show])
 
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label="Frame Set" setActualWidth={setActualWidth} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label="Frame Set" setActualWidth={setActualWidth} identifier={FRAMESET_PROP} />
     )
 }
 

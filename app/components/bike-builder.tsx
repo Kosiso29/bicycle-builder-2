@@ -17,19 +17,22 @@ import Tire from "./tire";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary,
-    setShowSummary, frameSetDimensions, setFrameSetDimensions, models
+    setShowSummary, frameSetDimensions, setFrameSetDimensions, models, setResetComponent
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
     const [selectionLevelProps, setSelectionLevelProps] = useState([]);
     const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
     const [rerender, setRerender] = useState(false);
+    const [removeComponentSelection, setRemoveComponentSelection] = useState(false);
     const [canvasContext, setCanvasContext] = useState(null);
 
     const parentProps = {
         setRerender,
         setCanvasDrawImageProps,
         setSelectionLevelProps,
-        models
+        models,
+        selectionLevelProps,
+        removeComponentSelection
     }
 
     function setImage() {
@@ -136,6 +139,7 @@ export default function BikeBuilder({
             })
             return prevState;
         });
+        setRemoveComponentSelection(prevState => !prevState);
         setRerender(prevState => !prevState);
     }
 
@@ -149,7 +153,10 @@ export default function BikeBuilder({
             saddle: {},
             tire: {},
         });
-        setRerender(prevState => !prevState);
+        setSelectionLevel(1);
+        setCanvasSelectionLevelState(1);
+        setFrameSetDimensions({});
+        setResetComponent(prevState => prevState + 1);
     }
 
     const handleSummary = () => {

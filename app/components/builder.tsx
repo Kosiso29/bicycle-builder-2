@@ -12,6 +12,7 @@ import { Models } from "@/app/lib/definitions";
 export default function Builder({ models }: { models: Models }) {
     const [showSummary, setShowSummary] = useState(false);
     const [canvasImage, setCanvasImage] = useState("");
+    const [resetComponent, setResetComponent] = useState(0);
     const [frameSetDimensions, setFrameSetDimensions] = useState({});
     const [canvasDrawImageProps, setCanvasDrawImageProps] = useState({
         frameSet: {},
@@ -25,7 +26,7 @@ export default function Builder({ models }: { models: Models }) {
 
     return (
         <div>
-            <BikeBuilder canvasDrawImageProps={canvasDrawImageProps} setCanvasDrawImageProps={setCanvasDrawImageProps} setCanvasImage={setCanvasImage} showSummary={showSummary} setShowSummary={setShowSummary} frameSetDimensions={frameSetDimensions} setFrameSetDimensions={setFrameSetDimensions} models={models} />
+            <BikeBuilder key={resetComponent} canvasDrawImageProps={canvasDrawImageProps} setCanvasDrawImageProps={setCanvasDrawImageProps} setCanvasImage={setCanvasImage} showSummary={showSummary} setShowSummary={setShowSummary} frameSetDimensions={frameSetDimensions} setFrameSetDimensions={setFrameSetDimensions} models={models} setResetComponent={setResetComponent} />
             <Summary canvasDrawImageProps={canvasDrawImageProps} canvasImage={canvasImage} showSummary={showSummary} setShowSummary={setShowSummary} frameSetDimensions={frameSetDimensions} />
             <ToastContainer autoClose={3500} position="bottom-left" />
         </div>

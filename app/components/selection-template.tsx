@@ -9,8 +9,8 @@ import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, 
 import SelectElement from "../ui/select";
 import Loading from "@/app/components/loading";
 
-export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth }) {
-    const { setRerender, setCanvasDrawImageProps, models: databaseModels } = parentProps;
+export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier }) {
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -113,6 +113,17 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             updateCanvasImage();
         }
     }, [model, imageLoaded, image2Loaded]);
+
+    useEffect(() => {
+        if (selectionLevelProps.includes(identifier)) {
+            setModel("");
+            setSelectedIndex(null);
+            imageRef.current?.setAttribute("src", "/Cadex-Saddle.png");
+            if (/Wheel Set/i.test(label)) { 
+                imageRef2.current?.setAttribute("src", "/Cadex-Saddle.png");
+            }
+        }
+    }, [removeComponentSelection]);
 
     useEffect(() => {
         const brands = databaseModels.filter(item => item.category === label);

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { tire } from "../lib/apiData";
 import SelectionTemplate from "./selection-template";
 
+const TYRE_PROP = 'tire';
+
 export default function Tire({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0")
     const { setSelectionLevelProps } = parentProps;
@@ -24,11 +26,11 @@ export default function Tire({ parentProps, show, canvasContext, canvasX, canvas
 
     useEffect(() => {
         if (show) {
-            setSelectionLevelProps(['tire'])
+            setSelectionLevelProps([TYRE_PROP])
         }
     }, [setSelectionLevelProps, show])
 
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={tire} label="Tyre" setActualWidth={setActualWidth} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={tire} label="Tyre" setActualWidth={setActualWidth} identifier={TYRE_PROP} />
     )
 }

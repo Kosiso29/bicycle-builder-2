@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import SelectionTemplate from "./selection-template";
 
+const WHEELSET_PROP = 'frontWheelSet';
+
 export default function WheelSet({ parentProps, show, canvasContext, label, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
     const { setSelectionLevelProps } = parentProps;
@@ -32,7 +34,7 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
     
     useEffect(() => {
         if (!/Group Set/i.test(label) && show) {
-            setSelectionLevelProps(['frontWheelSet', 'backWheelSet'])
+            setSelectionLevelProps([WHEELSET_PROP, 'backWheelSet'])
         }
     }, [setSelectionLevelProps, show, label])
 
@@ -45,6 +47,6 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
     }
 
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label={label} setActualWidth={setActualWidth} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label={label} setActualWidth={setActualWidth} identifier={WHEELSET_PROP} />
     )
 }

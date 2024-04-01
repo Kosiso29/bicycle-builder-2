@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { saddle } from "../lib/apiData";
 import SelectionTemplate from "./selection-template";
 
+const SADDLE_PROP = "saddle";
+
 export default function Saddle({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [ actualWidth, setActualWidth ] = useState("0")
     const { setSelectionLevelProps } = parentProps;
@@ -21,11 +23,11 @@ export default function Saddle({ parentProps, show, canvasContext, canvasX, canv
 
     useEffect(() => {
         if (show) {
-            setSelectionLevelProps(['saddle'])
+            setSelectionLevelProps([SADDLE_PROP])
         }
     }, [setSelectionLevelProps, show])
 
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={saddle} label="Saddle" setActualWidth={setActualWidth} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={saddle} label="Saddle" setActualWidth={setActualWidth} identifier={SADDLE_PROP} />
     )
 }
