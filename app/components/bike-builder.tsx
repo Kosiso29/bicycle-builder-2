@@ -5,6 +5,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import { toast } from 'react-toastify';
 import Link from "next/link";
 import FrameSet from "./frame-set";
@@ -129,13 +130,24 @@ export default function BikeBuilder({
     };
 
     const handleRemove = () => {
-        const removeKey = Object.keys(canvasDrawImageProps).filter((_, index) => index + 1 === selectionLevel)[0];
-
         setCanvasDrawImageProps(prevState => {
             selectionLevelProps.forEach(selectionLevelProp => {
                 prevState[selectionLevelProp] = {};
             })
             return prevState;
+        });
+        setRerender(prevState => !prevState);
+    }
+
+    const handleReset = () => {
+        setCanvasDrawImageProps({
+            frameSet: {},
+            frontWheelSet: {},
+            backWheelSet: {},
+            stem: {},
+            handleBar: {},
+            saddle: {},
+            tire: {},
         });
         setRerender(prevState => !prevState);
     }
@@ -180,6 +192,7 @@ export default function BikeBuilder({
                 <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <div className="flex flex-col gap-5 mt-5 absolute border-gray-400 left-0 bottom-0 w-full p-5">
+                    <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
                     <div className="flex justify-between">
                         <Button size="small" variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
                         <Button size="small" variant="text" color="error" onClick={handleRemove}>Remove</Button>
