@@ -9,9 +9,9 @@ export default function Home() {
                 <Link href="/build">
                     <Button variant="outlined">New Build</Button>
                 </Link>
-                <Link href="/login">
+                {/* <Link href="/login">
                     <Button variant="contained">Admin</Button>
-                </Link>
+                </Link> */}
             </div>
         </main>
     );
