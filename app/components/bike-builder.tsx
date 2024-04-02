@@ -8,6 +8,7 @@ import { Button } from "@mui/material";
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import { toast } from 'react-toastify';
 import Link from "next/link";
+import SelectionTabs from "./selection-tabs";
 import FrameSet from "./frame-set";
 import WheelSet from "./wheel-set";
 import Stem from "./stem";
@@ -191,6 +192,9 @@ export default function BikeBuilder({
                 </Link>
             </div>
             <div id="selection" className="flex flex-col gap-10 fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5 overflow-auto">
+                <div>
+                    <SelectionTabs indexArray={[1, 2, 3, 4, 5, 6]} value={selectionLevel} setValue={setSelectionLevel} />
+                </div>
                 <FrameSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Group Set" />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
