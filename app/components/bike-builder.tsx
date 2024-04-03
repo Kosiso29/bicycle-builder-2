@@ -108,16 +108,20 @@ export default function BikeBuilder({
         }
 
         if (/Next/i.test(e.target.textContent)) {
-            if (canvasSelectionLevelState > selectionLevel) {
-                newSelectionLevel++;
-                newSelectionLevel = autoSkipExistingPartsSelection(newSelectionLevel, e.target.textContent);
-            } else if (selectionLevel === 2) {
-                newSelectionLevel++;
-                if (newSelectionLevel > canvasSelectionLevelState) {
-                    setCanvasSelectionLevelState(newSelectionLevel);
+            if (canvasSelectionLevelState > 1) {
+                if (canvasSelectionLevelState > selectionLevel) {
+                    newSelectionLevel++;
+                    newSelectionLevel = autoSkipExistingPartsSelection(newSelectionLevel, e.target.textContent);
+                } else if (selectionLevel === 2) {
+                    newSelectionLevel++;
+                    if (newSelectionLevel > canvasSelectionLevelState) {
+                        setCanvasSelectionLevelState(newSelectionLevel);
+                    }
+                } else {
+                    toast.error("Please either skip or complete selection before proceeding");
                 }
             } else {
-                toast.error("Please either skip or complete selection before proceeding");
+                toast.error("Frame Set must be selected to proceed");
             }
         }
 
@@ -193,7 +197,7 @@ export default function BikeBuilder({
             </div>
             <div id="selection" className="flex flex-col gap-10 fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5 overflow-auto">
                 <div>
-                    <SelectionTabs indexArray={[1, 2, 3, 4, 5, 6]} value={selectionLevel} setValue={setSelectionLevel} />
+                    <SelectionTabs indexArray={frameSetDimensions.hasStem && frameSetDimensions.hasHandleBar ? [1, 2, 3, 5, 6] : [1, 2, 3, 4, 5, 6]} value={selectionLevel} setValue={setSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
                 </div>
                 <FrameSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Group Set" />

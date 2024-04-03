@@ -41,7 +41,7 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
     if (/Group Set/i.test(label) && show) { 
         return (
             <div>
-                <h1 className="text-4xl font-bold">{label}</h1>
+                <h1 className="text-2xl font-bold">{label}</h1>
                 <p className="mt-10">Currently not available, please proceed to next selection</p>
             </div>)
     }
