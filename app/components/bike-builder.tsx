@@ -26,6 +26,7 @@ export default function BikeBuilder({
     const [rerender, setRerender] = useState(false);
     const [removeComponentSelection, setRemoveComponentSelection] = useState(false);
     const [canvasContext, setCanvasContext] = useState(null);
+    const [initialCanvasDrawImageProps, setInitialCanvasDrawImageProps] = useState(canvasDrawImageProps);
 
     const parentProps = {
         setRerender,
@@ -140,7 +141,7 @@ export default function BikeBuilder({
     const handleRemove = () => {
         setCanvasDrawImageProps(prevState => {
             selectionLevelProps.forEach(selectionLevelProp => {
-                prevState[selectionLevelProp] = {};
+                prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
             })
             return prevState;
         });
@@ -184,6 +185,7 @@ export default function BikeBuilder({
             image.src = src.image;
             image.onload = function () {
                 setCanvasDrawImageProps(prevState => ({ ...prevState, [canvasDrawImagePropsArray[index]]: { ...src, image, image2: canvasDrawImagePropsArray[index] === 'tire' ? image : null } }))
+                setInitialCanvasDrawImageProps(prevState => ({ ...prevState, [canvasDrawImagePropsArray[index]]: { ...src, image, image2: canvasDrawImagePropsArray[index] === 'tire' ? image : null } }))
 
                 loadedCount++;
 
