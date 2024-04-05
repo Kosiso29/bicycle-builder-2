@@ -142,7 +142,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }
 
     return (
-        <div className="flex flex-col gap-4">
+        <div id={identifier} className="flex flex-col gap-4">
             <h1 className="text-2xl font-bold">{/Wheel Set/i.test(label) ? "Wheel Set" : label}</h1>
             <TextField select size="small" value={brand} onChange={handleBrandChange} label="Brands">
                 {
