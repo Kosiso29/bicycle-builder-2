@@ -7,7 +7,7 @@ export default function SelectionTabs({ indexArray = [1, 2, 3], value, setValue,
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         if (canvasSelectionLevelState > 1) {
-            if (canvasSelectionLevelState > newValue) {
+            if (canvasSelectionLevelState > (newValue - 1)) {
                 setValue(newValue);
             } else if (newValue === 2 || newValue === 3) {
                 setValue(newValue);

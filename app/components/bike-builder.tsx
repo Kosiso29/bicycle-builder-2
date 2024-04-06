@@ -230,7 +230,7 @@ export default function BikeBuilder({
     return (
         <div className={`${showSummary ? "hidden" : ""}`}>
             <div className="h-screen mr-[25rem] bg-blue-100 w-[calc(100% - 25rem)] p-5">
-                <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg ml-auto mr-auto" width={1000} height={680} />
+                <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg ml-auto mr-auto" width={950} height={680} />
                 <Link href="/" className="block mt-4">
                     <Button size="small" variant="outlined">Exit Builder</Button>
                 </Link>
@@ -248,7 +248,7 @@ export default function BikeBuilder({
                 <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <hr className="h-[2px] bg-gray-400" />
                 <SummaryList key={rerender} small canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} />
-                <div className="flex flex-col gap-5 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
+                <div className="flex flex-col shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-5 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
                     <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
                     <div className="flex justify-between">
                         <Button size="small" variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
