@@ -229,9 +229,9 @@ export default function BikeBuilder({
 
     return (
         <div className={`${showSummary ? "hidden" : ""}`}>
-            <div className="h-screen mr-[25rem] bg-blue-100 w-[calc(100% - 25rem)] p-5">
+            <div className="mr-[25rem] h-screen bg-blue-100 w-[calc(100% - 25rem)] p-5 overflow-auto">
                 <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg ml-auto mr-auto" width={950} height={680} />
-                <Link href="/" className="block mt-4">
+                <Link href="/" className="block mt-5">
                     <Button size="small" variant="outlined">Exit Builder</Button>
                 </Link>
             </div>
