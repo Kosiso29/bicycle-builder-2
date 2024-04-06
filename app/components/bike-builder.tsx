@@ -15,6 +15,7 @@ import Stem from "./stem";
 import HandleBar from "./handle-bar";
 import Saddle from "./saddle";
 import Tire from "./tire";
+import SummaryList from "@/app/components/summary-list";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary,
@@ -234,7 +235,7 @@ export default function BikeBuilder({
                     <Button size="small" variant="outlined">Exit Builder</Button>
                 </Link>
             </div>
-            <div id="selection" className="flex flex-col gap-10 fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5 overflow-auto">
+            <div id="selection" className="flex flex-col gap-10 fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5 pb-0 overflow-auto">
                 <div>
                     <SelectionTabs indexArray={frameSetDimensions.hasStem && frameSetDimensions.hasHandleBar ? [1, 2, 3, 5, 6] : [1, 2, 3, 4, 5, 6]} value={selectionLevel} setValue={setSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
                 </div>
@@ -245,7 +246,9 @@ export default function BikeBuilder({
                 <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <div className="flex flex-col gap-5 mt-5 absolute border-gray-400 left-0 bottom-0 w-full p-5">
+                <hr className="h-[2px] bg-gray-400" />
+                <SummaryList key={rerender} small canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} />
+                <div className="flex flex-col gap-5 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
                     <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
                     <div className="flex justify-between">
                         <Button size="small" variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
