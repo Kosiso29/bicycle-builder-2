@@ -55,6 +55,14 @@ export default function BikeBuilder({
 
                 canvasContext.globalCompositeOperation = globalCompositeOperation;
 
+                canvasContext.font = "1.5rem Arial"
+                canvasContext.fillText("1.", 500, 150);
+                canvasContext.fillText("2.", 450, 520);
+                canvasContext.fillText("3.", 800, 450);
+                canvasContext.fillText("4.", 750, 120);
+                canvasContext.fillText("5.", 200, 80);
+                canvasContext.fillText("6.", 80, 250);
+
                 canvasContext.drawImage(image, x, y, width, height);
                 if (drawImageProps.image2) {
                     const { image2, x2, y2, width2, height2 } = drawImageProps;
@@ -166,7 +174,7 @@ export default function BikeBuilder({
         setResetComponent(prevState => prevState + 1);
     }
 
-    const loadInitialImages = (ctx) => {
+    const renderCanvasPlaceholderImages = () => {
         let loadedCount = 0;
 
         const canvasDrawImagePropsArray = ['frameSet', 'frontWheelSet', 'backWheelSet', 'stem', 'saddle', 'tire'];
@@ -211,7 +219,7 @@ export default function BikeBuilder({
 
     useEffect(() => {
         if (canvasContext) {
-            loadInitialImages();
+            renderCanvasPlaceholderImages();
         }
     }, [canvasContext]);
 
