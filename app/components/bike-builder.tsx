@@ -38,6 +38,15 @@ export default function BikeBuilder({
         removeComponentSelection
     }
 
+    const canvasNumberData = [
+        { text: "1.", x: 500, y: 150 },
+        { text: "2.", x: 450, y: 520 },
+        { text: "3.", x: 800, y: 450 },
+        { text: "4.", x: 750, y: 120 },
+        { text: "5.", x: 200, y: 80 },
+        { text: "6.", x: 80, y: 250 },
+    ]
+
     function setImage() {
 
         if (canvasContext) {
@@ -56,15 +65,6 @@ export default function BikeBuilder({
                 canvasContext.globalCompositeOperation = globalCompositeOperation;
 
                 const canvasDrawImagePropsArray = ['frameSet', 'groupSet', 'frontWheelSet', 'stem', 'saddle', 'tire'];
-
-                const canvasNumberData = [
-                    { text: "1.", x: 500, y: 150 },
-                    { text: "2.", x: 450, y: 520 },
-                    { text: "3.", x: 800, y: 450 },
-                    { text: "4.", x: 750, y: 120 },
-                    { text: "5.", x: 200, y: 80 },
-                    { text: "6.", x: 80, y: 250 },
-                ]
 
                 canvasContext.font = "1.5rem Arial"
                 canvasNumberData.forEach((canvasNumber, index) => {
@@ -95,6 +95,59 @@ export default function BikeBuilder({
             if (prevState === selectionLevel) prevState++;
             return prevState;
         });
+    }
+
+    const updateSelectionLevel = (newSelectionLevel) => {
+        if (canvasSelectionLevelState > 1) {
+            if (canvasSelectionLevelState > (newSelectionLevel - 1)) {
+                setSelectionLevel(newSelectionLevel);
+            } else if (newSelectionLevel === 2 || newSelectionLevel === 3) {
+                setSelectionLevel(newSelectionLevel);
+                if (newSelectionLevel > canvasSelectionLevelState) {
+                    setCanvasSelectionLevelState(newSelectionLevel);
+                }
+            } else {
+                toast.error("Please either skip or complete selection before proceeding");
+            }
+        } else {
+            toast.error("Frame Set must be selected to proceed");
+        }
+    }
+
+    const handleCanvasEvents = (e, callback) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const width = 20;
+        const height = 30;
+
+        for (const [index, item] of Object.entries(canvasNumberData)) {
+            if (x >= item.x && x <= item.x + width && y >= (item.y - 25) && y <= (item.y - 25) + height) {
+                callback(index);
+                break;
+            }
+        }
+    }
+
+    const handleCanvasClick = (e) => {
+        handleCanvasEvents(e, (index) => {
+            if (Number(index) + 1 === 4 && (frameSetDimensions.hasStem)) {
+                return;
+            }
+            updateSelectionLevel(Number(index) + 1);
+        })
+    }
+
+    const handleCanvasHover = (e) => {
+        let imageHovered = false;
+
+        handleCanvasEvents(e, () => imageHovered = true)
+
+        if (imageHovered) {
+            e.target.style.cursor = 'pointer';
+        } else {
+            e.target.style.cursor = 'default';
+        }
     }
 
     const getCanvasContext = () => {
@@ -257,14 +310,14 @@ export default function BikeBuilder({
     return (
         <div className={`${showSummary ? "hidden" : ""}`}>
             <div className="mr-[25rem] h-screen bg-blue-100 w-[calc(100% - 25rem)] p-5 overflow-auto">
-                <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg ml-auto mr-auto" width={950} height={680} />
+                <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg ml-auto mr-auto" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
                 <Link href="/" className="block mt-5">
                     <Button size="small" variant="outlined">Exit Builder</Button>
                 </Link>
             </div>
             <div id="selection" className="flex flex-col gap-10 fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5 pb-0 overflow-auto">
                 <div>
-                    <SelectionTabs indexArray={frameSetDimensions.hasStem && frameSetDimensions.hasHandleBar ? [1, 2, 3, 5, 6] : [1, 2, 3, 4, 5, 6]} value={selectionLevel} setValue={setSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
+                    <SelectionTabs indexArray={frameSetDimensions.hasStem && frameSetDimensions.hasHandleBar ? [1, 2, 3, 5, 6] : [1, 2, 3, 4, 5, 6]} value={selectionLevel} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
                 </div>
                 <FrameSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Group Set" />

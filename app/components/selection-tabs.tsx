@@ -3,23 +3,10 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
-export default function SelectionTabs({ indexArray = [1, 2, 3], value, setValue, canvasSelectionLevelState, setCanvasSelectionLevelState, toast }: { indexArray?: number[], value: number, setValue: Function, canvasSelectionLevelState: number, setCanvasSelectionLevelState: Function, toast: { error: Function } }) {
+export default function SelectionTabs({ indexArray = [1, 2, 3], value, updateSelectionLevel }: { indexArray?: number[], value: number, updateSelectionLevel: Function }) {
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        if (canvasSelectionLevelState > 1) {
-            if (canvasSelectionLevelState > (newValue - 1)) {
-                setValue(newValue);
-            } else if (newValue === 2 || newValue === 3) {
-                setValue(newValue);
-                if (newValue > canvasSelectionLevelState) {
-                    setCanvasSelectionLevelState(newValue);
-                }
-            } else {
-                toast.error("Please either skip or complete selection before proceeding");
-            }
-        } else {
-            toast.error("Frame Set must be selected to proceed");
-        }
+    const handleChange = (_: React.SyntheticEvent, newValue: number) => {
+        updateSelectionLevel(newValue);
     };
 
     return (
