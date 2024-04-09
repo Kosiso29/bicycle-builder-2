@@ -55,13 +55,32 @@ export default function BikeBuilder({
 
                 canvasContext.globalCompositeOperation = globalCompositeOperation;
 
+                const canvasDrawImagePropsArray = ['frameSet', 'groupSet', 'frontWheelSet', 'stem', 'saddle', 'tire'];
+
+                const canvasNumberData = [
+                    { text: "1.", x: 500, y: 150 },
+                    { text: "2.", x: 450, y: 520 },
+                    { text: "3.", x: 800, y: 450 },
+                    { text: "4.", x: 750, y: 120 },
+                    { text: "5.", x: 200, y: 80 },
+                    { text: "6.", x: 80, y: 250 },
+                ]
+
                 canvasContext.font = "1.5rem Arial"
-                canvasContext.fillText("1.", 500, 150);
-                canvasContext.fillText("2.", 450, 520);
-                canvasContext.fillText("3.", 800, 450);
-                canvasContext.fillText("4.", 750, 120);
-                canvasContext.fillText("5.", 200, 80);
-                canvasContext.fillText("6.", 80, 250);
+                canvasNumberData.forEach((canvasNumber, index) => {
+                    if (canvasDrawImageProps[canvasDrawImagePropsArray[index]]?.brand) {
+                        // canvasContext.beginPath();
+                        // canvasContext.arc(canvasNumber.x, canvasNumber.y, 20, 0, 2 * Math.PI, false);
+                        canvasContext.fillStyle = 'blue';
+                        // canvasContext.fill();
+                        // canvasContext.fillStyle = "white";
+                        // canvasContext.textAlign = "center";
+                        // canvasContext.textBaseline = "middle";
+                    } else {
+                        canvasContext.fillStyle = "black";
+                    }
+                    canvasContext.fillText(canvasNumber.text, canvasNumber.x, canvasNumber.y);
+                });
 
                 canvasContext.drawImage(image, x, y, width, height);
                 if (drawImageProps.image2) {
