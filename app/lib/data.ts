@@ -24,7 +24,8 @@ export async function fetchModels(): Promise<Models> {
             m.front_wheel_x AS "frontWheelSetX",
             m.front_wheel_y AS "frontWheelSetY",
             m.back_wheel_x AS "backWheelSetX",
-            m.back_wheel_y AS "backWheelSetY"
+            m.back_wheel_y AS "backWheelSetY",
+            m.price
         FROM
             categories c
         JOIN

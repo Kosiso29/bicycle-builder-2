@@ -29,10 +29,10 @@ export default function Table({ models }) {
                 setAnswer("");
                 toast.success("Component deleted!")
             })
-            .then(() => window.location.reload())
-            .catch(error => {
-                toast.error(`Component failed to delete: ${error}`)
-            });
+                .then(() => window.location.reload())
+                .catch(error => {
+                    toast.error(`Component failed to delete: ${error}`)
+                });
         }
         if (answer === "no") {
             setAnswer("");
@@ -130,6 +130,9 @@ export default function Table({ models }) {
                                 <th scope="col" className="px-3 py-5 font-medium">
                                     <span className="inline-flex justify-center w-full">Actual width</span>
                                 </th>
+                                <th scope="col" className="px-3 py-5 font-medium">
+                                    <span className="inline-flex justify-center w-full">Price</span>
+                                </th>
                                 <th scope="col" className="relative px-3 py-5 font-medium">
                                     <span className="sr-only">Edit</span>
                                 </th>
@@ -141,7 +144,7 @@ export default function Table({ models }) {
                                     key={model.id}
                                     className="w-full max-w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                                 >
-                                    <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                                    <td className="py-3 pl-6 pr-3 max-w-48">
                                         {model.model}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
@@ -154,6 +157,9 @@ export default function Table({ models }) {
                                     </td>
                                     <td className="px-3 py-3">
                                         <span className="inline-flex justify-center w-full">{model.actualWidth}</span>
+                                    </td>
+                                    <td className="px-3 py-3">
+                                        <span className="inline-flex justify-center w-full">{model.price}</span>
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
                                         <div className="flex justify-center gap-3">
