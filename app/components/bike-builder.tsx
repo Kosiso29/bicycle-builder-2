@@ -15,7 +15,6 @@ import Stem from "./stem";
 import HandleBar from "./handle-bar";
 import Saddle from "./saddle";
 import Tire from "./tire";
-import SummaryList from "@/app/components/summary-list";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary,
@@ -337,8 +336,7 @@ export default function BikeBuilder({
                 <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                {/* <SummaryList key={rerender} small canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} /> */}
-                <div className="flex flex-col shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-5 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
+                <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-5 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
                     <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
                     <div className="flex justify-between">
                         <Button size="small" variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
