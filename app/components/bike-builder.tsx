@@ -277,7 +277,7 @@ export default function BikeBuilder({
 
                 if (loadedCount === imageSources.length) {
                     setFrameSetDimensions({ actualWidth: '990' });
-                    setImage(false, true);
+                    setRerender(prevState => !prevState);
                 }
             };
         });
@@ -310,7 +310,11 @@ export default function BikeBuilder({
             }))
         }
         if (Object.keys(frameSetDimensions).length > 0) {
-            setImage();
+            if (canvasSelectionLevelState === 1 && !frameSetDimensions.width) {
+                setImage(false, true);
+            } else {
+                setImage();
+            }
         }
     }, [rerender]);
 
