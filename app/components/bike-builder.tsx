@@ -346,7 +346,7 @@ export default function BikeBuilder({
                 <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-5 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
                     <div className='flex justify-between items-center py-5'>
                         <h1 className={`font-bold text-xl basis-[50%]`}>Total:</h1>
-                        <p className={`basis-[50%] text-primary text-md font-bold`}>${totalPrice !== null ? totalPrice : "---"}</p>
+                        <p className={`basis-[50%] text-primary text-md font-bold`}>{totalPrice !== null ? "$" + totalPrice : "---"}</p>
                         <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
                     </div>
                     <div className="flex justify-between">
