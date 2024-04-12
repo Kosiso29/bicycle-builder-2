@@ -35,7 +35,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setSrc(modelData?.src);
         setModel(modelData?.model);
         setPrice(databaseModels.filter(item => item.model === modelData.model && item.category === label)[0]?.price);
-        console.log('price', databaseModels.filter(item => item.model === modelData.model && item.category === label)[0]?.price)
         setImageLoaded(false);
         if (/Wheel Set/i.test(label)) {
             setImage2Loaded(false);
@@ -50,7 +49,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }
 
     const updateCanvasImage = () => {
-        const imageProps = updateDrawImageProps(brand, model, allModels);
+        const imageProps = updateDrawImageProps({ brand, model, price }, allModels);
 
         setCanvasDrawImageProps(prevState => {
             prevState = { ...prevState, ...imageProps };
@@ -197,23 +196,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             {imageLoaded ? null : <div className='self-center'><Loading small /></div>}
             <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <Image ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
-            <hr className="h-[2px] bg-gray-400 my-5" />
-            <div className="flex flex-col justify-between">
-                <div>
-                    <h1 className={`text-center font-bold text-xl mb-5`} >{/Wheel Set/i.test(label) ? "Wheel Set" : label} Subtotal</h1>
-                    <div>
-                        <div className='flex py-5'>
-                            <h1 className={`font-bold text-md basis-[50%]`}>Price</h1>
-                            <p className={`basis-[50%] text-primary text-sm`}>{price || "---"}</p>
-                        </div>
-                        <hr className='h-[2px] bg-gray-400' />
-                        <div className='flex py-5'>
-                            <h1 className={`font-bold text-md basis-[50%]`}>Subtotal</h1>
-                            <p className={`basis-[50%] text-primary text-sm`}>{price || "---"}</p>
-                        </div>
-                    </div>
-                </div>
-            </div >
         </div>
     )
 }

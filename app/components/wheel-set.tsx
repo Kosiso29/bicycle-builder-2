@@ -9,11 +9,11 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
     const [actualWidth, setActualWidth] = useState("0");
     const { setSelectionLevelProps } = parentProps;
 
-    const updateDrawImageProps = (brand, model) => {
+    const updateDrawImageProps = (extraDrawImageProps) => {
 
         const { models } = parentProps;
 
-        const backWheetSet = models.filter(item => item.model === model && item.category === 'Back Wheel Set')[0]
+        const backWheetSet = models.filter(item => item.model === extraDrawImageProps.model && item.category === 'Back Wheel Set')[0]
 
         const image = document.getElementById('preview');
         const image2 = document.getElementById('preview2');
@@ -27,7 +27,7 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
         const y2 = frameSetDimensions.backWheelSetY ? frameSetDimensions.backWheelSetY : 265;
 
         return {
-            frontWheelSet: { image, x, y, width, height, globalCompositeOperation: 'destination-over', brand, model },
+            frontWheelSet: { image, x, y, width, height, globalCompositeOperation: 'destination-over', ...extraDrawImageProps },
             backWheelSet: { image: image2, x: x2, y: y2, width, height, globalCompositeOperation: 'destination-over', brand: backWheetSet.brand, model: backWheetSet.model }
         }
     }

@@ -11,7 +11,7 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
     const [actualWidth, setActualWidth] = useState("0");
     const { setSelectionLevelProps } = parentProps;
     
-    const updateDrawImageProps = (brand, model, allModels) => {
+    const updateDrawImageProps = (extraDrawImageProps, allModels) => {
         const x = 200;
         const y = 100;
 
@@ -26,7 +26,7 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
 
         setFrameSetDimensions({ width, height, actualWidth, ...offsets, hasStem, hasHandleBar });
 
-        return { frameSet: { image, x, y, width, height, brand, model, ...offsets } };
+        return { frameSet: { image, x, y, width, height, ...extraDrawImageProps, ...offsets } };
     }
 
     useEffect(() => {

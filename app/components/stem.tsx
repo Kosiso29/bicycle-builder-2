@@ -9,7 +9,7 @@ const STEM_PROP = 'stem';
 export default function Stem({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [ actualWidth, setActualWidth ] = useState("0")
     const { setSelectionLevelProps } = parentProps;
-    const updateDrawImageProps = (brand, model) => {
+    const updateDrawImageProps = (extraDrawImageProps) => {
         const x = frameSetDimensions.stemX ? frameSetDimensions.stemX : canvasX;
         const y = frameSetDimensions.stemY ? frameSetDimensions.stemY : canvasY;
 
@@ -18,7 +18,7 @@ export default function Stem({ parentProps, show, canvasContext, canvasX, canvas
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = image?.height * (width / image?.width);
         
-        return { stem: { image, x, y, width, height, globalCompositeOperation: 'source-over', brand, model } };
+        return { stem: { image, x, y, width, height, globalCompositeOperation: 'source-over', ...extraDrawImageProps } };
     }
 
     useEffect(() => {

@@ -8,7 +8,7 @@ const HANDLE_BAR = 'handleBar';
 
 export default function HandleBar({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [ actualWidth, setActualWidth ] = useState("0")
-    const updateDrawImageProps = (brand, model) => {
+    const updateDrawImageProps = (extraDrawImageProps) => {
         const x = frameSetDimensions.stemX ? frameSetDimensions.stemX + 30 : canvasX;
         const y = frameSetDimensions.stemY ? frameSetDimensions.stemY + 2 : canvasY;
 
@@ -17,7 +17,7 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = image?.height * (width / image?.width);
         
-        return { handleBar: { image, x, y, width, height, globalCompositeOperation: 'source-over', brand, model } };
+        return { handleBar: { image, x, y, width, height, globalCompositeOperation: 'source-over', ...extraDrawImageProps } };
     }
 
     return (

@@ -9,7 +9,7 @@ const TYRE_PROP = 'tire';
 export default function Tire({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0")
     const { setSelectionLevelProps } = parentProps;
-    const updateDrawImageProps = (brand, model) => {
+    const updateDrawImageProps = (extraDrawImageProps) => {
         const x = frameSetDimensions.frontWheelSetX ? frameSetDimensions.frontWheelSetX - 10 : canvasX;
         const y = frameSetDimensions.frontWheelSetY ? frameSetDimensions.frontWheelSetY - 11 : canvasY;
 
@@ -21,7 +21,7 @@ export default function Tire({ parentProps, show, canvasContext, canvasX, canvas
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = image?.height * (width / image?.width);
 
-        return { tire: { image, x, y, width, height, image2: image, x2, y2, width2: width, height2: height, globalCompositeOperation: 'destination-over', brand, model } };
+        return { tire: { image, x, y, width, height, image2: image, x2, y2, width2: width, height2: height, globalCompositeOperation: 'destination-over', ...extraDrawImageProps } };
     }
 
     useEffect(() => {
