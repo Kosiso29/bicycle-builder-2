@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Form({ model }: { model?: any }) {
     const categories = useSelector((state: any) => state.componentsReducer.categories);
     const brands = useSelector((state: any) => state.componentsReducer.brands);
+    const [category, setCategory] = useState(model?.category_id || "");
     const [loading, setLoading] = useState(false);
 
     const handleFormUpdate = (formData: any) => {
@@ -45,6 +46,9 @@ export default function Form({ model }: { model?: any }) {
 
     const handleFormSubmission = model ? handleFormUpdate : handleFormCreation;
 
+    const showAllOffsets = (Object.values(categories)[0] === categories[category]) || (Object.values(categories)[3] === categories[category]);
+    const showLowerOffsets = Object.values(categories)[0] === categories[category];
+
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
             <div className="rounded-md bg-gray-100 p-4 md:p-6">
@@ -58,6 +62,8 @@ export default function Form({ model }: { model?: any }) {
                             id="category_id"
                             name="category_id"
                             className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
                             defaultValue={model?.category_id || ""}
                             aria-describedby="category_id-error"
                         >
@@ -194,81 +200,88 @@ export default function Form({ model }: { model?: any }) {
                         </div>
                     </div>
                 </div>
-
                 {/* Offsets */}
-                <fieldset className='mb-4'>
-                    <legend className="mb-2 block text-sm font-medium">
-                        Offsets
-                    </legend>
-                    <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                        <div className="flex gap-4 py-5">
+                {
+                    showAllOffsets ?
+                        <fieldset className='mb-4'>
+                            <legend className="mb-2 block text-sm font-medium">
+                                Offsets
+                            </legend>
+                            <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+                                <div className="flex gap-4 py-5">
 
-                            {/* Has Stem */}
-                            <div className="flex items-center gap-2">
-                                <label
-                                    htmlFor="has_stem"
-                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                >
-                                    Has Stem?
-                                </label>
-                                <input
-                                    id="has_stem"
-                                    name="has_stem"
-                                    type="checkbox"
-                                    defaultChecked={model?.has_stem}
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                    aria-describedby="has_stem-error"
-                                />
+                                    {/* Has Stem */}
+                                    {
+                                        showLowerOffsets ?
+                                            <div className="flex items-center gap-2">
+                                                <label
+                                                    htmlFor="has_stem"
+                                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                                >
+                                                    Has Stem?
+                                                </label>
+                                                <input
+                                                    id="has_stem"
+                                                    name="has_stem"
+                                                    type="checkbox"
+                                                    defaultChecked={model?.has_stem}
+                                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                                    aria-describedby="has_stem-error"
+                                                />
+                                            </div> : null
+                                    }
+
+                                    {/* Has Handle Bar */}
+                                    <div className="flex items-center gap-2">
+                                        <label
+                                            htmlFor="has_handle_bar"
+                                            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                        >
+                                            Has Handle Bar?
+                                        </label>
+                                        <input
+                                            id="has_handle_bar"
+                                            name="has_handle_bar"
+                                            type="checkbox"
+                                            defaultChecked={model?.has_handle_bar}
+                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                            aria-describedby="has_handle_bar-error"
+                                        />
+                                    </div>
+                                </div>
+                                {showLowerOffsets ? <hr className='h-[2px] bg-gray-300' /> : null}
+                                {
+                                    showLowerOffsets ?
+                                        < div className="flex flex-wrap gap-4 pt-5">
+                                            {/* Stem Offset X */}
+                                            <OffsetTextField name='stem_x' defaultValue={model?.stem_x || "600"} label='Stem Offset X' />
+
+                                            {/* Stem Offset Y */}
+                                            <OffsetTextField name='stem_y' defaultValue={model?.stem_y || "150"} label='Stem Offset Y' />
+
+                                            {/* Saddle Offset X */}
+                                            <OffsetTextField name='saddle_x' defaultValue={model?.saddle_x || "240"} label='Saddle Offset X' />
+
+                                            {/* Saddle Offset Y */}
+                                            <OffsetTextField name='saddle_y' defaultValue={model?.saddle_y || "110"} label='Saddle Offset Y' />
+
+                                            {/* Front Wheel Offset X */}
+                                            <OffsetTextField name='front_wheel_x' defaultValue={model?.front_wheel_x || "550"} label='Front Wheel Offset X' />
+
+                                            {/* Front Wheel Offset Y */}
+                                            <OffsetTextField name='front_wheel_y' defaultValue={model?.front_wheel_y || "265"} label='Front Wheel Offset Y' />
+
+                                            {/* Back Wheel Offset X */}
+                                            <OffsetTextField name='back_wheel_x' defaultValue={model?.back_wheel_x || "45"} label='Back Wheel Offset X' />
+
+                                            {/* Back Wheel Offset Y */}
+                                            <OffsetTextField name='back_wheel_y' defaultValue={model?.back_wheel_y || "265"} label='Back Wheel Offset Y' />
+                                        </div> : null
+                                }
                             </div>
-
-                            {/* Has Handle Bar */}
-                            <div className="flex items-center gap-2">
-                                <label
-                                    htmlFor="has_handle_bar"
-                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                >
-                                    Has Handle Bar?
-                                </label>
-                                <input
-                                    id="has_handle_bar"
-                                    name="has_handle_bar"
-                                    type="checkbox"
-                                    defaultChecked={model?.has_handle_bar}
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                    aria-describedby="has_handle_bar-error"
-                                />
-                            </div>
-                        </div>
-                        <hr className='h-[2px] bg-gray-300' />
-                        <div className="flex flex-wrap gap-4 pt-5">
-
-                            {/* Stem Offset X */}
-                            <OffsetTextField name='stem_x' defaultValue={model?.stem_x || "600"} label='Stem Offset X' />
-
-                            {/* Stem Offset Y */}
-                            <OffsetTextField name='stem_y' defaultValue={model?.stem_y || "150"} label='Stem Offset Y' />
-
-                            {/* Saddle Offset X */}
-                            <OffsetTextField name='saddle_x' defaultValue={model?.saddle_x || "240"} label='Saddle Offset X' />
-
-                            {/* Saddle Offset Y */}
-                            <OffsetTextField name='saddle_y' defaultValue={model?.saddle_y || "110"} label='Saddle Offset Y' />
-
-                            {/* Front Wheel Offset X */}
-                            <OffsetTextField name='front_wheel_x' defaultValue={model?.front_wheel_x || "550"} label='Front Wheel Offset X' />
-
-                            {/* Front Wheel Offset Y */}
-                            <OffsetTextField name='front_wheel_y' defaultValue={model?.front_wheel_y || "265"} label='Front Wheel Offset Y' />
-
-                            {/* Back Wheel Offset X */}
-                            <OffsetTextField name='back_wheel_x' defaultValue={model?.back_wheel_x || "45"} label='Back Wheel Offset X' />
-
-                            {/* Back Wheel Offset Y */}
-                            <OffsetTextField name='back_wheel_y' defaultValue={model?.back_wheel_y || "265"} label='Back Wheel Offset Y' />
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
+                        </fieldset> : null
+                }
+            </div >
             <div className="mt-6 flex justify-end gap-4">
                 <Link
                     href="/dashboard/components"
@@ -287,7 +300,7 @@ export default function Form({ model }: { model?: any }) {
                 }
             </div>
             <ToastContainer autoClose={3500} position="top-right" />
-        </form>
+        </form >
     );
 }
 
