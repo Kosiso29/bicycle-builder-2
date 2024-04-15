@@ -5,7 +5,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
-import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import { RotateLeft as RotateLeftIcon, SquareOutlined } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import Link from "next/link";
 import SelectionTabs from "./selection-tabs";
@@ -329,11 +329,42 @@ export default function BikeBuilder({
 
     return (
         <div className={`${showSummary ? "hidden" : ""}`}>
-            <div className="mr-[25rem] h-screen bg-blue-100 w-[calc(100% - 25rem)] p-5 overflow-auto">
-                <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg ml-auto mr-auto" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
-                <Link href="/" className="block mt-5">
-                    <Button size="small" variant="outlined">Exit Builder</Button>
-                </Link>
+            <div className="mr-[25rem] h-screen bg-blue-100 w-[calc(100% - 25rem)] pt-5 overflow-auto">
+                <div className="h-[620px] w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
+                    <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
+                </div>
+                <div className="bg-white rounded-t-lg border border-black p-3 mt-5 pb-5">
+                    {/* <Link href="/" className="block mt-5">
+                        <Button size="small" variant="outlined">Exit Builder</Button>
+                    </Link> */}
+                    <div className="flex justify-between">
+                        <div>
+                            <p>*tool tips - key metrics about the selection -</p>
+                            <p>Magazine snippets like Tour/BikeRadar etc.</p>
+                            <p>- Star Ratings</p>
+                            <p>- Pros / cons</p>
+                        </div>
+                        <div>
+                            <p>Gearing @ 90rpm​</p>
+                            <p>Max Speed – 53-11 = xyz​</p>
+                            <p>Min Speed  - 39-34 = abc</p>
+                        </div>
+                        <div className="text-right">
+                            <p>Aerodynamics -  X X X X X​</p>
+                            <p>Lightweight -       X X X X X​</p>
+                        </div>
+                    </div>
+                    <div className="flex justify-between mt-3">
+                        <p>*presets – build the best lightweight/aero/all-rounder​</p>
+                        <div className="flex">
+                            <p>*portfolio –</p>
+                            <SquareOutlined />
+                            <SquareOutlined />
+                            <SquareOutlined />
+                            <SquareOutlined />
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="selection" className="flex flex-col gap-10 fixed right-0 top-0 h-screen w-[25rem] border-l-8 bg-gray-100 border-gray-400 p-5 pb-0 overflow-auto">
                 <div>
