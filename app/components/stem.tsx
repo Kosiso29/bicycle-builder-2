@@ -8,12 +8,16 @@ const STEM_PROP = 'stem';
 
 export default function Stem({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [ actualWidth, setActualWidth ] = useState("0")
-    const { setSelectionLevelProps } = parentProps;
-    const updateDrawImageProps = (extraDrawImageProps) => {
+    const { setSelectionLevelProps, setStemDimensions } = parentProps;
+    const updateDrawImageProps = (extraDrawImageProps, allModels) => {
         const x = frameSetDimensions.stemX ? frameSetDimensions.stemX : canvasX;
         const y = frameSetDimensions.stemY ? frameSetDimensions.stemY : canvasY;
 
         const image = document.getElementById('preview');
+        const stemModelData = allModels.filter(item => item.model === extraDrawImageProps.model && item.brand === extraDrawImageProps.brand && item.category === 'Stem')[0];
+        const { hasHandleBar } = stemModelData;
+
+        setStemDimensions({ hasHandleBar });
 
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = image?.height * (width / image?.width);

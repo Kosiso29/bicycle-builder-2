@@ -14,6 +14,7 @@ export default function Builder({ models }: { models: Models }) {
     const [canvasImage, setCanvasImage] = useState("");
     const [resetComponent, setResetComponent] = useState(0);
     const [frameSetDimensions, setFrameSetDimensions] = useState({});
+    const [stemDimensions, setStemDimensions] = useState({});
     const [canvasDrawImageProps, setCanvasDrawImageProps] = useState({
         frameSet: {},
         frontWheelSet: {},
@@ -26,9 +27,31 @@ export default function Builder({ models }: { models: Models }) {
 
     return (
         <div>
-            <BikeBuilder key={resetComponent} canvasDrawImageProps={canvasDrawImageProps} setCanvasDrawImageProps={setCanvasDrawImageProps} setCanvasImage={setCanvasImage} showSummary={showSummary} setShowSummary={setShowSummary} frameSetDimensions={frameSetDimensions} setFrameSetDimensions={setFrameSetDimensions} models={models} setResetComponent={setResetComponent} />
-            <Summary canvasDrawImageProps={canvasDrawImageProps} canvasImage={canvasImage} showSummary={showSummary} setShowSummary={setShowSummary} frameSetDimensions={frameSetDimensions} />
-            <ToastContainer autoClose={3500} position="bottom-left" />
+            <BikeBuilder
+                key={resetComponent}
+                canvasDrawImageProps={canvasDrawImageProps}
+                setCanvasDrawImageProps={setCanvasDrawImageProps}
+                setCanvasImage={setCanvasImage}
+                showSummary={showSummary}
+                setShowSummary={setShowSummary}
+                frameSetDimensions={frameSetDimensions}
+                setFrameSetDimensions={setFrameSetDimensions}
+                stemDimensions={stemDimensions}
+                setStemDimensions={setStemDimensions}
+                models={models}
+                setResetComponent={setResetComponent}
+            />
+            <Summary
+                canvasDrawImageProps={canvasDrawImageProps}
+                canvasImage={canvasImage}
+                showSummary={showSummary}
+                setShowSummary={setShowSummary}
+                frameSetDimensions={frameSetDimensions}
+            />
+            <ToastContainer
+                autoClose={3500}
+                position="bottom-left"
+            />
         </div>
 
     );
