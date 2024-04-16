@@ -10,10 +10,10 @@ export default function Tire({ parentProps, show, canvasContext, canvasX, canvas
     const [actualWidth, setActualWidth] = useState("0")
     const { setSelectionLevelProps } = parentProps;
     const updateDrawImageProps = (extraDrawImageProps) => {
-        const x = frameSetDimensions.frontWheelSetX ? frameSetDimensions.frontWheelSetX - 10 : canvasX;
+        const x = frameSetDimensions.frontWheelSetX ? frameSetDimensions.frontWheelSetX - 11 : canvasX;
         const y = frameSetDimensions.frontWheelSetY ? frameSetDimensions.frontWheelSetY - 11 : canvasY;
 
-        const x2 = frameSetDimensions.backWheelSetX ? frameSetDimensions.backWheelSetX - 10 : 35;
+        const x2 = frameSetDimensions.backWheelSetX ? frameSetDimensions.backWheelSetX - 11 : 35;
         const y2 = frameSetDimensions.backWheelSetY ? frameSetDimensions.backWheelSetY - 11 : canvasY;
 
         const image = document.getElementById('preview');
