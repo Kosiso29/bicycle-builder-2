@@ -128,7 +128,7 @@ export default function BikeBuilder({
         const height = 30;
 
         for (const [index, item] of Object.entries(canvasNumberData)) {
-            if (x >= item.x && x <= item.x + width && y >= (item.y - 25) && y <= (item.y - 25) + height) {
+            if (x >= (item.x * 0.9) && x <= (item.x * 0.9) + width && y >= ((item.y - 25) * 0.9) && y <= ((item.y - 25) * 0.9) + height) {
                 callback(index);
                 break;
             }
