@@ -124,17 +124,15 @@ async function addColumns(client) {
     try {
         const addColumn = await client.sql`
         ALTER TABLE models 
-        ADD COLUMN IF NOT EXISTS saddle_x INTEGER,
-        ADD COLUMN IF NOT EXISTS saddle_y INTEGER,
-        ADD COLUMN IF NOT EXISTS front_wheel_x INTEGER,
-        ADD COLUMN IF NOT EXISTS front_wheel_y INTEGER,
-        ADD COLUMN IF NOT EXISTS back_wheel_x INTEGER,
-        ADD COLUMN IF NOT EXISTS back_wheel_y INTEGER;
+        ADD COLUMN IF NOT EXISTS key_metrics TEXT,
+        ADD COLUMN IF NOT EXISTS aerodynamics Numeric(2,1) DEFAULT 0,
+        ADD COLUMN IF NOT EXISTS comfort Numeric(2,1) DEFAULT 0,
+        ADD COLUMN IF NOT EXISTS stiffness Numeric(2,1) DEFAULT 0;
     `
 
-        console.log(`Created columns in models`);
-
         const modelsTable = await client.sql`SELECT * FROM models;`;
+
+        console.log(`Created columns in models`, modelsTable.rows);
 
         return {
             addColumn,
@@ -172,11 +170,11 @@ async function alterColumns(client) {
 async function main() {
     const client = await db.connect();
 
-    //   await seedCategories(client);
-    //   await seedBrands(client);
-    //   await seedModels(client);
-    //   await addColumns(client);
-    await alterColumns(client);
+    // await seedCategories(client);
+    // await seedBrands(client);
+    // await seedModels(client);
+    await addColumns(client);
+    // await alterColumns(client);
 
     await client.end();
 }
