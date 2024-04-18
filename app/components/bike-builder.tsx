@@ -348,7 +348,7 @@ export default function BikeBuilder({
                         <div>
                             <p>*tool tips - key metrics about the selection -</p>
                             {/* <p>Magazine snippets like Tour/BikeRadar etc.</p> */}
-                            <p>{ tooltips.key_metrics }</p>
+                            <p className="whitespace-pre-wrap">{tooltips.key_metrics}</p>
                             {/* <p>- Star Ratings</p>
                             <p>- Pros / cons</p> */}
                         </div>
@@ -358,10 +358,10 @@ export default function BikeBuilder({
                             <p>Min Speed  - 39-34 = abc</p>
                         </div>
                         <div className="text-right">
-                            <p>Aerodynamics -  { tooltips.aerodynamics }​</p>
+                            <p>Aerodynamics -  {tooltips.aerodynamics}​</p>
                             {/* <p>Lightweight -  { tooltips.comfort }​</p> */}
-                            <p>Comfort -  { tooltips.comfort }​</p>
-                            <p>Stiffness -  { tooltips.stiffness }​</p>
+                            <p>Comfort -  {tooltips.comfort}​</p>
+                            <p>Stiffness -  {tooltips.stiffness}​</p>
                         </div>
                     </div>
                     <div className="flex justify-between mt-3">
