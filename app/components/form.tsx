@@ -212,12 +212,11 @@ export default function Form({ model }: { model?: any }) {
                                 id="key_metrics"
                                 name="key_metrics"
                                 defaultValue={model?.key_metrics}
-                                rows={1}
                                 placeholder="Key Metrics"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                 aria-describedby="key_metrics-error"
                             />
-                            <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                            <PersonOutline className="pointer-events-none absolute left-3 top-5 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
                         </div>
                     </div>
                 </div>
@@ -240,7 +239,7 @@ export default function Form({ model }: { model?: any }) {
                         </div>
                     </div>
                 </fieldset>
-                
+
                 {/* Offsets */}
                 {
                     showAllOffsets ?
