@@ -28,6 +28,12 @@ export default function BikeBuilder({
     const [canvasContext, setCanvasContext] = useState(null);
     const [initialCanvasDrawImageProps, setInitialCanvasDrawImageProps] = useState(canvasDrawImageProps);
     const [totalPrice, setTotalPrice] = useState(null);
+    const [tooltips, setTooltips] = useState({
+        key_metrics: "---",
+        aerodynamics: "---",
+        comfort: "---",
+        stiffness: "---"
+    });
 
     const parentProps = {
         setRerender,
@@ -36,7 +42,8 @@ export default function BikeBuilder({
         models,
         selectionLevelProps,
         removeComponentSelection,
-        setStemDimensions
+        setStemDimensions,
+        setTooltips
     }
 
     const canvasNumberData = [
@@ -340,9 +347,10 @@ export default function BikeBuilder({
                     <div className="flex justify-between">
                         <div>
                             <p>*tool tips - key metrics about the selection -</p>
-                            <p>Magazine snippets like Tour/BikeRadar etc.</p>
-                            <p>- Star Ratings</p>
-                            <p>- Pros / cons</p>
+                            {/* <p>Magazine snippets like Tour/BikeRadar etc.</p> */}
+                            <p>{ tooltips.key_metrics }</p>
+                            {/* <p>- Star Ratings</p>
+                            <p>- Pros / cons</p> */}
                         </div>
                         <div>
                             <p>Gearing @ 90rpm​</p>
@@ -350,8 +358,10 @@ export default function BikeBuilder({
                             <p>Min Speed  - 39-34 = abc</p>
                         </div>
                         <div className="text-right">
-                            <p>Aerodynamics -  X X X X X​</p>
-                            <p>Lightweight -       X X X X X​</p>
+                            <p>Aerodynamics -  { tooltips.aerodynamics }​</p>
+                            {/* <p>Lightweight -  { tooltips.comfort }​</p> */}
+                            <p>Comfort -  { tooltips.comfort }​</p>
+                            <p>Stiffness -  { tooltips.stiffness }​</p>
                         </div>
                     </div>
                     <div className="flex justify-between mt-3">
