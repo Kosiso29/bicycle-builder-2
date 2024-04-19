@@ -47,7 +47,7 @@ export default function Form({ model }: { model?: any }) {
     const handleFormSubmission = model ? handleFormUpdate : handleFormCreation;
 
     const showAllOffsets = (Object.values(categories)[0] === categories[category]) || (Object.values(categories)[3] === categories[category]);
-    const showLowerOffsets = Object.values(categories)[0] === categories[category];
+    const showFrameSetOffsets = Object.values(categories)[0] === categories[category];
 
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
@@ -202,43 +202,51 @@ export default function Form({ model }: { model?: any }) {
                 </div>
 
                 {/* Key Metrics */}
-                <div className="mb-4">
-                    <label htmlFor="key_metrics" className="mb-2 block text-sm font-medium">
-                        Key Metrics
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            <textarea
-                                id="key_metrics"
-                                name="key_metrics"
-                                defaultValue={model?.key_metrics}
-                                placeholder="Key Metrics"
-                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="key_metrics-error"
-                            />
-                            <PersonOutline className="pointer-events-none absolute left-3 top-5 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                {
+                    showFrameSetOffsets ? 
+                        <div className="mb-4">
+                            <label htmlFor="key_metrics" className="mb-2 block text-sm font-medium">
+                                Key Metrics
+                            </label>
+                            <div className="relative mt-2 rounded-md">
+                                <div className="relative">
+                                    <textarea
+                                        id="key_metrics"
+                                        name="key_metrics"
+                                        defaultValue={model?.key_metrics}
+                                        placeholder="Key Metrics"
+                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                        aria-describedby="key_metrics-error"
+                                    />
+                                    <PersonOutline className="pointer-events-none absolute left-3 top-5 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    : null
+                }
 
                 {/* Specifications */}
-                <fieldset className='mb-4'>
-                    <legend className="mb-2 block text-sm font-medium">
-                        Specifications
-                    </legend>
-                    <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                        < div className="flex flex-wrap gap-4 pt-5">
-                            {/* Aerodynamics */}
-                            <OffsetTextField name='aerodynamics' step={0.1} defaultValue={model?.aerodynamics} label='Aerodynamics' />
+                {
+                    showFrameSetOffsets ? 
+                        <fieldset className='mb-4'>
+                            <legend className="mb-2 block text-sm font-medium">
+                                Specifications
+                            </legend>
+                            <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+                                < div className="flex flex-wrap gap-4 pt-5">
+                                    {/* Aerodynamics */}
+                                    <OffsetTextField name='aerodynamics' step={0.1} defaultValue={model?.aerodynamics} label='Aerodynamics' />
 
-                            {/* Comfort */}
-                            <OffsetTextField name='comfort' step={0.1} defaultValue={model?.comfort} label='Comfort' />
+                                    {/* Comfort */}
+                                    <OffsetTextField name='comfort' step={0.1} defaultValue={model?.comfort} label='Comfort' />
 
-                            {/* Stiffness */}
-                            <OffsetTextField name='stiffness' step={0.1} defaultValue={model?.stiffness} label='Stiffness' />
-                        </div>
-                    </div>
-                </fieldset>
+                                    {/* Stiffness */}
+                                    <OffsetTextField name='stiffness' step={0.1} defaultValue={model?.stiffness} label='Stiffness' />
+                                </div>
+                            </div>
+                        </fieldset>
+                    : null
+                }
 
                 {/* Offsets */}
                 {
@@ -252,7 +260,7 @@ export default function Form({ model }: { model?: any }) {
 
                                     {/* Has Stem */}
                                     {
-                                        showLowerOffsets ?
+                                        showFrameSetOffsets ?
                                             <div className="flex items-center gap-2">
                                                 <label
                                                     htmlFor="has_stem"
@@ -289,9 +297,9 @@ export default function Form({ model }: { model?: any }) {
                                         />
                                     </div>
                                 </div>
-                                {showLowerOffsets ? <hr className='h-[2px] bg-gray-300' /> : null}
+                                {showFrameSetOffsets ? <hr className='h-[2px] bg-gray-300' /> : null}
                                 {
-                                    showLowerOffsets ?
+                                    showFrameSetOffsets ?
                                         < div className="flex flex-wrap gap-4 pt-5">
                                             {/* Stem Offset X */}
                                             <OffsetTextField name='stem_x' defaultValue={model?.stem_x || "600"} label='Stem Offset X' />
