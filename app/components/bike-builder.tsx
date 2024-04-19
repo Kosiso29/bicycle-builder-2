@@ -5,7 +5,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
-import { RotateLeft as RotateLeftIcon, SquareOutlined } from '@mui/icons-material';
+import { RotateLeft as RotateLeftIcon, SquareOutlined, Star, StarHalf, StarOutline } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import Link from "next/link";
 import SelectionTabs from "./selection-tabs";
@@ -299,7 +299,19 @@ export default function BikeBuilder({
         setShowSummary(true);
     }
 
-    const handleBarStemConditions = !stemDimensions.hasHandleBar && (canvasDrawImageProps.stem.image && canvasDrawImageProps.stem.model) && !frameSetDimensions.hasHandleBar
+    const handleBarStemConditions = !stemDimensions.hasHandleBar && (canvasDrawImageProps.stem.image && canvasDrawImageProps.stem.model) && !frameSetDimensions.hasHandleBar;
+
+    const renderStars = (tooltip) => {
+        return tooltip === "---" ? " " + tooltip : [1, 2, 3, 4, 5].map(number => {
+            if (number < parseFloat(tooltip)) {
+                return <Star color="primary" key={number} />;
+            }
+            if (number === Math.ceil(parseFloat(tooltip)) && parseFloat(tooltip) % 1 !== 0) {
+                return <StarHalf color="primary" key={number} />;
+            }
+            return <StarOutline color="primary" key={number} />;
+        })
+    }
 
     useEffect(() => {
         const context = getCanvasContext();
@@ -346,28 +358,24 @@ export default function BikeBuilder({
                     </Link> */}
                     <div className="flex justify-between">
                         <div>
-                            <p>*tool tips - key metrics about the selection -</p>
-                            {/* <p>Magazine snippets like Tour/BikeRadar etc.</p> */}
+                            <p>Key metrics about the selection -</p>
                             <p className="whitespace-pre-wrap">{tooltips.key_metrics}</p>
-                            {/* <p>- Star Ratings</p>
-                            <p>- Pros / cons</p> */}
                         </div>
-                        <div>
+                        {/* <div>
                             <p>Gearing @ 90rpm​</p>
                             <p>Max Speed – 53-11 = xyz​</p>
                             <p>Min Speed  - 39-34 = abc</p>
-                        </div>
+                        </div> */}
                         <div className="text-right">
-                            <p>Aerodynamics -  {tooltips.aerodynamics}​</p>
-                            {/* <p>Lightweight -  { tooltips.comfort }​</p> */}
-                            <p>Comfort -  {tooltips.comfort}​</p>
-                            <p>Stiffness -  {tooltips.stiffness}​</p>
+                            <p>Aerodynamics - {renderStars(tooltips.aerodynamics)}</p>
+                            <p>Comfort -  {renderStars(tooltips.comfort)}​</p>
+                            <p>Stiffness-to-Weight -  {renderStars(tooltips.stiffness)}</p>
                         </div>
                     </div>
                     <div className="flex justify-between mt-3">
-                        <p>*presets – build the best lightweight/aero/all-rounder​</p>
+                        <p>Build the best lightweight/aero/all-rounder​</p>
                         <div className="flex">
-                            <p>*portfolio –</p>
+                            <p>Portfolio –</p>
                             <SquareOutlined />
                             <SquareOutlined />
                             <SquareOutlined />
