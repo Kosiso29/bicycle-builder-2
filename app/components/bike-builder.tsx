@@ -303,7 +303,7 @@ export default function BikeBuilder({
 
     const renderStars = (tooltip) => {
         return tooltip === "---" ? " " + tooltip : [1, 2, 3, 4, 5].map(number => {
-            if (number < parseFloat(tooltip)) {
+            if (number <= parseFloat(tooltip)) {
                 return <Star color="primary" key={number} />;
             }
             if (number === Math.ceil(parseFloat(tooltip)) && parseFloat(tooltip) % 1 !== 0) {
@@ -358,7 +358,7 @@ export default function BikeBuilder({
                     </Link> */}
                     <div className="flex justify-between">
                         <div>
-                            <p>Key metrics about the selection -</p>
+                            <p>{canvasDrawImageProps.frameSet.model || "Key metrics about the selection"} -</p>
                             <p className="whitespace-pre-wrap">{tooltips.key_metrics}</p>
                         </div>
                         {/* <div>
