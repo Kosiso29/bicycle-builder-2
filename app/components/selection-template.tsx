@@ -10,7 +10,7 @@ import SelectElement from "../ui/select";
 import Loading from "@/app/components/loading";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier }) {
-    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection, setTooltips } = parentProps;
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -46,12 +46,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             setActualWidth(modelData?.actualWidth);
         }
         setSelectedIndex(index);
-        setTooltips({
-            key_metrics: modelData.key_metrics,
-            aerodynamics: modelData.aerodynamics,
-            comfort: modelData.comfort,
-            stiffness: modelData.stiffness,
-        });
     }
 
     const updateCanvasImage = () => {

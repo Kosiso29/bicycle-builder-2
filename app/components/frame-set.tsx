@@ -9,7 +9,7 @@ const FRAMESET_PROP = 'frameSet';
 
 export default function FrameSet({ parentProps, show, canvasContext, setFrameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
-    const { setSelectionLevelProps } = parentProps;
+    const { setSelectionLevelProps, setTooltips } = parentProps;
     
     const updateDrawImageProps = (extraDrawImageProps, allModels) => {
         const x = 200;
@@ -17,7 +17,7 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
 
         const image = document.getElementById('preview');
         const frameSetModelData = allModels.filter(model => model.src === image?.getAttribute('src'))[0];
-        const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY, hasStem, hasHandleBar } = frameSetModelData;
+        const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY, hasStem, hasHandleBar, key_metrics, aerodynamics, comfort, stiffness } = frameSetModelData;
         const width = PREDEFINED_FRAMESET_WIDTH;
         const height = (image?.height * ( PREDEFINED_FRAMESET_WIDTH / image?.width ));
 
@@ -25,6 +25,8 @@ export default function FrameSet({ parentProps, show, canvasContext, setFrameSet
         changeObjectValuesToNumber(offsets);
 
         setFrameSetDimensions({ width, height, actualWidth, ...offsets, hasStem, hasHandleBar });
+
+        setTooltips({ key_metrics, aerodynamics, comfort, stiffness });
 
         return { frameSet: { image, x, y, width, height, ...extraDrawImageProps, ...offsets } };
     }
