@@ -239,6 +239,9 @@ export default function BikeBuilder({
             })
             return prevState;
         });
+        if (selectionLevelProps.includes('frameSet')) {
+            setTooltips(prevState => Object.fromEntries(Object.keys(prevState).map(key => [key, '---'])));
+        }
         setRemoveComponentSelection(prevState => !prevState);
         setRerender(prevState => !prevState);
     }
@@ -402,7 +405,7 @@ export default function BikeBuilder({
                         <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
                     </div>
                     <div className="flex justify-between">
-                        <Button size="small" variant="outlined" onClick={handleSelectionLevel}>Prev</Button>
+                        <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={selectionLevel === 1} onClick={handleSelectionLevel}>Prev</Button>
                         <Button size="small" variant="text" color="error" onClick={handleRemove}>Remove</Button>
                         {
                             selectionLevel < 6 ?
@@ -410,7 +413,7 @@ export default function BikeBuilder({
                                 <Button size="small" variant="contained" onClick={handleSummary}>Summary</Button>
                         }
                     </div>
-                    <Button size="small" variant="outlined" disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 7 || selectionLevel === 1 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
+                    <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 7 || selectionLevel === 1 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
                 </div>
             </div>
         </div>
