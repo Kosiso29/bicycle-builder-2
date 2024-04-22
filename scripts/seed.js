@@ -124,10 +124,8 @@ async function addColumns(client) {
     try {
         const addColumn = await client.sql`
         ALTER TABLE models 
-        ADD COLUMN IF NOT EXISTS key_metrics TEXT,
-        ADD COLUMN IF NOT EXISTS aerodynamics Numeric(2,1) DEFAULT 0,
-        ADD COLUMN IF NOT EXISTS comfort Numeric(2,1) DEFAULT 0,
-        ADD COLUMN IF NOT EXISTS stiffness Numeric(2,1) DEFAULT 0;
+        ADD COLUMN IF NOT EXISTS best_aerodynamics BOOLEAN DEFAULT false,
+        ADD COLUMN IF NOT EXISTS best_lightweight BOOLEAN DEFAULT false;
     `
 
         const modelsTable = await client.sql`SELECT * FROM models;`;
