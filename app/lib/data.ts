@@ -29,7 +29,9 @@ export async function fetchModels(): Promise<Models> {
             m.key_metrics,
             m.aerodynamics,
             m.comfort,
-            m.stiffness
+            m.stiffness,
+            m.best_aerodynamics,
+            m.best_lightweight
         FROM
             categories c
         JOIN

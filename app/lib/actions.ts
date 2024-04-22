@@ -13,14 +13,14 @@ export async function createComponent(formData: FormData) {
     });
 
     const { category_id, brand_id, model, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
-        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, comfort, stiffness } = formDataObject;
+        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, comfort, stiffness, best_aerodynamics, best_lightweight } = formDataObject;
 
     try {
         await sql`
         INSERT INTO models (category_id, brand_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
-        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, comfort, stiffness)
+        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, comfort, stiffness, best_aerodynamics, best_lightweight)
         VALUES (${category_id}, ${brand_id}, ${model}, ${image_url}, ${Number(actual_width)}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
-        ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price}, ${key_metrics}, ${aerodynamics}, ${comfort}, ${stiffness})
+        ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price}, ${key_metrics}, ${aerodynamics}, ${comfort}, ${stiffness}, ${best_aerodynamics}, ${best_lightweight})
       `;
     } catch (error) {
         console.log('error', error)
@@ -63,13 +63,13 @@ export async function updateModel(id: string, formData: any) {
     });
 
     const { category_id, brand_id, model, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
-        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, comfort, stiffness } = formDataObject;
+        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, comfort, stiffness, best_aerodynamics, best_lightweight } = formDataObject;
 
     try {
         await sql`
         UPDATE models
         SET category_id = ${category_id}, brand_id = ${brand_id}, name = ${model}, image_url = ${image_url}, actual_width = ${actual_width}, stem_x = ${stem_x}, stem_y = ${stem_y}, saddle_x = ${saddle_x}, saddle_y = ${saddle_y}, front_wheel_x = ${front_wheel_x}, front_wheel_y = ${front_wheel_y}, 
-        back_wheel_x = ${back_wheel_x}, back_wheel_y = ${back_wheel_y}, has_stem = ${!!has_stem}, has_handle_bar = ${!!has_handle_bar}, price = ${price}, key_metrics = ${key_metrics}, aerodynamics = ${aerodynamics}, comfort = ${comfort}, stiffness = ${stiffness}
+        back_wheel_x = ${back_wheel_x}, back_wheel_y = ${back_wheel_y}, has_stem = ${!!has_stem}, has_handle_bar = ${!!has_handle_bar}, price = ${price}, key_metrics = ${key_metrics}, aerodynamics = ${aerodynamics}, comfort = ${comfort}, stiffness = ${stiffness}, best_aerodynamics = ${best_aerodynamics}, best_lightweight = ${best_lightweight}
         WHERE id = ${id};
         `
 

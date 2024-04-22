@@ -203,7 +203,7 @@ export default function Form({ model }: { model?: any }) {
 
                 {/* Key Metrics */}
                 {
-                    showFrameSetOffsets ? 
+                    showFrameSetOffsets ?
                         <div className="mb-4">
                             <label htmlFor="key_metrics" className="mb-2 block text-sm font-medium">
                                 Key Metrics
@@ -222,17 +222,56 @@ export default function Form({ model }: { model?: any }) {
                                 </div>
                             </div>
                         </div>
-                    : null
+                        : null
                 }
 
                 {/* Specifications */}
-                {
-                    showFrameSetOffsets ? 
-                        <fieldset className='mb-4'>
-                            <legend className="mb-2 block text-sm font-medium">
-                                Specifications
-                            </legend>
-                            <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+                <fieldset className='mb-4'>
+                    <legend className="mb-2 block text-sm font-medium">
+                        Specifications
+                    </legend>
+                    <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+                        <div className="flex gap-4 py-5">
+
+                            {/* Best Aerodynamics */}
+                            <div className="flex items-center gap-2">
+                                <label
+                                    htmlFor="best_aerodynamics"
+                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                >
+                                    Best Aerodynamics?
+                                </label>
+                                <input
+                                    id="best_aerodynamics"
+                                    name="best_aerodynamics"
+                                    type="checkbox"
+                                    defaultChecked={model?.best_aerodynamics}
+                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                    aria-describedby="best_aerodynamics-error"
+                                />
+                            </div>
+
+                            {/* Best Lightweight */}
+                            <div className="flex items-center gap-2">
+                                <label
+                                    htmlFor="best_lightweight"
+                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                >
+                                    Best Lightweight?
+                                </label>
+                                <input
+                                    id="best_lightweight"
+                                    name="best_lightweight"
+                                    type="checkbox"
+                                    defaultChecked={model?.best_lightweight}
+                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                    aria-describedby="best_lightweight-error"
+                                />
+                            </div>
+                        </div>
+                        {showFrameSetOffsets ? <hr className='h-[2px] bg-gray-300' /> : null}
+                        {
+                            showFrameSetOffsets ?
                                 < div className="flex flex-wrap gap-4 pt-5">
                                     {/* Aerodynamics */}
                                     <OffsetTextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics} label='Aerodynamics' />
@@ -243,10 +282,10 @@ export default function Form({ model }: { model?: any }) {
                                     {/* Stiffness */}
                                     <OffsetTextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness} label='Stiffness-to-Weight' />
                                 </div>
-                            </div>
-                        </fieldset>
-                    : null
-                }
+                                : null
+                        }
+                    </div>
+                </fieldset>
 
                 {/* Offsets */}
                 {
@@ -369,7 +408,7 @@ function OffsetTextField({ name, defaultValue, label, step, min, max }: { name: 
                         type="number"
                         defaultValue={defaultValue}
                         placeholder={label}
-                        className={`peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500 ${max ? "w-[200px]" : ""}`}
+                        className={`peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500 ${max ? "min-w-[200px]" : ""}`}
                         aria-describedby={`${name}-error`}
                     />
                     <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
