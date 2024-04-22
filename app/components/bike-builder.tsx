@@ -241,6 +241,7 @@ export default function BikeBuilder({
         });
         if (selectionLevelProps.includes('frameSet')) {
             setTooltips(prevState => Object.fromEntries(Object.keys(prevState).map(key => [key, '---'])));
+            setCanvasDrawImageProps(initialCanvasDrawImageProps);
         }
         setRemoveComponentSelection(prevState => !prevState);
         setRerender(prevState => !prevState);
@@ -360,7 +361,7 @@ export default function BikeBuilder({
                         <Button size="small" variant="outlined">Exit Builder</Button>
                     </Link> */}
                     <div className="flex justify-between">
-                        <div>
+                        <div className="max-w-[65%]">
                             <p>{canvasDrawImageProps.frameSet.model || "Key metrics about the selection"} -</p>
                             <p className="whitespace-pre-wrap">{tooltips.key_metrics}</p>
                         </div>
