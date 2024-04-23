@@ -1,10 +1,14 @@
 import { Button } from "@mui/material";
 
-export default function Presets({ models }: { models: any }) {
+export default function Presets({ models, imageSources }: { models: any, imageSources: any }) {
+    const getPresetComponents = (preset: string) => {
+        const filteredPresets = models.filter((item: any) => item?.[preset]);
+    }
+
     const presets = () => {
         return [
-            { title: "Aerodynamics", buttonText: "build preset" },
-            { title: "Lightweight", buttonText: "build preset" },
+            { title: "Aerodynamics", buttonText: "build preset", onClick: () => { getPresetComponents("best_aerodynamics") } },
+            { title: "Lightweight", buttonText: "build preset", onClick: () => { getPresetComponents("best_lightweight") } },
         ]
     }
 
@@ -15,7 +19,7 @@ export default function Presets({ models }: { models: any }) {
                 presets()?.map((item: any) => (
                     <div key={item.title}>
                         <h2 className="mb-2">{item.title}</h2>
-                        <Button size="small" variant="contained" onClick={() => { }}>{item.buttonText}</Button>
+                        <Button size="small" variant="contained" onClick={item.onClick}>{item.buttonText}</Button>
                     </div>
                 ))
             }
