@@ -15,7 +15,7 @@ export default function SelectionTabs({ indexArray = [1, 2, 3], value, updateSel
                 <Tabs value={value} onChange={handleChange}>
                     {
                         indexArray.map(indexItem => (
-                            <Tab key={indexItem} sx={{ minWidth: 55, fontSize: "1rem" }} label={`${indexItem}`} value={indexItem} />
+                            <Tab key={indexItem} sx={{ minWidth: 50, fontSize: "1rem" }} label={`${indexItem}`} value={indexItem} />
                         ))
                     }
                 </Tabs>
