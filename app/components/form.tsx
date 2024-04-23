@@ -274,13 +274,13 @@ export default function Form({ model }: { model?: any }) {
                             showFrameSetOffsets ?
                                 < div className="flex flex-wrap gap-4 pt-5">
                                     {/* Aerodynamics */}
-                                    <OffsetTextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics} label='Aerodynamics' />
+                                    <OffsetTextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics || "0.0"} label='Aerodynamics' />
 
                                     {/* Comfort */}
-                                    <OffsetTextField name='comfort' step={0.5} min={0.0} max={5.0} defaultValue={model?.comfort} label='Comfort' />
+                                    <OffsetTextField name='comfort' step={0.5} min={0.0} max={5.0} defaultValue={model?.comfort || "0.0"} label='Comfort' />
 
                                     {/* Stiffness */}
-                                    <OffsetTextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness} label='Stiffness-to-Weight' />
+                                    <OffsetTextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness || "0.0"} label='Stiffness-to-Weight' />
                                 </div>
                                 : null
                         }
