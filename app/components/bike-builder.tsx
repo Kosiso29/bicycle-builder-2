@@ -44,7 +44,9 @@ export default function BikeBuilder({
         selectionLevelProps,
         removeComponentSelection,
         setStemDimensions,
-        setTooltips
+        setTooltips,
+        setFrameSetDimensions,
+        frameSetDimensions
     }
 
     const canvasNumberData = [
@@ -287,7 +289,7 @@ export default function BikeBuilder({
                 loadedCount++;
 
                 if (loadedCount === Object.values(canvasPlaceholderImages).length) {
-                    setFrameSetDimensions({ actualWidth: '990' });
+                    setFrameSetDimensions({ actualWidth: 990, width: 528 });
                     setRerender(prevState => !prevState);
                 }
             };
@@ -353,8 +355,8 @@ export default function BikeBuilder({
         <div className={`${showSummary ? "hidden" : ""}`}>
             <div className="mr-[22rem] h-screen bg-blue-100 w-[calc(100% - 22rem)] overflow-auto">
                 <div className="flex items-stretch">
-                    <div className="flex flex-col justify-between bg-white w-40 border border-black py-5 px-2">
-                        <Presets models={models} />
+                    <div className="flex flex-col justify-between bg-gray-100 w-40 border border-black py-5 px-2">
+                        <Presets parentProps={parentProps} />
                         <Link href="/" className="block mt-5">
                             <Button size="small" variant="outlined">Exit Builder</Button>
                         </Link>
@@ -363,7 +365,7 @@ export default function BikeBuilder({
                         <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
                     </div>
                 </div>
-                <div className="bg-white rounded-t-lg border border-black p-3 pb-5">
+                <div className="bg-gray-100 rounded-t-lg border border-black p-3 pb-5">
                     <div className="flex justify-between">
                         <div className="max-w-[65%]">
                             <p>{canvasDrawImageProps.frameSet.model || "Key metrics about the selection"} -</p>
