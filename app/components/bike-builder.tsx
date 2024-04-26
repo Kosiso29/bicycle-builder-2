@@ -45,7 +45,6 @@ export default function BikeBuilder({
         removeComponentSelection,
         setStemDimensions,
         setTooltips,
-        setFrameSetDimensions,
         frameSetDimensions
     }
 
