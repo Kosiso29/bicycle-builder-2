@@ -231,45 +231,48 @@ export default function Form({ model }: { model?: any }) {
                         Specifications
                     </legend>
                     <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                        <div className="flex gap-4 py-5">
+                        {
+                            !showFrameSetOffsets ?
+                                <div className="flex gap-4 py-5">
 
-                            {/* Best Aerodynamics */}
-                            <div className="flex items-center gap-2">
-                                <label
-                                    htmlFor="best_aerodynamics"
-                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                >
-                                    Best Aerodynamics?
-                                </label>
-                                <input
-                                    id="best_aerodynamics"
-                                    name="best_aerodynamics"
-                                    type="checkbox"
-                                    defaultChecked={model?.best_aerodynamics}
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                    aria-describedby="best_aerodynamics-error"
-                                />
-                            </div>
+                                    {/* Best Aerodynamics */}
+                                    <div className="flex items-center gap-2">
+                                        <label
+                                            htmlFor="best_aerodynamics"
+                                            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                        >
+                                            Best Aerodynamics?
+                                        </label>
+                                        <input
+                                            id="best_aerodynamics"
+                                            name="best_aerodynamics"
+                                            type="checkbox"
+                                            defaultChecked={model?.best_aerodynamics}
+                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                            aria-describedby="best_aerodynamics-error"
+                                        />
+                                    </div>
 
-                            {/* Best Lightweight */}
-                            <div className="flex items-center gap-2">
-                                <label
-                                    htmlFor="best_lightweight"
-                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                >
-                                    Best Lightweight?
-                                </label>
-                                <input
-                                    id="best_lightweight"
-                                    name="best_lightweight"
-                                    type="checkbox"
-                                    defaultChecked={model?.best_lightweight}
-                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                    aria-describedby="best_lightweight-error"
-                                />
-                            </div>
-                        </div>
-                        {showFrameSetOffsets ? <hr className='h-[2px] bg-gray-300' /> : null}
+                                    {/* Best Lightweight */}
+                                    <div className="flex items-center gap-2">
+                                        <label
+                                            htmlFor="best_lightweight"
+                                            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                        >
+                                            Best Lightweight?
+                                        </label>
+                                        <input
+                                            id="best_lightweight"
+                                            name="best_lightweight"
+                                            type="checkbox"
+                                            defaultChecked={model?.best_lightweight}
+                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                            aria-describedby="best_lightweight-error"
+                                        />
+                                    </div>
+                                </div>
+                                : null
+                        }
                         {
                             showFrameSetOffsets ?
                                 < div className="flex flex-wrap gap-4 pt-5">
