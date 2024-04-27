@@ -45,7 +45,8 @@ export default function BikeBuilder({
         removeComponentSelection,
         setStemDimensions,
         setTooltips,
-        frameSetDimensions
+        frameSetDimensions,
+        canvasDrawImageProps
     }
 
     const canvasNumberData = [

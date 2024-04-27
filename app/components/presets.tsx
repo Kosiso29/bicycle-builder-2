@@ -1,7 +1,10 @@
 import { Button } from "@mui/material";
+import Loading from "@/app/components/loading";
+import { useState } from "react";
 
 export default function Presets({ parentProps }: { parentProps: any }) {
-    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions } = parentProps;
+    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps } = parentProps;
+    const [loading, setLoading] = useState(0.5);
 
     const getPresetComponents = (preset: string) => {
         const filteredPresets = models.filter((item: any) => item?.[preset]);
@@ -28,6 +31,7 @@ export default function Presets({ parentProps }: { parentProps: any }) {
 
                 if (loadedCount === filteredPresets.length) {
                     setRerender((prevState: any) => !prevState);
+                    setLoading(0.5);
                 }
             };
 
@@ -45,12 +49,13 @@ export default function Presets({ parentProps }: { parentProps: any }) {
         <div className="flex flex-col gap-5">
             <h1 className="font-bold text-2xl text-center">Presets</h1>
             {
-                presets()?.map((item: any) => (
+                presets()?.map((item: any, index: number) => (
                     <div key={item.title}>
                         <p className="mb-2 text-center">{item.title}</p>
                         <div className="flex justify-center items-center">
-                            <Button size="small" variant="contained" onClick={item.onClick}>{item.buttonText}</Button>
+                            <Button size="small" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand} variant="contained" onClick={() => { setLoading(index); item.onClick() }}>{item.buttonText}</Button>
                         </div>
+                        {loading === index ? <div className='self-center mt-2'><Loading small /></div> : null}
                     </div>
                 ))
             }
