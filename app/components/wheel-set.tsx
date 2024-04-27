@@ -28,7 +28,7 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
 
         return {
             frontWheelSet: { image, x, y, width, height, globalCompositeOperation: 'destination-over', ...extraDrawImageProps },
-            backWheelSet: { image: image2, x: x2, y: y2, width, height, globalCompositeOperation: 'destination-over', brand: backWheetSet.brand, model: backWheetSet.model }
+            backWheelSet: { image: image2, x: x2, y: y2, width, height, globalCompositeOperation: 'destination-over', brand: backWheetSet.brand, model: backWheetSet.model, price: backWheetSet.price }
         }
     }
     

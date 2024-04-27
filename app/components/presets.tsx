@@ -21,7 +21,7 @@ export default function Presets({ parentProps }: { parentProps: any }) {
 
                 setCanvasDrawImageProps((prevState: any) => ({
                     ...prevState,
-                    [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, globalCompositeOperation: /tire|wheel/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                    [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? frameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
 
                 loadedCount++;
@@ -43,12 +43,14 @@ export default function Presets({ parentProps }: { parentProps: any }) {
 
     return (
         <div className="flex flex-col gap-5">
-            <h1 className="font-bold text-2xl">Presets</h1>
+            <h1 className="font-bold text-2xl text-center">Presets</h1>
             {
                 presets()?.map((item: any) => (
                     <div key={item.title}>
-                        <h2 className="mb-2">{item.title}</h2>
-                        <Button size="small" variant="contained" onClick={item.onClick}>{item.buttonText}</Button>
+                        <p className="mb-2 text-center">{item.title}</p>
+                        <div className="flex justify-center items-center">
+                            <Button size="small" variant="contained" onClick={item.onClick}>{item.buttonText}</Button>
+                        </div>
                     </div>
                 ))
             }

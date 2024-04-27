@@ -356,9 +356,11 @@ export default function BikeBuilder({
                 <div className="flex items-stretch">
                     <div className="flex flex-col justify-between bg-gray-100 w-40 border border-black py-5 px-2">
                         <Presets parentProps={parentProps} />
-                        <Link href="/" className="block mt-5">
-                            <Button size="small" variant="outlined">Exit Builder</Button>
-                        </Link>
+                        <div className="flex justify-center">
+                            <Link href="/" className="block mt-5">
+                                <Button size="small" variant="outlined">Exit Builder</Button>
+                            </Link>
+                        </div>
                     </div>
                     <div className="h-[620px] w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto my-5">
                         <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
