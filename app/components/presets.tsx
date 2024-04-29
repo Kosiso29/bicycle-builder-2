@@ -27,6 +27,7 @@ export default function Presets({ parentProps }: { parentProps: any }) {
             const image = new Image();
 
             image.src = item.src;
+            image.crossOrigin = "anonymous";
 
             const canvasProp = item.category.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
 

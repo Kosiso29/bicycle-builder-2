@@ -74,13 +74,16 @@ export default function BikeBuilder({
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
         }
         Object.values(canvasDrawImageProps).forEach((drawImageProps, index) => {
+            if (index === 3 && frameSetDimensions.hasStem) {
+                return
+            }
+            if (index === 4 && (frameSetDimensions.hasHandleBar || !canvasDrawImageProps.stem.image || stemDimensions.hasHandleBar)) {
+                return
+            }
+            if (doNotRenderCanvasNumbers && !drawImageProps.brand) {
+                return;
+            }
             if (drawImageProps.image) {
-                if (index === 3 && frameSetDimensions.hasStem) {
-                    return
-                }
-                if (index === 4 && (frameSetDimensions.hasHandleBar || !canvasDrawImageProps.stem.image || stemDimensions.hasHandleBar)) {
-                    return
-                }
                 const { image, x, y, width, height, globalCompositeOperation } = drawImageProps;
 
                 canvasContext.globalCompositeOperation = globalCompositeOperation;
@@ -284,6 +287,7 @@ export default function BikeBuilder({
             const image = new Image();
 
             image.src = entries[1].image;
+            image.crossOrigin = "anonymous";
             image.onload = function () {
                 setCanvasDrawImageProps(prevState => ({ ...prevState, [entries[0]]: { ...entries[1], image, image2: entries[0] === 'tire' ? image : null } }))
                 setInitialCanvasDrawImageProps(prevState => ({ ...prevState, [entries[0]]: { ...entries[1], image, image2: entries[0] === 'tire' ? image : null } }))
