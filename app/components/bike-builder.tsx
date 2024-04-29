@@ -46,7 +46,8 @@ export default function BikeBuilder({
         setStemDimensions,
         setTooltips,
         frameSetDimensions,
-        canvasDrawImageProps
+        canvasDrawImageProps,
+        setCanvasSelectionLevelState
     }
 
     const canvasNumberData = [
@@ -254,6 +255,7 @@ export default function BikeBuilder({
         if (selectionLevelProps.includes('frameSet')) {
             setTooltips(prevState => Object.fromEntries(Object.keys(prevState).map(key => [key, '---'])));
             setCanvasDrawImageProps(initialCanvasDrawImageProps);
+            handleReset();
         }
         setRemoveComponentSelection(prevState => !prevState);
         setRerender(prevState => !prevState);

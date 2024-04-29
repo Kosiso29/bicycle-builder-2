@@ -3,8 +3,21 @@ import Loading from "@/app/components/loading";
 import { useState } from "react";
 
 export default function Presets({ parentProps }: { parentProps: any }) {
-    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps } = parentProps;
+    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState } = parentProps;
     const [loading, setLoading] = useState(0.5);
+
+    const getCanvasSelectionLevelState = (filteredPresets: any) => {
+        const mappedFilteredPresets = filteredPresets.map((item: any) => item.category);
+        if (mappedFilteredPresets.includes("Tyre")) {
+            setCanvasSelectionLevelState(6);
+        } else if (mappedFilteredPresets.includes("Saddle")) {
+            setCanvasSelectionLevelState(5);
+        } else if (mappedFilteredPresets.includes("Stem") || mappedFilteredPresets.includes("Handle Bar")) {
+            setCanvasSelectionLevelState(4);
+        } else if (mappedFilteredPresets.includes("Front Wheel Set") || mappedFilteredPresets.includes("Back Wheel Set")) {
+            setCanvasSelectionLevelState(3);
+        }
+    }
 
     const getPresetComponents = (preset: string) => {
         const filteredPresets = models.filter((item: any) => item?.[preset]);
@@ -32,6 +45,7 @@ export default function Presets({ parentProps }: { parentProps: any }) {
                 if (loadedCount === filteredPresets.length) {
                     setRerender((prevState: any) => !prevState);
                     setLoading(0.5);
+                    getCanvasSelectionLevelState(filteredPresets);
                 }
             };
 
