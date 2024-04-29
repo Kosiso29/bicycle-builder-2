@@ -13,8 +13,19 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Form({ model }: { model?: any }) {
     const categories = useSelector((state: any) => state.componentsReducer.categories);
     const brands = useSelector((state: any) => state.componentsReducer.brands);
-    const [category, setCategory] = useState(model?.category_id || "");
+    const models = useSelector((state: any) => state.componentsReducer.models);
+    const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [loading, setLoading] = useState(false);
+
+    const checkExistingPreset = (categoryId: string, preset: string, defaultChecked: boolean) => {
+        const existingPreset = models.filter((item: any) => {
+            return item.category === categories[categoryId] && item[preset];
+        });
+        if ((existingPreset.length > 0 || !categoryId) && !defaultChecked) {
+            return true;
+        }
+        return false;
+    }
 
     const handleFormUpdate = (formData: any) => {
         updateModel(model.id, formData)
@@ -46,8 +57,8 @@ export default function Form({ model }: { model?: any }) {
 
     const handleFormSubmission = model ? handleFormUpdate : handleFormCreation;
 
-    const showAllOffsets = (Object.values(categories)[0] === categories[category]) || (Object.values(categories)[3] === categories[category]);
-    const showFrameSetOffsets = Object.values(categories)[0] === categories[category];
+    const showAllOffsets = (Object.values(categories)[0] === categories[categoryId]) || (Object.values(categories)[3] === categories[categoryId]);
+    const showFrameSetOffsets = Object.values(categories)[0] === categories[categoryId];
 
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
@@ -62,9 +73,8 @@ export default function Form({ model }: { model?: any }) {
                             id="category_id"
                             name="category_id"
                             className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            defaultValue={model?.category_id || ""}
+                            value={categoryId || model?.category_id || ""}
+                            onChange={(e) => setCategoryId(e.target.value)}
                             aria-describedby="category_id-error"
                         >
                             <option value="" disabled>
@@ -247,6 +257,7 @@ export default function Form({ model }: { model?: any }) {
                                             id="best_aerodynamics"
                                             name="best_aerodynamics"
                                             type="checkbox"
+                                            disabled={checkExistingPreset(categoryId, 'best_aerodynamics', model?.best_aerodynamics)}
                                             defaultChecked={model?.best_aerodynamics}
                                             className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                                             aria-describedby="best_aerodynamics-error"
@@ -265,6 +276,7 @@ export default function Form({ model }: { model?: any }) {
                                             id="best_lightweight"
                                             name="best_lightweight"
                                             type="checkbox"
+                                            disabled={checkExistingPreset(categoryId, 'best_lightweight', model?.best_lightweight)}
                                             defaultChecked={model?.best_lightweight}
                                             className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                                             aria-describedby="best_lightweight-error"
