@@ -3,7 +3,7 @@ import Loading from "@/app/components/loading";
 import { useState } from "react";
 
 export default function Presets({ parentProps }: { parentProps: any }) {
-    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState } = parentProps;
+    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions } = parentProps;
     const [loading, setLoading] = useState(0.5);
 
     const getCanvasSelectionLevelState = (filteredPresets: any) => {
@@ -35,6 +35,11 @@ export default function Presets({ parentProps }: { parentProps: any }) {
                 const { actualWidth, brand, model, price } = item;
                 const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
                 const height = image?.naturalHeight * (width / image?.naturalWidth);
+
+                if (canvasProp === 'stem') {
+                    const { hasHandleBar } = item;
+                    setStemDimensions({ hasHandleBar })
+                }
 
                 setCanvasDrawImageProps((prevState: any) => ({
                     ...prevState,
