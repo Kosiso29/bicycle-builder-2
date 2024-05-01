@@ -16,15 +16,20 @@ export default function Components() {
     const models = useSelector((state: any) => state.componentsReducer.models);
     const categories: Array<string> = useSelector((state: any) => state.componentsReducer.categories);
     const [uniqueCategories, setUniqueCategories] = useState(['All']);
+    const [presets, setPresets] = useState(['None']);
     const [category, setCategory] = useState('All');
-    const [preset, setPreset] = useState("");
+    const [preset, setPreset] = useState('None');
     const [tableModels, setTableModels] = useState([]);
 
     useEffect(() => {
-        if (categories) {
+        if (categories?.length > 0) {
             setUniqueCategories(['All', ...Object.values(categories)]);
-        }
-    }, [categories]);
+        };
+        if (models?.length > 0) {
+            setPresets(['None', ...Object.keys(models[0]).filter(key => /^best_/.test(key))]);
+            console.log('presets', models);
+        };
+    }, [categories, models]);
 
     useEffect(() => {
         if (category) {
@@ -38,8 +43,12 @@ export default function Components() {
 
     useEffect(() => {
         if (preset) {
-            setTableModels(models.filter((item: Model) => item[preset as keyof Model]));
-        }
+            if (preset !== 'None') {
+                setTableModels(models.filter((item: Model) => item[preset as keyof Model]));
+            } else {
+                setTableModels(models);
+            }
+        };
     }, [preset, models])
 
     return (
@@ -57,7 +66,7 @@ export default function Components() {
                 </SelectElement>
                 <SelectElement value={preset} onChange={(e: React.MouseEvent<HTMLButtonElement>) => { setPreset((e.target as HTMLInputElement).value) }} label="Presets">
                     {
-                        ['best_aerodynamics', 'best_lightweight'].map((model: any) => (
+                        presets.map((model: any) => (
                             <MenuItem value={model} key={model}>{model.replace(/_/g, " ").replace(/^(.)|\s+(.)/g, (firstLetter: any) => firstLetter.toUpperCase())}</MenuItem>
                         ))
                     }
