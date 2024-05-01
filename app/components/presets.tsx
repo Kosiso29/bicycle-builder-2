@@ -3,7 +3,7 @@ import Loading from "@/app/components/loading";
 import { useState } from "react";
 
 export default function Presets({ parentProps }: { parentProps: any }) {
-    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions } = parentProps;
+    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps } = parentProps;
     const [loading, setLoading] = useState(0.5);
 
     const getCanvasSelectionLevelState = (filteredPresets: any) => {
@@ -48,6 +48,10 @@ export default function Presets({ parentProps }: { parentProps: any }) {
 
                 loadedCount++;
 
+                setSelectionPresetProps((prevState: any) => ({
+                    ...prevState,
+                    [canvasProp]: { brand, model }
+                }));
                 if (loadedCount === filteredPresets.length) {
                     setRerender((prevState: any) => !prevState);
                     setLoading(0.5);

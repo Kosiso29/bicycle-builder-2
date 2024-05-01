@@ -10,7 +10,7 @@ import SelectElement from "../ui/select";
 import Loading from "@/app/components/loading";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier }) {
-    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection } = parentProps;
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection, selectionPresetProps } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -105,6 +105,16 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         });
         setRerender(prevState => !prevState);
     }
+
+    useEffect(() => {
+        if (selectionPresetProps[identifier]?.model) {
+            setBrand(selectionPresetProps[identifier].brand);
+            const models = allBrandsData.filter(itemBrand => itemBrand.brand === selectionPresetProps[identifier].brand);
+            setAllModels(models);
+            let selectedModelIndex = models.findIndex(itemModel => itemModel.model === selectionPresetProps[identifier]?.model);
+            setSelectedIndex(selectedModelIndex);
+        }
+    }, [selectionPresetProps[identifier]?.model]);
 
     useEffect(() => {
         imageRef.current?.setAttribute("src", src);

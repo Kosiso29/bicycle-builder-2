@@ -35,6 +35,13 @@ export default function BikeBuilder({
         comfort: "---",
         stiffness: "---"
     });
+    const [selectionPresetProps, setSelectionPresetProps] = useState({
+        frontWheelSet: {},
+        stem: {},
+        handleBar: {},
+        saddle: {},
+        tire: {},
+    });
 
     const parentProps = {
         setRerender,
@@ -47,7 +54,9 @@ export default function BikeBuilder({
         setTooltips,
         frameSetDimensions,
         canvasDrawImageProps,
-        setCanvasSelectionLevelState
+        setCanvasSelectionLevelState,
+        selectionPresetProps,
+        setSelectionPresetProps
     }
 
     const canvasNumberData = [
