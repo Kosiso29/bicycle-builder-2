@@ -9,6 +9,7 @@ import { RotateLeft as RotateLeftIcon, SquareOutlined, Star, StarHalf, StarOutli
 import { toast } from 'react-toastify';
 import Link from "next/link";
 import SelectionTabs from "./selection-tabs";
+import SummaryList from "@/app/components/summary-list";
 import FrameSet from "./frame-set";
 import WheelSet from "./wheel-set";
 import Stem from "./stem";
@@ -56,7 +57,9 @@ export default function BikeBuilder({
         canvasDrawImageProps,
         setCanvasSelectionLevelState,
         selectionPresetProps,
-        setSelectionPresetProps
+        setSelectionPresetProps,
+        setSelectionLevel,
+        setShowSummary
     }
 
     const canvasNumberData = [
@@ -287,6 +290,7 @@ export default function BikeBuilder({
         setCanvasSelectionLevelState(1);
         setFrameSetDimensions({});
         setResetComponent(prevState => prevState + 1);
+        setShowSummary(false);
     }
 
     const renderCanvasPlaceholderImages = () => {
@@ -367,7 +371,7 @@ export default function BikeBuilder({
     }, [rerender]);
 
     return (
-        <div className={`${showSummary ? "hidden" : ""}`}>
+        <div>
             <div className="mr-[22rem] h-screen bg-blue-100 w-[calc(100% - 22rem)] overflow-auto">
                 <div className="flex items-stretch">
                     <div className="flex flex-col justify-between bg-gray-100 w-40 border border-black py-5 px-2">
@@ -422,22 +426,38 @@ export default function BikeBuilder({
                 <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4 && (handleBarStemConditions || frameSetDimensions.hasStem)} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                {
+                    showSummary ?
+                        <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} small /> : null
+                }
                 <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-5 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
                     <div className='flex justify-between items-center py-5'>
                         <h1 className={`font-bold text-xl basis-[50%]`}>Total:</h1>
                         <p className={`basis-[50%] text-primary text-md font-bold`}>{totalPrice !== null ? "$" + totalPrice : "---"}</p>
                         <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
                     </div>
-                    <div className="flex justify-between">
-                        <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={selectionLevel === 1} onClick={handleSelectionLevel}>Prev</Button>
-                        <Button size="small" variant="text" color="error" onClick={handleRemove}>Remove</Button>
-                        {
-                            selectionLevel < 6 ?
-                                <Button size="small" variant="contained" onClick={handleSelectionLevel}>Next</Button> :
-                                <Button size="small" variant="contained" onClick={handleSummary}>Summary</Button>
-                        }
-                    </div>
-                    <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 7 || selectionLevel === 1 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
+                    {
+                        showSummary ?
+                            <>
+                                <div className="flex justify-between">
+                                    <Button size="small" variant="outlined" onClick={() => { setShowSummary(false); setSelectionLevel(prevState => prevState - 1) }}>Back</Button>
+                                    <Button size="small" variant="contained">Proceed</Button>
+                                </div>
+                                <Button size="small" variant="outlined">Add to Favourites</Button>
+                            </> :
+                            <>
+                                <div className="flex justify-between">
+                                    <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={selectionLevel === 1} onClick={handleSelectionLevel}>Prev</Button>
+                                    <Button size="small" variant="text" color="error" onClick={handleRemove}>Remove</Button>
+                                    {
+                                        selectionLevel < 6 ?
+                                            <Button size="small" variant="contained" onClick={handleSelectionLevel}>Next</Button> :
+                                            <Button size="small" variant="contained" onClick={() => { setSelectionLevel(prevState => prevState + 1); setShowSummary(true); }}>Summary</Button>
+                                    }
+                                </div>
+                                <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 6 || selectionLevel === 1 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
+                            </>
+                    }
                 </div>
             </div>
         </div>

@@ -41,13 +41,13 @@ export default function Builder({ models }: { models: Models }) {
                 models={models}
                 setResetComponent={setResetComponent}
             />
-            <Summary
+            {/* <Summary
                 canvasDrawImageProps={canvasDrawImageProps}
                 canvasImage={canvasImage}
                 showSummary={showSummary}
                 setShowSummary={setShowSummary}
                 frameSetDimensions={frameSetDimensions}
-            />
+            /> */}
             <ToastContainer
                 autoClose={3500}
                 position="bottom-left"

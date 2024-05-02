@@ -12,9 +12,10 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, small }) {
                 {
                     values.map((item, index) => (
                         <div key={item.brand + item.model + titles[index]}>
-                            <div className='flex py-5'>
-                                <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[50%]`}>{titles[index]}</h1>
-                                <p className={`basis-[50%] text-primary ${small ? "text-sm" : ""}`}>{item.brand && !(index === 3 && frameSetDimensions.hasStem) && !(index === 4 && frameSetDimensions.hasHandleBar) ? item.brand + " " + item.model : "---"}</p>
+                            <div className='flex justify-between py-3'>
+                                <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[30%]`}>{titles[index]}</h1>
+                                <p className={`basis-[30%] text-primary ${small ? "text-sm" : ""}`}>{item.brand && !(index === 3 && frameSetDimensions.hasStem) && !(index === 4 && frameSetDimensions.hasHandleBar) ? item.brand + " " + item.model : "---"}</p>
+                                <p className={`basis-[20%] text-primary ${small ? "text-sm" : ""}`}>{item.brand && !(index === 3 && frameSetDimensions.hasStem) && !(index === 4 && frameSetDimensions.hasHandleBar) ? "$" + item.price : "---"}</p>
                             </div>
                             <hr className='h-[2px] bg-gray-400' />
                         </div>
