@@ -6,7 +6,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
-import SelectElement from "../ui/select";
 import Loading from "@/app/components/loading";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier }) {
@@ -16,7 +15,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [uniqueBrands, setUniqueBrands] = useState([]);
     const [model, setModel] = useState("");
     const [allModels, setAllModels] = useState([]);
-    const [src, setSrc] = useState("");
     const [imageLoaded, setImageLoaded] = useState(false);
     const [image2Loaded, setImage2Loaded] = useState(false);
     const imageRef = useRef(null);
@@ -32,7 +30,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }
 
     const handleModelChange = (index, modelData) => {
-        setSrc(modelData?.src);
         setModel(modelData?.model);
         setPrice(modelData?.price);
         setImageLoaded(false);
@@ -115,10 +112,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             setSelectedIndex(selectedModelIndex);
         }
     }, [selectionPresetProps[identifier]?.model]);
-
-    useEffect(() => {
-        imageRef.current?.setAttribute("src", src);
-    }, [show, src]);
 
     useEffect(() => {
         if ((model && imageLoaded && image2Loaded)) {

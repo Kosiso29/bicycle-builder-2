@@ -349,6 +349,12 @@ export default function BikeBuilder({
     }, [canvasContext]);
 
     useEffect(() => {
+        if (selectionLevel < 7) {
+            setShowSummary(false);
+        }
+    }, [selectionLevel]);
+
+    useEffect(() => {
         if (!canvasDrawImageProps.stem.image) {
             setCanvasDrawImageProps(prevState => ({
                 ...prevState,
