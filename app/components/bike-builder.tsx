@@ -64,9 +64,9 @@ export default function BikeBuilder({
 
     const canvasNumberData = [
         { text: "1.", x: 500, y: 150 },
-        { text: "2.", x: 450, y: 520 },
+        { text: "2.", x: 500, y: 520 },
         { text: "3.", x: 800, y: 450 },
-        { text: "4.", x: 750, y: 120 },
+        { text: "4.", x: 680, y: 110 },
         { text: "5.", x: 200, y: 80 },
         { text: "6.", x: 80, y: 250 },
     ]
@@ -79,8 +79,8 @@ export default function BikeBuilder({
         saddle: { image: "/PH-ENVE_X_SELLE_ITALIA_BOOST_SLR.png", x: 258, y: 86.65583333333333, width: 116.26666666666667, height: 23.344166666666666, globalCompositeOperation: 'destination-over' },
         tire: { image: "/PH-Tan_SES31_FullWheel-modified.png", x: 541, y: 247, width: 353.06666666666666, height: 353.06666666666666, x2: 36, y2: 247, width2: 353.06666666666666, height2: 353.06666666666666, globalCompositeOperation: 'destination-over' },
         // drivetrain actualWidth used is 622mm instead of 722mm
-        groupSet: { image: "/Groupset-Drivetrain.png", x: 185, y: 380, width: 331.733333333, height: 136.6176524785, globalCompositeOperation: 'destination-over' },
-        groupSet_Shifter: { image: "/Groupset-Shifter.png", x: 704, y: 121, width: 80, height: 96.140350882, globalCompositeOperation: 'destination-over' },
+        groupSet_drivetrain: { image: "/Groupset-Drivetrain.png", x: 185, y: 380, width: 331.733333333, height: 136.6176524785, globalCompositeOperation: 'destination-over' },
+        groupSet_shifter: { image: "/Groupset-Shifter.png", x: 704, y: 121, width: 80, height: 96.140350882, globalCompositeOperation: 'destination-over' },
     }
 
     function setImage(doNotRenderCanvasNumbers = false, doNotIncrementCanvasSelectionLevelState = false) {
@@ -363,6 +363,14 @@ export default function BikeBuilder({
                 ...prevState,
                 handleBar: {}
             }))
+        }
+        if (canvasDrawImageProps.groupSet_drivetrain?.image && canvasDrawImageProps.frameSet?.model) {
+            setCanvasDrawImageProps(prevState => ({
+                ...prevState,
+                groupSet_drivetrain: {},
+                groupSet_shifter: {}
+            }));
+            setRerender(prevState => !prevState);
         }
         if (Object.keys(frameSetDimensions).length > 0) {
             if (canvasSelectionLevelState === 1 && !frameSetDimensions.width) {

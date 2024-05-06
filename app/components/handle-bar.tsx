@@ -9,7 +9,7 @@ const HANDLE_BAR = 'handleBar';
 export default function HandleBar({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [ actualWidth, setActualWidth ] = useState("0")
     const updateDrawImageProps = (extraDrawImageProps) => {
-        const x = frameSetDimensions.stemX ? frameSetDimensions.stemX + 30 : canvasX;
+        const x = frameSetDimensions.stemX ? frameSetDimensions.stemX + 38 : canvasX;
         const y = frameSetDimensions.stemY ? frameSetDimensions.stemY + 2 : canvasY;
 
         const image = document.querySelector('#handleBar')?.querySelector('#preview');
