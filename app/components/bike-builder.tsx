@@ -78,6 +78,9 @@ export default function BikeBuilder({
         stem: { image: "/PH-CADEX-Aero_Integrated_Handlebar.png", x: 604, y: 141, width: 125.33333333333333, height: 87.16916740217711, globalCompositeOperation: 'destination-over' },
         saddle: { image: "/PH-ENVE_X_SELLE_ITALIA_BOOST_SLR.png", x: 258, y: 86.65583333333333, width: 116.26666666666667, height: 23.344166666666666, globalCompositeOperation: 'destination-over' },
         tire: { image: "/PH-Tan_SES31_FullWheel-modified.png", x: 541, y: 247, width: 353.06666666666666, height: 353.06666666666666, x2: 36, y2: 247, width2: 353.06666666666666, height2: 353.06666666666666, globalCompositeOperation: 'destination-over' },
+        // drivetrain actualWidth used is 622mm instead of 722mm
+        groupSet: { image: "/Groupset-Drivetrain.png", x: 185, y: 380, width: 331.733333333, height: 136.6176524785, globalCompositeOperation: 'destination-over' },
+        groupSet_Shifter: { image: "/Groupset-Shifter.png", x: 704, y: 121, width: 80, height: 96.140350882, globalCompositeOperation: 'destination-over' },
     }
 
     function setImage(doNotRenderCanvasNumbers = false, doNotIncrementCanvasSelectionLevelState = false) {
