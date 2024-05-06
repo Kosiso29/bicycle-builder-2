@@ -28,8 +28,10 @@ export async function fetchModels(): Promise<Models> {
             m.price,
             m.key_metrics,
             m.aerodynamics,
+            m.weight,
             m.comfort,
             m.stiffness,
+            m.overall,
             m.best_aerodynamics,
             m.best_lightweight
         FROM

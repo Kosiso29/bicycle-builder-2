@@ -291,11 +291,17 @@ export default function Form({ model }: { model?: any }) {
                                     {/* Aerodynamics */}
                                     <OffsetTextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics || "0.0"} label='Aerodynamics' />
 
+                                    {/* Weight */}
+                                    <OffsetTextField name='weight' step={0.5} min={0.0} max={5.0} defaultValue={model?.weight || "0.0"} label='Weight' />
+
                                     {/* Comfort */}
                                     <OffsetTextField name='comfort' step={0.5} min={0.0} max={5.0} defaultValue={model?.comfort || "0.0"} label='Comfort' />
 
                                     {/* Stiffness */}
                                     <OffsetTextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness || "0.0"} label='Stiffness-to-Weight' />
+
+                                    {/* Overall */}
+                                    <OffsetTextField name='overall' step={0.5} min={0.0} max={5.0} defaultValue={model?.overall || "0.0"} label='Overall' />
                                 </div>
                                 : null
                         }

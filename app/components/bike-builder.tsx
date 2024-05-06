@@ -33,8 +33,10 @@ export default function BikeBuilder({
     const [tooltips, setTooltips] = useState({
         key_metrics: "---",
         aerodynamics: "---",
+        weight: "---",
         comfort: "---",
-        stiffness: "---"
+        stiffness: "---",
+        overall: "---"
     });
     const [selectionPresetProps, setSelectionPresetProps] = useState({
         frontWheelSet: {},
@@ -416,8 +418,10 @@ export default function BikeBuilder({
                         </div> */}
                         <div className="text-right">
                             <p>Aerodynamics - {renderStars(tooltips.aerodynamics)}</p>
+                            <p>Weight - {renderStars(tooltips.weight)}</p>
                             <p>Comfort -  {renderStars(tooltips.comfort)}​</p>
                             <p>Stiffness-to-Weight -  {renderStars(tooltips.stiffness)}</p>
+                            <p>Overall -  {renderStars(tooltips.overall)}</p>
                         </div>
                     </div>
                     <div className="flex justify-between mt-3">
