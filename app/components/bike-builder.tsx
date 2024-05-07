@@ -17,6 +17,7 @@ import HandleBar from "./handle-bar";
 import Saddle from "./saddle";
 import Tire from "./tire";
 import Presets from "./presets";
+import Tooltips from "./tooltips";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
@@ -330,18 +331,6 @@ export default function BikeBuilder({
 
     const handleBarStemConditions = !stemDimensions.hasHandleBar && (canvasDrawImageProps.stem.image && canvasDrawImageProps.stem.model) && !frameSetDimensions.hasHandleBar;
 
-    const renderStars = (tooltip) => {
-        return tooltip === "---" ? " " + tooltip : [1, 2, 3, 4, 5].map(number => {
-            if (number <= parseFloat(tooltip)) {
-                return <Star color="primary" key={number} />;
-            }
-            if (number === Math.ceil(parseFloat(tooltip)) && parseFloat(tooltip) % 1 !== 0) {
-                return <StarHalf color="primary" key={number} />;
-            }
-            return <StarOutline color="primary" key={number} />;
-        })
-    }
-
     useEffect(() => {
         const context = getCanvasContext();
         setCanvasContext(context);
@@ -405,36 +394,7 @@ export default function BikeBuilder({
                         <canvas id="canvas" className="scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
                     </div>
                 </div>
-                <div className="bg-gray-100 rounded-t-lg border border-black p-3 pb-5">
-                    <div className="flex justify-between">
-                        <div className="max-w-[65%]">
-                            <p>{canvasDrawImageProps.frameSet.model || "Key metrics about the selection"} -</p>
-                            <p className="whitespace-pre-wrap">{tooltips.key_metrics}</p>
-                        </div>
-                        {/* <div>
-                            <p>Gearing @ 90rpm​</p>
-                            <p>Max Speed – 53-11 = xyz​</p>
-                            <p>Min Speed  - 39-34 = abc</p>
-                        </div> */}
-                        <div className="text-right">
-                            <p>Aerodynamics - {renderStars(tooltips.aerodynamics)}</p>
-                            <p>Weight - {renderStars(tooltips.weight)}</p>
-                            <p>Comfort -  {renderStars(tooltips.comfort)}​</p>
-                            <p>Stiffness-to-Weight -  {renderStars(tooltips.stiffness)}</p>
-                            <p>Overall -  {renderStars(tooltips.overall)}</p>
-                        </div>
-                    </div>
-                    <div className="flex justify-between mt-3">
-                        <p>Build the best lightweight/aero/all-rounder​</p>
-                        <div className="flex">
-                            <p>Portfolio –</p>
-                            <SquareOutlined />
-                            <SquareOutlined />
-                            <SquareOutlined />
-                            <SquareOutlined />
-                        </div>
-                    </div>
-                </div>
+                <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} />
             </div>
             <div id="selection" className="flex flex-col gap-10 fixed right-0 top-0 h-screen w-[22rem] border-l-8 bg-gray-100 border-gray-400 p-5 pb-0 overflow-auto">
                 <div>
