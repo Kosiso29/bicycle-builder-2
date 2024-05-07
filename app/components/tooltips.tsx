@@ -1,8 +1,9 @@
 import { Star, StarHalf, StarOutline, SquareOutlined, ArrowDownwardOutlined, ArrowUpwardOutlined } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips: any, canvasDrawImageProps: any }) {
     const [openFullTooltips, setOpenFullToolTips] = useState(false);
+    const tooltipsRef = useRef<HTMLDivElement>(null);
 
     const renderStars = (tooltip: number | string) => {
         return tooltip === "---" ? " " + tooltip : [1, 2, 3, 4, 5].map(number => {
@@ -20,8 +21,16 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
         setOpenFullToolTips(prevState => !prevState);
     }
 
+    useEffect(() => {
+        if (openFullTooltips) {
+            tooltipsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        } else {
+            window.scrollTo(0, 0);
+        }
+    }, [openFullTooltips])
+
     return (
-        <div className="bg-gray-100 rounded-t-lg border border-black p-3 pb-5">
+        <div ref={tooltipsRef} className="bg-gray-100 rounded-t-lg border border-black p-3 pb-5">
             <div className="flex justify-between relative">
                 <div className="max-w-[65%]">
                     <p>{canvasDrawImageProps.frameSet.model || "Key metrics about the selection"} -</p>
