@@ -401,8 +401,8 @@ export default function BikeBuilder({
                             </Link>
                         </div>
                     </div>
-                    <div className="h-[620px] w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto my-5">
-                        <canvas id="canvas" className="border-black bg-gray-300 border rounded-lg scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
+                    <div className="h-[620px] w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
+                        <canvas id="canvas" className="scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
                     </div>
                 </div>
                 <div className="bg-gray-100 rounded-t-lg border border-black p-3 pb-5">
