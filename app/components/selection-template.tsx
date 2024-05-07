@@ -188,7 +188,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                             }
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
-                                        <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white" : "text-primary"}`} primary={"$" + item.price} style={{ lineHeight: 1, fontSize: ".2rem" }} />
+                                        <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white" : "text-primary"}`} primary={new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.price)} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                     </ListItemButton>
                                 </ListItem>
                             ))
