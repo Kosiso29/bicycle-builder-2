@@ -33,12 +33,12 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
     }
     
     useEffect(() => {
-        if (!/Group Set/i.test(label) && show) {
+        if (!/Groupset/i.test(label) && show) {
             setSelectionLevelProps([WHEELSET_PROP, 'backWheelSet'])
         }
     }, [setSelectionLevelProps, show, label])
 
-    if (/Group Set/i.test(label) && show) { 
+    if (/Groupset/i.test(label) && show) { 
         return (
             <div>
                 <h1 className="text-2xl font-bold">{label}</h1>
@@ -47,6 +47,6 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
     }
 
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label={label} setActualWidth={setActualWidth} identifier={WHEELSET_PROP} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label={label} displayLabel={/Groupset/i.test(label) ? "Groupset" : "Wheel"} setActualWidth={setActualWidth} identifier={WHEELSET_PROP} />
     )
 }

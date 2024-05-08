@@ -18,6 +18,7 @@ import Saddle from "./saddle";
 import Tire from "./tire";
 import Presets from "./presets";
 import Tooltips from "./tooltips";
+import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
@@ -401,7 +402,7 @@ export default function BikeBuilder({
                     <SelectionTabs indexArray={frameSetDimensions.hasStem && frameSetDimensions.hasHandleBar ? [1, 2, 3, 5, 6] : [1, 2, 3, 4, 5, 6]} value={selectionLevel} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
                 </div>
                 <FrameSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Group Set" />
+                <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
                 <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4 && !frameSetDimensions.hasStem} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4 && (handleBarStemConditions || frameSetDimensions.hasStem)} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
@@ -411,23 +412,18 @@ export default function BikeBuilder({
                     showSummary ?
                         <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} small /> : null
                 }
-                <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-5 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
-                    <div className='flex justify-between items-center py-5'>
-                        <h1 className={`font-bold text-xl basis-[50%]`}>Total:</h1>
-                        <p className={`basis-[50%] text-primary text-md font-bold`}>{totalPrice !== null ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalPrice) : "---"}</p>
-                        <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
-                    </div>
+                <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-3 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
                     {
                         showSummary ?
                             <>
-                                <div className="flex justify-between">
+                                <div className="flex justify-between py-2">
                                     <Button size="small" variant="outlined" onClick={() => { setShowSummary(false); setSelectionLevel(prevState => prevState - 1) }}>Back</Button>
                                     <Button size="small" variant="contained">Proceed</Button>
                                 </div>
                                 <Button size="small" variant="outlined">Add to Favourites</Button>
                             </> :
                             <>
-                                <div className="flex justify-between">
+                                <div className="flex justify-between py-2">
                                     <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={selectionLevel === 1} onClick={handleSelectionLevel}>Prev</Button>
                                     <Button size="small" variant="text" color="error" onClick={handleRemove}>Remove</Button>
                                     {
@@ -439,6 +435,11 @@ export default function BikeBuilder({
                                 <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 6 || selectionLevel === 1 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
                             </>
                     }
+                    <div className='flex justify-between items-center'>
+                        <h1 className={`font-bold text-xl basis-[50%]`}>Total:</h1>
+                        <p className={`basis-[50%] text-primary text-md font-bold`}>{totalPrice !== null ? CurrencyFormatter(totalPrice) : "---"}</p>
+                        <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
+                    </div>
                 </div>
             </div>
         </div>

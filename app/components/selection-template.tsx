@@ -7,8 +7,9 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
 import Loading from "@/app/components/loading";
+import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
-export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier }) {
+export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection, selectionPresetProps } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
@@ -148,7 +149,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     return (
         <div id={identifier} className="flex flex-col gap-4">
-            <h1 className="text-2xl font-bold">{/Wheel Set/i.test(label) ? "Wheel Set" : label}</h1>
+            <h1 className="text-2xl font-bold">{displayLabel || label}</h1>
             <TextField select size="small" value={brand} onChange={handleBrandChange} label="Brands">
                 {
                     uniqueBrands.map(brand => (
@@ -188,7 +189,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                             }
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
-                                        <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white" : "text-primary"}`} primary={new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.price)} style={{ lineHeight: 1, fontSize: ".2rem" }} />
+                                        <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white" : "text-primary"}`} primary={CurrencyFormatter(item.price)} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                     </ListItemButton>
                                 </ListItem>
                             ))
