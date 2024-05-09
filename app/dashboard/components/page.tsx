@@ -22,7 +22,7 @@ export default function Components() {
     const [tableModels, setTableModels] = useState([]);
 
     useEffect(() => {
-        if (categories?.length > 0) {
+        if (Object.keys(categories).length > 0) {
             setUniqueCategories(['All', ...Object.values(categories)]);
         };
         if (models?.length > 0) {
@@ -66,7 +66,7 @@ export default function Components() {
                 <SelectElement value={preset} onChange={(e: React.MouseEvent<HTMLButtonElement>) => { setPreset((e.target as HTMLInputElement).value) }} label="Presets">
                     {
                         presets.map((model: any) => (
-                            <MenuItem value={model} key={model}>{model.replace(/_/g, " ").replace(/^(.)|\s+(.)/g, (firstLetter: any) => firstLetter.toUpperCase())}</MenuItem>
+                            <MenuItem value={model} key={model}>{model === 'best_aerodynamics' ? 'Aerodynamic' : model.replace(/_/g, " ").replace(/^(.)|\s+(.)/g, (firstLetter: any) => firstLetter.toUpperCase()).replace(/Best /i, "")}</MenuItem>
                         ))
                     }
                 </SelectElement>

@@ -251,7 +251,7 @@ export default function Form({ model }: { model?: any }) {
                                             htmlFor="best_aerodynamics"
                                             className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
                                         >
-                                            Best Aerodynamics?
+                                            Aerodynamic
                                         </label>
                                         <input
                                             id="best_aerodynamics"
@@ -270,7 +270,7 @@ export default function Form({ model }: { model?: any }) {
                                             htmlFor="best_lightweight"
                                             className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
                                         >
-                                            Best Lightweight?
+                                            Lightweight
                                         </label>
                                         <input
                                             id="best_lightweight"
@@ -318,7 +318,7 @@ export default function Form({ model }: { model?: any }) {
                             <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
                                 <div className="flex gap-4 py-5">
 
-                                    {/* Has Stem */}
+                                    {/* Stem */}
                                     {
                                         showFrameSetOffsets ?
                                             <div className="flex items-center gap-2">
@@ -326,7 +326,7 @@ export default function Form({ model }: { model?: any }) {
                                                     htmlFor="has_stem"
                                                     className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
                                                 >
-                                                    Has Stem?
+                                                    Stem
                                                 </label>
                                                 <input
                                                     id="has_stem"
@@ -339,13 +339,13 @@ export default function Form({ model }: { model?: any }) {
                                             </div> : null
                                     }
 
-                                    {/* Has Handle Bar */}
+                                    {/* Handle Bar */}
                                     <div className="flex items-center gap-2">
                                         <label
                                             htmlFor="has_handle_bar"
                                             className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
                                         >
-                                            Has Handle Bar?
+                                            Handle Bar
                                         </label>
                                         <input
                                             id="has_handle_bar"

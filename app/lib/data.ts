@@ -39,7 +39,9 @@ export async function fetchModels(): Promise<Models> {
         JOIN
             models m ON c.id = m.category_id
         JOIN
-            brands b ON m.brand_id = b.id;`;
+            brands b ON m.brand_id = b.id
+        ORDER BY
+            b.name, m.name;`;
 
         const models = data.rows.map((model: QueryResultRow) => ({
             ...model
