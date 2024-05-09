@@ -6,12 +6,12 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
-import { CancelOutlined, CloseOutlined } from "@mui/icons-material";
+import { CloseOutlined } from "@mui/icons-material";
 import Loading from "@/app/components/loading";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
-export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel }) {
-    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection, selectionPresetProps, initialCanvasDrawImageProps, handleReset, setTooltips } = parentProps;
+export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection, selectionPresetProps, initialCanvasDrawImageProps, setTooltips, canvasDrawImageProps } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -67,8 +67,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             return prevState;
         });
         if (selectionLevelProps.includes('frameSet')) {
-            setTooltips(prevState => Object.fromEntries(Object.keys(prevState).map(key => [key, '---'])));
-            setCanvasDrawImageProps(initialCanvasDrawImageProps);
             handleReset();
         }
         setRerender(prevState => !prevState);
@@ -172,7 +170,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }, [databaseModels]);
 
     useEffect(() => {
-        if (!show && identifier === 'handleBar') {
+        if (!show && identifier === 'handleBar' && !canvasDrawImageProps.stem.model) {
             setModel("");
             setSelectedIndex(null);
         }

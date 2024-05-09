@@ -268,22 +268,6 @@ export default function BikeBuilder({
         setSelectionLevel(newSelectionLevel)
     };
 
-    const handleRemove = () => {
-        setCanvasDrawImageProps(prevState => {
-            selectionLevelProps.forEach(selectionLevelProp => {
-                prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
-            })
-            return prevState;
-        });
-        if (selectionLevelProps.includes('frameSet')) {
-            setTooltips(prevState => Object.fromEntries(Object.keys(prevState).map(key => [key, '---'])));
-            setCanvasDrawImageProps(initialCanvasDrawImageProps);
-            handleReset();
-        }
-        setRemoveComponentSelection(prevState => !prevState);
-        setRerender(prevState => !prevState);
-    }
-
     const handleReset = () => {
         setCanvasDrawImageProps({
             frameSet: {},
@@ -404,7 +388,7 @@ export default function BikeBuilder({
                 <div>
                     <SelectionTabs indexArray={frameSetDimensions.hasStem && frameSetDimensions.hasHandleBar ? [1, 2, 3, 5, 6] : [1, 2, 3, 4, 5, 6]} value={selectionLevel} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
                 </div>
-                <FrameSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                <FrameSet parentProps={parentProps} handleReset={handleReset} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
                 <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4 && !frameSetDimensions.hasStem} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
@@ -428,14 +412,13 @@ export default function BikeBuilder({
                             <>
                                 <div className="flex justify-between py-2">
                                     <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={selectionLevel === 1} onClick={handleSelectionLevel}>Prev</Button>
-                                    <Button size="small" variant="text" color="error" onClick={handleRemove}>Remove</Button>
+                                    <Button size="small" variant="text" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 6 || selectionLevel === 1 ? true : false} onClick={handleSelectionLevel}>Skip</Button>
                                     {
                                         selectionLevel < 6 ?
                                             <Button size="small" variant="contained" onClick={handleSelectionLevel}>Next</Button> :
                                             <Button size="small" variant="contained" onClick={() => { setSelectionLevel(prevState => prevState + 1); setShowSummary(true); }}>Summary</Button>
                                     }
                                 </div>
-                                <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 6 || selectionLevel === 1 ? true : false} fullWidth onClick={handleSelectionLevel}>Skip</Button>
                             </>
                     }
                     <div className='flex justify-between items-center'>
