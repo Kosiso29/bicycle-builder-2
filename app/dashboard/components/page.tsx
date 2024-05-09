@@ -27,7 +27,6 @@ export default function Components() {
         };
         if (models?.length > 0) {
             setPresets(['None', ...Object.keys(models[0]).filter(key => /^best_/.test(key))]);
-            console.log('presets', models);
         };
     }, [categories, models]);
 

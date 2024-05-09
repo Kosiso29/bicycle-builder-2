@@ -6,11 +6,12 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
+import { CancelOutlined, CloseOutlined } from "@mui/icons-material";
 import Loading from "@/app/components/loading";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel }) {
-    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection, selectionPresetProps } = parentProps;
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection, selectionPresetProps, initialCanvasDrawImageProps, handleReset, setTooltips } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -44,6 +45,33 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             setActualWidth(modelData?.actualWidth);
         }
         setSelectedIndex(index);
+    }
+
+    const handleModelRemove = (index) => {
+        setModel("");
+        setSelectedIndex(null);
+        imageRef.current?.setAttribute("src", "/Cadex-Saddle.png");
+        if (/Wheel Set/i.test(label)) {
+            imageRef2.current?.setAttribute("src", "/Cadex-Saddle.png");
+        };
+        setCanvasDrawImageProps(prevState => {
+            selectionLevelProps.forEach(selectionLevelProp => {
+                if (selectionLevelProps.length > 1 && !selectionLevelProp.includes('Wheel')) {
+                    if (selectionLevelProp === identifier) {
+                        prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
+                    }
+                } else {
+                    prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
+                }
+            })
+            return prevState;
+        });
+        if (selectionLevelProps.includes('frameSet')) {
+            setTooltips(prevState => Object.fromEntries(Object.keys(prevState).map(key => [key, '---'])));
+            setCanvasDrawImageProps(initialCanvasDrawImageProps);
+            handleReset();
+        }
+        setRerender(prevState => !prevState);
     }
 
     const updateCanvasImage = () => {
@@ -143,6 +171,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setUniqueBrands(reducedBrands);
     }, [databaseModels]);
 
+    useEffect(() => {
+        if (!show && identifier === 'handleBar') {
+            setModel("");
+            setSelectedIndex(null);
+        }
+    }, [show])
+
     if (!show) {
         return null;
     }
@@ -190,6 +225,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                         <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white" : "text-primary"}`} primary={CurrencyFormatter(item.price)} style={{ lineHeight: 1, fontSize: ".2rem" }} />
+                                        <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white" : "hidden"}`} onClick={() => { handleModelRemove(index) }} primary={<CloseOutlined fontSize="small" />} />
                                     </ListItemButton>
                                 </ListItem>
                             ))

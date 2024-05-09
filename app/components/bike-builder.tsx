@@ -63,7 +63,8 @@ export default function BikeBuilder({
         selectionPresetProps,
         setSelectionPresetProps,
         setSelectionLevel,
-        setShowSummary
+        setShowSummary,
+        initialCanvasDrawImageProps
     }
 
     const canvasNumberData = [
@@ -350,12 +351,14 @@ export default function BikeBuilder({
     }, [selectionLevel]);
 
     useEffect(() => {
-        if (!canvasDrawImageProps.stem.image) {
+        if (!canvasDrawImageProps.stem.model && canvasDrawImageProps.handleBar.image && !frameSetDimensions.hasStem) {
             setCanvasDrawImageProps(prevState => ({
                 ...prevState,
                 handleBar: {}
-            }))
+            }));
+            setRerender(prevState => !prevState);
         }
+        // TODO: remove this when groupset is created in the backend
         if (canvasDrawImageProps.groupSet_drivetrain?.image && canvasDrawImageProps.frameSet?.model) {
             setCanvasDrawImageProps(prevState => ({
                 ...prevState,
