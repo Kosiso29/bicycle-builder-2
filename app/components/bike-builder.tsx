@@ -378,7 +378,7 @@ export default function BikeBuilder({
                             </Link>
                         </div>
                     </div>
-                    <div className="h-[620px] w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
+                    <div className="h-[calc(100vh-9rem)] min-h-[560px] max-h-[620px] w-[calc(((100vh-9rem)*900)/620)] min-w-[810px] max-w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
                         <canvas id="canvas" className="scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
                     </div>
                 </div>
