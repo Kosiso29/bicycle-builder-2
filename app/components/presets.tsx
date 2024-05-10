@@ -66,7 +66,7 @@ export default function Presets({ parentProps }: { parentProps: any }) {
 
     const presets = () => {
         return [
-            { title: "Aerodynamics", buttonText: "build preset", onClick: () => { getPresetComponents("best_aerodynamics"); } },
+            { title: "Aerodynamic", buttonText: "build preset", onClick: () => { getPresetComponents("best_aerodynamics"); } },
             { title: "Lightweight", buttonText: "build preset", onClick: () => { getPresetComponents("best_lightweight"); } },
         ]
     }

@@ -30,10 +30,10 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
     }, [openFullTooltips])
 
     return (
-        <div ref={tooltipsRef} className="bg-gray-100 rounded-t-lg border border-black p-3 pb-5">
+        <div ref={tooltipsRef} className="bg-gray-100 rounded-t-lg border border-black p-3 pb-5 flex-grow">
             <div className="flex justify-between relative">
                 <div className="max-w-[65%]">
-                    <p>{canvasDrawImageProps.frameSet.model || "Key metrics about the selection"} -</p>
+                    <p>{canvasDrawImageProps.frameSet.model && canvasDrawImageProps.frameSet.model + " -"}</p>
                     <p className="whitespace-pre-wrap">{openFullTooltips ? tooltips.key_metrics : tooltips.key_metrics.split("\n")?.[0]}</p>
                 </div>
                 {/* <div>
@@ -43,7 +43,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
                 </div> */}
                 {openFullTooltips ? <ArrowUpwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" /> :
                     <ArrowDownwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" />}
-                <div className="text-right">
+                <div className="text-right [&>p]:h-6">
                     <p>Aerodynamics - {renderStars(tooltips.aerodynamics)}</p>
                     <p>Weight - {renderStars(tooltips.weight)}</p>
                     <p>Comfort -  {renderStars(tooltips.comfort)}​</p>
