@@ -352,7 +352,7 @@ export default function BikeBuilder({
             setRerender(prevState => !prevState);
         }
         if (Object.keys(frameSetDimensions).length > 0) {
-            if (canvasSelectionLevelState === 1 && !frameSetDimensions.width) {
+            if (canvasSelectionLevelState === 1 && !canvasDrawImageProps.frameSet.model) {
                 setImage(false, true);
             } else {
                 setImage();
