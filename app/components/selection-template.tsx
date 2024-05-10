@@ -223,7 +223,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                         <div className="flex items-center gap-2">
-                                            <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white" : "text-primary"}`} primary={CurrencyFormatter(item.price)} style={{ lineHeight: 1, fontSize: ".2rem" }} />
+                                            <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white whitespace-nowrap" : "text-primary"}`} primary={CurrencyFormatter(item.price)} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                             <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white" : selectedIndex === null ? "hidden" : "invisible"}`} onClick={() => { handleModelRemove(index) }} primary={<CloseOutlined fontSize="small" />} />
                                         </div>
                                     </ListItemButton>

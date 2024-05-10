@@ -41,8 +41,8 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
                     <p>Max Speed – 53-11 = xyz​</p>
                     <p>Min Speed  - 39-34 = abc</p>
                 </div> */}
-                {openFullTooltips ? <ArrowUpwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" /> :
-                    <ArrowDownwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" />}
+                {openFullTooltips ? <ArrowDownwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" /> :
+                    <ArrowUpwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" />}
                 <div className="text-right [&>p]:h-6">
                     <p>Aerodynamics - {renderStars(tooltips.aerodynamics)}</p>
                     <p>Weight - {renderStars(tooltips.weight)}</p>

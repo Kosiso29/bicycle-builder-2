@@ -415,7 +415,7 @@ export default function BikeBuilder({
                                     <Button size="small" variant="text" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 6 || selectionLevel === 1 ? true : false} onClick={handleSelectionLevel}>Skip</Button>
                                     {
                                         selectionLevel < 6 ?
-                                            <Button size="small" variant="contained" onClick={handleSelectionLevel}>Next</Button> :
+                                            <Button size="small" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSelectionLevel} disabled={canvasSelectionLevelState === 1 || (canvasSelectionLevelState <= selectionLevel && selectionLevel !== 2)}>Next</Button> :
                                             <Button size="small" variant="contained" onClick={() => { setSelectionLevel(prevState => prevState + 1); setShowSummary(true); }}>Summary</Button>
                                     }
                                 </div>
