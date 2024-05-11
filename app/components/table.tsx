@@ -118,11 +118,11 @@ export default function Table({ models }) {
                     <table className="hidden min-w-full text-gray-900 lg:table max-w-full">
                         <thead className="rounded-lg text-left text-sm font-normal">
                             <tr>
-                                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                                    Model name
-                                </th>
                                 <th scope="col" className="px-3 py-5 font-medium">
                                     Brand name
+                                </th>
+                                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                                    Model name
                                 </th>
                                 <th scope="col" className="px-3 py-5 font-medium">
                                     <span className="inline-flex justify-center w-full">Image</span>
@@ -144,11 +144,11 @@ export default function Table({ models }) {
                                     key={model.id}
                                     className="w-full max-w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                                 >
-                                    <td className="py-3 pl-6 pr-3 max-w-48">
-                                        {model.model}
-                                    </td>
                                     <td className="whitespace-nowrap px-3 py-3">
                                         {model.brand}
+                                    </td>
+                                    <td className="py-3 pl-6 pr-3 max-w-48">
+                                        {model.model}
                                     </td>
                                     <td className="relative">
                                         <div className="relative my-[1px] w-auto h-12">

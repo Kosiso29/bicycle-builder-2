@@ -25,12 +25,12 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
         if (openFullTooltips) {
             tooltipsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
         } else {
-            window.scrollTo(0, 0);
+            tooltipsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }, [openFullTooltips])
 
     return (
-        <div ref={tooltipsRef} className="bg-gray-100 rounded-t-lg border border-black p-3 pb-5 flex-grow">
+        <div ref={tooltipsRef} className="bg-gray-100 border border-black p-3 pb-5 flex-grow">
             <div className="flex justify-between relative">
                 <div className="max-w-[65%]">
                     <p>{canvasDrawImageProps.frameSet.model && canvasDrawImageProps.frameSet.model + " -"}</p>
@@ -41,8 +41,8 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
                     <p>Max Speed – 53-11 = xyz​</p>
                     <p>Min Speed  - 39-34 = abc</p>
                 </div> */}
-                {openFullTooltips ? <ArrowDownwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" /> :
-                    <ArrowUpwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" />}
+                {openFullTooltips ? <ArrowUpwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" /> :
+                    <ArrowDownwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" />}
                 <div className="text-right [&>p]:h-6">
                     <p>Aerodynamics - {renderStars(tooltips.aerodynamics)}</p>
                     <p>Weight - {renderStars(tooltips.weight)}</p>

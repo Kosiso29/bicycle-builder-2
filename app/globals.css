@@ -2,12 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    /* For Firefox */
+    scrollbar-width: thin;
+}
+
+/* Chrome, Edge, and Safari */
+html::-webkit-scrollbar {
+    width: 4px;
+}
+
+html::-webkit-scrollbar-thumb {
+    /* Roundness of the thumb */
+    border-radius: 2px;
+}
+
 body {
     margin: 0;
 }
 
 button.MuiButton-containedPrimary {
-  background-color: #1976d2;
+    background-color: #1976d2;
 }
 
 :root {
