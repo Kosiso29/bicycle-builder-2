@@ -393,7 +393,21 @@ export default function Form({ model }: { model?: any }) {
                                                 <OffsetTextField name='back_wheel_y' defaultValue={model?.back_wheel_y || "265"} label='Back Wheel Offset Y' />
                                             </div>
 
+                                            <div className="flex gap-4">
+                                                {/* Group Set Drivetrain Offset X */}
+                                                <OffsetTextField name='groupset_drivetrain_x' defaultValue={model?.groupset_drivetrain_x || "185"} label='Groupset Drivetrain Offset X' />
 
+                                                {/* Group Set Drivetrain Offset Y */}
+                                                <OffsetTextField name='groupset_drivetrain_y' defaultValue={model?.groupset_drivetrain_y || "380"} label='Groupset Drivetrain Offset Y' />
+                                            </div>
+
+                                            <div className="flex gap-4">
+                                                {/* Group Set Shifter Offset X */}
+                                                <OffsetTextField name='groupset_shifter_x' defaultValue={model?.groupset_shifter_x || "704"} label='Groupset Shifter Offset X' />
+
+                                                {/* Group Set Shifter Offset Y */}
+                                                <OffsetTextField name='groupset_shifter_y' defaultValue={model?.groupset_shifter_y || "121"} label='Groupset Shifter Offset Y' />
+                                            </div>
 
                                         </div> : null
                                 }
