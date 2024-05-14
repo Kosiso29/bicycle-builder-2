@@ -17,11 +17,13 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
 
         const image = document.getElementById('preview');
         const frameSetModelData = allModels.filter(model => model.src === image?.getAttribute('src'))[0];
-        const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY, hasStem, hasHandleBar, key_metrics, aerodynamics, weight, comfort, stiffness, overall } = frameSetModelData;
+        const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
+            groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY,
+            hasStem, hasHandleBar, key_metrics, aerodynamics, weight, comfort, stiffness, overall } = frameSetModelData;
         const width = PREDEFINED_FRAMESET_WIDTH;
         const height = (image?.height * ( PREDEFINED_FRAMESET_WIDTH / image?.width ));
 
-        const offsets = { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY };
+        const offsets = { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY, groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY };
         changeObjectValuesToNumber(offsets);
 
         setFrameSetDimensions({ width, height, actualWidth, ...offsets, hasStem, hasHandleBar });

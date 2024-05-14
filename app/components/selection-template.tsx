@@ -80,53 +80,71 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             return prevState;
         });
 
-        const values = Object.values(imageProps)[0];
-        const stemX = values?.stemX;
-        const stemY = values?.stemY;
-        const saddleX = values?.saddleX;
-        const saddleY = values?.saddleY;
-        const frontWheelSetX = values?.frontWheelSetX;
-        const frontWheelSetY = values?.frontWheelSetY;
-        const backWheelSetX = values?.backWheelSetX;
-        const backWheelSetY = values?.backWheelSetY;
+        if (identifier === "frameSet") {
 
-        setCanvasDrawImageProps(prevState => {
-            return {
-                ...prevState,
-                stem: {
-                    ...prevState.stem,
-                    x: stemX ? stemX : prevState.stem.x,
-                    y: stemY ? stemY : prevState.stem.y
-                },
-                handleBar: {
-                    ...prevState.handleBar,
-                    x: stemX ? stemX + 30 : prevState.handleBar.x,
-                    y: stemY ? stemY + 2 : prevState.handleBar.y
-                },
-                saddle: {
-                    ...prevState.saddle,
-                    x: saddleX ? saddleX : prevState.saddle.x,
-                    y: saddleY ? saddleY - prevState.saddle.height : prevState.saddle.y
-                },
-                frontWheelSet: {
-                    ...prevState.frontWheelSet,
-                    x: frontWheelSetX ? frontWheelSetX : prevState.frontWheelSet.x,
-                    y: frontWheelSetY ? frontWheelSetY : prevState.frontWheelSet.y
-                },
-                backWheelSet: {
-                    ...prevState.backWheelSet,
-                    x: backWheelSetX ? backWheelSetX : prevState.backWheelSet.x,
-                    y: backWheelSetY ? backWheelSetY : prevState.backWheelSet.y
-                },
-                tire: {
-                    ...prevState.tire,
-                    x: frontWheelSetX ? frontWheelSetX - 10 : prevState.tire.x,
-                    y: frontWheelSetY ? frontWheelSetY - 11 : prevState.tire.y,
-                    x2: backWheelSetX ? backWheelSetX - 10 : prevState.tire.x2,
-                    y2: backWheelSetY ? backWheelSetY - 11 : prevState.tire.y2
-                },
-            }
-        });
+            const values = Object.values(imageProps)[0];
+            const stemX = values?.stemX;
+            const stemY = values?.stemY;
+            const saddleX = values?.saddleX;
+            const saddleY = values?.saddleY;
+            const frontWheelSetX = values?.frontWheelSetX;
+            const frontWheelSetY = values?.frontWheelSetY;
+            const backWheelSetX = values?.backWheelSetX;
+            const backWheelSetY = values?.backWheelSetY;
+            const groupSet_drivetrainX = values?.groupSet_drivetrainX;
+            const groupSet_drivetrainY = values?.groupSet_drivetrainY;
+            const groupSet_shifterX = values?.groupSet_shifterX;
+            const groupSet_shifterY = values?.groupSet_shifterY;
+    
+            setCanvasDrawImageProps(prevState => {
+                return {
+                    ...prevState,
+                    stem: {
+                        ...prevState.stem,
+                        x: stemX ? stemX : prevState.stem.x,
+                        y: stemY ? stemY : prevState.stem.y
+                    },
+                    handleBar: {
+                        ...prevState.handleBar,
+                        x: stemX ? stemX + 30 : prevState.handleBar.x,
+                        y: stemY ? stemY + 2 : prevState.handleBar.y
+                    },
+                    saddle: {
+                        ...prevState.saddle,
+                        x: saddleX ? saddleX : prevState.saddle.x,
+                        y: saddleY ? saddleY - prevState.saddle.height : prevState.saddle.y
+                    },
+                    frontWheelSet: {
+                        ...prevState.frontWheelSet,
+                        x: frontWheelSetX ? frontWheelSetX : prevState.frontWheelSet.x,
+                        y: frontWheelSetY ? frontWheelSetY : prevState.frontWheelSet.y
+                    },
+                    backWheelSet: {
+                        ...prevState.backWheelSet,
+                        x: backWheelSetX ? backWheelSetX : prevState.backWheelSet.x,
+                        y: backWheelSetY ? backWheelSetY : prevState.backWheelSet.y
+                    },
+                    tire: {
+                        ...prevState.tire,
+                        x: frontWheelSetX ? frontWheelSetX - 10 : prevState.tire.x,
+                        y: frontWheelSetY ? frontWheelSetY - 11 : prevState.tire.y,
+                        x2: backWheelSetX ? backWheelSetX - 10 : prevState.tire.x2,
+                        y2: backWheelSetY ? backWheelSetY - 11 : prevState.tire.y2
+                    },
+                    groupSet_drivetrain: {
+                        ...prevState.groupSet_drivetrain,
+                        x: groupSet_drivetrainX ? groupSet_drivetrainX : prevState.groupSet_drivetrain.x,
+                        y: groupSet_drivetrainY ? groupSet_drivetrainY : prevState.groupSet_drivetrain.y,
+                    },
+                    groupSet_shifter: {
+                        ...prevState.groupSet_shifter,
+                        x: groupSet_shifterX ? groupSet_shifterX : prevState.groupSet_shifter.x,
+                        y: groupSet_shifterY ? groupSet_shifterY : prevState.groupSet_shifter.y,
+                    },
+                }
+            });
+        }
+
         setRerender(prevState => !prevState);
     }
 

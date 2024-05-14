@@ -343,14 +343,14 @@ export default function BikeBuilder({
             setRerender(prevState => !prevState);
         }
         // TODO: remove this when groupset is created in the backend
-        if (canvasDrawImageProps.groupSet_drivetrain?.image && canvasDrawImageProps.frameSet?.model) {
-            setCanvasDrawImageProps(prevState => ({
-                ...prevState,
-                groupSet_drivetrain: {},
-                groupSet_shifter: {}
-            }));
-            setRerender(prevState => !prevState);
-        }
+        // if (canvasDrawImageProps.groupSet_drivetrain?.image && canvasDrawImageProps.frameSet?.model) {
+        //     setCanvasDrawImageProps(prevState => ({
+        //         ...prevState,
+        //         groupSet_drivetrain: {},
+        //         groupSet_shifter: {}
+        //     }));
+        //     setRerender(prevState => !prevState);
+        // }
         if (Object.keys(frameSetDimensions).length > 0) {
             if (canvasSelectionLevelState === 1 && !canvasDrawImageProps.frameSet.model) {
                 setImage(false, true);
