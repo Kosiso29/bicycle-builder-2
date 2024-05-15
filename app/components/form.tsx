@@ -57,8 +57,10 @@ export default function Form({ model }: { model?: any }) {
 
     const handleFormSubmission = model ? handleFormUpdate : handleFormCreation;
 
-    const showAllOffsets = (Object.values(categories)[0] === categories[categoryId]) || (Object.values(categories)[3] === categories[categoryId]);
+    const showOffsets = (Object.values(categories)[0] === categories[categoryId]) || (Object.values(categories)[3] === categories[categoryId]) || Object.values(categories)[4] === categories[categoryId];
     const showFrameSetOffsets = Object.values(categories)[0] === categories[categoryId];
+    const showFrameSetStemOffsets = Object.values(categories)[0] === categories[categoryId] || (Object.values(categories)[3] === categories[categoryId]);
+    const showStemHandleBarOffsets = Object.values(categories)[3] === categories[categoryId] || Object.values(categories)[4] === categories[categoryId];
 
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
@@ -236,181 +238,198 @@ export default function Form({ model }: { model?: any }) {
                 }
 
                 {/* Specifications */}
-                <fieldset className='mb-4'>
-                    <legend className="mb-2 block text-sm font-medium">
-                        Specifications
-                    </legend>
-                    <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                        {
-                            !showFrameSetOffsets ?
-                                <div className="flex gap-4 py-5">
+                {
+                    categoryId ?
+                        <fieldset className='mb-4'>
+                            <legend className="mb-2 block text-sm font-medium">
+                                Specifications
+                            </legend>
+                            <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+                                {
+                                    !showFrameSetOffsets ?
+                                        <div className="flex gap-4 py-5">
 
-                                    {/* Best Aerodynamics */}
-                                    <div className="flex items-center gap-2">
-                                        <label
-                                            htmlFor="best_aerodynamics"
-                                            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                        >
-                                            Aerodynamic
-                                        </label>
-                                        <input
-                                            id="best_aerodynamics"
-                                            name="best_aerodynamics"
-                                            type="checkbox"
-                                            disabled={checkExistingPreset(categoryId, 'best_aerodynamics', model?.best_aerodynamics)}
-                                            defaultChecked={model?.best_aerodynamics}
-                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                            aria-describedby="best_aerodynamics-error"
-                                        />
-                                    </div>
+                                            {/* Best Aerodynamics */}
+                                            <div className="flex items-center gap-2">
+                                                <label
+                                                    htmlFor="best_aerodynamics"
+                                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                                >
+                                                    Aerodynamic
+                                                </label>
+                                                <input
+                                                    id="best_aerodynamics"
+                                                    name="best_aerodynamics"
+                                                    type="checkbox"
+                                                    disabled={checkExistingPreset(categoryId, 'best_aerodynamics', model?.best_aerodynamics)}
+                                                    defaultChecked={model?.best_aerodynamics}
+                                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                                    aria-describedby="best_aerodynamics-error"
+                                                />
+                                            </div>
 
-                                    {/* Best Lightweight */}
-                                    <div className="flex items-center gap-2">
-                                        <label
-                                            htmlFor="best_lightweight"
-                                            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                        >
-                                            Lightweight
-                                        </label>
-                                        <input
-                                            id="best_lightweight"
-                                            name="best_lightweight"
-                                            type="checkbox"
-                                            disabled={checkExistingPreset(categoryId, 'best_lightweight', model?.best_lightweight)}
-                                            defaultChecked={model?.best_lightweight}
-                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                            aria-describedby="best_lightweight-error"
-                                        />
-                                    </div>
-                                </div>
-                                : null
-                        }
-                        {
-                            showFrameSetOffsets ?
-                                < div className="flex flex-wrap gap-4 pt-5">
-                                    {/* Aerodynamics */}
-                                    <OffsetTextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics || "0.0"} label='Aerodynamics' />
+                                            {/* Best Lightweight */}
+                                            <div className="flex items-center gap-2">
+                                                <label
+                                                    htmlFor="best_lightweight"
+                                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                                >
+                                                    Lightweight
+                                                </label>
+                                                <input
+                                                    id="best_lightweight"
+                                                    name="best_lightweight"
+                                                    type="checkbox"
+                                                    disabled={checkExistingPreset(categoryId, 'best_lightweight', model?.best_lightweight)}
+                                                    defaultChecked={model?.best_lightweight}
+                                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                                    aria-describedby="best_lightweight-error"
+                                                />
+                                            </div>
+                                        </div>
+                                        : null
+                                }
+                                {
+                                    showFrameSetOffsets ?
+                                        < div className="flex flex-wrap gap-4 pt-5">
+                                            {/* Aerodynamics */}
+                                            <OffsetTextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics || "0.0"} label='Aerodynamics' />
 
-                                    {/* Weight */}
-                                    <OffsetTextField name='weight' step={0.5} min={0.0} max={5.0} defaultValue={model?.weight || "0.0"} label='Weight' />
+                                            {/* Weight */}
+                                            <OffsetTextField name='weight' step={0.5} min={0.0} max={5.0} defaultValue={model?.weight || "0.0"} label='Weight' />
 
-                                    {/* Comfort */}
-                                    <OffsetTextField name='comfort' step={0.5} min={0.0} max={5.0} defaultValue={model?.comfort || "0.0"} label='Comfort' />
+                                            {/* Comfort */}
+                                            <OffsetTextField name='comfort' step={0.5} min={0.0} max={5.0} defaultValue={model?.comfort || "0.0"} label='Comfort' />
 
-                                    {/* Stiffness */}
-                                    <OffsetTextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness || "0.0"} label='Stiffness-to-Weight' />
+                                            {/* Stiffness */}
+                                            <OffsetTextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness || "0.0"} label='Stiffness-to-Weight' />
 
-                                    {/* Overall */}
-                                    <OffsetTextField name='overall' step={0.5} min={0.0} max={5.0} defaultValue={model?.overall || "0.0"} label='Overall' />
-                                </div>
-                                : null
-                        }
-                    </div>
-                </fieldset>
+                                            {/* Overall */}
+                                            <OffsetTextField name='overall' step={0.5} min={0.0} max={5.0} defaultValue={model?.overall || "0.0"} label='Overall' />
+                                        </div>
+                                        : null
+                                }
+                            </div>
+                        </fieldset>
+                        : null
+                }
 
                 {/* Offsets */}
                 {
-                    showAllOffsets ?
+                    showOffsets ?
                         <fieldset className='mb-4'>
                             <legend className="mb-2 block text-sm font-medium">
                                 Offsets
                             </legend>
                             <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                                <div className="flex gap-4 py-5">
+                                {
+                                    showFrameSetStemOffsets ?
+                                        <div className="flex gap-4 py-5">
 
-                                    {/* Stem */}
-                                    {
-                                        showFrameSetOffsets ?
+                                            {/* Stem */}
+                                            {
+                                                showFrameSetOffsets ?
+                                                    <div className="flex items-center gap-2">
+                                                        <label
+                                                            htmlFor="has_stem"
+                                                            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                                        >
+                                                            Stem
+                                                        </label>
+                                                        <input
+                                                            id="has_stem"
+                                                            name="has_stem"
+                                                            type="checkbox"
+                                                            defaultChecked={model?.has_stem}
+                                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                                            aria-describedby="has_stem-error"
+                                                        />
+                                                    </div> : null
+                                            }
+
+                                            {/* Handle Bar */}
                                             <div className="flex items-center gap-2">
                                                 <label
-                                                    htmlFor="has_stem"
+                                                    htmlFor="has_handle_bar"
                                                     className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
                                                 >
-                                                    Stem
+                                                    Handle Bar
                                                 </label>
                                                 <input
-                                                    id="has_stem"
-                                                    name="has_stem"
+                                                    id="has_handle_bar"
+                                                    name="has_handle_bar"
                                                     type="checkbox"
-                                                    defaultChecked={model?.has_stem}
+                                                    defaultChecked={model?.has_handle_bar}
                                                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                                    aria-describedby="has_stem-error"
+                                                    aria-describedby="has_handle_bar-error"
                                                 />
-                                            </div> : null
+                                            </div>
+                                        </div>
+                                        : null
+                                }
+                                {showFrameSetOffsets ? <hr className='h-[2px] bg-gray-300' /> : null}
+                                < div className="flex justify-between flex-wrap gap-4 pt-5">
+                                    {
+                                        showFrameSetOffsets ?
+                                            <>
+                                                <div className="flex gap-4">
+                                                    {/* Stem Offset X */}
+                                                    <OffsetTextField name='stem_x' defaultValue={model?.stem_x || "600"} label='Stem Offset X' />
+
+                                                    {/* Stem Offset Y */}
+                                                    <OffsetTextField name='stem_y' defaultValue={model?.stem_y || "150"} label='Stem Offset Y' />
+                                                </div>
+
+                                                <div className="flex gap-4">
+                                                    {/* Saddle Offset X */}
+                                                    <OffsetTextField name='saddle_x' defaultValue={model?.saddle_x || "240"} label='Saddle Offset X' />
+
+                                                    {/* Saddle Offset Y */}
+                                                    <OffsetTextField name='saddle_y' defaultValue={model?.saddle_y || "110"} label='Saddle Offset Y' />
+                                                </div>
+
+                                                <div className="flex gap-4">
+                                                    {/* Front Wheel Offset X */}
+                                                    <OffsetTextField name='front_wheel_x' defaultValue={model?.front_wheel_x || "550"} label='Front Wheel Offset X' />
+
+                                                    {/* Front Wheel Offset Y */}
+                                                    <OffsetTextField name='front_wheel_y' defaultValue={model?.front_wheel_y || "265"} label='Front Wheel Offset Y' />
+                                                </div>
+
+                                                <div className="flex gap-4">
+                                                    {/* Back Wheel Offset X */}
+                                                    <OffsetTextField name='back_wheel_x' defaultValue={model?.back_wheel_x || "45"} label='Back Wheel Offset X' />
+
+                                                    {/* Back Wheel Offset Y */}
+                                                    <OffsetTextField name='back_wheel_y' defaultValue={model?.back_wheel_y || "265"} label='Back Wheel Offset Y' />
+                                                </div>
+                                            </>
+                                            : null
+                                    }
+                                    {
+                                        showFrameSetOffsets || showStemHandleBarOffsets ?
+                                            <>
+                                                <div className="flex gap-4">
+                                                    {/* Group Set Drivetrain Offset X */}
+                                                    <OffsetTextField name='groupset_drivetrain_x' defaultValue={model?.groupset_drivetrain_x || "185"} label='Groupset Drivetrain Offset X' />
+
+                                                    {/* Group Set Drivetrain Offset Y */}
+                                                    <OffsetTextField name='groupset_drivetrain_y' defaultValue={model?.groupset_drivetrain_y || "380"} label='Groupset Drivetrain Offset Y' />
+                                                </div>
+
+                                                <div className="flex gap-4">
+                                                    {/* Group Set Shifter Offset X */}
+                                                    <OffsetTextField name='groupset_shifter_x' defaultValue={model?.groupset_shifter_x || "704"} label='Groupset Shifter Offset X' />
+
+                                                    {/* Group Set Shifter Offset Y */}
+                                                    <OffsetTextField name='groupset_shifter_y' defaultValue={model?.groupset_shifter_y || "121"} label='Groupset Shifter Offset Y' />
+                                                </div>
+                                            </>
+                                            : null
                                     }
 
-                                    {/* Handle Bar */}
-                                    <div className="flex items-center gap-2">
-                                        <label
-                                            htmlFor="has_handle_bar"
-                                            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                        >
-                                            Handle Bar
-                                        </label>
-                                        <input
-                                            id="has_handle_bar"
-                                            name="has_handle_bar"
-                                            type="checkbox"
-                                            defaultChecked={model?.has_handle_bar}
-                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                            aria-describedby="has_handle_bar-error"
-                                        />
-                                    </div>
+
                                 </div>
-                                {showFrameSetOffsets ? <hr className='h-[2px] bg-gray-300' /> : null}
-                                {
-                                    showFrameSetOffsets ?
-                                        < div className="flex justify-between flex-wrap gap-4 pt-5">
-                                            <div className="flex gap-4">
-                                                {/* Stem Offset X */}
-                                                <OffsetTextField name='stem_x' defaultValue={model?.stem_x || "600"} label='Stem Offset X' />
-
-                                                {/* Stem Offset Y */}
-                                                <OffsetTextField name='stem_y' defaultValue={model?.stem_y || "150"} label='Stem Offset Y' />
-                                            </div>
-
-                                            <div className="flex gap-4">
-                                                {/* Saddle Offset X */}
-                                                <OffsetTextField name='saddle_x' defaultValue={model?.saddle_x || "240"} label='Saddle Offset X' />
-
-                                                {/* Saddle Offset Y */}
-                                                <OffsetTextField name='saddle_y' defaultValue={model?.saddle_y || "110"} label='Saddle Offset Y' />
-                                            </div>
-
-                                            <div className="flex gap-4">
-                                                {/* Front Wheel Offset X */}
-                                                <OffsetTextField name='front_wheel_x' defaultValue={model?.front_wheel_x || "550"} label='Front Wheel Offset X' />
-
-                                                {/* Front Wheel Offset Y */}
-                                                <OffsetTextField name='front_wheel_y' defaultValue={model?.front_wheel_y || "265"} label='Front Wheel Offset Y' />
-                                            </div>
-
-                                            <div className="flex gap-4">
-                                                {/* Back Wheel Offset X */}
-                                                <OffsetTextField name='back_wheel_x' defaultValue={model?.back_wheel_x || "45"} label='Back Wheel Offset X' />
-
-                                                {/* Back Wheel Offset Y */}
-                                                <OffsetTextField name='back_wheel_y' defaultValue={model?.back_wheel_y || "265"} label='Back Wheel Offset Y' />
-                                            </div>
-
-                                            <div className="flex gap-4">
-                                                {/* Group Set Drivetrain Offset X */}
-                                                <OffsetTextField name='groupset_drivetrain_x' defaultValue={model?.groupset_drivetrain_x || "185"} label='Groupset Drivetrain Offset X' />
-
-                                                {/* Group Set Drivetrain Offset Y */}
-                                                <OffsetTextField name='groupset_drivetrain_y' defaultValue={model?.groupset_drivetrain_y || "380"} label='Groupset Drivetrain Offset Y' />
-                                            </div>
-
-                                            <div className="flex gap-4">
-                                                {/* Group Set Shifter Offset X */}
-                                                <OffsetTextField name='groupset_shifter_x' defaultValue={model?.groupset_shifter_x || "704"} label='Groupset Shifter Offset X' />
-
-                                                {/* Group Set Shifter Offset Y */}
-                                                <OffsetTextField name='groupset_shifter_y' defaultValue={model?.groupset_shifter_y || "121"} label='Groupset Shifter Offset Y' />
-                                            </div>
-
-                                        </div> : null
-                                }
                             </div>
                         </fieldset> : null
                 }
