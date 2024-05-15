@@ -15,14 +15,16 @@ export default function Stem({ parentProps, show, canvasContext, canvasX, canvas
 
         const image = document.getElementById('preview');
         const stemModelData = allModels.filter(item => item.model === extraDrawImageProps.model && item.brand === extraDrawImageProps.brand && item.category === 'Stem')[0];
-        const { hasHandleBar } = stemModelData;
+        const { hasHandleBar, groupSet_shifterX, groupSet_shifterY, } = stemModelData;
 
-        setStemDimensions({ hasHandleBar });
+        const offsets = { groupSet_shifterX, groupSet_shifterY };
+
+        setStemDimensions({ hasHandleBar, ...offsets });
 
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = image?.height * (width / image?.width);
 
-        return { stem: { image, x, y, width, height, globalCompositeOperation: 'source-over', ...extraDrawImageProps } };
+        return { stem: { image, x, y, width, height, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets, hasHandleBar } };
     }
 
     useEffect(() => {

@@ -11,7 +11,8 @@ import Loading from "@/app/components/loading";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
-    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection, selectionPresetProps, initialCanvasDrawImageProps, setTooltips, canvasDrawImageProps } = parentProps;
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection, selectionPresetProps, initialCanvasDrawImageProps,
+        canvasDrawImageProps, frameSetDimensions, stemDimensions } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -80,9 +81,24 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             return prevState;
         });
 
-        if (identifier === "frameSet") {
+        const componentsWithOffsets = ["frameSet", "stem", "handleBar"];
+
+        const getGroupsetOffsets = (groupSetOffset, hasHandleBar) => {
+            if (identifier === "frameSet" && (hasHandleBar || frameSetDimensions.hasHandleBar)) {
+                return groupSetOffset;
+            }
+            if (identifier === "stem" && (hasHandleBar || stemDimensions.hasHandleBar)) {
+                return groupSetOffset;
+            }
+            if (identifier === "handleBar") {
+                return groupSetOffset;
+            }
+        };
+
+        if (componentsWithOffsets.includes(identifier)) {
 
             const values = Object.values(imageProps)[0];
+            const hasHandleBar = values?.hasHandleBar;
             const stemX = values?.stemX;
             const stemY = values?.stemY;
             const saddleX = values?.saddleX;
@@ -93,9 +109,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             const backWheelSetY = values?.backWheelSetY;
             const groupSet_drivetrainX = values?.groupSet_drivetrainX;
             const groupSet_drivetrainY = values?.groupSet_drivetrainY;
-            const groupSet_shifterX = values?.groupSet_shifterX;
-            const groupSet_shifterY = values?.groupSet_shifterY;
-    
+            const groupSet_shifterX = getGroupsetOffsets(values?.groupSet_shifterX, hasHandleBar);
+            const groupSet_shifterY = getGroupsetOffsets(values?.groupSet_shifterY, hasHandleBar);
+
             setCanvasDrawImageProps(prevState => {
                 return {
                     ...prevState,
