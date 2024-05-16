@@ -95,71 +95,90 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
         };
 
-        if (componentsWithOffsets.includes(identifier)) {
-
-            const values = Object.values(imageProps)[0];
-            const hasHandleBar = values?.hasHandleBar;
-            const stemX = values?.stemX;
-            const stemY = values?.stemY;
-            const saddleX = values?.saddleX;
-            const saddleY = values?.saddleY;
-            const frontWheelSetX = values?.frontWheelSetX;
-            const frontWheelSetY = values?.frontWheelSetY;
-            const backWheelSetX = values?.backWheelSetX;
-            const backWheelSetY = values?.backWheelSetY;
-            const groupSet_drivetrainX = values?.groupSet_drivetrainX;
-            const groupSet_drivetrainY = values?.groupSet_drivetrainY;
-            const groupSet_shifterX = getGroupsetOffsets(values?.groupSet_shifterX, hasHandleBar);
-            const groupSet_shifterY = getGroupsetOffsets(values?.groupSet_shifterY, hasHandleBar);
-
-            setCanvasDrawImageProps(prevState => {
-                return {
-                    ...prevState,
-                    stem: {
-                        ...prevState.stem,
-                        x: stemX ? stemX : prevState.stem.x,
-                        y: stemY ? stemY : prevState.stem.y
-                    },
-                    handleBar: {
-                        ...prevState.handleBar,
-                        x: stemX ? stemX + 30 : prevState.handleBar.x,
-                        y: stemY ? stemY + 2 : prevState.handleBar.y
-                    },
-                    saddle: {
-                        ...prevState.saddle,
-                        x: saddleX ? saddleX : prevState.saddle.x,
-                        y: saddleY ? saddleY - prevState.saddle.height : prevState.saddle.y
-                    },
-                    frontWheelSet: {
-                        ...prevState.frontWheelSet,
-                        x: frontWheelSetX ? frontWheelSetX : prevState.frontWheelSet.x,
-                        y: frontWheelSetY ? frontWheelSetY : prevState.frontWheelSet.y
-                    },
-                    backWheelSet: {
-                        ...prevState.backWheelSet,
-                        x: backWheelSetX ? backWheelSetX : prevState.backWheelSet.x,
-                        y: backWheelSetY ? backWheelSetY : prevState.backWheelSet.y
-                    },
-                    tire: {
-                        ...prevState.tire,
-                        x: frontWheelSetX ? frontWheelSetX - 10 : prevState.tire.x,
-                        y: frontWheelSetY ? frontWheelSetY - 11 : prevState.tire.y,
-                        x2: backWheelSetX ? backWheelSetX - 10 : prevState.tire.x2,
-                        y2: backWheelSetY ? backWheelSetY - 11 : prevState.tire.y2
-                    },
-                    groupSet_drivetrain: {
-                        ...prevState.groupSet_drivetrain,
-                        x: groupSet_drivetrainX ? groupSet_drivetrainX : prevState.groupSet_drivetrain.x,
-                        y: groupSet_drivetrainY ? groupSet_drivetrainY : prevState.groupSet_drivetrain.y,
-                    },
-                    groupSet_shifter: {
-                        ...prevState.groupSet_shifter,
-                        x: groupSet_shifterX ? groupSet_shifterX : prevState.groupSet_shifter.x,
-                        y: groupSet_shifterY ? groupSet_shifterY : prevState.groupSet_shifter.y,
-                    },
+        const getShifterCalculation = (groupSet_shifter, prevState, axisLength, hasHandleBar, stemAxis) => {
+            if (identifier === 'frameSet') {
+                if (!hasHandleBar && canvasDrawImageProps.stem.model) {
+                    if (stemDimensions.hasHandleBar) {
+                        return (stemAxis || prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
+                    }
+                    return prevState.stem[axisLength] + axisLength === 'x' ? 38 : 2 + prevState.groupSet_shifter['handleBarShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
                 }
-            });
+                return groupSet_shifter
+            }
+            if (identifier === 'stem' || identifier === 'handleBar') {
+                return prevState[identifier][axisLength] + groupSet_shifter - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
+            }
+
+
+            return prevState.groupSet_shifter[axisLength]
         }
+
+        const values = Object.values(imageProps)[0];
+        const hasHandleBar = values?.hasHandleBar;
+        const stemX = values?.stemX;
+        const stemY = values?.stemY;
+        const saddleX = values?.saddleX;
+        const saddleY = values?.saddleY;
+        const frontWheelSetX = values?.frontWheelSetX;
+        const frontWheelSetY = values?.frontWheelSetY;
+        const backWheelSetX = values?.backWheelSetX;
+        const backWheelSetY = values?.backWheelSetY;
+        const groupSet_drivetrainX = values?.groupSet_drivetrainX;
+        const groupSet_drivetrainY = values?.groupSet_drivetrainY;
+        const groupSet_shifterX = getGroupsetOffsets(values?.groupSet_shifterX, hasHandleBar);
+        const groupSet_shifterY = getGroupsetOffsets(values?.groupSet_shifterY, hasHandleBar);
+
+        setCanvasDrawImageProps(prevState => {
+            return {
+                ...prevState,
+                stem: {
+                    ...prevState.stem,
+                    x: stemX ? stemX : prevState.stem.x,
+                    y: stemY ? stemY : prevState.stem.y
+                },
+                handleBar: {
+                    ...prevState.handleBar,
+                    x: stemX ? stemX + 30 : prevState.handleBar.x,
+                    y: stemY ? stemY + 2 : prevState.handleBar.y
+                },
+                saddle: {
+                    ...prevState.saddle,
+                    x: saddleX ? saddleX : prevState.saddle.x,
+                    y: saddleY ? saddleY - prevState.saddle.height : prevState.saddle.y
+                },
+                frontWheelSet: {
+                    ...prevState.frontWheelSet,
+                    x: frontWheelSetX ? frontWheelSetX : prevState.frontWheelSet.x,
+                    y: frontWheelSetY ? frontWheelSetY : prevState.frontWheelSet.y
+                },
+                backWheelSet: {
+                    ...prevState.backWheelSet,
+                    x: backWheelSetX ? backWheelSetX : prevState.backWheelSet.x,
+                    y: backWheelSetY ? backWheelSetY : prevState.backWheelSet.y
+                },
+                tire: {
+                    ...prevState.tire,
+                    x: frontWheelSetX ? frontWheelSetX - 10 : prevState.tire.x,
+                    y: frontWheelSetY ? frontWheelSetY - 11 : prevState.tire.y,
+                    x2: backWheelSetX ? backWheelSetX - 10 : prevState.tire.x2,
+                    y2: backWheelSetY ? backWheelSetY - 11 : prevState.tire.y2
+                },
+                groupSet_drivetrain: {
+                    ...prevState.groupSet_drivetrain,
+                    x: groupSet_drivetrainX ? groupSet_drivetrainX : prevState.groupSet_drivetrain.x,
+                    y: groupSet_drivetrainY ? groupSet_drivetrainY : prevState.groupSet_drivetrain.y,
+                },
+                groupSet_shifter: {
+                    ...prevState.groupSet_shifter,
+                    x: getShifterCalculation(groupSet_shifterX, prevState, 'x', hasHandleBar, stemX),
+                    y: getShifterCalculation(groupSet_shifterY, prevState, 'y', hasHandleBar, stemY),
+                    stemShifterX: identifier === "stem" && groupSet_shifterX ? groupSet_shifterX : prevState.groupSet_shifter.stemShifterX,
+                    stemShifterY: identifier === "stem" && groupSet_shifterY ? groupSet_shifterY : prevState.groupSet_shifter.stemShifterY,
+                    handleBarShifterX: identifier === "handleBar" && groupSet_shifterX ? groupSet_shifterX : prevState.groupSet_shifter.handleBarShifterX,
+                    handleBarShifterY: identifier === "handleBar" && groupSet_shifterY ? groupSet_shifterY : prevState.groupSet_shifter.handleBarShifterY,
+                },
+            }
+        });
 
         setRerender(prevState => !prevState);
     }
