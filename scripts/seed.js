@@ -124,10 +124,8 @@ async function addColumns(client) {
     try {
         const addColumn = await client.sql`
         ALTER TABLE models 
-        ADD COLUMN IF NOT EXISTS groupset_drivetrain_x INTEGER,
-        ADD COLUMN IF NOT EXISTS groupset_drivetrain_y INTEGER,
-        ADD COLUMN IF NOT EXISTS groupset_shifter_x INTEGER,
-        ADD COLUMN IF NOT EXISTS groupset_shifter_y INTEGER;
+        ADD COLUMN IF NOT EXISTS handle_bar_x INTEGER,
+        ADD COLUMN IF NOT EXISTS handle_bar_y INTEGER;
     `
 
         const modelsTable = await client.sql`SELECT * FROM models;`;
