@@ -95,13 +95,16 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
         };
 
-        const getShifterCalculation = (groupSet_shifter, prevState, axisLength, hasHandleBar, stemAxis) => {
+        const getShifterCalculation = (groupSet_shifter, prevState, axisLength, stemAxis, hasHandleBar, hasStem) => {
             if (identifier === 'frameSet') {
                 if (!hasHandleBar && canvasDrawImageProps.stem.model) {
                     if (stemDimensions.hasHandleBar) {
                         return (stemAxis || prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
                     }
                     return prevState.stem[axisLength] + axisLength === 'x' ? 38 : 2 + prevState.groupSet_shifter['handleBarShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
+                }
+                if (!hasStem) {
+                    return (stemAxis || prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
                 }
                 return groupSet_shifter
             }
@@ -112,9 +115,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
             return prevState.groupSet_shifter[axisLength]
         }
-
+        
         const values = Object.values(imageProps)[0];
         const hasHandleBar = values?.hasHandleBar;
+        const hasStem = values?.hasStem;
         const stemX = values?.stemX;
         const stemY = values?.stemY;
         const saddleX = values?.saddleX;
@@ -170,8 +174,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 },
                 groupSet_shifter: {
                     ...prevState.groupSet_shifter,
-                    x: getShifterCalculation(groupSet_shifterX, prevState, 'x', hasHandleBar, stemX),
-                    y: getShifterCalculation(groupSet_shifterY, prevState, 'y', hasHandleBar, stemY),
+                    x: getShifterCalculation(groupSet_shifterX, prevState, 'x', stemX, hasHandleBar, hasStem),
+                    y: getShifterCalculation(groupSet_shifterY, prevState, 'y', stemY, hasHandleBar, hasStem),
                     stemShifterX: identifier === "stem" && groupSet_shifterX ? groupSet_shifterX : prevState.groupSet_shifter.stemShifterX,
                     stemShifterY: identifier === "stem" && groupSet_shifterY ? groupSet_shifterY : prevState.groupSet_shifter.stemShifterY,
                     handleBarShifterX: identifier === "handleBar" && groupSet_shifterX ? groupSet_shifterX : prevState.groupSet_shifter.handleBarShifterX,
