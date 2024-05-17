@@ -29,6 +29,8 @@ export async function fetchModels(): Promise<Models> {
             m.groupset_drivetrain_y AS "groupSet_drivetrainY",
             m.groupset_shifter_x AS "groupSet_shifterX",
             m.groupset_shifter_y AS "groupSet_shifterY",
+            m.handle_bar_x AS "handleBarX",
+            m.handle_bar_y AS "handleBarY",
             m.price,
             m.key_metrics,
             m.aerodynamics,

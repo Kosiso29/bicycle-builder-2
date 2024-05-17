@@ -427,6 +427,19 @@ export default function Form({ model }: { model?: any }) {
                                             </>
                                             : null
                                     }
+                                    {
+                                        showFrameSetStemOffsets ?
+                                            <>
+                                                <div className="flex gap-4">
+                                                    {/* Handle Bar Offset X */}
+                                                    <OffsetTextField name='handle_bar_x' defaultValue={model?.handle_bar_x || "600"} label='Handle Bar Offset X' />
+
+                                                    {/* Handle Bar Offset Y */}
+                                                    <OffsetTextField name='handle_bar_y' defaultValue={model?.handle_bar_y || "150"} label='Handle Bar Offset Y' />
+                                                </div>
+                                            </>
+                                            : null
+                                    }
 
 
                                 </div>
