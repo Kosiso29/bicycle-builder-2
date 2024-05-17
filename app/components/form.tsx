@@ -374,42 +374,42 @@ export default function Form({ model }: { model?: any }) {
                                             <>
                                                 <div className="flex gap-4">
                                                     {/* Stem Offset X */}
-                                                    <OffsetTextField name='stem_x' defaultValue={model?.stem_x} label='Stem Offset X' placeholder='600' />
+                                                    <OffsetTextField name='stem_x' defaultValue={model?.stem_x || "600"} label='Stem Offset X' />
 
                                                     {/* Stem Offset Y */}
-                                                    <OffsetTextField name='stem_y' defaultValue={model?.stem_y} label='Stem Offset Y' placeholder='150' />
+                                                    <OffsetTextField name='stem_y' defaultValue={model?.stem_y || "150"} label='Stem Offset Y' />
                                                 </div>
 
                                                 <div className="flex gap-4">
                                                     {/* Saddle Offset X */}
-                                                    <OffsetTextField name='saddle_x' defaultValue={model?.saddle_x} label='Saddle Offset X' placeholder='240' />
+                                                    <OffsetTextField name='saddle_x' defaultValue={model?.saddle_x || "240"} label='Saddle Offset X' />
 
                                                     {/* Saddle Offset Y */}
-                                                    <OffsetTextField name='saddle_y' defaultValue={model?.saddle_y} label='Saddle Offset Y' placeholder='110' />
+                                                    <OffsetTextField name='saddle_y' defaultValue={model?.saddle_y || "110"} label='Saddle Offset Y' />
                                                 </div>
 
                                                 <div className="flex gap-4">
                                                     {/* Front Wheel Offset X */}
-                                                    <OffsetTextField name='front_wheel_x' defaultValue={model?.front_wheel_x} label='Front Wheel Offset X' placeholder='550' />
+                                                    <OffsetTextField name='front_wheel_x' defaultValue={model?.front_wheel_x || "550"} label='Front Wheel Offset X' />
 
                                                     {/* Front Wheel Offset Y */}
-                                                    <OffsetTextField name='front_wheel_y' defaultValue={model?.front_wheel_y} label='Front Wheel Offset Y' placeholder='265' />
+                                                    <OffsetTextField name='front_wheel_y' defaultValue={model?.front_wheel_y || "265"} label='Front Wheel Offset Y' />
                                                 </div>
 
                                                 <div className="flex gap-4">
                                                     {/* Back Wheel Offset X */}
-                                                    <OffsetTextField name='back_wheel_x' defaultValue={model?.back_wheel_x} label='Back Wheel Offset X' placeholder='45' />
+                                                    <OffsetTextField name='back_wheel_x' defaultValue={model?.back_wheel_x || "45"} label='Back Wheel Offset X' />
 
                                                     {/* Back Wheel Offset Y */}
-                                                    <OffsetTextField name='back_wheel_y' defaultValue={model?.back_wheel_y} label='Back Wheel Offset Y' placeholder='265' />
+                                                    <OffsetTextField name='back_wheel_y' defaultValue={model?.back_wheel_y || "265"} label='Back Wheel Offset Y' />
                                                 </div>
 
                                                 <div className="flex gap-4">
                                                     {/* Group Set Drivetrain Offset X */}
-                                                    <OffsetTextField name='groupset_drivetrain_x' defaultValue={model?.groupset_drivetrain_x} label='Groupset Drivetrain Offset X' placeholder='185' />
+                                                    <OffsetTextField name='groupset_drivetrain_x' defaultValue={model?.groupset_drivetrain_x || "185"} label='Groupset Drivetrain Offset X' />
 
                                                     {/* Group Set Drivetrain Offset Y */}
-                                                    <OffsetTextField name='groupset_drivetrain_y' defaultValue={model?.groupset_drivetrain_y} label='Groupset Drivetrain Offset Y' placeholder='380' />
+                                                    <OffsetTextField name='groupset_drivetrain_y' defaultValue={model?.groupset_drivetrain_y || "380"} label='Groupset Drivetrain Offset Y' />
                                                 </div>
                                             </>
                                             : null
@@ -419,10 +419,10 @@ export default function Form({ model }: { model?: any }) {
                                             <>
                                                 <div className="flex gap-4">
                                                     {/* Group Set Shifter Offset X */}
-                                                    <OffsetTextField name='groupset_shifter_x' defaultValue={model?.groupset_shifter_x} label='Groupset Shifter Offset X' placeholder='704' />
+                                                    <OffsetTextField name='groupset_shifter_x' defaultValue={model?.groupset_shifter_x || "704"} label='Groupset Shifter Offset X' />
 
                                                     {/* Group Set Shifter Offset Y */}
-                                                    <OffsetTextField name='groupset_shifter_y' defaultValue={model?.groupset_shifter_y} label='Groupset Shifter Offset Y' placeholder='121' />
+                                                    <OffsetTextField name='groupset_shifter_y' defaultValue={model?.groupset_shifter_y || "121"} label='Groupset Shifter Offset Y' />
                                                 </div>
                                             </>
                                             : null
@@ -456,7 +456,7 @@ export default function Form({ model }: { model?: any }) {
     );
 }
 
-function OffsetTextField({ name, defaultValue, label, step, min, max, placeholder }: { name: string, defaultValue: string, label: string, step?: number, min?: number, max?: number, placeholder?: string }) {
+function OffsetTextField({ name, defaultValue, label, step, min, max }: { name: string, defaultValue: string, label: string, step?: number, min?: number, max?: number }) {
     return (
         <div className="mb-4">
             <label htmlFor={name} className="mb-2 block text-sm font-medium">
@@ -472,7 +472,7 @@ function OffsetTextField({ name, defaultValue, label, step, min, max, placeholde
                         max={max}
                         type="number"
                         defaultValue={defaultValue}
-                        placeholder={placeholder}
+                        placeholder={label}
                         className={`peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500 ${max ? "min-w-[200px]" : ""}`}
                         aria-describedby={`${name}-error`}
                     />
