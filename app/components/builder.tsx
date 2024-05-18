@@ -15,6 +15,7 @@ export default function Builder({ models }: { models: Models }) {
     const [resetComponent, setResetComponent] = useState(0);
     const [frameSetDimensions, setFrameSetDimensions] = useState({});
     const [stemDimensions, setStemDimensions] = useState({});
+    const [handleBarDimensions, setHandleBarDimensions] = useState({});
     const [canvasDrawImageProps, setCanvasDrawImageProps] = useState({
         frameSet: {},
         frontWheelSet: {},
@@ -38,6 +39,8 @@ export default function Builder({ models }: { models: Models }) {
                 setFrameSetDimensions={setFrameSetDimensions}
                 stemDimensions={stemDimensions}
                 setStemDimensions={setStemDimensions}
+                handleBarDimensions={handleBarDimensions}
+                setHandleBarDimensions={setHandleBarDimensions}
                 models={models}
                 setResetComponent={setResetComponent}
             />

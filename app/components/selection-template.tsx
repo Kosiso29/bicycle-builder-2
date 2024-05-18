@@ -11,7 +11,7 @@ import Loading from "@/app/components/loading";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
-    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, removeComponentSelection, selectionPresetProps, initialCanvasDrawImageProps,
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
         canvasDrawImageProps, frameSetDimensions, stemDimensions } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
@@ -121,7 +121,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 }
                 return groupSet_shifter
             }
-            if (identifier === 'stem' || identifier === 'handleBar') {
+            if ((identifier === 'stem' && hasHandleBar) || identifier === 'handleBar') {
                 return prevState[identifier][axisLength] + (groupSet_shifter || 0) - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
             }
 
@@ -217,17 +217,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             updateCanvasImage();
         }
     }, [model, imageLoaded, image2Loaded]);
-
-    useEffect(() => {
-        if (selectionLevelProps.includes(identifier)) {
-            setModel("");
-            setSelectedIndex(null);
-            imageRef.current?.setAttribute("src", "/Cadex-Saddle.png");
-            if (/Wheel Set/i.test(label)) {
-                imageRef2.current?.setAttribute("src", "/Cadex-Saddle.png");
-            }
-        }
-    }, [removeComponentSelection]);
 
     useEffect(() => {
         const brands = databaseModels.filter(item => item.category === label);
