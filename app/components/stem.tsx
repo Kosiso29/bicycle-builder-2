@@ -15,9 +15,9 @@ export default function Stem({ parentProps, show, canvasContext, canvasX, canvas
 
         const image = document.getElementById('preview');
         const stemModelData = allModels.filter(item => item.model === extraDrawImageProps.model && item.brand === extraDrawImageProps.brand && item.category === 'Stem')[0];
-        const { hasHandleBar, groupSet_shifterX, groupSet_shifterY, } = stemModelData;
+        const { hasHandleBar, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY } = stemModelData;
 
-        const offsets = { groupSet_shifterX, groupSet_shifterY };
+        const offsets = { groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY };
 
         setStemDimensions({ hasHandleBar, ...offsets });
 

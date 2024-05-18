@@ -95,6 +95,19 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
         };
 
+        const getHandleBarCalculation = (handleBar, prevState, axisLength, stemAxis, hasStem, hasHandleBar) => {
+            if (identifier === "frameSet" && hasStem && !hasHandleBar) {
+                return handleBar;
+            }
+            if (identifier === "frameSet" && !hasStem) {
+                return stemAxis + handleBar;
+            }
+            if (identifier === "stem" && !hasHandleBar) {
+                return prevState.stem[axisLength] + handleBar;
+            }
+            return prevState.handleBar[axisLength]
+        }
+
         const getShifterCalculation = (groupSet_shifter, prevState, axisLength, stemAxis, hasHandleBar, hasStem) => {
             if (identifier === 'frameSet') {
                 if (!hasHandleBar && canvasDrawImageProps.stem.model) {
@@ -109,18 +122,20 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 return groupSet_shifter
             }
             if (identifier === 'stem' || identifier === 'handleBar') {
-                return prevState[identifier][axisLength] + groupSet_shifter - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
+                return prevState[identifier][axisLength] + (groupSet_shifter || 0) - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
             }
 
 
             return prevState.groupSet_shifter[axisLength]
         }
-        
+
         const values = Object.values(imageProps)[0];
         const hasHandleBar = values?.hasHandleBar;
         const hasStem = values?.hasStem;
         const stemX = values?.stemX;
         const stemY = values?.stemY;
+        const handleBarX = values?.handleBarX;
+        const handleBarY = values?.handleBarY;
         const saddleX = values?.saddleX;
         const saddleY = values?.saddleY;
         const frontWheelSetX = values?.frontWheelSetX;
@@ -142,8 +157,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 },
                 handleBar: {
                     ...prevState.handleBar,
-                    x: stemX ? stemX + 30 : prevState.handleBar.x,
-                    y: stemY ? stemY + 2 : prevState.handleBar.y
+                    x: getHandleBarCalculation(handleBarX, prevState, 'x', stemX, hasStem, hasHandleBar),
+                    y: getHandleBarCalculation(handleBarY, prevState, 'y', stemY, hasStem, hasHandleBar)
                 },
                 saddle: {
                     ...prevState.saddle,
