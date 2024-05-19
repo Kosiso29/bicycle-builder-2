@@ -108,23 +108,27 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             return prevState.handleBar[axisLength]
         }
 
-        const getShifterCalculation = (groupSet_shifter, prevState, axisLength, stemAxis, hasHandleBar, hasStem) => {
+        const getShifterCalculation = (groupSet_shifter, prevState, axisLength, stemAxis, handleBarAxis, hasHandleBar, hasStem) => {
+            const handleBarShifter = prevState.groupSet_shifter['handleBarShifter' + axisLength.toUpperCase()];
+            const handleBarShifterShifted = handleBarShifter ? handleBarShifter - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0) : 0;
             if (identifier === 'frameSet') {
                 if (!hasHandleBar && canvasDrawImageProps.stem.model) {
                     if (stemDimensions.hasHandleBar) {
-                        return (stemAxis || prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
+                        return (stemAxis ?? prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
                     }
-                    return prevState.stem[axisLength] + axisLength === 'x' ? 38 : 2 + prevState.groupSet_shifter['handleBarShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
+                    return prevState.stem[axisLength] + axisLength === 'x' ? 38 : 2 + handleBarShifterShifted;
                 }
                 if (!hasStem) {
-                    return (stemAxis || prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
+                    return (stemAxis ?? prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
                 }
                 return groupSet_shifter
             }
             if ((identifier === 'stem' && hasHandleBar) || identifier === 'handleBar') {
-                return prevState[identifier][axisLength] + (groupSet_shifter || 0) - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
+                return prevState[identifier][axisLength] + (groupSet_shifter ?? 0) - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
             }
-
+            if (identifier === 'stem' && !hasHandleBar) {
+                return prevState[identifier][axisLength] + handleBarAxis + handleBarShifterShifted;
+            }
 
             return prevState.groupSet_shifter[axisLength]
         }
@@ -189,8 +193,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 },
                 groupSet_shifter: {
                     ...prevState.groupSet_shifter,
-                    x: getShifterCalculation(groupSet_shifterX, prevState, 'x', stemX, hasHandleBar, hasStem),
-                    y: getShifterCalculation(groupSet_shifterY, prevState, 'y', stemY, hasHandleBar, hasStem),
+                    x: getShifterCalculation(groupSet_shifterX, prevState, 'x', stemX, handleBarX, hasHandleBar, hasStem),
+                    y: getShifterCalculation(groupSet_shifterY, prevState, 'y', stemY, handleBarY, hasHandleBar, hasStem),
                     stemShifterX: identifier === "stem" && groupSet_shifterX ? groupSet_shifterX : prevState.groupSet_shifter.stemShifterX,
                     stemShifterY: identifier === "stem" && groupSet_shifterY ? groupSet_shifterY : prevState.groupSet_shifter.stemShifterY,
                     handleBarShifterX: identifier === "handleBar" && groupSet_shifterX ? groupSet_shifterX : prevState.groupSet_shifter.handleBarShifterX,
