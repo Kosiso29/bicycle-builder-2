@@ -33,7 +33,7 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
 
         setTooltips({ key_metrics, aerodynamics, weight, comfort, stiffness, overall });
 
-        return { frameSet: { image, x, y, width, height, ...extraDrawImageProps, ...offsets, hasHandleBar } };
+        return { frameSet: { image, x, y, width, height, ...extraDrawImageProps, ...offsets, hasStem, hasHandleBar } };
     }
 
     useEffect(() => {
