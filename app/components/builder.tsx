@@ -13,8 +13,8 @@ export default function Builder({ models }: { models: Models }) {
     const [showSummary, setShowSummary] = useState(false);
     const [canvasImage, setCanvasImage] = useState("");
     const [resetComponent, setResetComponent] = useState(0);
-    const [frameSetDimensions, setFrameSetDimensions] = useState({ hasHandleBar: true });
-    const [stemDimensions, setStemDimensions] = useState({});
+    const [frameSetDimensions, setFrameSetDimensions] = useState({});
+    const [stemDimensions, setStemDimensions] = useState({ hasHandleBar: true });
     const [handleBarDimensions, setHandleBarDimensions] = useState({});
     const [canvasDrawImageProps, setCanvasDrawImageProps] = useState({
         frameSet: {},

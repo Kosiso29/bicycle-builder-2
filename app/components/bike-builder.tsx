@@ -88,7 +88,7 @@ export default function BikeBuilder({
         tire: { image: "/PH-Tan_SES31_FullWheel-modified.png", x: 541, y: 247, width: 353.06666666666666, height: 353.06666666666666, x2: 36, y2: 247, width2: 353.06666666666666, height2: 353.06666666666666, globalCompositeOperation: 'destination-over' },
         // drivetrain actualWidth used is 622mm instead of 722mm
         groupSet_drivetrain: { image: "/Groupset-Drivetrain.png", x: 185, y: 380, width: 331.733333333, height: 136.6176524785, globalCompositeOperation: 'destination-over' },
-        groupSet_shifter: { image: "/Groupset-Shifter.png", x: 704, y: 121, width: 80, height: 96.140350882, stemShifterX: 90, stemShifterY: 70, globalCompositeOperation: 'destination-over' },
+        groupSet_shifter: { image: "/Groupset-Shifter.png", x: 704, y: 121, width: 80, height: 96.140350882, stemShifterX: 90, stemShifterY: 70, handleBarShifterX: 50, handleBarShifterY: 70, globalCompositeOperation: 'destination-over' },
     }
 
     function setImage(doNotRenderCanvasNumbers = false, doNotIncrementCanvasSelectionLevelState = false) {
@@ -338,22 +338,15 @@ export default function BikeBuilder({
     }, [selectionLevel]);
 
     useEffect(() => {
-        if (!canvasDrawImageProps.stem.model && canvasDrawImageProps.handleBar.image && !frameSetDimensions.hasStem) {
+        // reset handlebar props when there's no handlebar
+        if ((!canvasDrawImageProps.stem.model && canvasDrawImageProps.handleBar.model && !frameSetDimensions.hasStem)) {
             setCanvasDrawImageProps(prevState => ({
                 ...prevState,
-                handleBar: {}
+                handleBar: { ...initialCanvasDrawImageProps.handleBar, x: prevState.handleBar.x, y: prevState.handlbeBar.y },
+                groupSet_shifter: { ...initialCanvasDrawImageProps.groupSet_shifter, x: prevState.groupSet_shifter.x, y: prevState.groupSet_shifter.y },
             }));
             setRerender(prevState => !prevState);
         }
-        // TODO: remove this when groupset is created in the backend
-        // if (canvasDrawImageProps.groupSet_drivetrain?.image && canvasDrawImageProps.frameSet?.model) {
-        //     setCanvasDrawImageProps(prevState => ({
-        //         ...prevState,
-        //         groupSet_drivetrain: {},
-        //         groupSet_shifter: {}
-        //     }));
-        //     setRerender(prevState => !prevState);
-        // }
         if (Object.keys(frameSetDimensions).length > 0) {
             if (canvasSelectionLevelState === 1 && !canvasDrawImageProps.frameSet.model) {
                 setImage(false, true);
