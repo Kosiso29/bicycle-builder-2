@@ -99,9 +99,14 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             if (identifier === "frameSet" && hasStem && !hasHandleBar) {
                 return handleBar;
             }
-            if (identifier === "frameSet" && !hasStem) {
-                return stemAxis + handleBar;
+            // frameset without stem selected, and canvas has stem already selected
+            if (identifier === "frameSet" && !hasStem && canvasDrawImageProps.stem.model) {
+                console.log('I am here 3', stemAxis, handleBar, prevState.stem[axisLength], prevState.handleBar[axisLength], prevState.handleBar['stemHandleBar' + axisLength.toUpperCase()])
+                return stemAxis + (prevState.handleBar['stemHandleBar' + axisLength.toUpperCase()] ?? 0);
             }
+            // if (identifier === "frameSet" && !hasStem) {
+            //     return stemAxis + handleBar;
+            // }
             if (identifier === "stem" && !hasHandleBar) {
                 return prevState.stem[axisLength] + handleBar;
             }
@@ -112,7 +117,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             const handleBarShifter = prevState.groupSet_shifter['handleBarShifter' + axisLength.toUpperCase()];
             const handleBarShifterShifted = handleBarShifter ? handleBarShifter - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0) : 0;
             if (identifier === 'frameSet') {
-                if (!hasHandleBar && canvasDrawImageProps.stem.model) {
+                if (!hasHandleBar && canvasDrawImageProps.stem.model && hasStem) {
                     if (stemDimensions.hasHandleBar) {
                         return (stemAxis ?? prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
                     }
@@ -162,7 +167,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 handleBar: {
                     ...prevState.handleBar,
                     x: getHandleBarCalculation(handleBarX, prevState, 'x', stemX, hasStem, hasHandleBar),
-                    y: getHandleBarCalculation(handleBarY, prevState, 'y', stemY, hasStem, hasHandleBar)
+                    y: getHandleBarCalculation(handleBarY, prevState, 'y', stemY, hasStem, hasHandleBar),
+                    stemHandleBarX: identifier === "stem" && handleBarX ? handleBarX : prevState.handleBar.stemHandleBarX,
+                    stemHandleBarY: identifier === "stem" && handleBarY ? handleBarY : prevState.handleBar.stemHandleBarY,
                 },
                 saddle: {
                     ...prevState.saddle,
