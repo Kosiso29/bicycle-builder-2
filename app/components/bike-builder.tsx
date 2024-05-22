@@ -40,6 +40,7 @@ export default function BikeBuilder({
         stiffness: "---",
         overall: "---"
     });
+    // selectionPresetProps sets the selection template with brand and model after preset selection is made
     const [selectionPresetProps, setSelectionPresetProps] = useState({
         frontWheelSet: {},
         stem: {},

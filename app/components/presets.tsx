@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
 import Loading from "@/app/components/loading";
 import { useState } from "react";
+import { positionCanvasImages } from "../utils/position-canvas-images";
 
 export default function Presets({ parentProps }: { parentProps: any }) {
-    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary } = parentProps;
+    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions } = parentProps;
     const [loading, setLoading] = useState(0.5);
 
     const getCanvasSelectionLevelState = (filteredPresets: any) => {
@@ -45,6 +46,8 @@ export default function Presets({ parentProps }: { parentProps: any }) {
                     ...prevState,
                     [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? frameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
+
+                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions)
 
                 loadedCount++;
 
