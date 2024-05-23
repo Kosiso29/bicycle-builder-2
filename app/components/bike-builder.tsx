@@ -83,13 +83,13 @@ export default function BikeBuilder({
         frameSet: { image: "/PH-Specialized_Allez_Sprint_final.png", x: 200, y: 100, width: 528, height: 374.8259385665529, globalCompositeOperation: 'destination-over' },
         frontWheelSet: { image: "/PH-ENVE_SES_4.5_F-final.png", x: 553, y: 258, width: 331.73333333333335, height: 331.73333333333335, globalCompositeOperation: 'destination-over' },
         backWheelSet: { image: "/PH-ENVE_SES_4.5_R-final.png", x: 48, y: 258, width: 331.73333333333335, height: 331.73333333333335, globalCompositeOperation: 'destination-over' },
-        stem: { image: "/PH-CADEX-Aero_Integrated_Handlebar.png", x: 604, y: 141, width: 125.33333333333333, height: 87.16916740217711, globalCompositeOperation: 'destination-over' },
+        stem: { image: "/PH-CADEX-Aero_Integrated_Handlebar.png", x: 603, y: 142, width: 125.33333333333333, height: 87.16916740217711, globalCompositeOperation: 'destination-over' },
         handleBar: { image: "/PH-Cadex-Race-final.png", x: 638, y: 169, width: 80, height: 85.58692421991084, stemHandleBarX: 38, stemHandleBarY: 2, globalCompositeOperation: 'destination-over' },
         saddle: { image: "/PH-ENVE_X_SELLE_ITALIA_BOOST_SLR.png", x: 258, y: 86.65583333333333, width: 116.26666666666667, height: 23.344166666666666, globalCompositeOperation: 'destination-over' },
         tire: { image: "/PH-Tan_SES31_FullWheel-modified.png", x: 541, y: 247, width: 353.06666666666666, height: 353.06666666666666, x2: 36, y2: 247, width2: 353.06666666666666, height2: 353.06666666666666, globalCompositeOperation: 'destination-over' },
         // drivetrain actualWidth used is 622mm instead of 722mm
         groupSet_drivetrain: { image: "/Groupset-Drivetrain.png", x: 185, y: 380, width: 331.733333333, height: 136.6176524785, globalCompositeOperation: 'destination-over' },
-        groupSet_shifter: { image: "/Groupset-Shifter.png", x: 704, y: 121, width: 80, height: 96.140350882, stemShifterX: 90, stemShifterY: 70, handleBarShifterX: 50, handleBarShifterY: 70, globalCompositeOperation: 'destination-over' },
+        groupSet_shifter: { image: "/Groupset-Shifter.png", x: 701, y: 121.859649118, width: 80, height: 96.140350882, stemShifterX: 98, stemShifterY: 76, handleBarShifterX: 50, handleBarShifterY: 70, globalCompositeOperation: 'destination-over' },
     }
 
     function setImage(doNotRenderCanvasNumbers = false, doNotIncrementCanvasSelectionLevelState = false) {
