@@ -49,7 +49,7 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
             }
             return groupSet_shifter
         }
-        if ((identifier === 'stem' && hasHandleBar) || identifier === 'handleBar') {
+        if ((identifier === 'stem' && hasHandleBar && !frameSetDimensions.hasStem) || (identifier === 'handleBar' && !frameSetDimensions.hasHandleBar && !stemDimensions.hasHandleBar)) {
             return prevState[identifier][axisLength] + (groupSet_shifter ?? 0) - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
         }
         if (identifier === 'stem' && !hasHandleBar) {
