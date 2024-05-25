@@ -5,7 +5,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
-import { RotateLeft as RotateLeftIcon, SquareOutlined, Star, StarHalf, StarOutline } from '@mui/icons-material';
+import { RotateLeft as RotateLeftIcon } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import Link from "next/link";
 import SelectionTabs from "./selection-tabs";
@@ -19,6 +19,7 @@ import Tire from "./tire";
 import Presets from "./presets";
 import Tooltips from "./tooltips";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
+import { positionCanvasImages } from "@/app/utils/position-canvas-images";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
@@ -285,12 +286,52 @@ export default function BikeBuilder({
         setSelectionLevel(1);
         setCanvasSelectionLevelState(1);
         setFrameSetDimensions({});
+        setStemDimensions({ hasHandleBar: true });
         setResetComponent(prevState => prevState + 1);
         setShowSummary(false);
     }
 
+    const updateCanvasPlaceholderImageDimensions = (filteredModelPlaceholders, image, componentKey, componentData) => {
+        const filteredComponentData = filteredModelPlaceholders.filter(item => {
+            const canvasProp = item.category.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
+            return canvasProp === componentKey;
+        })
+
+        if (filteredComponentData.length > 0) {
+            const width = (528 * filteredComponentData[0].actualWidth) / 990;
+            const height = image?.height * (width / image?.width);
+            componentData.width = width;
+            componentData.height = height;
+            positionCanvasImages(filteredComponentData[0], componentKey, canvasPlaceholderImages, setCanvasDrawImageProps, frameSetDimensions, stemDimensions)
+        }
+
+    }
+
     const renderCanvasPlaceholderImages = () => {
         let loadedCount = 0;
+
+        setCanvasDrawImageProps(canvasPlaceholderImages);
+
+        const filteredModelPlaceholders = models.filter(item => {
+            switch (item.category + " - " + item.model) {
+                case "Frame Set - Allez Sprint":
+                    return true;
+                case "Front Wheel Set - SES 4.5":
+                    return true;
+                case "Back Wheel Set - SES 4.5":
+                    return true;
+                case "Stem - Aero Integrated Handlebar":
+                    return true;
+                case "Handle Bar - Race":
+                    return true;
+                case "Saddle - ENVE X Selle Italia Boost SLR":
+                    return true;
+                case "Tyre - SES Road":
+                    return true;
+                default:
+                    break;
+            }
+        });
 
         Object.entries(canvasPlaceholderImages).forEach(entries => {
             const image = new Image();
@@ -298,6 +339,7 @@ export default function BikeBuilder({
             image.src = entries[1].image;
             image.crossOrigin = "anonymous";
             image.onload = function () {
+                updateCanvasPlaceholderImageDimensions(filteredModelPlaceholders, image, entries[0], entries[1]);
                 setCanvasDrawImageProps(prevState => ({ ...prevState, [entries[0]]: { ...entries[1], image, image2: entries[0] === 'tire' ? image : null } }))
                 setInitialCanvasDrawImageProps(prevState => ({ ...prevState, [entries[0]]: { ...entries[1], image, image2: entries[0] === 'tire' ? image : null } }))
 

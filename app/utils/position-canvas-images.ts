@@ -76,6 +76,9 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
     const groupSet_shifterX = getGroupsetOffsets(values?.groupSet_shifterX, hasHandleBar);
     const groupSet_shifterY = getGroupsetOffsets(values?.groupSet_shifterY, hasHandleBar);
 
+    // console.log('offsets', identifier, hasHandleBar, hasStem, stemX, stemY, handleBarX, handleBarY, saddleX, saddleY,
+    //     frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY, groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY)
+
     setCanvasDrawImageProps(prevState => {
         return {
             ...prevState,
