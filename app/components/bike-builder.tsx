@@ -428,11 +428,11 @@ export default function BikeBuilder({
                     {
                         showSummary ?
                             <>
-                                <div className="flex justify-between py-2">
+                                <div className="flex justify-between pb-3">
                                     <Button size="small" variant="outlined" onClick={() => { setShowSummary(false); setSelectionLevel(prevState => prevState - 1) }}>Back</Button>
                                     <Button size="small" variant="contained">Proceed</Button>
                                 </div>
-                                <Button size="small" variant="outlined">Add to Favourites</Button>
+                                <Button size="small" fullWidth variant="outlined">Add to Favourites</Button>
                             </> :
                             <>
                                 <div className="flex justify-between py-2">
@@ -446,7 +446,7 @@ export default function BikeBuilder({
                                 </div>
                             </>
                     }
-                    <div>
+                    <div className="mt-2">
                         <SelectionTabs indexArray={frameSetDimensions.hasStem && frameSetDimensions.hasHandleBar ? [1, 2, 3, 5, 6] : [1, 2, 3, 4, 5, 6]} value={selectionLevel} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
                     </div>
                 </div>
