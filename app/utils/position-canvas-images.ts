@@ -22,7 +22,6 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
         }
         // frameset without stem selected, and canvas has stem already selected
         if (identifier === "frameSet" && !hasStem && canvasDrawImageProps.stem.model) {
-            console.log('I am here 3', stemAxis, handleBar, prevState.stem[axisLength], prevState.handleBar[axisLength], prevState.handleBar['stemHandleBar' + axisLength.toUpperCase()])
             return stemAxis + (prevState.handleBar['stemHandleBar' + axisLength.toUpperCase()] ?? 0);
         }
         // if (identifier === "frameSet" && !hasStem) {

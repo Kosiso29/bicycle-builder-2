@@ -410,7 +410,7 @@ export default function BikeBuilder({
             <div className="flex flex-col mr-[22rem] h-screen bg-blue-100 w-[calc(100% - 22rem)] overflow-auto">
                 <div className="flex items-stretch">
                     <div className="flex flex-col justify-between bg-gray-100 w-40 border border-black py-5 px-2">
-                        <Presets parentProps={parentProps} />
+                        <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} />
                         <div className="flex justify-center">
                             <Link href="/" className="block mt-5">
                                 <Button size="small" variant="outlined">Exit Builder</Button>
