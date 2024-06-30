@@ -2,8 +2,44 @@ const { db } = require('@vercel/postgres');
 const {
     brands,
     categories,
-    models
+    models,
+    presets
 } = require('../app/lib/placeholder-data.js');
+
+async function seedPresets(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+        // Create the "presets" table if it doesn't exist
+        const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS presets (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        name VARCHAR(255) NOT NULL UNIQUE
+      );
+    `;
+
+        console.log(`Created "presets" table`);
+
+        // Insert data into the "presets" table
+        const insertedPresets = await Promise.all(
+            presets.map(async (preset) => {
+                return client.sql`
+        INSERT INTO presets (name)
+        VALUES (${preset.name});
+      `;
+            }),
+        );
+
+        console.log(`Seeded ${insertedPresets.length} presets`, insertedPresets, createTable);
+
+        return {
+            createTable,
+            presets: insertedPresets,
+        };
+    } catch (error) {
+        console.error('Error seeding presets:', error);
+        throw error;
+    }
+}
 
 async function seedBrands(client) {
     try {
@@ -168,10 +204,11 @@ async function alterColumns(client) {
 async function main() {
     const client = await db.connect();
 
+    await seedPresets(client);
     // await seedCategories(client);
     // await seedBrands(client);
     // await seedModels(client);
-    await addColumns(client);
+    // await addColumns(client);
     // await alterColumns(client);
 
     await client.end();

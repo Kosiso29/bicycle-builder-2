@@ -56,6 +56,21 @@ const brands = [
     },
 ];
 
+const presets = [
+    {
+        id: 'cbbfda5a-ae37-4c7b-9bb6-7c82756e93e6',
+        name: 'None'
+    },
+    {
+        id: '3bbfdd5a-ae37-4c7b-9bb6-7c82756e93e6',
+        name: 'Aerodynamics'
+    },
+    {
+        id: 'e9b8f6a3-8f48-480c-83e9-4c5c38cb598b',
+        name: 'Lightweight'
+    },
+]
+
 const models = [
     {
         category_id: categories[0].id,
@@ -261,5 +276,6 @@ const models = [
 module.exports = {
     brands,
     models,
-    categories
+    categories,
+    presets
 };
