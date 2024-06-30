@@ -201,15 +201,49 @@ async function alterColumns(client) {
     }
 }
 
+async function alterForeignKeyColumns(client) {
+    try {
+        const alterForeignKeyColumn = await client.sql`
+            DO $$ 
+            DECLARE 
+            my_uuid UUID;
+            BEGIN
+            SELECT id INTO my_uuid FROM presets WHERE name = 'None';
+
+            EXECUTE 'ALTER TABLE models ADD COLUMN preset_id UUID DEFAULT ' || quote_literal(my_uuid);
+
+            EXECUTE 'UPDATE models SET preset_id = ' || quote_literal(my_uuid) || ' WHERE preset_id IS NULL';
+
+            EXECUTE 'ALTER TABLE models ADD CONSTRAINT fk_preset FOREIGN KEY (preset_id) REFERENCES presets (id)';
+            END $$;
+        `
+
+        console.log(`Adjusted column types`, alterForeignKeyColumn);
+
+        const modelsTable = await client.sql`SELECT * FROM models;`;
+
+        console.log('model data', modelsTable?.rows);
+
+        return {
+            alterForeignKeyColumn,
+            modelsTable
+        };
+    } catch (error) {
+        console.error('Error creating columns', error);
+        throw error;
+    }
+}
+
 async function main() {
     const client = await db.connect();
 
-    await seedPresets(client);
+    // await seedPresets(client);
     // await seedCategories(client);
     // await seedBrands(client);
     // await seedModels(client);
     // await addColumns(client);
     // await alterColumns(client);
+    await alterForeignKeyColumns(client);
 
     await client.end();
 }
