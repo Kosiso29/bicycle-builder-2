@@ -15,8 +15,8 @@ import { Model } from "@/app/lib/definitions";
 export default function Components() {
     const models = useSelector((state: any) => state.componentsReducer.models);
     const categories: Array<string> = useSelector((state: any) => state.componentsReducer.categories);
+    const presets: Array<string> = useSelector((state: any) => state.componentsReducer.presets);
     const [uniqueCategories, setUniqueCategories] = useState(['All']);
-    const [presets, setPresets] = useState(['None']);
     const [category, setCategory] = useState('All');
     const [preset, setPreset] = useState('None');
     const [tableModels, setTableModels] = useState([]);
@@ -24,9 +24,6 @@ export default function Components() {
     useEffect(() => {
         if (Object.keys(categories).length > 0) {
             setUniqueCategories(['All', ...Object.values(categories)]);
-        };
-        if (models?.length > 0) {
-            setPresets(['None', ...Object.keys(models[0]).filter(key => /^best_/.test(key))]);
         };
     }, [categories, models]);
 
@@ -43,7 +40,7 @@ export default function Components() {
     useEffect(() => {
         if (preset) {
             if (preset !== 'None') {
-                setTableModels(models.filter((item: Model) => item[preset as keyof Model]));
+                setTableModels(models.filter((item: Model) => item.preset === preset));
             } else {
                 setTableModels(models);
             }
@@ -65,8 +62,8 @@ export default function Components() {
                 </SelectElement>
                 <SelectElement value={preset} onChange={(e: React.MouseEvent<HTMLButtonElement>) => { setPreset((e.target as HTMLInputElement).value) }} label="Presets">
                     {
-                        presets.map((model: any) => (
-                            <MenuItem value={model} key={model}>{model === 'best_aerodynamics' ? 'Aerodynamic' : model.replace(/_/g, " ").replace(/^(.)|\s+(.)/g, (firstLetter: any) => firstLetter.toUpperCase()).replace(/Best /i, "")}</MenuItem>
+                        Object.values(presets).map((preset: any) => (
+                            <MenuItem value={preset} key={preset}>{ preset }</MenuItem>
                         ))
                     }
                 </SelectElement>

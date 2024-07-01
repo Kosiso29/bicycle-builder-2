@@ -5,27 +5,36 @@ import Loading from "./loading";
 import { EditOutlined, DeleteOutline } from '@mui/icons-material';
 import { deleteModel } from "../lib/actions";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import YesNo from "./yesno";
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Table({ models }) {
-    const [loading, setLoading] = useState(false);
+    const [loadingForDelete, setLoadingForDelete] = useState(false);
     const [answer, setAnswer] = useState("");
     const [deleteId, setDeleteId] = useState("");
+    const mounted = useRef(false);
 
     const handleDelete = (id) => {
         setDeleteId(id);
     }
 
     useEffect(() => {
+        mounted.current = true;
+
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
+
+    useEffect(() => {
         if (answer === "yes") {
-            setLoading(true);
+            setLoadingForDelete(true);
             deleteModel(deleteId).then(() => {
                 setDeleteId("");
-                setLoading(false);
+                setLoadingForDelete(false);
                 setAnswer("");
                 toast.success("Component deleted!")
             })
@@ -174,7 +183,7 @@ export default function Table({ models }) {
                                                 onClick={() => handleDelete(model.id)}
                                             >
                                                 {
-                                                    loading && (model.id === deleteId) ? <div className="self-center justify-self-end"><Loading small /></div> : <DeleteOutline className="w-5" />
+                                                    loadingForDelete && (model.id === deleteId) ? <div className="self-center justify-self-end"><Loading small /></div> : <DeleteOutline className="w-5" />
                                                 }
                                             </button>
                                         </div>
@@ -186,7 +195,7 @@ export default function Table({ models }) {
                 </div>
                 <div className='mt-8'>
                     {
-                        models.length === 0 && <Loading />
+                        !mounted.current && models && <Loading />
                     }
                 </div>
             </div>

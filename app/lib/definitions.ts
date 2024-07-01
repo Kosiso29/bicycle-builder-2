@@ -16,6 +16,7 @@ export type Model = {
     id: string;
     category: string;
     brand: string;
+    preset: string;
     model: string;
     src: string;
     actualWidth: number;

@@ -11,6 +11,7 @@ export async function fetchModels(): Promise<Models> {
         SELECT
             c.name AS category,
             b.name AS brand,
+            p.name AS preset,
             m.name AS model,
             m.id,
             m.image_url AS src,
@@ -46,6 +47,8 @@ export async function fetchModels(): Promise<Models> {
             models m ON c.id = m.category_id
         JOIN
             brands b ON m.brand_id = b.id
+        JOIN
+            presets p ON m.preset_id = p.id
         ORDER BY
             b.name, m.name;`;
 
@@ -92,6 +95,24 @@ export async function fetchBrands() {
     } catch (error) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch the brands.');
+    }
+}
+
+export async function fetchPresets() {
+    noStore();
+    try {
+        const data = await sql`
+        SELECT * FROM presets;`;
+
+        const presets = data.rows.reduce((acc, row) => {
+            acc[row.id] = row.name;
+            return acc;
+        }, {});
+
+        return presets;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the presets.');
     }
 }
 
