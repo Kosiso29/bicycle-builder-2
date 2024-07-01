@@ -234,6 +234,34 @@ async function alterForeignKeyColumns(client) {
     }
 }
 
+async function createManyToManyMappingTable(client) {
+    try {
+        const createTable = await client.sql`
+            CREATE TABLE models_presets (
+                model_id UUID NOT NULL,
+                preset_id UUID NOT NULL,
+                PRIMARY KEY (model_id, preset_id),
+                FOREIGN KEY (model_id) REFERENCES models (id),
+                FOREIGN KEY (preset_id) REFERENCES presets (id)
+            );
+        `
+
+        const modelsPresets = await client.sql`SELECT * FROM models_presets;`;
+
+        console.log('models_presets data', modelsPresets);
+
+        console.log('Create table data', createTable);
+
+        return {
+            createTable,
+            modelsPresets
+        };
+    } catch (error) {
+        console.error('Error creating tables', error);
+        throw error;
+    }
+}
+
 async function main() {
     const client = await db.connect();
 
@@ -243,7 +271,8 @@ async function main() {
     // await seedModels(client);
     // await addColumns(client);
     // await alterColumns(client);
-    await alterForeignKeyColumns(client);
+    // await alterForeignKeyColumns(client);
+    await createManyToManyMappingTable(client);
 
     await client.end();
 }
