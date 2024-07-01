@@ -62,6 +62,29 @@ export async function fetchModels(): Promise<Models> {
     }
 }
 
+export async function fetchModelsPresets() {
+    noStore();
+    try {
+        const data = await sql`
+            SELECT 
+                m.id as model_id, 
+                m.name as model_name, 
+                p.id as preset_id, 
+                p.name as preset_name
+            FROM models_presets mp
+            JOIN models m ON mp.model_id = m.id
+            JOIN presets p ON mp.preset_id = p.id;`;
+
+        const modelsPresets = data.rows.map((modelPreset) => ({
+            ...modelPreset
+        }));
+        return modelsPresets;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the models_presets.');
+    }
+}
+
 export async function fetchCategories() {
     noStore();
     try {

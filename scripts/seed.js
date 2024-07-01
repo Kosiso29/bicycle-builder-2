@@ -237,13 +237,16 @@ async function alterForeignKeyColumns(client) {
 async function createManyToManyMappingTable(client) {
     try {
         const createTable = await client.sql`
+            DROP TABLE IF EXISTS models_presets;
+
             CREATE TABLE models_presets (
                 model_id UUID NOT NULL,
                 preset_id UUID NOT NULL,
                 PRIMARY KEY (model_id, preset_id),
-                FOREIGN KEY (model_id) REFERENCES models (id),
-                FOREIGN KEY (preset_id) REFERENCES presets (id)
+                FOREIGN KEY (model_id) REFERENCES models(id) ON DELETE CASCADE,
+                FOREIGN KEY (preset_id) REFERENCES presets(id) ON DELETE CASCADE
             );
+
         `
 
         const modelsPresets = await client.sql`SELECT * FROM models_presets;`;
@@ -262,6 +265,29 @@ async function createManyToManyMappingTable(client) {
     }
 }
 
+async function getModelsPresets(client) {
+    try {
+
+        const modelsTable = await client.sql`SELECT * FROM models;`;
+
+        const presetsTable = await client.sql`SELECT * FROM presets;`;
+        
+        // const insertData = await client.sql`INSERT INTO models_presets (model_id, preset_id) VALUES ('955fdc80-375b-47e5-88d2-2ce63df85078', '48b90652-65a3-4fb6-9a00-cbd2becb05c3');`;
+        
+        const modelsPresetsTable = await client.sql`SELECT * FROM models_presets;`;
+
+        console.log('model data', modelsTable?.rows, presetsTable?.rows, modelsPresetsTable?.rows);
+
+        return {
+            modelsTable,
+            presetsTable
+        };
+    } catch (error) {
+        console.error('Error getting models_presets', error);
+        throw error;
+    }
+}
+
 async function main() {
     const client = await db.connect();
 
@@ -272,7 +298,8 @@ async function main() {
     // await addColumns(client);
     // await alterColumns(client);
     // await alterForeignKeyColumns(client);
-    await createManyToManyMappingTable(client);
+    // await createManyToManyMappingTable(client);
+    await getModelsPresets(client);
 
     await client.end();
 }

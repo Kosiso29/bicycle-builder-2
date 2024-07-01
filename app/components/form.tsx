@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Form({ model }: { model?: any }) {
     const categories = useSelector((state: any) => state.componentsReducer.categories);
     const brands = useSelector((state: any) => state.componentsReducer.brands);
+    const presets = useSelector((state: any) => state.componentsReducer.presets);
     const models = useSelector((state: any) => state.componentsReducer.models);
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [loading, setLoading] = useState(false);
@@ -246,6 +247,28 @@ export default function Form({ model }: { model?: any }) {
                             </legend>
                             <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
                                 <div className="flex gap-4 py-5">
+
+                                    {/* {
+                                        Object.entries(presets).filter((item: any) => item[1] !== "None").map((item: any) => (
+                                            <div key={item[1]} className="flex items-center gap-2">
+                                                <label
+                                                    htmlFor={item[1]}
+                                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                                >
+                                                    { item[1] }
+                                                </label>
+                                                <input
+                                                    id={item[1]}
+                                                    name={item[1]}
+                                                    type="checkbox"
+                                                    disabled={checkExistingPreset(categoryId, 'best_aerodynamics', model?.best_aerodynamics)}
+                                                    defaultChecked={model?.best_aerodynamics}
+                                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                                    aria-describedby={`${item[1]}-error`}
+                                                />
+                                            </div>
+                                        ))
+                                    } */}
 
                                     {/* Best Aerodynamics */}
                                     <div className="flex items-center gap-2">

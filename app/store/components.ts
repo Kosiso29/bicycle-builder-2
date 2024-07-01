@@ -8,7 +8,8 @@ const componentsSlice = createSlice({
         models: [],
         categories: [],
         brands: [],
-        presets: []
+        presets: [],
+        modelsPresets: []
     },
     reducers: {
         updateModels(state, actions) {
@@ -33,6 +34,12 @@ const componentsSlice = createSlice({
             const presets = actions.payload;
             if (presets) {
                 state.presets = presets;
+            }
+        },
+        updateModelsPresets(state, actions) {
+            const modelsPresets = actions.payload;
+            if (modelsPresets) {
+                state.modelsPresets = modelsPresets;
             }
         },
     }

@@ -16,13 +16,14 @@ const sideBarData = [
     { name: "CUSTOMERS", href: "/dashboard/customers", icon: GroupOutlined },
 ]
 
-export default function Sidebar({ models, categories, brands, presets }) {
+export default function Sidebar({ models, categories, brands, presets, modelsPresets }) {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(componentsActions.updateModels(models));
         dispatch(componentsActions.updateCategories(categories));
         dispatch(componentsActions.updateBrands(brands));
         dispatch(componentsActions.updatePresets(presets));
+        dispatch(componentsActions.updateModelsPresets(modelsPresets));
     }, [])
     return (
         <div className='hidden sm:flex w-[var(--sidebar-width)] fixed z-10 h-screen max-h-screen bg-primary flex-col justify-between py-12'>
