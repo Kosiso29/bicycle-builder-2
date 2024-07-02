@@ -3,7 +3,7 @@ import Loading from "@/app/components/loading";
 import { useState } from "react";
 import { positionCanvasImages } from "../utils/position-canvas-images";
 
-export default function Presets({ parentProps, setFrameSetDimensions }: { parentProps: any, setFrameSetDimensions: any }) {
+export default function Presets({ parentProps, setFrameSetDimensions, presets, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, presets: any, modelsPresets: any }) {
     const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips } = parentProps;
     const [loading, setLoading] = useState(0.5);
 
@@ -20,8 +20,13 @@ export default function Presets({ parentProps, setFrameSetDimensions }: { parent
         }
     }
 
+    const getFilteredPresets = (preset: string) => { 
+        const filteredModelIds = modelsPresets.filter((item: any) => item.preset_name === preset).map((item: any) => item.model_id);
+        return models.filter((item: any) => filteredModelIds.includes(item?.id));
+    }
+
     const checkForFrameSetInPreset = (preset: string) => {
-        const filteredPresets = models.filter((item: any) => item?.[preset]);
+        const filteredPresets = getFilteredPresets(preset);
 
         for (const item of filteredPresets) {
             const canvasProp = item.category.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
@@ -34,7 +39,7 @@ export default function Presets({ parentProps, setFrameSetDimensions }: { parent
     }
 
     const getPresetComponents = (preset: string) => {
-        const filteredPresets = models.filter((item: any) => item?.[preset]);
+        const filteredPresets = getFilteredPresets(preset);
         let loadedCount = 0;
 
         filteredPresets.forEach((item: any) => {
@@ -94,24 +99,21 @@ export default function Presets({ parentProps, setFrameSetDimensions }: { parent
             };
 
         })
-    }
 
-    const presets = () => {
-        return [
-            { title: "Aerodynamic", buttonText: "build preset", preset: "best_aerodynamics" },
-            { title: "Lightweight", buttonText: "build preset", preset: "best_lightweight" },
-        ]
+        if (filteredPresets.length === 0) {
+            setLoading(0.5);
+        }
     }
 
     return (
         <div className="flex flex-col gap-5">
             <h1 className="font-bold text-2xl text-center">Builds</h1>
             {
-                presets()?.map((item: any, index: number) => (
-                    <div key={item.title}>
-                        <p className="mb-2 text-center">{item.title}</p>
+                Object.values(presets).filter((item: any) => item !== "None").map((item: any, index: number) => (
+                    <div key={item}>
+                        <p className="mb-2 text-center">{item}</p>
                         <div className="flex justify-center items-center">
-                            <Button size="small" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(item.preset)} variant="contained" onClick={() => { setLoading(index); getPresetComponents(item.preset) }}>{item.buttonText}</Button>
+                            <Button size="small" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset("best_aerodynamics")} variant="contained" onClick={() => { setLoading(index); getPresetComponents(item) }}>Apply Build</Button>
                         </div>
                         {loading === index ? <div className='self-center mt-2'><Loading small /></div> : null}
                     </div>

@@ -16,6 +16,7 @@ export default function Components() {
     const models = useSelector((state: any) => state.componentsReducer.models);
     const categories: Array<string> = useSelector((state: any) => state.componentsReducer.categories);
     const presets: Array<string> = useSelector((state: any) => state.componentsReducer.presets);
+    const modelsPresets = useSelector((state: any) => state.componentsReducer.modelsPresets);
     const [uniqueCategories, setUniqueCategories] = useState(['All']);
     const [category, setCategory] = useState('All');
     const [preset, setPreset] = useState('None');
@@ -40,12 +41,14 @@ export default function Components() {
     useEffect(() => {
         if (preset) {
             if (preset !== 'None') {
-                setTableModels(models.filter((item: Model) => item.preset === preset));
+                const filteredModelIds = modelsPresets.filter((item: any) => item.preset_name === preset).map((item: any) => item.model_id);
+                const filteredModels = models.filter((item: any) => filteredModelIds.includes(item?.id));
+                setTableModels(filteredModels);
             } else {
                 setTableModels(models);
             }
         };
-    }, [preset, models])
+    }, [preset, models, modelsPresets])
 
     return (
         <div>

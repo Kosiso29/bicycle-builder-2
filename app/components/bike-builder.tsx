@@ -23,7 +23,7 @@ import { positionCanvasImages } from "@/app/utils/position-canvas-images";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
-    frameSetDimensions, setFrameSetDimensions, models, setResetComponent, stemDimensions, setStemDimensions,
+    frameSetDimensions, setFrameSetDimensions, models, presets, modelsPresets, setResetComponent, stemDimensions, setStemDimensions,
     handleBarDimensions, setHandleBarDimensions
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
@@ -410,7 +410,7 @@ export default function BikeBuilder({
             <div className="flex flex-col mr-[22rem] h-screen bg-blue-100 w-[calc(100% - 22rem)] overflow-auto">
                 <div className="flex items-stretch">
                     <div className="flex flex-col justify-between bg-gray-100 w-40 border border-black py-5 px-2">
-                        <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} />
+                        <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} presets={presets} modelsPresets={modelsPresets} />
                         <div className="flex justify-center">
                             <Link href="/" className="block mt-5">
                                 <Button size="small" variant="outlined">Exit Builder</Button>

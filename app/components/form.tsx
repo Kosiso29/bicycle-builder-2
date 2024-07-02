@@ -289,44 +289,6 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                             </div>
                                         ))
                                     }
-
-                                    {/* Best Aerodynamics */}
-                                    <div className="flex items-center gap-2">
-                                        <label
-                                            htmlFor="best_aerodynamics"
-                                            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                        >
-                                            Aerodynamic
-                                        </label>
-                                        <input
-                                            id="best_aerodynamics"
-                                            name="best_aerodynamics"
-                                            type="checkbox"
-                                            disabled={checkExistingPreset(categoryId, 'best_aerodynamics', model?.best_aerodynamics)}
-                                            defaultChecked={model?.best_aerodynamics}
-                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                            aria-describedby="best_aerodynamics-error"
-                                        />
-                                    </div>
-
-                                    {/* Best Lightweight */}
-                                    <div className="flex items-center gap-2">
-                                        <label
-                                            htmlFor="best_lightweight"
-                                            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                        >
-                                            Lightweight
-                                        </label>
-                                        <input
-                                            id="best_lightweight"
-                                            name="best_lightweight"
-                                            type="checkbox"
-                                            disabled={checkExistingPreset(categoryId, 'best_lightweight', model?.best_lightweight)}
-                                            defaultChecked={model?.best_lightweight}
-                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                            aria-describedby="best_lightweight-error"
-                                        />
-                                    </div>
                                 </div>
                                 {
                                     showFrameSetOffsets ?
