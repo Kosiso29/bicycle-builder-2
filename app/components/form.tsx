@@ -10,13 +10,16 @@ import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Form({ model }: { model?: any }) {
+export default function Form({ model, model_id }: { model?: any, model_id?: string }) {
     const categories = useSelector((state: any) => state.componentsReducer.categories);
     const brands = useSelector((state: any) => state.componentsReducer.brands);
     const presets = useSelector((state: any) => state.componentsReducer.presets);
+    const modelsPresets = useSelector((state: any) => state.componentsReducer.modelsPresets);
     const models = useSelector((state: any) => state.componentsReducer.models);
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [loading, setLoading] = useState(false);
+
+    console.log('modelsPresets', modelsPresets);
 
     const checkExistingPreset = (categoryId: string, preset: string, defaultChecked: boolean) => {
         const existingPreset = models.filter((item: any) => {
@@ -26,6 +29,22 @@ export default function Form({ model }: { model?: any }) {
             return true;
         }
         return false;
+    }
+
+    const checkExistingModelPreset = (categoryId: string, preset_id: string, defaultChecked: boolean) => {
+        const existingPreset = modelsPresets.filter((item: any) => {
+            return item.model_id === model_id && item.preset_id === preset_id;
+        });
+        if ((existingPreset.length > 0 || !categoryId) && !defaultChecked) {
+            return true;
+        }
+        return false;
+    }
+
+    const getPresetCheckState = (preset_id: { preset_id: string }) => {
+        return modelsPresets.filter((item: any) => {
+            return item.model_id === model_id && item.preset_id === preset_id
+        }).length > 0
     }
 
     const handleFormUpdate = (formData: any) => {
@@ -248,27 +267,28 @@ export default function Form({ model }: { model?: any }) {
                             <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
                                 <div className="flex gap-4 py-5">
 
-                                    {/* {
+                                    {
                                         Object.entries(presets).filter((item: any) => item[1] !== "None").map((item: any) => (
-                                            <div key={item[1]} className="flex items-center gap-2">
+                                            <div key={item[0]} className="flex items-center gap-2">
                                                 <label
-                                                    htmlFor={item[1]}
+                                                    htmlFor={"preset_" + item[1]}
                                                     className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
                                                 >
                                                     { item[1] }
                                                 </label>
                                                 <input
-                                                    id={item[1]}
-                                                    name={item[1]}
+                                                    id={"preset_" + item[1]}
+                                                    name={"preset_" + item[1]}
                                                     type="checkbox"
-                                                    disabled={checkExistingPreset(categoryId, 'best_aerodynamics', model?.best_aerodynamics)}
-                                                    defaultChecked={model?.best_aerodynamics}
+                                                    value={model_id + "_" + item[0]}
+                                                    // disabled={checkExistingModelPreset(categoryId, item[0], model?.best_aerodynamics)}
+                                                    defaultChecked={getPresetCheckState(item[0])}
                                                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                                    aria-describedby={`${item[1]}-error`}
+                                                    aria-describedby={`${"preset_" + item[1]}-error`}
                                                 />
                                             </div>
                                         ))
-                                    } */}
+                                    }
 
                                     {/* Best Aerodynamics */}
                                     <div className="flex items-center gap-2">
