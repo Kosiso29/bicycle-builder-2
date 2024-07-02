@@ -265,30 +265,38 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                 Specifications
                             </legend>
                             <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                                <div className="flex gap-4 py-5">
-
-                                    {
-                                        Object.entries(presets).filter((item: any) => item[1] !== "None").map((item: any) => (
-                                            <div key={item[0]} className="flex items-center gap-2">
-                                                <label
-                                                    htmlFor={"preset_" + item[1]}
-                                                    className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                                                >
-                                                    { item[1] }
-                                                </label>
-                                                <input
-                                                    id={"preset_" + item[1]}
-                                                    name={"preset_" + item[1]}
-                                                    type="checkbox"
-                                                    value={model_id + "_" + item[0]}
-                                                    // disabled={checkExistingModelPreset(categoryId, item[0], model?.best_aerodynamics)}
-                                                    defaultChecked={getPresetCheckState(item[0])}
-                                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-                                                    aria-describedby={`${"preset_" + item[1]}-error`}
-                                                />
-                                            </div>
-                                        ))
-                                    }
+                                <div className='flex justify-between items-center'>
+                                    <div className="flex gap-4 py-5">
+                                        {
+                                            Object.entries(presets).filter((item: any) => item[1] !== "None").map((item: any) => (
+                                                <div key={item[0]} className="flex items-center gap-2">
+                                                    <label
+                                                        htmlFor={"preset_" + item[1]}
+                                                        className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                                                    >
+                                                        { item[1] }
+                                                    </label>
+                                                    <input
+                                                        id={"preset_" + item[1]}
+                                                        name={"preset_" + item[1]}
+                                                        type="checkbox"
+                                                        value={model_id + "_" + item[0]}
+                                                        // disabled={checkExistingModelPreset(categoryId, item[0], model?.best_aerodynamics)}
+                                                        defaultChecked={getPresetCheckState(item[0])}
+                                                        className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                                        aria-describedby={`${"preset_" + item[1]}-error`}
+                                                    />
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                    <Link
+                                        href="/dashboard/components/create/builds"
+                                        className="flex items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 p-2"
+                                    >
+                                        Add Builds
+                                        <AddOutlined className="pointer-events-none" />
+                                    </Link>
                                 </div>
                                 {
                                     showFrameSetOffsets ?

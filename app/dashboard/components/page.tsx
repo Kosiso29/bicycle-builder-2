@@ -63,7 +63,7 @@ export default function Components() {
                         ))
                     }
                 </SelectElement>
-                <SelectElement value={preset} onChange={(e: React.MouseEvent<HTMLButtonElement>) => { setPreset((e.target as HTMLInputElement).value) }} label="Presets">
+                <SelectElement value={preset} onChange={(e: React.MouseEvent<HTMLButtonElement>) => { setPreset((e.target as HTMLInputElement).value) }} label="Builds">
                     {
                         Object.values(presets).map((preset: any) => (
                             <MenuItem value={preset} key={preset}>{ preset }</MenuItem>

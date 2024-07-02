@@ -113,7 +113,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                     <div key={item}>
                         <p className="mb-2 text-center">{item}</p>
                         <div className="flex justify-center items-center">
-                            <Button size="small" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset("best_aerodynamics")} variant="contained" onClick={() => { setLoading(index); getPresetComponents(item) }}>Apply Build</Button>
+                            <Button size="small" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(item)} variant="contained" onClick={() => { setLoading(index); getPresetComponents(item) }}>Apply Build</Button>
                         </div>
                         {loading === index ? <div className='self-center mt-2'><Loading small /></div> : null}
                     </div>

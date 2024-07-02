@@ -268,8 +268,10 @@ async function createManyToManyMappingTable(client) {
 async function getModelsPresets(client) {
     try {
 
-        const modelsTable = await client.sql`SELECT * FROM models;`;
+        // const deleteTable = await client.sql`DELETE FROM presets WHERE name = 'TourDeFrance';`;
 
+        const modelsTable = await client.sql`SELECT * FROM models;`;
+        
         const presetsTable = await client.sql`SELECT * FROM presets;`;
         
         // const insertData = await client.sql`INSERT INTO models_presets (model_id, preset_id) VALUES ('955fdc80-375b-47e5-88d2-2ce63df85078', '48b90652-65a3-4fb6-9a00-cbd2becb05c3');`;

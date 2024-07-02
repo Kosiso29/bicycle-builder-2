@@ -58,6 +58,22 @@ export async function createBrands(brands: any) {
     revalidatePath('/dashboard/components');
 }
 
+export async function createPresets(presets: any) {
+
+    try {
+        for (const preset of presets) {
+            await sql`
+            INSERT INTO presets (name)
+            VALUES (${preset})
+            `;
+        }
+    } catch (error) {
+        console.log('error', error)
+    }
+
+    revalidatePath('/dashboard/components');
+}
+
 export async function updateModel(id: string, formData: any) {
     const formDataObject: any = {};
 
