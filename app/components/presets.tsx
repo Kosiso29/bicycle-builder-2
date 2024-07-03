@@ -40,9 +40,9 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
     const getPresetComponents = (preset: string) => {
         const filteredPresets = getFilteredPresets(preset);
-        let loadedCount = 0;
+        let loadedCount = 0, newFrameSetDimensions = frameSetDimensions;
 
-        filteredPresets.forEach((item: any) => {
+        filteredPresets.sort((a: any) => (a.category === "Frame Set" ? -1 : 1)).forEach((item: any) => {
             const image = new Image();
 
             image.src = item.src;
@@ -54,7 +54,6 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                 const { actualWidth, brand, model, price } = item;
                 const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
                 const height = image?.naturalHeight * (width / image?.naturalWidth);
-                let newFrameSetDimensions = null;
 
                 if (canvasProp === 'frameSet') {
                     const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
@@ -78,10 +77,10 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
                 setCanvasDrawImageProps((prevState: any) => ({
                     ...prevState,
-                    [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? frameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                    [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
 
-                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions || frameSetDimensions, stemDimensions)
+                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions)
 
                 loadedCount++;
 
