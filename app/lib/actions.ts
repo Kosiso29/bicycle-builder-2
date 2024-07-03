@@ -16,15 +16,33 @@ export async function createComponent(formData: FormData) {
         back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
         best_aerodynamics, best_lightweight, groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y } = formDataObject;
 
+    const modelsPresets: any = Object.entries(formDataObject).filter(item => item[0].includes("preset_"));
+
     try {
         await sql`
-        INSERT INTO models (category_id, brand_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
-        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
-        best_aerodynamics, best_lightweight, groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y)
-        VALUES (${category_id}, ${brand_id}, ${model}, ${image_url}, ${Number(actual_width)}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
-        ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
-        ${best_aerodynamics}, ${best_lightweight}, ${groupset_drivetrain_x}, ${groupset_drivetrain_y}, ${groupset_shifter_x}, ${groupset_shifter_y}, ${handle_bar_x}, ${handle_bar_y})
-      `;
+            INSERT INTO models (category_id, brand_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
+            back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
+            best_aerodynamics, best_lightweight, groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y)
+            VALUES (${category_id}, ${brand_id}, ${model}, ${image_url}, ${Number(actual_width)}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
+            ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
+            ${best_aerodynamics}, ${best_lightweight}, ${groupset_drivetrain_x}, ${groupset_drivetrain_y}, ${groupset_shifter_x}, ${groupset_shifter_y}, ${handle_bar_x}, ${handle_bar_y})
+        `;
+
+        const selectedModel: any = await sql`
+        SELECT * FROM models WHERE name = ${model} AND category_id = ${category_id} AND brand_id = ${brand_id} AND image_url = ${image_url};
+        `;
+
+        if (modelsPresets.length > 0) {
+            for (const modelPreset of modelsPresets) {
+                const splitModelPreset = modelPreset[1].split("_");
+                const model_id = selectedModel.rows[0]?.id;
+                const preset_id = splitModelPreset[1];
+                await sql`
+              INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${preset_id}::uuid);
+              `
+            }
+        }
+
     } catch (error) {
         console.log('error', error)
     }
@@ -82,16 +100,16 @@ export async function updateModel(id: string, formData: any) {
     });
 
     const modelsPresets: any = Object.entries(formDataObject).filter(item => item[0].includes("preset_"));
-    let newModelsPresets = null;
-    if (modelsPresets.length > 0) {
-        newModelsPresets = modelsPresets.map((modelPreset: any) => {
-            const splitModelPreset = modelPreset[1].split("_");
-            const model_id = splitModelPreset[0];
-            const preset_id = splitModelPreset[1];
-            return `('${model_id}', '${preset_id}')`
-        }).join(', ');
-    }
-    console.log('formDataObject', formDataObject, modelsPresets, newModelsPresets);
+    // let newModelsPresets = null;
+    // if (modelsPresets.length > 0) {
+    //     newModelsPresets = modelsPresets.map((modelPreset: any) => {
+    //         const splitModelPreset = modelPreset[1].split("_");
+    //         const model_id = splitModelPreset[0];
+    //         const preset_id = splitModelPreset[1];
+    //         return `('${model_id}', '${preset_id}')`
+    //     }).join(', ');
+    // }
+    // console.log('formDataObject', formDataObject, modelsPresets, newModelsPresets);
 
     const { category_id, brand_id, model, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
         back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
@@ -106,11 +124,12 @@ export async function updateModel(id: string, formData: any) {
         WHERE id = ${id};
         `
 
+        // Delete existing presets mapping for the current model so that new ones can be used to overwrite them
         await sql`
         DELETE FROM models_presets WHERE model_id = ${id};
         `
 
-        console.log('query', `INSERT INTO models_presets (model_id, preset_id) VALUES ${newModelsPresets};`)
+        // Only insert new presets if any were selected, else don't create any presets mapping
         if (modelsPresets.length > 0) {
             for (const modelPreset of modelsPresets) {
                 const splitModelPreset = modelPreset[1].split("_");
