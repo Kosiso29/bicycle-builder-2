@@ -82,7 +82,7 @@ export default function Components() {
                 </Link>
             </div>
             <div className='bg-white w-full mt-8 rounded-lg md:p-8 py-8 px-2 h-auto'>
-                <Table models={tableModels} />
+                <Table models={tableModels} preset={preset} />
             </div>
         </div>
     );

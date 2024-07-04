@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Table({ models }) {
+export default function Table({ models, preset }) {
     const [loadingForDelete, setLoadingForDelete] = useState(false);
     const [answer, setAnswer] = useState("");
     const [deleteId, setDeleteId] = useState("");
@@ -178,14 +178,17 @@ export default function Table({ models }) {
                                             >
                                                 <EditOutlined className="w-5" />
                                             </Link>
-                                            <button
-                                                className="rounded-md border p-2 hover:bg-gray-100 cursor-pointer"
-                                                onClick={() => handleDelete(model.id)}
-                                            >
-                                                {
-                                                    loadingForDelete && (model.id === deleteId) ? <div className="self-center justify-self-end"><Loading small /></div> : <DeleteOutline className="w-5" />
-                                                }
-                                            </button>
+                                            {
+                                                preset === "None" &&
+                                                <button
+                                                    className="rounded-md border p-2 hover:bg-gray-100 cursor-pointer"
+                                                    onClick={() => handleDelete(model.id)}
+                                                >
+                                                    {
+                                                        loadingForDelete && (model.id === deleteId) ? <div className="self-center justify-self-end"><Loading small /></div> : <DeleteOutline className="w-5" />
+                                                    }
+                                                </button>
+                                            }
                                         </div>
                                     </td>
                                 </tr>

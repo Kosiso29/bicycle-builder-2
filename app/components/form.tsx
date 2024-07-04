@@ -19,32 +19,26 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [loading, setLoading] = useState(false);
 
-    console.log('modelsPresets', modelsPresets);
-
-    const checkExistingPreset = (categoryId: string, preset: string, defaultChecked: boolean) => {
-        const existingPreset = models.filter((item: any) => {
-            return item.category === categories[categoryId] && item[preset];
-        });
-        if ((existingPreset.length > 0 || !categoryId) && !defaultChecked) {
-            return true;
-        }
-        return false;
-    }
-
-    const checkExistingModelPreset = (categoryId: string, preset_id: string, defaultChecked: boolean) => {
-        const existingPreset = modelsPresets.filter((item: any) => {
-            return item.model_id === model_id && item.preset_id === preset_id;
-        });
-        if ((existingPreset.length > 0 || !categoryId) && !defaultChecked) {
-            return true;
-        }
-        return false;
-    }
-
-    const getPresetCheckState = (preset_id: { preset_id: string }) => {
+    const getPresetCheckState = (preset_id: string) => {
         return modelsPresets.filter((item: any) => {
             return item.model_id === model_id && item.preset_id === preset_id
         }).length > 0
+    }
+
+    const checkExistingModelPreset = (preset_id: string) => {
+        if (model) {
+            const modelsInTheSameCategory = models.filter((item: any) => {
+                return item.category === categories[categoryId]
+            }).map((item: any) => item.id);
+            
+            const existingPreset = modelsPresets.filter((item: any) => {
+                return modelsInTheSameCategory.includes(item.model_id) && item.preset_id === preset_id && item.model_id !== model.id
+            })
+            if ((existingPreset.length > 0 || !categoryId) && !getPresetCheckState(preset_id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     const handleFormUpdate = (formData: any) => {
@@ -281,7 +275,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                                         name={"preset_" + item[1]}
                                                         type="checkbox"
                                                         value={model_id + "_" + item[0]}
-                                                        // disabled={checkExistingModelPreset(categoryId, item[0], model?.best_aerodynamics)}
+                                                        disabled={checkExistingModelPreset(item[0])}
                                                         defaultChecked={getPresetCheckState(item[0])}
                                                         className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                                                         aria-describedby={`${"preset_" + item[1]}-error`}
