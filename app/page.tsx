@@ -7,11 +7,11 @@ export default function Home() {
         <main className="h-screen flex items-center justify-center bg-blue-100">
             <div className="flex gap-10">
                 <Link href="/build">
-                    <Button variant="outlined">New Build</Button>
+                    <Button variant="contained">New Build</Button>
                 </Link>
-                {/* <Link href="/login">
-                    <Button variant="contained">Admin</Button>
-                </Link> */}
+                <Link href="/openai">
+                    <Button variant="outlined">Upload Bicycle To Build</Button>
+                </Link>
             </div>
         </main>
     );
