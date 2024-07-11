@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client"
 
+import { Button } from "@mui/material";
 import { useState, useRef } from 'react';
 import Image from "next/image";
 import PropTypes from "prop-types";
@@ -52,7 +53,7 @@ export default function FileInput({ files, setFiles, setImage }: { files: string
 
     return (
         <div>
-            <div>
+            <div className="flex flex-col items-center gap-3">
                 <div
                     className='p-5 text-center cursor-pointer rounded-lg border-2 border-primary border-dashed'
                     onDragOver={handleDragOver}
@@ -71,9 +72,12 @@ export default function FileInput({ files, setFiles, setImage }: { files: string
                     <div>
                         <div>
                             <p>Drag and drop your files here, or click to select</p>
-                            <p>.jpg, .webp, .png, .gif, .txt, .mp3, .mp4(h264) + more!</p>
+                            <p>.jpg, .jpeg, .webp, .png + more!</p>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <Button variant="outlined" onClick={() => fileInputRef.current.click()}>Upload</Button>
                 </div>
             </div>
             {files.length > 0 && (

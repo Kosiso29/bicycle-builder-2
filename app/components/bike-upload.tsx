@@ -26,14 +26,14 @@ export default function BikeUpload() {
     return (
         <div>
             <div className="flex flex-col gap-10 fixed right-0 top-0 h-screen w-[22rem] border-l-8 bg-gray-100 border-gray-400 p-5 pb-0 overflow-auto">
+                <h1 className="text-3xl font-semibold">Specifications</h1>
                 <p>{ chatCompletion?.choices[0].message.content }</p>
             </div>
-            <div className="flex flex-col justify-evenly mr-[22rem] h-screen bg-blue-100 w-[calc(100% - 22rem)] overflow-auto p-10">
-                <h1 className="text-5xl font-[600] text-center">Upload your bicycle image</h1>
+            <div className="flex flex-col justify-evenly items-center mr-[22rem] h-screen bg-blue-100 w-[calc(100% - 22rem)] overflow-auto p-10">
                 <FileInput files={files} setFiles={setFiles} setImage={setImage} />
                 <div className="flex justify-center items-center">
                     <div className="flex items-center">
-                        <Button variant="outlined" onClick={handleClick}>Get Component Parts</Button>
+                        <Button variant="contained" onClick={handleClick}>Get Component Parts</Button>
                         {
                             loading ?
                                 <div className="ml-5">

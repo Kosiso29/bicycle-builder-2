@@ -10,7 +10,7 @@ export default function Home() {
                     <Button variant="contained">New Build</Button>
                 </Link>
                 <Link href="/openai">
-                    <Button variant="outlined">Upload Bicycle To Build</Button>
+                    <Button variant="outlined">Current Bike</Button>
                 </Link>
             </div>
         </main>
