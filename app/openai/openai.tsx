@@ -10,6 +10,10 @@ export async function getChatCompletion(base64Image: string) {
         model: "gpt-4o",
         messages: [
             {
+              role: 'system',
+              content: 'Respond with a JSON format: {"frame": "", "groupset": "", "wheels": "", "stem": "", "handlebar": "", "saddle": "", "tyre": ""}'
+            },
+            {
                 "role": "user",
                 "content": [
                 {"type": "text", "text": "Frame, Groupset, Wheels, Stem, Handlebar, Saddle, Tyre. Separate Brand and Model. No header/footer."},
