@@ -55,7 +55,7 @@ export default function FileInput({ files, setFiles, setImage }: { files: string
         <div>
             <div className="flex flex-col items-center gap-3">
                 <div
-                    className='p-5 text-center cursor-pointer rounded-lg border-2 border-primary border-dashed'
+                    className={`p-5 text-center cursor-pointer rounded-lg border-2 border-primary ${ isDragging ? 'opacity-50' : '' } border-dashed`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
