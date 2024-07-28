@@ -1,3 +1,20 @@
+const users = [
+    {
+        id: '410544b2-4001-4271-9855-fec4b6a6442a',
+        name: 'User',
+        email: 'user@email.com',
+        password: '123456',
+        permission: '2'
+    },
+    {
+        id: 'a1c544b2-4001-4271-9855-fec4b6a6442a',
+        name: 'Admin',
+        email: 'admin@email.com',
+        password: 'shreyas&bike',
+        permission: '1'
+    },
+];
+
 const categories = [
     {
         id: 'f559ade9-effd-4463-bf0e-892b52c07826',
@@ -277,5 +294,6 @@ module.exports = {
     brands,
     models,
     categories,
-    presets
+    presets,
+    users
 };

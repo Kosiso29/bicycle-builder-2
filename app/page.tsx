@@ -9,6 +9,9 @@ export default function Home() {
                 <Link href="/build">
                     <Button variant="contained">New Build</Button>
                 </Link>
+                <Link href="/login">
+                    <Button variant="outlined">Admin</Button>
+                </Link>
                 <Link href="/openai">
                     <Button variant="outlined">Current Bike</Button>
                 </Link>
