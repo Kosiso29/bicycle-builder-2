@@ -1,8 +1,8 @@
 'use client'
 
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-const componentsSlice = createSlice({
+export const componentsSlice = createSlice({
     name: 'components',
     initialState: {
         models: [],
@@ -45,8 +45,4 @@ const componentsSlice = createSlice({
     }
 });
 
-const store = configureStore({ reducer: { componentsReducer: componentsSlice.reducer } })
-
 export const componentsActions = componentsSlice.actions;
-
-export default store;
