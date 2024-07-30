@@ -1,31 +1,39 @@
 'use client'
 
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from "react-redux";
 import { AccountCircleOutlined } from "@mui/icons-material";
 import { authActions } from "@/app/store/auth";
 import { usersActions } from "@/app/store/users";
 import { useSearchParams } from "next/navigation";
 
 export default function Topbar({ users }: { users: any }) {
-    const userEmailRedux = useSelector((state: any) => state.authReducer.userEmail);
+    const [userEmail, setUserEmail] = useState("");
 
     const dispatch = useDispatch();
 
     const searchParams = useSearchParams();
-    const userEmail = searchParams.get("email");
+    const userEmailLogin = searchParams.get("email");
 
     useEffect(() => {
-        if (userEmail) {
-            dispatch(authActions.updateUserEmail(userEmail));
+        if (userEmailLogin) {
+            localStorage.setItem("email", userEmailLogin);
             dispatch(usersActions.updateUsers(users));
-            dispatch(authActions.updateUser(users.filter((user: any) => user.email === userEmail)?.[0]));
+            dispatch(authActions.updateUser(users.filter((user: any) => user.email === userEmailLogin)?.[0]));
+            setUserEmail(userEmailLogin);
+        } else if (localStorage.getItem("email")) {
+            const userEmailLocalStorage = localStorage.getItem("email");
+            if (userEmailLocalStorage) {
+                setUserEmail(userEmailLocalStorage);
+                dispatch(authActions.updateUser(users.filter((user: any) => user.email === userEmailLocalStorage)?.[0]));
+            }
+            dispatch(usersActions.updateUsers(users));
         }
-    }, [userEmail, dispatch, users])
+    }, [userEmailLogin, dispatch, users])
 
     return (
         <div className='flex justify-end py-5'>
-            <p className='flex items-center gap-2 text-primary bg-white p-2 rounded-lg'><AccountCircleOutlined />  { userEmail || userEmailRedux }</p>
+            <p className='flex items-center gap-2 text-primary bg-white p-2 rounded-lg'><AccountCircleOutlined />  { userEmail }</p>
         </div>
     )
 }
