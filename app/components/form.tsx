@@ -16,6 +16,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const presets = useSelector((state: any) => state.componentsReducer.presets);
     const modelsPresets = useSelector((state: any) => state.componentsReducer.modelsPresets);
     const models = useSelector((state: any) => state.componentsReducer.models);
+    const user = useSelector((state: any) => state.authReducer.user);
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [loading, setLoading] = useState(false);
 
@@ -458,8 +459,9 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                     Cancel
                 </Link>
                 <button
-                    className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={() => setLoading(true)}
+                    disabled={user.permission > 1}
                 >
                     <span className="hidden md:block">{model ? "Update Component" : "Create Component"}</span>
                 </button>

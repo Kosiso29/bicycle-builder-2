@@ -6,11 +6,13 @@ import Loading from "../../../../components/loading";
 import { CancelOutlined } from '@mui/icons-material';
 import { createBrands } from "@/app/lib/actions";
 import { ToastContainer } from 'react-toastify';
+import { useSelector } from "react-redux";
 
 const MultiItemTextField = () => {
     const [items, setItems] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
+    const user = useSelector((state: any) => state.authReducer.user);
 
     const addItem = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -86,8 +88,9 @@ const MultiItemTextField = () => {
                             Cancel
                         </Link>
                         <button
-                            className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                            className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={() => setLoading(true)}
+                            disabled={user.permission > 1}
                         >
                             <span className="hidden md:block">Create Brands</span>
                         </button>
