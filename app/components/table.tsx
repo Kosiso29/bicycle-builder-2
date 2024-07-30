@@ -10,12 +10,14 @@ import YesNo from "./yesno";
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from "react-redux";
 
 export default function Table({ models, preset }) {
     const [loadingForDelete, setLoadingForDelete] = useState(false);
     const [answer, setAnswer] = useState("");
     const [deleteId, setDeleteId] = useState("");
     const mounted = useRef(false);
+    const user = useSelector(state => state.authReducer.user);
 
     const handleDelete = (id) => {
         setDeleteId(id);
@@ -181,8 +183,9 @@ export default function Table({ models, preset }) {
                                             {
                                                 preset === "None" &&
                                                 <button
-                                                    className="rounded-md border p-2 hover:bg-gray-100 cursor-pointer"
+                                                    className="rounded-md border p-2 hover:bg-gray-100 cursor-pointer disabled:opacity-50 disabled:bg-transparent disabled:cursor-not-allowed"
                                                     onClick={() => handleDelete(model.id)}
+                                                    disabled={user.permission > 1}
                                                 >
                                                     {
                                                         loadingForDelete && (model.id === deleteId) ? <div className="self-center justify-self-end"><Loading small /></div> : <DeleteOutline className="w-5" />

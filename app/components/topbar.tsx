@@ -4,9 +4,10 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { AccountCircleOutlined } from "@mui/icons-material";
 import { authActions } from "@/app/store/auth";
+import { usersActions } from "@/app/store/users";
 import { useSearchParams } from "next/navigation";
 
-export default function Topbar() {
+export default function Topbar({ users }: { users: any }) {
     const userEmailRedux = useSelector((state: any) => state.authReducer.userEmail);
 
     const dispatch = useDispatch();
@@ -17,8 +18,10 @@ export default function Topbar() {
     useEffect(() => {
         if (userEmail) {
             dispatch(authActions.updateUserEmail(userEmail));
+            dispatch(usersActions.updateUsers(users));
+            dispatch(authActions.updateUser(users.filter((user: any) => user.email === userEmail)?.[0]));
         }
-    }, [userEmail, dispatch])
+    }, [userEmail, dispatch, users])
 
     return (
         <div className='flex justify-end py-5'>

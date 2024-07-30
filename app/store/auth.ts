@@ -6,7 +6,8 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         permission: '',
-        userEmail: ''
+        userEmail: '',
+        user: {}
     },
     reducers: {
         updatePermission(state, action) {
@@ -20,7 +21,13 @@ export const authSlice = createSlice({
             if (userEmail) {
                 state.userEmail = userEmail;
             }
-        }
+        },
+        updateUser(state, action) {
+            const user = action.payload;
+            if (user) {
+                state.user = user;
+            }
+        },
     }
 })
 

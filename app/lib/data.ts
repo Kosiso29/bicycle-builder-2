@@ -155,3 +155,17 @@ export async function fetchModelById(id: string) {
         throw new Error('Failed to fetch the model.');
     }
 }
+
+export async function fetchUsers() {
+    noStore();
+    try {
+        const data = await sql`
+        SELECT * FROM users`;
+
+        const users: any = data.rows;
+        return users;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the users.');
+    }
+}
