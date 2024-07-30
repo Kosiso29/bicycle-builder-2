@@ -26,7 +26,7 @@ export default function Sidebar({ models, categories, brands, presets, modelsPre
         dispatch(componentsActions.updateModelsPresets(modelsPresets));
     }, [])
     return (
-        <div className='hidden sm:flex w-[var(--sidebar-width)] fixed z-10 h-screen max-h-screen bg-primary flex-col justify-between py-12'>
+        <div className='flex flex-col justify-between py-12 h-full'>
             <Image
                 src="/Cadex_50_Disc_Ultra_F-modified.png"
                 width={60}
@@ -48,7 +48,7 @@ export default function Sidebar({ models, categories, brands, presets, modelsPre
                 }
             </div>
             <div className="flex w-full justify-center items-center">
-                <NavLink href="/login">
+                <NavLink type='submit'>
                     <LogoutOutlined width={60} height={60} />
                     LOGOUT
                 </NavLink>
