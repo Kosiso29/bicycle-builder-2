@@ -121,7 +121,7 @@ export default function Table({ users, preset }) {
                 </div>
                 <div className='mt-8'>
                     {
-                        !mounted.current && users && <Loading />
+                        !users && <Loading />
                     }
                 </div>
             </div>
