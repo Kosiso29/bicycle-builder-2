@@ -342,8 +342,8 @@ async function main() {
     // await alterColumns(client);
     // await alterForeignKeyColumns(client);
     // await createManyToManyMappingTable(client);
-    // await getModelsPresets(client);
-    await seedUsers(client);
+    await getModelsPresets(client);
+    // await seedUsers(client);
 
     await client.end();
 }

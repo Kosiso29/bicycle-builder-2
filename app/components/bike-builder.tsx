@@ -11,6 +11,7 @@ import Link from "next/link";
 import SelectionTabs from "./selection-tabs";
 import SummaryList from "@/app/components/summary-list";
 import FrameSet from "./frame-set";
+import GroupSet from "./group-set";
 import WheelSet from "./wheel-set";
 import Stem from "./stem";
 import HandleBar from "./handle-bar";
@@ -316,6 +317,8 @@ export default function BikeBuilder({
             switch (item.category + " - " + item.model) {
                 case "Frame Set - Allez Sprint":
                     return true;
+                case "Group Set - Drivetrain - Dura-Ace DI2":
+                    return true;
                 case "Front Wheel Set - SES 4.5":
                     return true;
                 case "Back Wheel Set - SES 4.5":
@@ -451,7 +454,7 @@ export default function BikeBuilder({
                     </div>
                 </div>
                 <FrameSet parentProps={parentProps} handleReset={handleReset} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
+                <GroupSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
                 <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4 && !frameSetDimensions.hasStem} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4 && (handleBarStemConditions || frameSetDimensions.hasStem)} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />

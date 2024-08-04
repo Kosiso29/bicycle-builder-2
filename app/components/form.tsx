@@ -26,7 +26,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
         }).length > 0
     }
 
-    const checkExistingModelPreset = (preset_id: string) => {
+    const checkExistingModelPreset: any = (preset_id: string) => {
         if (model) {
             const modelsInTheSameCategory = models.filter((item: any) => {
                 return item.category === categories[categoryId]

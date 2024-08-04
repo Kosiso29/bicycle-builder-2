@@ -48,7 +48,9 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
             image.src = item.src;
             image.crossOrigin = "anonymous";
 
-            const canvasProp = item.category.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
+            const joinedHyphenatedProp = item.category.split(" - ").map((item: any, index: number) => index === 1 ? item.toLowerCase() : item).join("_")
+
+            const canvasProp = joinedHyphenatedProp.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
 
             image.onload = function () {
                 const { actualWidth, brand, model, price } = item;
