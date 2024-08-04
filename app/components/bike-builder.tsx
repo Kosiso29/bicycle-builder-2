@@ -115,7 +115,7 @@ export default function BikeBuilder({
                 canvasContext.globalCompositeOperation = globalCompositeOperation;
 
                 if (!doNotRenderCanvasNumbers) {
-                    const canvasDrawImagePropsArray = ['frameSet', 'groupSet', 'frontWheelSet', 'stem', 'saddle', 'tire'];
+                    const canvasDrawImagePropsArray = ['frameSet', 'groupSet_drivetrain', 'frontWheelSet', 'stem', 'saddle', 'tire'];
 
                     canvasContext.font = "1.5rem Arial"
                     canvasNumberData.forEach((canvasNumber, index) => {
