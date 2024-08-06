@@ -74,6 +74,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             })
             return prevState;
         });
+        
+        positionCanvasImages(canvasDrawImageProps[identifier], identifier, canvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions);
+
         if (selectionLevelProps.includes('frameSet')) {
             handleReset();
         }
