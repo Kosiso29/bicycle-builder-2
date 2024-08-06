@@ -99,6 +99,7 @@ export default function BikeBuilder({
         if (canvasContext) {
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
         }
+        console.log('canvasDrawImageProps', canvasDrawImageProps);
         Object.values(canvasDrawImageProps).forEach((drawImageProps, index) => {
             if (index === 3 && frameSetDimensions.hasStem) {
                 return

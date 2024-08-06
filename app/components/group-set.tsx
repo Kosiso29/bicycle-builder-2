@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import SelectionTemplate from "./selection-template";
 
-const GROUPSET_PROP = 'groupSet_drivetrain';
+const GROUPSET_DRIVETRAIN_PROP = 'groupSet_drivetrain';
+const GROUPSET_SHIFTER_PROP = 'groupSet_shifter';
 
 export default function GroupSet({ parentProps, show, canvasContext, label, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
@@ -28,7 +29,7 @@ export default function GroupSet({ parentProps, show, canvasContext, label, canv
         const x = frameSetDimensions.groupSet_drivetrainX ? frameSetDimensions.groupSet_drivetrainX : 185;
         const y = frameSetDimensions.groupSet_drivetrainY ? frameSetDimensions.groupSet_drivetrainY : 380;
         // const x2 = frameSetDimensions.groupSet_shifterX ? frameSetDimensions.groupSet_shifterX : 701;
-        const y2 = canvasDrawImageProps.groupSet_shifter.y - (height2 - canvasDrawImageProps.groupSet_shifter.height);
+        // const y2 = canvasDrawImageProps.groupSet_shifter.y - (height2 - canvasDrawImageProps.groupSet_shifter.height);
 
         // if (!frameSetDimensions.hasHandleBar && !stemDimensions.hasHandleBar) {
         //     y2 = canvasDrawImageProps.groupSet_shifter.handleBarShifterY - height2;
@@ -50,17 +51,17 @@ export default function GroupSet({ parentProps, show, canvasContext, label, canv
 
         return {
             groupSet_drivetrain: { image, x, y, width, height, globalCompositeOperation: 'source-over', ...extraDrawImageProps },
-            groupSet_shifter: { ...canvasDrawImageProps.groupSet_shifter, image: image2, y: y2, width: width2, height: height2, globalCompositeOperation: 'destination-over', ...extraDrawImageProps }
+            groupSet_shifter: { ...canvasDrawImageProps.groupSet_shifter, image: image2, width: width2, height: height2, globalCompositeOperation: 'destination-over', ...extraDrawImageProps }
         }
     }
     
     useEffect(() => {
         if (show) {
-            setSelectionLevelProps([GROUPSET_PROP])
+            setSelectionLevelProps([GROUPSET_DRIVETRAIN_PROP, GROUPSET_SHIFTER_PROP])
         }
     }, [setSelectionLevelProps, show])
 
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label={"Group Set - Drivetrain"} displayLabel={/Groupset/i.test(label) ? "Groupset" : "Wheel"} setActualWidth={setActualWidth} identifier={GROUPSET_PROP} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label={"Group Set - Drivetrain"} displayLabel={/Groupset/i.test(label) ? "Groupset" : "Wheel"} setActualWidth={setActualWidth} identifier={GROUPSET_DRIVETRAIN_PROP} />
     )
 }

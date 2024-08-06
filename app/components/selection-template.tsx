@@ -58,12 +58,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setModel("");
         setSelectedIndex(null);
         imageRef.current?.setAttribute("src", "/Cadex-Saddle.png");
-        if (/Wheel Set/i.test(label)) {
+        if (/Wheel Set|Group Set/i.test(label)) {
             imageRef2.current?.setAttribute("src", "/Cadex-Saddle.png");
         };
         setCanvasDrawImageProps(prevState => {
             selectionLevelProps.forEach(selectionLevelProp => {
-                if (selectionLevelProps.length > 1 && !selectionLevelProp.includes('Wheel')) {
+                // delete only components loaded together simultaneously, like the Wheelsets and Groupsets
+                if (selectionLevelProps.length > 1 && !selectionLevelProp.includes('Wheel') && !selectionLevelProp.includes('groupSet')) {
                     if (selectionLevelProp === identifier) {
                         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
                     }
