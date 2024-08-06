@@ -42,6 +42,11 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             const backWheetSet = databaseModels.filter(item => item.model === modelData.model && item.category === 'Back Wheel Set')[0];
             imageRef2.current?.setAttribute("src", backWheetSet?.src);
         }
+        if (/Group Set/i.test(label)) {
+            setImage2Loaded(false);
+            const groupSetShifter = databaseModels.filter(item => item.model === modelData.model && item.category === 'Group Set - Shifter')[0];
+            imageRef2.current?.setAttribute("src", groupSetShifter?.src);
+        }
         imageRef.current?.setAttribute("src", modelData?.src);
         if (setActualWidth) {
             setActualWidth(modelData?.actualWidth);
