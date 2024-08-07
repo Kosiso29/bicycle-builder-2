@@ -201,8 +201,8 @@ async function addColumns(client) {
     try {
         const addColumn = await client.sql`
         ALTER TABLE models 
-        ADD COLUMN IF NOT EXISTS handle_bar_x INTEGER,
-        ADD COLUMN IF NOT EXISTS handle_bar_y INTEGER;
+        ADD COLUMN IF NOT EXISTS global_composite_operation VARCHAR(255),
+        ADD COLUMN IF NOT EXISTS canvas_layer_level UUID REFERENCES categories(id);
     `
 
         const modelsTable = await client.sql`SELECT * FROM models;`;
@@ -338,11 +338,11 @@ async function main() {
     // await seedCategories(client);
     // await seedBrands(client);
     // await seedModels(client);
-    // await addColumns(client);
+    await addColumns(client);
     // await alterColumns(client);
     // await alterForeignKeyColumns(client);
     // await createManyToManyMappingTable(client);
-    await getModelsPresets(client);
+    // await getModelsPresets(client);
     // await seedUsers(client);
 
     await client.end();

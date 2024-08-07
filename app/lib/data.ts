@@ -9,7 +9,7 @@ export async function fetchModels(): Promise<Models> {
     try {
         const data = await sql`
         SELECT
-            c.name AS category,
+            c1.name AS category,
             b.name AS brand,
             p.name AS preset,
             m.name AS model,
@@ -40,15 +40,19 @@ export async function fetchModels(): Promise<Models> {
             m.stiffness,
             m.overall,
             m.best_aerodynamics,
-            m.best_lightweight
+            m.best_lightweight,
+            m.global_composite_operation AS "globalCompositeOperation",
+            c2.name AS "canvasLayerLevel"
         FROM
-            categories c
+            categories c1
         JOIN
-            models m ON c.id = m.category_id
+            models m ON c1.id = m.category_id
         JOIN
             brands b ON m.brand_id = b.id
         JOIN
             presets p ON m.preset_id = p.id
+        LEFT JOIN
+            categories c2 ON m.canvas_layer_level = c2.id 
         ORDER BY
             b.name, m.name;`;
 

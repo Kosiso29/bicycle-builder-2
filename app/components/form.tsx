@@ -18,6 +18,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const models = useSelector((state: any) => state.componentsReducer.models);
     const user = useSelector((state: any) => state.authReducer.user);
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
+    const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
     const [loading, setLoading] = useState(false);
 
     const getPresetCheckState = (preset_id: string) => {
@@ -292,6 +293,48 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                         Add Builds
                                         <AddOutlined className="pointer-events-none" />
                                     </Link>
+                                </div>
+                                <div className='my-2'>
+                                    <div className='flex items-center gap-5'>
+                                        <span className='font-bold'>Component should appear</span>
+                                        <div className='w-36'>
+                                            <select
+                                                id="global_composite_operation"
+                                                name="global_composite_operation"
+                                                className="peer font-bold block w-full cursor-pointer rounded-md border border-gray-200 py-2 outline-2 placeholder:text-gray-500"
+                                                defaultValue={model?.global_composite_operation ?? ""}
+                                                aria-describedby="global_composite_operation-error"
+                                            >
+                                                <option value="" disabled>
+                                                    Select position
+                                                </option>
+                                                <option value="source-over">in front of</option>
+                                                <option value="destination-over">behind</option>
+                                            </select>
+                                            <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                                        </div>
+                                        <span className='font-bold'>the</span>
+                                        <div className="w-48">
+                                            <select
+                                                id="canvas_layer_level"
+                                                name="canvas_layer_level"
+                                                className="peer font-bold block w-full cursor-pointer rounded-md border border-gray-200 py-2 outline-2 placeholder:text-gray-500"
+                                                value={(canvasLayerLevel || model?.canvas_layer_level) ?? ""}
+                                                onChange={(e) => { setCanvasLayerLevel(e.target.value) }}
+                                                aria-describedby="canvas_layer_level-error"
+                                            >
+                                                <option value="" disabled>
+                                                    Select a component
+                                                </option>
+                                                {
+                                                    Object.entries(categories).map((item: any) => (
+                                                        <option key={item[1]} value={item[0]}>{item[1]}</option>
+                                                    ))
+                                                }
+                                            </select>
+                                            <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                                        </div>
+                                    </div>
                                 </div>
                                 {
                                     showFrameSetOffsets ?
