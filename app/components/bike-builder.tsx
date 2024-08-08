@@ -95,23 +95,32 @@ export default function BikeBuilder({
     }
 
     function setImage(doNotRenderCanvasNumbers = false, doNotIncrementCanvasSelectionLevelState = false) {
+        const canvasDrawImagePropsOrderArray = ['frameSet', 'groupSet_drivetrain', 'frontWheelSet', 'backWheelSet', 'stem', 'groupSet_shifter', 'handleBar', 'saddle', 'tire'];
+
+        const newCanvasDrawImageProps = {};
+        
+        canvasDrawImagePropsOrderArray.forEach(key => {
+            if (canvasDrawImageProps.hasOwnProperty(key)) {
+              newCanvasDrawImageProps[key] = canvasDrawImageProps[key];
+            }
+        })
 
         if (canvasContext) {
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
         }
-        console.log('canvasDrawImageProps', canvasDrawImageProps);
-        Object.values(canvasDrawImageProps).forEach((drawImageProps, index) => {
-            if (index === 3 && frameSetDimensions.hasStem) {
+        console.log('canvasDrawImageProps', newCanvasDrawImageProps);
+        Object.entries(newCanvasDrawImageProps).forEach((drawImageProps) => {
+            if (drawImageProps[0] === "stem" && frameSetDimensions.hasStem) {
                 return
             }
-            if (index === 4 && (frameSetDimensions.hasHandleBar || !canvasDrawImageProps.stem.image || stemDimensions.hasHandleBar)) {
+            if (drawImageProps[0] === "handleBar" && (frameSetDimensions.hasHandleBar || !canvasDrawImageProps.stem.image || stemDimensions.hasHandleBar)) {
                 return
             }
             if (doNotRenderCanvasNumbers && !drawImageProps.brand) {
                 return;
             }
-            if (drawImageProps.image) {
-                const { image, x, y, width, height, globalCompositeOperation } = drawImageProps;
+            if (drawImageProps[1].image) {
+                const { image, multipleImages, x, y, width, height, globalCompositeOperation } = drawImageProps[1];
 
                 canvasContext.globalCompositeOperation = globalCompositeOperation;
 
@@ -136,9 +145,16 @@ export default function BikeBuilder({
                 }
 
 
-                canvasContext.drawImage(image, x, y, width, height);
-                if (drawImageProps.image2) {
-                    const { image2, x2, y2, width2, height2 } = drawImageProps;
+                if (multipleImages) {
+                    multipleImages.forEach(imageItem => {
+                        canvasContext.globalCompositeOperation = imageItem.globalCompositeOperation
+                        canvasContext.drawImage(imageItem.image, x, y, width, height);
+                    })
+                } else {
+                    canvasContext.drawImage(image, x, y, width, height);
+                }
+                if (drawImageProps[1].image2) {
+                    const { image2, x2, y2, width2, height2 } = drawImageProps[1];
 
                     canvasContext.drawImage(image2, x2, y2, width2, height2);
                 }

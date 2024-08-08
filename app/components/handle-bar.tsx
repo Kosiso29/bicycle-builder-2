@@ -9,7 +9,7 @@ const HANDLE_BAR_PROP = 'handleBar';
 export default function HandleBar({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0")
     const { setSelectionLevelProps, setHandleBarDimensions } = parentProps;
-    const updateDrawImageProps = (extraDrawImageProps, allModels) => {
+    const updateDrawImageProps = (extraDrawImageProps, { allModels }) => {
         const x = frameSetDimensions.stemX ? frameSetDimensions.stemX + 38 : canvasX;
         const y = frameSetDimensions.stemY ? frameSetDimensions.stemY + 2 : canvasY;
 

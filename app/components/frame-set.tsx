@@ -11,7 +11,7 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
     const [actualWidth, setActualWidth] = useState("0");
     const { setSelectionLevelProps, setTooltips } = parentProps;
     
-    const updateDrawImageProps = (extraDrawImageProps, allModels) => {
+    const updateDrawImageProps = (extraDrawImageProps, { allModels }) => {
         const x = 200;
         const y = 100;
 

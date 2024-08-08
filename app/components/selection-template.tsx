@@ -3,7 +3,7 @@
 
 'use client'
 
-import Image from "next/image";
+import NextImage from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
 import { CloseOutlined } from "@mui/icons-material";
@@ -21,6 +21,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [allModels, setAllModels] = useState([]);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [image2Loaded, setImage2Loaded] = useState(false);
+    const [multipleImages, setMultipleImages] = useState([]);
+    const [multipleImagesLoaded, setMultipleImagesLoaded] = useState(false);
     const imageRef = useRef(null);
     const imageRef2 = useRef(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -29,13 +31,45 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
         const models = allBrandsData.filter(itemBrand => itemBrand.brand === e.target.value);
-        setAllModels(models);
+        const uniqueModels = models.filter((obj, index, self) =>
+            index === self.findIndex((t) => (
+                t.category === obj.category && t.model === obj.model && t.brand === obj.brand
+            ))
+          );
+        setAllModels(uniqueModels);
         setSelectedIndex(null);
     }
 
     const handleModelChange = (index, modelData) => {
         setModel(modelData?.model);
         setPrice(modelData?.price);
+        setMultipleImages([]);
+
+        const multipleModels = databaseModels.filter(item => item.category === label && item.brand === brand).filter(item => {
+            return item.category === label && item.model === modelData?.model && item.brand === brand
+        })
+        if (multipleModels.length > 1) {
+            let loadedCount = 0;
+            multipleModels.forEach(item => {
+                const image = new Image();
+    
+                image.src = item.src;
+                image.crossOrigin = "anonymous";
+    
+                setMultipleImages(prevState => {
+                    prevState.push({ image, globalCompositeOperation: item.globalCompositeOperation, canvasLayerLevel: item.canvasLayerLevel });
+                    return prevState;
+                })
+    
+                image.onload = function () {
+                    loadedCount++
+                    if (loadedCount === multipleModels.length) {
+                        setMultipleImagesLoaded(true);
+                    }
+                }
+    
+            })
+        }
         setImageLoaded(false);
         if (/Wheel Set/i.test(label)) {
             setImage2Loaded(false);
@@ -74,7 +108,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             })
             return prevState;
         });
-        
+
         positionCanvasImages(canvasDrawImageProps[identifier], identifier, canvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions);
 
         if (selectionLevelProps.includes('frameSet')) {
@@ -83,8 +117,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setRerender(prevState => !prevState);
     }
 
-    const updateCanvasImage = () => {
-        const imageProps = updateDrawImageProps({ brand, model, price }, allModels);
+    const updateCanvasImage = (multipleImages) => {
+        const imageProps = updateDrawImageProps({ brand, model, price }, { allModels, multipleImages });
+
+        console.log('imageProps', imageProps);
 
         setCanvasDrawImageProps(prevState => {
             Object.keys(imageProps).forEach(key => {
@@ -95,7 +131,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             })
             return prevState;
         });
-        
+
         positionCanvasImages(Object.values(imageProps)[0], identifier, canvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions);
 
         setRerender(prevState => !prevState);
@@ -113,9 +149,16 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     useEffect(() => {
         if ((model && imageLoaded && image2Loaded)) {
-            updateCanvasImage();
+            if (multipleImages.length > 0) {
+                if (multipleImagesLoaded) {
+                    setMultipleImagesLoaded(false);
+                    updateCanvasImage(multipleImages);
+                }
+            } else {
+                updateCanvasImage();
+            }
         }
-    }, [model, imageLoaded, image2Loaded]);
+    }, [model, imageLoaded, image2Loaded, multipleImagesLoaded]);
 
     useEffect(() => {
         const brands = databaseModels.filter(item => item.category === label);
@@ -194,8 +237,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     : null
             }
             {imageLoaded ? null : <div className='self-center'><Loading small /></div>}
-            <Image ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
-            <Image ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
+            <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
+            <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
         </div>
     )
 }

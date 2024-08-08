@@ -9,7 +9,7 @@ const STEM_PROP = 'stem';
 export default function Stem({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0")
     const { setSelectionLevelProps, setStemDimensions } = parentProps;
-    const updateDrawImageProps = (extraDrawImageProps, allModels) => {
+    const updateDrawImageProps = (extraDrawImageProps, { allModels }) => {
         const x = frameSetDimensions.stemX ? frameSetDimensions.stemX : canvasX;
         const y = frameSetDimensions.stemY ? frameSetDimensions.stemY : canvasY;
 

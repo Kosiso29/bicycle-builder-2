@@ -10,7 +10,7 @@ export default function GroupSet({ parentProps, show, canvasContext, label, canv
     const [actualWidth, setActualWidth] = useState("0");
     const { setSelectionLevelProps, stemDimensions } = parentProps;
 
-    const updateDrawImageProps = (extraDrawImageProps) => {
+    const updateDrawImageProps = (extraDrawImageProps, { multipleImages }) => {
 
         const { models, canvasDrawImageProps } = parentProps;
 
@@ -25,7 +25,6 @@ export default function GroupSet({ parentProps, show, canvasContext, label, canv
         const width2 = (frameSetDimensions?.width * groupSetShifter.actualWidth) / frameSetDimensions?.actualWidth;
         const height2 = image2?.height * (width2 / image2?.width);
         
-        console.log('frameSet', frameSetDimensions?.width, frameSetDimensions?.actualWidth, width2, groupSetShifter.actualWidth, height2)
         const x = frameSetDimensions.groupSet_drivetrainX ? frameSetDimensions.groupSet_drivetrainX : 185;
         const y = frameSetDimensions.groupSet_drivetrainY ? frameSetDimensions.groupSet_drivetrainY : 380;
         // const x2 = frameSetDimensions.groupSet_shifterX ? frameSetDimensions.groupSet_shifterX : 701;
@@ -47,10 +46,8 @@ export default function GroupSet({ parentProps, show, canvasContext, label, canv
         //     }
         // }
 
-        console.log('group set', canvasDrawImageProps.groupSet_shifter.x, canvasDrawImageProps.groupSet_shifter.y)
-
         return {
-            groupSet_drivetrain: { image, x, y, width, height, globalCompositeOperation: 'source-over', ...extraDrawImageProps },
+            groupSet_drivetrain: { image, multipleImages, x, y, width, height, globalCompositeOperation: 'source-over', ...extraDrawImageProps },
             groupSet_shifter: { ...canvasDrawImageProps.groupSet_shifter, image: image2, width: width2, height: height2, globalCompositeOperation: 'destination-over', ...extraDrawImageProps }
         }
     }
