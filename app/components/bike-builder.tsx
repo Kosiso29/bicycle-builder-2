@@ -320,7 +320,8 @@ export default function BikeBuilder({
             const height = image?.height * (width / image?.width);
             componentData.width = width;
             componentData.height = height;
-            positionCanvasImages(filteredComponentData[0], componentKey, canvasPlaceholderImages, setCanvasDrawImageProps, frameSetDimensions, stemDimensions)
+            // TODO: Fix wheelset bug and enable autopositioning of placeholders.
+            // positionCanvasImages(filteredComponentData[0], componentKey, canvasPlaceholderImages, setCanvasDrawImageProps, frameSetDimensions, stemDimensions)
         }
 
     }
