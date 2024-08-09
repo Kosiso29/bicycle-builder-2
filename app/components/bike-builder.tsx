@@ -320,8 +320,14 @@ export default function BikeBuilder({
             const height = image?.height * (width / image?.width);
             componentData.width = width;
             componentData.height = height;
+            if (componentKey === 'tire') {
+                componentData.width2 = width;
+                componentData.height2 = height;
+            }
             // TODO: Fix wheelset bug and enable autopositioning of placeholders.
-            // positionCanvasImages(filteredComponentData[0], componentKey, canvasPlaceholderImages, setCanvasDrawImageProps, frameSetDimensions, stemDimensions)
+            positionCanvasImages(filteredComponentData[0], componentKey, canvasPlaceholderImages, setCanvasDrawImageProps, frameSetDimensions, stemDimensions)
+            // if (componentKey === "frameSet") {
+            // }
         }
 
     }
@@ -361,8 +367,9 @@ export default function BikeBuilder({
             image.crossOrigin = "anonymous";
             image.onload = function () {
                 updateCanvasPlaceholderImageDimensions(filteredModelPlaceholders, image, entries[0], entries[1]);
-                setCanvasDrawImageProps(prevState => ({ ...prevState, [entries[0]]: { ...entries[1], image, image2: entries[0] === 'tire' ? image : null } }))
-                setInitialCanvasDrawImageProps(prevState => ({ ...prevState, [entries[0]]: { ...entries[1], image, image2: entries[0] === 'tire' ? image : null } }))
+                const returnPrevState = (prevState) => ({ ...prevState, [entries[0]]: { ...prevState[entries[0]], width: entries[1].width, height: entries[1].height, image, image2: entries[0] === 'tire' ? image : null, width2: entries[0] === 'tire' ? entries[1].width2 : null, height2: entries[0] === 'tire' ? entries[1].height2 : null } }) 
+                setCanvasDrawImageProps(prevState => returnPrevState(prevState))
+                setInitialCanvasDrawImageProps(prevState => returnPrevState(prevState))
 
                 loadedCount++;
 
