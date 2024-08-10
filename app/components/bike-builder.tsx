@@ -96,6 +96,7 @@ export default function BikeBuilder({
 
     function setImage(doNotRenderCanvasNumbers = false, doNotIncrementCanvasSelectionLevelState = false) {
         const canvasDrawImagePropsOrderArray = ['frameSet', 'groupSet_drivetrain', 'frontWheelSet', 'backWheelSet', 'stem', 'groupSet_shifter', 'handleBar', 'saddle', 'tire'];
+        const placeholdersInCanvasDrawImageProps = {};
 
         const newCanvasDrawImageProps = {};
         
@@ -109,6 +110,18 @@ export default function BikeBuilder({
             canvasContext.clearRect(0, 0, canvas.width, canvas.height);
         }
         console.log('canvasDrawImageProps', newCanvasDrawImageProps);
+        iterateCanvasDrawImageProps(newCanvasDrawImageProps, doNotRenderCanvasNumbers, placeholdersInCanvasDrawImageProps);
+        iterateCanvasDrawImageProps(placeholdersInCanvasDrawImageProps, doNotRenderCanvasNumbers);
+
+        if (!doNotIncrementCanvasSelectionLevelState) {
+            setCanvasSelectionLevelState(prevState => {
+                if (prevState === selectionLevel) prevState++;
+                return prevState;
+            });
+        }
+    }
+
+    function iterateCanvasDrawImageProps(newCanvasDrawImageProps, doNotRenderCanvasNumbers, placeholdersInCanvasDrawImageProps) {
         Object.entries(newCanvasDrawImageProps).forEach((drawImageProps) => {
             if (drawImageProps[0] === "stem" && frameSetDimensions.hasStem) {
                 return
@@ -116,13 +129,18 @@ export default function BikeBuilder({
             if (drawImageProps[0] === "handleBar" && (frameSetDimensions.hasHandleBar || !canvasDrawImageProps.stem.image || stemDimensions.hasHandleBar)) {
                 return
             }
-            if (doNotRenderCanvasNumbers && !drawImageProps.brand) {
+            if (doNotRenderCanvasNumbers && !drawImageProps[1].brand) {
                 return;
             }
             if (drawImageProps[1].image) {
-                const { image, multipleImages, x, y, width, height, globalCompositeOperation } = drawImageProps[1];
+                const { image, multipleImages, x, y, width, height, globalCompositeOperation, model } = drawImageProps[1];
 
                 canvasContext.globalCompositeOperation = globalCompositeOperation;
+
+                if (placeholdersInCanvasDrawImageProps && (!model || drawImageProps[0] === 'groupSet_shifter')) {
+                    placeholdersInCanvasDrawImageProps[drawImageProps[0]] = drawImageProps[1];
+                    return;
+                }
 
                 if (!doNotRenderCanvasNumbers) {
                     const canvasDrawImagePropsArray = ['frameSet', 'groupSet_drivetrain', 'frontWheelSet', 'stem', 'saddle', 'tire'];
@@ -160,13 +178,6 @@ export default function BikeBuilder({
                 }
             }
         })
-
-        if (!doNotIncrementCanvasSelectionLevelState) {
-            setCanvasSelectionLevelState(prevState => {
-                if (prevState === selectionLevel) prevState++;
-                return prevState;
-            });
-        }
     }
 
     const updateSelectionLevel = (newSelectionLevel) => {
