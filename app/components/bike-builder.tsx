@@ -367,7 +367,7 @@ export default function BikeBuilder({
             image.crossOrigin = "anonymous";
             image.onload = function () {
                 updateCanvasPlaceholderImageDimensions(filteredModelPlaceholders, image, entries[0], entries[1]);
-                const returnPrevState = (prevState) => ({ ...prevState, [entries[0]]: { ...prevState[entries[0]], width: entries[1].width, height: entries[1].height, image, image2: entries[0] === 'tire' ? image : null, width2: entries[0] === 'tire' ? entries[1].width2 : null, height2: entries[0] === 'tire' ? entries[1].height2 : null } }) 
+                const returnPrevState = (prevState) => ({ ...prevState, [entries[0]]: { ...entries[1], ...prevState[entries[0]], width: entries[1].width, height: entries[1].height, image, image2: entries[0] === 'tire' ? image : null, width2: entries[0] === 'tire' ? entries[1].width2 : null, height2: entries[0] === 'tire' ? entries[1].height2 : null } }) 
                 setCanvasDrawImageProps(prevState => returnPrevState(prevState))
                 setInitialCanvasDrawImageProps(prevState => returnPrevState(prevState))
 
