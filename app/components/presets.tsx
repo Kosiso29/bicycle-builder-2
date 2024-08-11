@@ -6,18 +6,23 @@ import { positionCanvasImages } from "../utils/position-canvas-images";
 export default function Presets({ parentProps, setFrameSetDimensions, presets, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, presets: any, modelsPresets: any }) {
     const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips } = parentProps;
     const [loading, setLoading] = useState(0.5);
+    const [multipleImages, setMultipleImages] = useState([]);
+    
+    const populateMultipleImages = (filteredPresets: any) => {
+        setMultipleImages([]);
+        const uniqueImagePresets: any = [];
+        const multipleImagePresets: any = [];
+        
+        filteredPresets.forEach((filteredPreset: any, filteredPresetIndex: number) => {
+          const duplicateIndex = filteredPresets.findIndex((item: any, index: number) => item.category === filteredPreset.category && item.brand === filteredPreset.brand && item.model === filteredPreset.model && index !== filteredPresetIndex);
+            if (duplicateIndex === -1) {
+                uniqueImagePresets.push(filteredPreset);
+            } else {
+                multipleImagePresets.push(filteredPreset);
+            }
+        });
 
-    const getCanvasSelectionLevelState = (filteredPresets: any) => {
-        const mappedFilteredPresets = filteredPresets.map((item: any) => item.category);
-        if (mappedFilteredPresets.includes("Tyre")) {
-            setCanvasSelectionLevelState(6);
-        } else if (mappedFilteredPresets.includes("Saddle")) {
-            setCanvasSelectionLevelState(5);
-        } else if (mappedFilteredPresets.includes("Stem") || mappedFilteredPresets.includes("Handle Bar")) {
-            setCanvasSelectionLevelState(4);
-        } else if (mappedFilteredPresets.includes("Front Wheel Set") || mappedFilteredPresets.includes("Back Wheel Set")) {
-            setCanvasSelectionLevelState(3);
-        }
+        return { uniqueImagePresets, multipleImagePresets }
     }
 
     const getFilteredPresets = (preset: string) => { 
@@ -40,9 +45,10 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
     const getPresetComponents = (preset: string) => {
         const filteredPresets = getFilteredPresets(preset);
-        let loadedCount = 0, newFrameSetDimensions = frameSetDimensions;
+        let loadedCountUnique = 0, loadedCountMultiple = 0, finalUniqueCount = false, finalMultipleCount = false, newFrameSetDimensions = frameSetDimensions;
+        const { uniqueImagePresets, multipleImagePresets } = populateMultipleImages(filteredPresets);
 
-        filteredPresets.sort((a: any) => (a.category === "Frame Set" ? -1 : 1)).forEach((item: any) => {
+        uniqueImagePresets.sort((a: any) => (a.category === "Frame Set" ? -1 : 1)).forEach((item: any) => {
             const image = new Image();
 
             image.src = item.src;
@@ -79,23 +85,73 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
                 setCanvasDrawImageProps((prevState: any) => ({
                     ...prevState,
-                    [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                    [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
 
                 positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions)
 
-                loadedCount++;
+                loadedCountUnique++;
 
                 setSelectionPresetProps((prevState: any) => ({
                     ...prevState,
                     [canvasProp]: { brand, model }
                 }));
-                if (loadedCount === filteredPresets.length) {
-                    setRerender((prevState: any) => !prevState);
-                    setLoading(0.5);
-                    setCanvasSelectionLevelState(6);
-                    setShowSummary(true);
-                    setSelectionLevel(7);
+                if (loadedCountUnique === uniqueImagePresets.length) {
+                    if (finalMultipleCount) {
+                        setRerender((prevState: any) => !prevState);
+                        setLoading(0.5);
+                        setCanvasSelectionLevelState(6);
+                        setShowSummary(true);
+                        setSelectionLevel(7);
+                    }
+                    finalUniqueCount = true;
+                }
+            };
+
+        })
+
+        multipleImagePresets.forEach((item: any) => {
+            const image = new Image();
+
+            image.src = item.src;
+            image.crossOrigin = "anonymous";
+
+            const joinedHyphenatedProp = item.category.split(" - ").map((item: any, index: number) => index === 1 ? item.toLowerCase() : item).join("_")
+
+            const canvasProp = joinedHyphenatedProp.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
+
+            image.onload = function () {
+                const { actualWidth, brand, model, price } = item;
+                const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
+                const height = image?.naturalHeight * (width / image?.naturalWidth);
+    
+                setMultipleImages((prevState: any) => {
+                    prevState.push({ image, globalCompositeOperation: item.globalCompositeOperation, canvasLayerLevel: item.canvasLayerLevel });
+                    return prevState;
+                })
+
+                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions)
+
+                loadedCountMultiple++;
+
+                if (loadedCountMultiple === multipleImagePresets.length) {
+                    setCanvasDrawImageProps((prevState: any) => ({
+                        ...prevState,
+                        [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, multipleImages, width, height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                    }));
+
+                    setSelectionPresetProps((prevState: any) => ({
+                        ...prevState,
+                        [canvasProp]: { brand, model }
+                    }));
+                    if (finalUniqueCount) {
+                        setRerender((prevState: any) => !prevState);
+                        setLoading(0.5);
+                        setCanvasSelectionLevelState(6);
+                        setShowSummary(true);
+                        setSelectionLevel(7);
+                    }
+                    finalMultipleCount = true;
                 }
             };
 

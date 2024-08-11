@@ -141,7 +141,12 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         if (selectionPresetProps[identifier]?.model) {
             setBrand(selectionPresetProps[identifier].brand);
             const models = allBrandsData.filter(itemBrand => itemBrand.brand === selectionPresetProps[identifier].brand);
-            setAllModels(models);
+            const uniqueModels = models.filter((obj, index, self) =>
+                index === self.findIndex((t) => (
+                    t.category === obj.category && t.model === obj.model && t.brand === obj.brand
+                ))
+              );
+            setAllModels(uniqueModels);
             let selectedModelIndex = models.findIndex(itemModel => itemModel.model === selectionPresetProps[identifier]?.model);
             setSelectedIndex(selectedModelIndex);
         }
