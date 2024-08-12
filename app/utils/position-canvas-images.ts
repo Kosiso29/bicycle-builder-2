@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-export const positionCanvasImages = (values, identifier, canvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions) => {
+export const positionCanvasImages = (values, identifier, canvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions, preset) => {
 
     const componentsWithOffsets = ["frameSet", "stem", "handleBar"];
 
@@ -54,10 +54,10 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
         if (identifier === 'stem' && !hasHandleBar) {
             return prevState[identifier][axisLength] + handleBarAxis + handleBarShifterShifted;
         }
-        if (identifier.includes('groupSet')) {
+        if (identifier.includes('groupSet') && !preset) {
             if (!frameSetDimensions.hasHandleBar && !stemDimensions.hasHandleBar) {
                 return prevState.handleBar[axisLength] + handleBarShifterShifted;
-            } else if (!frameSetDimensions.hasStem && stemDimensions.hasHandleBar) {
+            } else if (!frameSetDimensions.hasStem && !frameSetDimensions.hasHandleBar && stemDimensions.hasHandleBar) {
                 return prevState.stem[axisLength] + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
             } else if (frameSetDimensions.hasHandleBar) {
                 return prevState.frameSet['groupSet_shifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);

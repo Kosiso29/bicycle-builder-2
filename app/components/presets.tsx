@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@mui/material";
 import Loading from "@/app/components/loading";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { positionCanvasImages } from "../utils/position-canvas-images";
 
 export default function Presets({ parentProps, setFrameSetDimensions, presets, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, presets: any, modelsPresets: any }) {
     const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips } = parentProps;
     const [loading, setLoading] = useState(0.5);
     const [multipleImages, setMultipleImages] = useState([]);
+    const [uniqueImagePresetsProps, setUniqueImagePresetsProps]: any = useState(null);
     
     const populateMultipleImages = (filteredPresets: any) => {
         setMultipleImages([]);
@@ -47,6 +49,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
         const filteredPresets = getFilteredPresets(preset);
         let loadedCountUnique = 0, loadedCountMultiple = 0, finalUniqueCount = false, finalMultipleCount = false, newFrameSetDimensions = frameSetDimensions;
         const { uniqueImagePresets, multipleImagePresets } = populateMultipleImages(filteredPresets);
+        setUniqueImagePresetsProps(null);
 
         uniqueImagePresets.sort((a: any) => (a.category === "Frame Set" ? -1 : 1)).forEach((item: any) => {
             const image = new Image();
@@ -88,7 +91,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                     [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
 
-                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions)
+                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions, true)
 
                 loadedCountUnique++;
 
@@ -97,18 +100,19 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                     [canvasProp]: { brand, model }
                 }));
                 if (loadedCountUnique === uniqueImagePresets.length) {
-                    if (finalMultipleCount) {
-                        setRerender((prevState: any) => !prevState);
-                        setLoading(0.5);
-                        setCanvasSelectionLevelState(6);
-                        setShowSummary(true);
-                        setSelectionLevel(7);
-                    }
-                    finalUniqueCount = true;
+                    setUniqueImagePresetsProps({ multipleImagePresets, newFrameSetDimensions })
                 }
             };
 
         })
+
+        if (filteredPresets.length === 0) {
+            setLoading(0.5);
+        }
+    }
+
+    const renderMultipleImagePresets = (multipleImagePresets: any, newFrameSetDimensions: any) => {
+        let loadedCountMultiple = 0;
 
         multipleImagePresets.forEach((item: any) => {
             const image = new Image();
@@ -130,7 +134,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                     return prevState;
                 })
 
-                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions)
+                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions, true)
 
                 loadedCountMultiple++;
 
@@ -144,23 +148,23 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                         ...prevState,
                         [canvasProp]: { brand, model }
                     }));
-                    if (finalUniqueCount) {
-                        setRerender((prevState: any) => !prevState);
-                        setLoading(0.5);
-                        setCanvasSelectionLevelState(6);
-                        setShowSummary(true);
-                        setSelectionLevel(7);
-                    }
-                    finalMultipleCount = true;
+                    setRerender((prevState: any) => !prevState);
+                    setLoading(0.5);
+                    setCanvasSelectionLevelState(6);
+                    setShowSummary(true);
+                    setSelectionLevel(7);
                 }
             };
 
         })
-
-        if (filteredPresets.length === 0) {
-            setLoading(0.5);
-        }
     }
+    
+    useEffect(() => {
+        if (uniqueImagePresetsProps) {
+            const { multipleImagePresets, newFrameSetDimensions } = uniqueImagePresetsProps;
+            renderMultipleImagePresets(multipleImagePresets, newFrameSetDimensions);
+        }
+    }, [uniqueImagePresetsProps])
 
     return (
         <div className="flex flex-col gap-5">
