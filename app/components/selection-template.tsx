@@ -120,8 +120,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const updateCanvasImage = (multipleImages) => {
         const imageProps = updateDrawImageProps({ brand, model, price }, { allModels, multipleImages });
 
-        console.log('imageProps', imageProps);
-
         setCanvasDrawImageProps(prevState => {
             Object.keys(imageProps).forEach(key => {
                 prevState = {

@@ -82,16 +82,16 @@ export default function BikeBuilder({
     ]
 
     const canvasPlaceholderImages = {
-        frameSet: { image: "/PH-Specialized_Allez_Sprint_final.png", x: 200, y: 100, width: 528, height: 374.8259385665529, globalCompositeOperation: 'destination-over' },
-        frontWheelSet: { image: "/PH-ENVE_SES_4.5_F-final.png", x: 553, y: 258, width: 331.73333333333335, height: 331.73333333333335, globalCompositeOperation: 'destination-over' },
-        backWheelSet: { image: "/PH-ENVE_SES_4.5_R-final.png", x: 48, y: 258, width: 331.73333333333335, height: 331.73333333333335, globalCompositeOperation: 'destination-over' },
-        stem: { image: "/PH-CADEX-Aero_Integrated_Handlebar.png", x: 603, y: 142, width: 125.33333333333333, height: 87.16916740217711, globalCompositeOperation: 'destination-over', hasHandleBar: true, groupSet_shifterX: 93, groupSet_shifterY: 74 },
+        frameSet: { image: "/PH-Specialized_Allez_Sprint_final.png", x: 200, y: 100, globalCompositeOperation: 'destination-over' },
+        frontWheelSet: { image: "/PH-ENVE_SES_4.5_F-final.png", globalCompositeOperation: 'destination-over' },
+        backWheelSet: { image: "/PH-ENVE_SES_4.5_R-final.png", globalCompositeOperation: 'destination-over' },
+        stem: { image: "/PH-CADEX-Aero_Integrated_Handlebar.png", globalCompositeOperation: 'destination-over', hasHandleBar: true },
         handleBar: { image: "/PH-Cadex-Race-final.png", x: 638, y: 169, width: 80, height: 85.58692421991084, stemHandleBarX: 38, stemHandleBarY: 2, globalCompositeOperation: 'destination-over' },
         saddle: { image: "/PH-ENVE_X_SELLE_ITALIA_BOOST_SLR.png", x: 258, y: 86.65583333333333, width: 116.26666666666667, height: 23.344166666666666, globalCompositeOperation: 'destination-over' },
-        tire: { image: "/PH-Tan_SES31_FullWheel-modified.png", x: 541, y: 247, width: 353.06666666666666, height: 353.06666666666666, x2: 36, y2: 247, width2: 353.06666666666666, height2: 353.06666666666666, globalCompositeOperation: 'destination-over' },
+        tire: { image: "/PH-Tan_SES31_FullWheel-modified.png", globalCompositeOperation: 'destination-over' },
         // drivetrain actualWidth used is 622mm instead of 722mm
         groupSet_drivetrain: { image: "/Groupset-Drivetrain.png", x: 185, y: 380, width: 331.733333333, height: 136.6176524785, globalCompositeOperation: 'destination-over' },
-        groupSet_shifter: { image: "/Groupset-Shifter.png", x: 701, y: 121.859649118, width: 80, height: 96.140350882, stemShifterX: 98, stemShifterY: 76, handleBarShifterX: 50, handleBarShifterY: 70, globalCompositeOperation: 'destination-over' },
+        groupSet_shifter: { image: "/PH-Shifter_dura-ace_final.png", x: 701, y: 121.859649118, width: 80, height: 96.140350882, stemShifterX: 98, stemShifterY: 76, handleBarShifterX: 50, handleBarShifterY: 70, globalCompositeOperation: 'destination-over' },
     }
 
     function setImage(doNotRenderCanvasNumbers = false, doNotIncrementCanvasSelectionLevelState = false) {
@@ -320,11 +320,17 @@ export default function BikeBuilder({
         setShowSummary(false);
     }
 
-    const updateCanvasPlaceholderImageDimensions = (filteredModelPlaceholders, image, componentKey, componentData) => {
-        const filteredComponentData = filteredModelPlaceholders.filter(item => {
-            const canvasProp = item.category.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
+    const filterComponentData = (filteredModelPlaceholders, componentKey) => {
+        return filteredModelPlaceholders.filter(item => {
+            const joinedHyphenatedProp = item.category.split(" - ").map((item: any, index: number) => index === 1 ? item.toLowerCase() : item).join("_")
+
+            const canvasProp = joinedHyphenatedProp.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
             return canvasProp === componentKey;
         })
+    }
+
+    const updateCanvasPlaceholderImageDimensions = (filteredModelPlaceholders, image, componentKey, componentData) => {
+        const filteredComponentData = filterComponentData(filteredModelPlaceholders, componentKey);
 
         if (filteredComponentData.length > 0) {
             const width = (528 * filteredComponentData[0].actualWidth) / 990;
@@ -335,10 +341,12 @@ export default function BikeBuilder({
                 componentData.width2 = width;
                 componentData.height2 = height;
             }
-            // TODO: Fix wheelset bug and enable autopositioning of placeholders.
+            if (componentKey === 'stem') {
+                componentData.groupSet_shifterX = filteredComponentData[0].groupSet_shifterX;
+                componentData.groupSet_shifterY = filteredComponentData[0].groupSet_shifterY;
+            }
+            
             positionCanvasImages(filteredComponentData[0], componentKey, canvasPlaceholderImages, setCanvasDrawImageProps, frameSetDimensions, stemDimensions)
-            // if (componentKey === "frameSet") {
-            // }
         }
 
     }
@@ -353,6 +361,8 @@ export default function BikeBuilder({
                 case "Frame Set - Allez Sprint":
                     return true;
                 case "Group Set - Drivetrain - Dura-Ace DI2":
+                    return true;
+                case "Group Set - Shifter - Dura-Ace DI2":
                     return true;
                 case "Front Wheel Set - SES 4.5":
                     return true;
@@ -380,11 +390,20 @@ export default function BikeBuilder({
                 updateCanvasPlaceholderImageDimensions(filteredModelPlaceholders, image, entries[0], entries[1]);
                 const returnPrevState = (prevState) => ({ ...prevState, [entries[0]]: { ...entries[1], ...prevState[entries[0]], width: entries[1].width, height: entries[1].height, image, image2: entries[0] === 'tire' ? image : null, width2: entries[0] === 'tire' ? entries[1].width2 : null, height2: entries[0] === 'tire' ? entries[1].height2 : null } }) 
                 setCanvasDrawImageProps(prevState => returnPrevState(prevState))
-                setInitialCanvasDrawImageProps(prevState => returnPrevState(prevState))
 
                 loadedCount++;
 
                 if (loadedCount === Object.values(canvasPlaceholderImages).length) {
+                    // rerun positioning of components whose positions depend on their height.
+                    const filteredStemData = filterComponentData(filteredModelPlaceholders, 'stem');
+                    positionCanvasImages(filteredStemData[0], 'stem', canvasPlaceholderImages, setCanvasDrawImageProps, frameSetDimensions, stemDimensions)
+                    const filteredSaddleData = filterComponentData(filteredModelPlaceholders, 'saddle');
+                    positionCanvasImages(filteredSaddleData[0], 'saddle', canvasPlaceholderImages, setCanvasDrawImageProps, frameSetDimensions, stemDimensions)
+                    setCanvasDrawImageProps(prevState => {
+                        setInitialCanvasDrawImageProps(prevState);
+                        return { ...prevState };
+                    })
+
                     setFrameSetDimensions({ actualWidth: 990, width: 528 });
                     setRerender(prevState => !prevState);
                 }
