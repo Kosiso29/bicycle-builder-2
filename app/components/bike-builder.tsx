@@ -364,9 +364,9 @@ export default function BikeBuilder({
                     return true;
                 case "Group Set - Shifter - Dura-Ace DI2":
                     return true;
-                case "Front Wheel Set - SES 4.5":
+                case "Front Wheel Set - SES 4.5 LTD - Limited Edition Tour De France Decals":
                     return true;
-                case "Back Wheel Set - SES 4.5":
+                case "Back Wheel Set - SES 4.5 LTD - Limited Edition Tour De France Decals":
                     return true;
                 case "Stem - Aero Integrated Handlebar":
                     return true;
