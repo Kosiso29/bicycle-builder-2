@@ -277,7 +277,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                                         name={"preset_" + item[1]}
                                                         type="checkbox"
                                                         value={model_id + "_" + item[0]}
-                                                        disabled={checkExistingModelPreset(item[0])}
+                                                        disabled={categories[categoryId] === 'Group Set - Drivetrain' ? false : checkExistingModelPreset(item[0])}
                                                         defaultChecked={getPresetCheckState(item[0])}
                                                         className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                                                         aria-describedby={`${"preset_" + item[1]}-error`}

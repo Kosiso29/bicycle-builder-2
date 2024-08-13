@@ -65,12 +65,13 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                 const { actualWidth, brand, model, price } = item;
                 const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
                 const height = image?.naturalHeight * (width / image?.naturalWidth);
+                let offsets = {};
 
                 if (canvasProp === 'frameSet') {
                     const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
                         groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY,
                         hasStem, hasHandleBar, key_metrics, aerodynamics, weight, comfort, stiffness, overall } = item;
-                    const offsets = {
+                    offsets = {
                         stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
                         groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY
                     };
@@ -88,10 +89,10 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
                 setCanvasDrawImageProps((prevState: any) => ({
                     ...prevState,
-                    [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                    [canvasProp]: { ...prevState[canvasProp], ...offsets, image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
 
-                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions, true)
+                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions)
 
                 loadedCountUnique++;
 
@@ -134,7 +135,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                     return prevState;
                 })
 
-                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions, true)
+                positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions)
 
                 loadedCountMultiple++;
 

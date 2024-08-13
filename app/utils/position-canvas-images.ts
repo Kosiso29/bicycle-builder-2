@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-export const positionCanvasImages = (values, identifier, canvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions, preset) => {
+export const positionCanvasImages = (values, identifier, canvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions) => {
 
     const componentsWithOffsets = ["frameSet", "stem", "handleBar"];
 
@@ -54,7 +54,7 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
         if (identifier === 'stem' && !hasHandleBar) {
             return prevState[identifier][axisLength] + handleBarAxis + handleBarShifterShifted;
         }
-        if (identifier.includes('groupSet') && !preset) {
+        if (identifier.includes('groupSet')) {
             if (!frameSetDimensions.hasHandleBar && !stemDimensions.hasHandleBar) {
                 return prevState.handleBar[axisLength] + handleBarShifterShifted;
             } else if (!frameSetDimensions.hasStem && !frameSetDimensions.hasHandleBar && stemDimensions.hasHandleBar) {
