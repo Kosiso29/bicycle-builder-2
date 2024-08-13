@@ -341,7 +341,7 @@ export default function BikeBuilder({
                 componentData.width2 = width;
                 componentData.height2 = height;
             }
-            if (componentKey === 'stem') {
+            if (componentKey === 'stem' || componentKey === 'handleBar') {
                 componentData.groupSet_shifterX = filteredComponentData[0].groupSet_shifterX;
                 componentData.groupSet_shifterY = filteredComponentData[0].groupSet_shifterY;
             }
