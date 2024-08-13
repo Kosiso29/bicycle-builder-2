@@ -453,7 +453,12 @@ export default function BikeBuilder({
                 setImage(false, true);
             } else {
                 setImage();
-                setTotalPrice(Object.values(canvasDrawImageProps).reduce((acc, item) => {
+                setTotalPrice(Object.keys(canvasDrawImageProps).reduce((acc, key) => {
+                    if (key !== "backWheelSet" && key !== "groupSet_shifter") {
+                        acc.push(canvasDrawImageProps[key]);
+                    }
+                    return acc;
+                }, []).reduce((acc, item) => {
                     if (item.price) {
                         acc = (parseFloat(acc) + parseFloat(item.price)).toFixed(2);
                     }
