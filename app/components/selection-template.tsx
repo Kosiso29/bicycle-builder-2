@@ -148,8 +148,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 ))
               );
             setAllModels(uniqueModels);
-            let selectedModelIndex = models.findIndex(itemModel => itemModel.model === selectionPresetProps[identifier]?.model);
+            const selectedModelIndex = uniqueModels.findIndex(itemModel => itemModel.model === selectionPresetProps[identifier]?.model);
             setSelectedIndex(selectedModelIndex);
+            const selectedModelData = uniqueModels.filter(itemModel => itemModel.model === selectionPresetProps[identifier]?.model);
+            setModelData(selectedModelData[0]);
         }
     }, [selectionPresetProps[identifier]?.model]);
 
