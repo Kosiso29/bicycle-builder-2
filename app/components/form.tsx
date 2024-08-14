@@ -8,7 +8,7 @@ import Loading from "./loading";
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
-import MultipleSelect from "@/app/ui/multiple-select";
+import MultipleInput from "@/app/ui/multiple-input";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Form({ model, model_id }: { model?: any, model_id?: string }) {
@@ -245,13 +245,13 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                 </div>
 
                 {/* Length */}
-                <MultipleSelect initialItems={model?.length} title='Length values' buttonText={<>Add&nbsp;Length</>} name='length' />
+                <MultipleInput initialItems={model?.lengths} title='Length values' buttonText={<>Add&nbsp;Length</>} name='lengths' />
                 
                 {/* Size */}
-                <MultipleSelect initialItems={model?.size} title='Size values' buttonText={<>Add&nbsp;Size</>} name='size' />
+                <MultipleInput initialItems={model?.sizes} title='Size values' buttonText={<>Add&nbsp;Size</>} name='sizes' />
 
                 {/* Ratio */}
-                <MultipleSelect initialItems={model?.ratio} title='Ratio values' buttonText={<>Add&nbsp;Ratio</>} name='ratio' />
+                <MultipleInput initialItems={model?.ratios} title='Ratio values' buttonText={<>Add&nbsp;Ratio</>} name='ratios' />
 
                 {/* Key Metrics */}
                 {

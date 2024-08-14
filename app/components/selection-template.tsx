@@ -10,6 +10,7 @@ import { CloseOutlined } from "@mui/icons-material";
 import Loading from "@/app/components/loading";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import { positionCanvasImages } from "@/app/utils/position-canvas-images";
+import SizeSelector from "@/app/ui/toggle-button";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
@@ -18,6 +19,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
     const [model, setModel] = useState("");
+    const [modelData, setModelData] = useState(null);
     const [allModels, setAllModels] = useState([]);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [image2Loaded, setImage2Loaded] = useState(false);
@@ -43,6 +45,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const handleModelChange = (index, modelData) => {
         setModel(modelData?.model);
         setPrice(modelData?.price);
+        setModelData(modelData);
         setMultipleImages([]);
 
         const multipleModels = databaseModels.filter(item => item.category === label && item.brand === brand).filter(item => {
@@ -242,6 +245,11 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             {imageLoaded ? null : <div className='self-center'><Loading small /></div>}
             <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
+            <div className="mt-5">
+                <SizeSelector values={modelData?.lengths} type="lengths" label={label} />
+                <SizeSelector values={modelData?.sizes} type="sizes" label={label} />
+                <SizeSelector values={modelData?.ratios} type="ratios" label={label} />
+            </div>
         </div>
     )
 }

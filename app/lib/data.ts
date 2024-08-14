@@ -13,6 +13,7 @@ export async function fetchModels(): Promise<Models> {
             b.name AS brand,
             p.name AS preset,
             m.name AS model,
+            c2.name AS "canvasLayerLevel",
             m.id,
             m.image_url AS src,
             m.actual_width AS "actualWidth",
@@ -42,7 +43,9 @@ export async function fetchModels(): Promise<Models> {
             m.best_aerodynamics,
             m.best_lightweight,
             m.global_composite_operation AS "globalCompositeOperation",
-            c2.name AS "canvasLayerLevel"
+            m.lengths,
+            m.sizes,
+            m.ratios
         FROM
             categories c1
         JOIN

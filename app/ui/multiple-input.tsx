@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CancelOutlined } from '@mui/icons-material';
 
-export default function MultipleSelect({ title, name, buttonText, initialItems }: { title: string, name: string, buttonText: any, initialItems: string[] }) {
+export default function MultipleInput({ title, name, buttonText, initialItems }: { title: string, name: string, buttonText: any, initialItems: string[] }) {
     const [items, setItems] = useState<string[]>(initialItems || []);
     const [inputValue, setInputValue] = useState('');
 
