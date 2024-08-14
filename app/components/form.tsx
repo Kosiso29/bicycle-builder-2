@@ -1,13 +1,14 @@
 'use client'
 
 import Link from 'next/link';
-import { CheckOutlined, TimerOutlined, PersonOutline, AddOutlined } from '@mui/icons-material';
+import { CheckOutlined, TimerOutlined, PersonOutline, AddOutlined, CancelOutlined } from '@mui/icons-material';
 import { useSelector } from "react-redux";
 import { updateModel, createComponent } from "@/app/lib/actions";
 import Loading from "./loading";
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import MultipleSelect from "@/app/ui/multiple-select";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Form({ model, model_id }: { model?: any, model_id?: string }) {
@@ -20,6 +21,20 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
     const [loading, setLoading] = useState(false);
+    const [lengthItems, setLengthItems] = useState<string[]>([]);
+    const [lengthInputValue, setLengthInputValue] = useState('');
+
+    const addLengthItem = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if (lengthInputValue.trim() !== '') {
+            setLengthItems((prevItems) => [...prevItems, lengthInputValue]);
+            setLengthInputValue('');
+        }
+    };
+
+    const removeLengthItem = (index: number) => {
+        setLengthItems(prevItems => prevItems.filter((_, i) => i !== index));
+    };
 
     const getPresetCheckState = (preset_id: string) => {
         return modelsPresets.filter((item: any) => {
@@ -228,6 +243,15 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                         </div>
                     </div>
                 </div>
+
+                {/* Length */}
+                <MultipleSelect initialItems={model?.length} title='Length values' buttonText={<>Add&nbsp;Length</>} name='length' />
+                
+                {/* Size */}
+                <MultipleSelect initialItems={model?.size} title='Size values' buttonText={<>Add&nbsp;Size</>} name='size' />
+
+                {/* Ratio */}
+                <MultipleSelect initialItems={model?.ratio} title='Ratio values' buttonText={<>Add&nbsp;Ratio</>} name='ratio' />
 
                 {/* Key Metrics */}
                 {
