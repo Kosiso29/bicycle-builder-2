@@ -46,8 +46,8 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
                 <div className="text-right [&>p]:h-6">
                     <p>Aerodynamics - {tooltips.aerodynamics ? renderStars(tooltips.aerodynamics) : "---"}</p>
                     <p>Weight - {tooltips.weight ? renderStars(tooltips.weight) : "---"}</p>
-                    <p>Comfort -  {tooltips.comfort ? renderStars(tooltips.comfort) : "---"}​</p>
-                    <p>Stiffness-to-Weight -  {tooltips.stiffness ? renderStars(tooltips.stiffness) : "---"}</p>
+                    {/* <p>Comfort -  {tooltips.comfort ? renderStars(tooltips.comfort) : "---"}​</p>
+                    <p>Stiffness-to-Weight -  {tooltips.stiffness ? renderStars(tooltips.stiffness) : "---"}</p> */}
                     <p>Overall -  {tooltips.overall ? renderStars(tooltips.overall) : "---"}</p>
                 </div>
             </div>
