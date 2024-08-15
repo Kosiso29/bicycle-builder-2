@@ -14,7 +14,7 @@ import SizeSelector from "@/app/ui/toggle-button";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
-        canvasDrawImageProps, frameSetDimensions, stemDimensions } = parentProps;
+        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -120,8 +120,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setRerender(prevState => !prevState);
     }
 
-    const updateCanvasImage = (multipleImages) => {
-        const imageProps = updateDrawImageProps({ brand, model, price }, { allModels, multipleImages });
+    const updateCanvasImage = ({ multipleImages, modelData }) => {
+        const { key_metrics, aerodynamics, weight, comfort, stiffness, overall } = modelData;
+        const imageProps = updateDrawImageProps({ brand, model, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall }, { allModels, multipleImages, modelData });
 
         setCanvasDrawImageProps(prevState => {
             Object.keys(imageProps).forEach(key => {
@@ -160,10 +161,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             if (multipleImages.length > 0) {
                 if (multipleImagesLoaded) {
                     setMultipleImagesLoaded(false);
-                    updateCanvasImage(multipleImages);
+                    updateCanvasImage({ multipleImages, modelData });
                 }
             } else {
-                updateCanvasImage();
+                updateCanvasImage({ modelData });
             }
         }
     }, [model, imageLoaded, image2Loaded, multipleImagesLoaded]);
@@ -179,6 +180,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         });
         setUniqueBrands(reducedBrands);
     }, [databaseModels]);
+
+    useEffect(() => {
+        if (modelData && show) {
+            const { model, key_metrics, aerodynamics, weight, comfort, stiffness, overall } = modelData;
+            setTooltips({ model, key_metrics, aerodynamics, weight, comfort, stiffness, overall });
+        }
+    }, [modelData, show])
 
     useEffect(() => {
         if (!show && identifier === 'handleBar' && !canvasDrawImageProps.stem.model) {

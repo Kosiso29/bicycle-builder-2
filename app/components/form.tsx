@@ -254,28 +254,24 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                 <MultipleInput initialItems={model?.ratios} title='Ratio values' buttonText={<>Add&nbsp;Ratio</>} name='ratios' />
 
                 {/* Key Metrics */}
-                {
-                    showFrameSetOffsets ?
-                        <div className="mb-4">
-                            <label htmlFor="key_metrics" className="mb-2 block text-sm font-medium">
-                                Key Metrics
-                            </label>
-                            <div className="relative mt-2 rounded-md">
-                                <div className="relative">
-                                    <textarea
-                                        id="key_metrics"
-                                        name="key_metrics"
-                                        defaultValue={model?.key_metrics}
-                                        placeholder="Key Metrics"
-                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                        aria-describedby="key_metrics-error"
-                                    />
-                                    <PersonOutline className="pointer-events-none absolute left-3 top-5 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                                </div>
-                            </div>
+                <div className="mb-4">
+                    <label htmlFor="key_metrics" className="mb-2 block text-sm font-medium">
+                        Key Metrics
+                    </label>
+                    <div className="relative mt-2 rounded-md">
+                        <div className="relative">
+                            <textarea
+                                id="key_metrics"
+                                name="key_metrics"
+                                defaultValue={model?.key_metrics}
+                                placeholder="Key Metrics"
+                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                aria-describedby="key_metrics-error"
+                            />
+                            <PersonOutline className="pointer-events-none absolute left-3 top-5 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
                         </div>
-                        : null
-                }
+                    </div>
+                </div>
 
                 {/* Specifications */}
                 {
@@ -360,26 +356,22 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                         </div>
                                     </div>
                                 </div>
-                                {
-                                    showFrameSetOffsets ?
-                                        < div className="flex flex-wrap gap-4 pt-5">
-                                            {/* Aerodynamics */}
-                                            <OffsetTextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics ?? "0.0"} label='Aerodynamics' />
+                                < div className="flex flex-wrap gap-4 pt-5">
+                                    {/* Aerodynamics */}
+                                    <OffsetTextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics ?? "0.0"} label='Aerodynamics' />
 
-                                            {/* Weight */}
-                                            <OffsetTextField name='weight' step={0.5} min={0.0} max={5.0} defaultValue={model?.weight ?? "0.0"} label='Weight' />
+                                    {/* Weight */}
+                                    <OffsetTextField name='weight' step={0.5} min={0.0} max={5.0} defaultValue={model?.weight ?? "0.0"} label='Weight' />
 
-                                            {/* Comfort */}
-                                            <OffsetTextField name='comfort' step={0.5} min={0.0} max={5.0} defaultValue={model?.comfort ?? "0.0"} label='Comfort' />
+                                    {/* Comfort */}
+                                    <OffsetTextField name='comfort' step={0.5} min={0.0} max={5.0} defaultValue={model?.comfort ?? "0.0"} label='Comfort' />
 
-                                            {/* Stiffness */}
-                                            <OffsetTextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness ?? "0.0"} label='Stiffness-to-Weight' />
+                                    {/* Stiffness */}
+                                    <OffsetTextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness ?? "0.0"} label='Stiffness-to-Weight' />
 
-                                            {/* Overall */}
-                                            <OffsetTextField name='overall' step={0.5} min={0.0} max={5.0} defaultValue={model?.overall ?? "0.0"} label='Overall' />
-                                        </div>
-                                        : null
-                                }
+                                    {/* Overall */}
+                                    <OffsetTextField name='overall' step={0.5} min={0.0} max={5.0} defaultValue={model?.overall ?? "0.0"} label='Overall' />
+                                </div>
                             </div>
                         </fieldset>
                         : null

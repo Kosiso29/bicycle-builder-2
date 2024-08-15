@@ -33,8 +33,8 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
         <div ref={tooltipsRef} className="bg-gray-100 border border-black p-3 pb-5 flex-grow">
             <div className="flex justify-between relative">
                 <div className="max-w-[65%]">
-                    <p>{canvasDrawImageProps.frameSet.model && canvasDrawImageProps.frameSet.model + " -"}</p>
-                    <p className="whitespace-pre-wrap">{openFullTooltips ? tooltips.key_metrics : tooltips.key_metrics.split("\n")?.[0]}</p>
+                    <p>{tooltips.model && tooltips.model + " -"}</p>
+                    <p className="whitespace-pre-wrap">{openFullTooltips ? tooltips.key_metrics || "---" : tooltips.key_metrics?.split("\n")?.[0] || "---"}</p>
                 </div>
                 {/* <div>
                     <p>Gearing @ 90rpm​</p>
@@ -44,23 +44,13 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
                 {openFullTooltips ? <ArrowUpwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" /> :
                     <ArrowDownwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" />}
                 <div className="text-right [&>p]:h-6">
-                    <p>Aerodynamics - {renderStars(tooltips.aerodynamics)}</p>
-                    <p>Weight - {renderStars(tooltips.weight)}</p>
-                    <p>Comfort -  {renderStars(tooltips.comfort)}​</p>
-                    <p>Stiffness-to-Weight -  {renderStars(tooltips.stiffness)}</p>
-                    <p>Overall -  {renderStars(tooltips.overall)}</p>
+                    <p>Aerodynamics - {tooltips.aerodynamics ? renderStars(tooltips.aerodynamics) : "---"}</p>
+                    <p>Weight - {tooltips.weight ? renderStars(tooltips.weight) : "---"}</p>
+                    <p>Comfort -  {tooltips.comfort ? renderStars(tooltips.comfort) : "---"}​</p>
+                    <p>Stiffness-to-Weight -  {tooltips.stiffness ? renderStars(tooltips.stiffness) : "---"}</p>
+                    <p>Overall -  {tooltips.overall ? renderStars(tooltips.overall) : "---"}</p>
                 </div>
             </div>
-            {/* <div className="flex justify-between mt-3">
-                <p>Build the best lightweight/aero/all-rounder​</p>
-                <div className="flex">
-                    <p>Portfolio –</p>
-                    <SquareOutlined />
-                    <SquareOutlined />
-                    <SquareOutlined />
-                    <SquareOutlined />
-                </div>
-            </div> */}
         </div>
     )
 }

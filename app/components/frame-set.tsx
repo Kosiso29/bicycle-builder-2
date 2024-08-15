@@ -31,8 +31,6 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
 
         setFrameSetDimensions({ width, height, actualWidth, ...offsets, hasStem, hasHandleBar });
 
-        setTooltips({ key_metrics, aerodynamics, weight, comfort, stiffness, overall });
-
         return { frameSet: { image, x, y, width, height, ...extraDrawImageProps, ...offsets, hasStem, hasHandleBar } };
     }
 
