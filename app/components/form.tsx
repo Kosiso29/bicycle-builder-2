@@ -96,10 +96,30 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
             <div className="rounded-md bg-gray-100 p-4 md:p-6">
+                
                 {/* Category */}
                 <div className="mb-4">
-                    <label htmlFor="category_id" className="mb-2 block text-sm font-medium">
+                    <label htmlFor="category_id" className="mb-2 flex items-center justify-between text-sm font-medium">
                         Category
+
+                        {/* Primary */}
+                        <div className="flex items-center gap-2">
+                            <label
+                                htmlFor="is_primary"
+                                className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
+                            >
+                                Primary
+                            </label>
+                            <input
+                                id="is_primary"
+                                name="is_primary"
+                                type="checkbox"
+                                value={model?.is_primary ?? true}
+                                defaultChecked={true}
+                                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                aria-describedby={`is_primary-error`}
+                            />
+                        </div>
                     </label>
                     <div className="relative">
                         <select

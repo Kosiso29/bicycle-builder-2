@@ -201,9 +201,8 @@ async function addColumns(client) {
     try {
         const addColumn = await client.sql`
         ALTER TABLE models 
-        ADD COLUMN IF NOT EXISTS length VARCHAR(255)[],
-        ADD COLUMN IF NOT EXISTS size VARCHAR(255)[],
-        ADD COLUMN IF NOT EXISTS ratio VARCHAR(255)[];
+        ADD COLUMN IF NOT EXISTS is_primary BOOLEAN DEFAULT true,
+        ADD COLUMN IF NOT EXISTS is_placeholder BOOLEAN DEFAULT false;
     `
 
         const modelsTable = await client.sql`SELECT * FROM models;`;
