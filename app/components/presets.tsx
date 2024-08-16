@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import Loading from "@/app/components/loading";
 import { useEffect, useState } from "react";
 import { positionCanvasImages } from "../utils/position-canvas-images";
+import { updateTooltips } from "../utils/update-tooltips";
 
 export default function Presets({ parentProps, setFrameSetDimensions, presets, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, presets: any, modelsPresets: any }) {
     const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips } = parentProps;
@@ -79,7 +80,6 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                     newFrameSetDimensions = { width, height, actualWidth, ...offsets, hasStem, hasHandleBar }
                     
                     setFrameSetDimensions(newFrameSetDimensions);
-                    setTooltips({ key_metrics, aerodynamics, weight, comfort, stiffness, overall });
                 }
 
                 if (canvasProp === 'stem') {
@@ -91,6 +91,8 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                     ...prevState,
                     [canvasProp]: { ...prevState[canvasProp], ...offsets, image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
+
+                updateTooltips(item, canvasProp, setTooltips);
 
                 positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions)
 

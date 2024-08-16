@@ -10,6 +10,7 @@ import { CloseOutlined, OpenInNew } from "@mui/icons-material";
 import Loading from "@/app/components/loading";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import { positionCanvasImages } from "@/app/utils/position-canvas-images";
+import { updateTooltips } from "@/app/utils/update-tooltips";
 import SizeSelector from "@/app/ui/toggle-button";
 import SizeChart from "./size_chart";
 
@@ -201,17 +202,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     useEffect(() => {
         if (modelData && show) {
-            const { model, key_metrics, aerodynamics: aerodynamicsString, weight: weightString, comfort, stiffness, overall: overallString } = modelData;
-            const aerodynamics = Number(aerodynamicsString);
-            const weight = Number(weightString);
-            const overall = Number(overallString);
-            if (identifier.includes("Wheel")) {
-                setTooltips(prevState => ({ ...prevState, model, key_metrics, aerodynamics: getToolTipValue(aerodynamics, prevState.aerodynamicsFrame, prevState.aerodynamics), weight: getToolTipValue(weight, prevState.weightFrame, prevState.weight), comfort, stiffness, overall: getToolTipValue(overall, prevState.overallFrame, prevState.overall), aerodynamicsWheel: aerodynamics, weightWheel: weight, overallWheel: overall }));
-            } else if (identifier === "frameSet") {
-                setTooltips(prevState => ({ ...prevState, model, key_metrics, aerodynamics: getToolTipValue(prevState.aerodynamicsWheel, aerodynamics, prevState.aerodynamics), weight: getToolTipValue(prevState.weightWheel, weight, prevState.weight), comfort, stiffness, overall: getToolTipValue(prevState.overallWheel, overall, prevState.overall), aerodynamicsFrame: aerodynamics, weightFrame: weight, overallFrame: overall }));
-            } else {
-                setTooltips(prevState => ({ ...prevState, model, key_metrics, aerodynamics: prevState.aerodynamics, weight: prevState.weight, comfort, stiffness, overall: prevState.overall }));
-            }
+            updateTooltips(modelData, identifier, setTooltips);
         }
     }, [modelData, show])
 
