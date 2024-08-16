@@ -6,11 +6,12 @@
 import NextImage from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
-import { CloseOutlined } from "@mui/icons-material";
+import { CloseOutlined, OpenInNew } from "@mui/icons-material";
 import Loading from "@/app/components/loading";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import { positionCanvasImages } from "@/app/utils/position-canvas-images";
 import SizeSelector from "@/app/ui/toggle-button";
+import SizeChart from "./size_chart";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
@@ -227,7 +228,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     return (
         <div id={identifier} className="flex flex-col gap-4">
-            <h1 className="text-2xl font-bold">{displayLabel || label}</h1>
+            <div className="flex justify-between items-end">
+                <h1 className="text-2xl font-bold">{displayLabel || label}</h1>
+                <SizeChart size_chart_url={modelData?.size_chart_url} />
+            </div>
             <TextField select size="small" value={brand} onChange={handleBrandChange} label="Brands">
                 {
                     uniqueBrands.map(brand => (

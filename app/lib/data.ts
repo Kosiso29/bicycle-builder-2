@@ -45,7 +45,8 @@ export async function fetchModels(): Promise<Models> {
             m.global_composite_operation AS "globalCompositeOperation",
             m.lengths,
             m.sizes,
-            m.ratios
+            m.ratios,
+            m.size_chart_url
         FROM
             categories c1
         JOIN

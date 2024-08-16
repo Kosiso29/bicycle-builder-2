@@ -201,8 +201,7 @@ async function addColumns(client) {
     try {
         const addColumn = await client.sql`
         ALTER TABLE models 
-        ADD COLUMN IF NOT EXISTS is_primary BOOLEAN DEFAULT true,
-        ADD COLUMN IF NOT EXISTS is_placeholder BOOLEAN DEFAULT false;
+        ADD COLUMN IF NOT EXISTS size_chart_url VARCHAR(255);
     `
 
         const modelsTable = await client.sql`SELECT * FROM models;`;

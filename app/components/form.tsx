@@ -220,6 +220,27 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                     </div>
                 </div>
 
+                {/* Size chart URL */}
+                <div className="mb-4">
+                    <label htmlFor="size_chart_url" className="mb-2 block text-sm font-medium">
+                        Size chart URL
+                    </label>
+                    <div className="relative mt-2 rounded-md">
+                        <div className="relative">
+                            <input
+                                id="size_chart_url"
+                                name="size_chart_url"
+                                type="text"
+                                defaultValue={model?.size_chart_url}
+                                placeholder="Size chart URL"
+                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                aria-describedby="size_chart_url-error"
+                            />
+                            <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                        </div>
+                    </div>
+                </div>
+
                 {/* Actual width */}
                 <div className="mb-4">
                     <label htmlFor="actual_width" className="mb-2 block text-sm font-medium">
