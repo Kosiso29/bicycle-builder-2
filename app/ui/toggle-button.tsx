@@ -7,7 +7,8 @@ const mapping: any = {
         'Group Set - Drivetrain': 'Crankset Length'
     },
     'sizes': {
-        'Group Set - Drivetrain': 'Crankset Size'
+        'Group Set - Drivetrain': 'Crankset Size',
+        'Frame Set': 'Frameset Size',
     },
     'ratios': {
         'Group Set - Drivetrain': 'Cassette Ratio'
@@ -16,14 +17,19 @@ const mapping: any = {
 
 export default function SizeSelector({ values, label, type }: { values: string[], label: string, type: string }) {
     const [selectedSize, setSelectedSize] = useState(values?.[0]);
+    const defaultValue = values?.[0];
 
     const handleSizeChange = (value: string) => {
         setSelectedSize(value);
     };
 
     useEffect(() => {
-        setSelectedSize(values?.[0]);
-    }, [values?.[0]])
+        setSelectedSize(defaultValue);
+    }, [defaultValue])
+
+    if (!values || values.length === 0) {
+        return null;
+    }
 
     return (
         <div className="mb-4">
