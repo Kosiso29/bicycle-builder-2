@@ -45,7 +45,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
                     <ArrowDownwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" />}
                 <div className="text-right [&>p]:h-6">
                     <p>Aerodynamics - {tooltips.aerodynamics ? renderStars(tooltips.aerodynamics) : "---"}</p>
-                    <p>Weight - {tooltips.weight ? renderStars(tooltips.weight) : "---"}</p>
+                    <p>Lightweight - {tooltips.weight ? renderStars(tooltips.weight) : "---"}</p>
                     {/* <p>Comfort -  {tooltips.comfort ? renderStars(tooltips.comfort) : "---"}​</p>
                     <p>Stiffness-to-Weight -  {tooltips.stiffness ? renderStars(tooltips.stiffness) : "---"}</p> */}
                     <p>Overall -  {tooltips.overall ? renderStars(tooltips.overall) : "---"}</p>
