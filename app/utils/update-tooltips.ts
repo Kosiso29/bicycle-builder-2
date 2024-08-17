@@ -8,6 +8,10 @@ const getToolTipValue = (wheelValue: number, frameValue: number, originalValue: 
     return originalValue
 }
 
+function roundToNearestHalf(starValue: number) {
+    return Math.round(starValue * 2) / 2;
+}
+
 export const updateTooltips = (modelData: any, identifier: string, setTooltips: any) => {
     const { model, key_metrics, aerodynamics: aerodynamicsString, weight: weightString, comfort, stiffness, overall: overallString } = modelData;
     const aerodynamics = Number(aerodynamicsString);
@@ -20,4 +24,5 @@ export const updateTooltips = (modelData: any, identifier: string, setTooltips: 
     } else {
         setTooltips((prevState: any) => ({ ...prevState, model, key_metrics, aerodynamics: prevState.aerodynamics, weight: prevState.weight, comfort, stiffness, overall: prevState.overall }));
     }
+    setTooltips((prevState: any) => ({ ...prevState, aerodynamics: roundToNearestHalf(prevState.aerodynamics), weight: roundToNearestHalf(prevState.weight), overall: roundToNearestHalf(prevState.overall) }))
 }
