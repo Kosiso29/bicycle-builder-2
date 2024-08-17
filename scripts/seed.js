@@ -4,7 +4,8 @@ const {
     categories,
     models,
     presets,
-    users
+    users,
+    colors
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -149,6 +150,43 @@ async function seedCategories(client) {
         };
     } catch (error) {
         console.error('Error seeding categories:', error);
+        throw error;
+    }
+}
+
+async function seedColors(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+        // Create the "colors" table if it doesn't exist
+        const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS colors (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        model_id UUID REFERENCES models(id),
+        name VARCHAR(255),
+        image_url VARCHAR(255)
+      );
+    `;
+
+        console.log(`Created "colors" table`);
+
+        // Insert data into the "colors" table
+        const insertedColors = await Promise.all(
+            colors.map(async (color) => {
+                return client.sql`
+            INSERT INTO colors (model_id, name, image_url)
+            VALUES (${color.model_id}, ${color.name}, ${color.image_url});
+        `;
+        }),
+        );
+
+        console.log(`Seeded ${insertedColors} colors`);
+
+        return {
+            createTable,
+            colors: insertedColors,
+        };
+    } catch (error) {
+        console.error('Error seeding colors:', error);
         throw error;
     }
 }
@@ -313,12 +351,14 @@ async function getModelsPresets(client) {
         const modelsTable = await client.sql`SELECT * FROM models;`;
         
         const presetsTable = await client.sql`SELECT * FROM presets;`;
+
+        const colorsTable = await client.sql`SELECT * FROM colors;`;
         
         // const insertData = await client.sql`INSERT INTO models_presets (model_id, preset_id) VALUES ('955fdc80-375b-47e5-88d2-2ce63df85078', '48b90652-65a3-4fb6-9a00-cbd2becb05c3');`;
         
         const modelsPresetsTable = await client.sql`SELECT * FROM models_presets;`;
 
-        console.log('model data', modelsTable?.rows, presetsTable?.rows, modelsPresetsTable?.rows);
+        console.log('model data', modelsTable?.rows, presetsTable?.rows, colorsTable?.rows, modelsPresetsTable?.rows);
 
         return {
             modelsTable,
@@ -336,12 +376,13 @@ async function main() {
     // await seedPresets(client);
     // await seedCategories(client);
     // await seedBrands(client);
+    // await seedColors(client);
     // await seedModels(client);
-    await addColumns(client);
+    // await addColumns(client);
     // await alterColumns(client);
     // await alterForeignKeyColumns(client);
     // await createManyToManyMappingTable(client);
-    // await getModelsPresets(client);
+    await getModelsPresets(client);
     // await seedUsers(client);
 
     await client.end();

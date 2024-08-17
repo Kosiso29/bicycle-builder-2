@@ -88,6 +88,14 @@ const presets = [
     },
 ]
 
+const colors = [
+    {
+        model_id: 'db38f486-7fdf-41c3-a5ea-1e49351d42d8',
+        name: 'blue',
+        image_url: 'https://i.postimg.cc/bNms33kg/specialized-allez-sprint.png'
+    }
+]
+
 const models = [
     {
         category_id: categories[0].id,
@@ -295,5 +303,6 @@ module.exports = {
     models,
     categories,
     presets,
-    users
+    users,
+    colors
 };
