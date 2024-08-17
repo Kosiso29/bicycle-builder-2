@@ -147,6 +147,28 @@ export async function fetchPresets() {
     }
 }
 
+export async function fetchColors() {
+    noStore();
+    try {
+        const data = await sql`
+        SELECT
+            m.name AS model,
+            c.name,
+            c.image_url
+        FROM
+            colors c
+        JOIN
+            models m ON m.id = c.model_id`;
+
+        const colors = data.rows;
+
+        return colors;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the colors.');
+    }
+}
+
 export async function fetchModelById(id: string) {
     noStore();
     try {
