@@ -151,6 +151,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                         ...prevState,
                         [canvasProp]: { brand, model }
                     }));
+                    setTooltips((prevState: any) => ({ ...prevState, model: "", key_metrics: "---" }))
                     setRerender((prevState: any) => !prevState);
                     setLoading(0.5);
                     setCanvasSelectionLevelState(6);
