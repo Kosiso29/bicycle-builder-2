@@ -34,13 +34,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
-        const models = allBrandsData.filter(itemBrand => itemBrand.brand === e.target.value);
-        const uniqueModels = models.filter((obj, index, self) =>
-            index === self.findIndex((t) => (
-                t.category === obj.category && t.model === obj.model && t.brand === obj.brand
-            ))
-        );
-        setAllModels(uniqueModels);
+        const models = allBrandsData.filter(itemBrand => itemBrand.brand === e.target.value && itemBrand.is_primary);
+        setAllModels(models);
         setSelectedIndex(null);
     }
 

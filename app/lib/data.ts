@@ -46,7 +46,8 @@ export async function fetchModels(): Promise<Models> {
             m.lengths,
             m.sizes,
             m.ratios,
-            m.size_chart_url
+            m.size_chart_url,
+            m.is_primary
         FROM
             categories c1
         JOIN
