@@ -90,7 +90,7 @@ export default function BikeBuilder({
         saddle: { image: "/PH-ENVE_X_SELLE_ITALIA_BOOST_SLR.png", x: 258, y: 86.65583333333333, width: 116.26666666666667, height: 23.344166666666666, globalCompositeOperation: 'destination-over' },
         tire: { image: "/PH-Tan_SES31_FullWheel-modified.png", globalCompositeOperation: 'destination-over' },
         // drivetrain actualWidth used is 622mm instead of 722mm
-        groupSet_drivetrain: { image: "/Groupset-Drivetrain.png", x: 185, y: 380, width: 331.733333333, height: 136.6176524785, globalCompositeOperation: 'destination-over' },
+        groupSet_drivetrain: { image: "/PH-Drivetrain_dura-ace_final.png", x: 185, y: 380, width: 331.733333333, height: 136.6176524785, globalCompositeOperation: 'destination-over' },
         groupSet_shifter: { image: "/PH-Shifter_dura-ace_final.png", x: 701, y: 121.859649118, width: 80, height: 96.140350882, stemShifterX: 98, stemShifterY: 76, handleBarShifterX: 50, handleBarShifterY: 70, globalCompositeOperation: 'destination-over' },
     }
 
