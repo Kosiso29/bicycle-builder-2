@@ -4,11 +4,13 @@ import Box from '@mui/material/Box';
 
 const mapping: any = {
     'lengths': {
-        'Group Set - Drivetrain': 'Crankset Length'
+        'Group Set - Drivetrain': 'Crankset Length',
+        'Stem': 'Stem Length',
     },
     'sizes': {
         'Group Set - Drivetrain': 'Crankset Size',
         'Frame Set': 'Frameset Size',
+        'Stem': 'Stem Size',
     },
     'ratios': {
         'Group Set - Drivetrain': 'Cassette Ratio'
