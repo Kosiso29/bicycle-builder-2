@@ -17,7 +17,7 @@ export async function createComponent(formData: FormData) {
     const { category_id, brand_id, model, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
         back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
         groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
-        lengths, sizes, ratios, size_chart_url, is_primary } = formDataObject;
+        lengths, sizes, ratios, size_chart_url, is_primary, color_props } = formDataObject;
 
     const modelsPresets: any = Object.entries(formDataObject).filter(item => item[0].includes("preset_"));
 
@@ -47,6 +47,14 @@ export async function createComponent(formData: FormData) {
               INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${preset_id}::uuid);
               `
             }
+        }
+
+        // create colors
+        for (const color_prop of JSON.parse(color_props)) {
+            const model_id = selectedModel.rows[0]?.id;
+            await sql`
+                INSERT INTO colors (model_id, name, image_url) VALUES (${model_id}::uuid, ${color_prop.name}, ${color_prop.image_url});
+            `
         }
 
     } catch (error) {
@@ -110,7 +118,7 @@ export async function updateModel(id: string, formData: any) {
     const { category_id, brand_id, model, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
         back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
         groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
-        lengths, sizes, ratios, size_chart_url, is_primary } = formDataObject;
+        lengths, sizes, ratios, size_chart_url, is_primary, color_props } = formDataObject;
 
     try {
         await sql`
@@ -137,6 +145,18 @@ export async function updateModel(id: string, formData: any) {
                 INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${preset_id}::uuid);
                 `
             }
+        }
+
+        // Delete existing colors
+        await sql`
+            DELETE FROM colors WHERE model_id = ${id};
+        `
+        
+        // recreate colors
+        for (const color_prop of JSON.parse(color_props)) {
+            await sql`
+                INSERT INTO colors (model_id, name, image_url) VALUES (${id}::uuid, ${color_prop.name}, ${color_prop.image_url});
+            `
         }
 
         revalidatePath('/dashboard/components');

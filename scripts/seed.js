@@ -159,13 +159,14 @@ async function seedColors(client) {
         await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
         // Create the "colors" table if it doesn't exist
         const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS colors (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        model_id UUID REFERENCES models(id),
-        name VARCHAR(255),
-        image_url VARCHAR(255)
-      );
-    `;
+            CREATE TABLE IF NOT EXISTS colors (
+                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+                model_id UUID REFERENCES models(id) ON DELETE CASCADE,
+                name VARCHAR(255),
+                image_url VARCHAR(255),
+                price NUMERIC(10, 2)
+            );
+        `;
 
         console.log(`Created "colors" table`);
 

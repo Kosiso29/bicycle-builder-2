@@ -154,6 +154,7 @@ export async function fetchColors() {
         const data = await sql`
         SELECT
             m.name AS model,
+            c.model_id,
             c.name,
             c.image_url
         FROM

@@ -5,7 +5,7 @@ import { CheckOutlined, TimerOutlined, PersonOutline, AddOutlined, RemoveOutline
 import { useSelector } from "react-redux";
 import { updateModel, createComponent } from "@/app/lib/actions";
 import Loading from "./loading";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import MultipleInput from "@/app/ui/multiple-input";
@@ -16,6 +16,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const brands = useSelector((state: any) => state.componentsReducer.brands);
     const presets = useSelector((state: any) => state.componentsReducer.presets);
     const modelsPresets = useSelector((state: any) => state.componentsReducer.modelsPresets);
+    const colors = useSelector((state: any) => state.componentsReducer.colors);
     const models = useSelector((state: any) => state.componentsReducer.models);
     const user = useSelector((state: any) => state.authReducer.user);
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
@@ -24,16 +25,30 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const [colorItems, setColorItems] = useState([{ name: "", image_url: "" }])
 
     const addModelColors = () => {
-        setColorItems((prevState: any) => [ ...prevState, { name: "", image_url: "" } ])
+        setColorItems((prevState: any) => [...prevState, { name: "", image_url: "" }])
     }
 
     const removeModelColors = () => {
         setColorItems((prevState: any) => {
             const newState = [...prevState];
             newState.pop();
-            return [ ...newState ];
+            return [...newState];
         })
     }
+
+    useEffect(() => {
+        console.log('colors', colors);
+        if (model) {
+            const newColorItems = colors.filter((color: any) => color.model_id === model.id).map((color: any) => {
+                const { name, image_url } = color;
+                return { name, image_url };
+            });
+    
+            if (newColorItems.length > 0) {
+                setColorItems(newColorItems);
+            }
+        }
+    }, [colors, model]);
 
     const handleModelColorTextChange = (e: any, index: number, key: string) => {
         setColorItems((prevState: any) => {
@@ -54,7 +69,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
             const modelsInTheSameCategory = models.filter((item: any) => {
                 return item.category === categories[categoryId]
             }).map((item: any) => item.id);
-            
+
             const existingPreset = modelsPresets.filter((item: any) => {
                 return modelsInTheSameCategory.includes(item.model_id) && item.preset_id === preset_id && item.model_id !== model.id
             })
@@ -103,7 +118,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
             <div className="rounded-md bg-gray-100 p-4 md:p-6">
-                
+
                 {/* Category */}
                 <div className="mb-4">
                     <div className="mb-2 flex items-center justify-between text-sm font-medium">
@@ -203,34 +218,44 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                 </div>
 
                 {/* Colors */}
-                <div>
-                    <label className="block text-sm font-medium">
+                <div className='mb-4'>
+                    <label className="block mb-2 text-sm font-medium">
                         Model colors
                     </label>
-                    {
-                        colorItems.map((colorItem: any, index: number) => (
-                            <div key={index} className='flex gap-5 items-center'>
-                                {/* Model Image Color */}
-                                <TextField name='color_name' value={colorItem.name} onChange={(e: any) => { handleModelColorTextChange(e, index, "name") }} type='text' placeholder='Model Image Color' fullWidth />
-                                {/* Model Image URL */}
-                                <div className='flex w-full gap-3'>
-                                    <TextField name='color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Image URL' fullWidth />
-                                    {
-                                        index === (colorItems.length - 1) &&
-                                        <div className='flex gap-2 text-blue-600 items-center mb-4 mt-2'>
-                                            <AddOutlined className='cursor-pointer' fontSize='large' onClick={addModelColors} />
-                                            <RemoveOutlined className='cursor-pointer' fontSize='large' onClick={removeModelColors} />
-                                        </div>
-                                    }
+                    <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+                        {
+                            colorItems.map((colorItem: any, index: number) => (
+                                <div key={index} className='flex gap-5 items-center'>
+                                    {/* Model Image Color */}
+                                    <TextField name='color_name' value={colorItem.name} onChange={(e: any) => { handleModelColorTextChange(e, index, "name") }} type='text' placeholder='Model Image Color' fullWidth />
+                                    {/* Model Image URL */}
+                                    <div className='flex w-full gap-3'>
+                                        <TextField name='color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Image URL' fullWidth />
+                                        {
+                                            index === (colorItems.length - 1) &&
+                                            <div className='flex gap-2 text-blue-600 items-center mb-4 mt-2'>
+                                                <AddOutlined className='cursor-pointer' fontSize='large' onClick={addModelColors} />
+                                                {
+                                                    index !== 0 &&
+                                                    <RemoveOutlined className='cursor-pointer' fontSize='large' onClick={removeModelColors} />
+                                                }
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
-                            </div>
-                        ))
-                    }
+                            ))
+                        }
+                        <input
+                            type="hidden"
+                            name="color_props"
+                            value={JSON.stringify(colorItems)}
+                        />
+                    </div>
                 </div>
 
                 {/* Length */}
                 <MultipleInput initialItems={model?.lengths} title='Length values' buttonText={<>Add&nbsp;Length</>} name='lengths' />
-                
+
                 {/* Size */}
                 <MultipleInput initialItems={model?.sizes} title='Size values' buttonText={<>Add&nbsp;Size</>} name='sizes' />
 
@@ -274,7 +299,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                                         htmlFor={"preset_" + item[1]}
                                                         className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
                                                     >
-                                                        { item[1] }
+                                                        {item[1]}
                                                     </label>
                                                     <input
                                                         id={"preset_" + item[1]}
