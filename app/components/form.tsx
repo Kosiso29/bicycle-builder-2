@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import { CheckOutlined, TimerOutlined, PersonOutline, AddOutlined, CancelOutlined } from '@mui/icons-material';
+import { CheckOutlined, TimerOutlined, PersonOutline, AddOutlined, RemoveOutlined } from '@mui/icons-material';
 import { useSelector } from "react-redux";
 import { updateModel, createComponent } from "@/app/lib/actions";
 import Loading from "./loading";
@@ -21,20 +21,27 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
     const [loading, setLoading] = useState(false);
-    const [lengthItems, setLengthItems] = useState<string[]>([]);
-    const [lengthInputValue, setLengthInputValue] = useState('');
+    const [colorItems, setColorItems] = useState([{ name: "", image_url: "" }])
 
-    const addLengthItem = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        if (lengthInputValue.trim() !== '') {
-            setLengthItems((prevItems) => [...prevItems, lengthInputValue]);
-            setLengthInputValue('');
-        }
-    };
+    const addModelColors = () => {
+        setColorItems((prevState: any) => [ ...prevState, { name: "", image_url: "" } ])
+    }
 
-    const removeLengthItem = (index: number) => {
-        setLengthItems(prevItems => prevItems.filter((_, i) => i !== index));
-    };
+    const removeModelColors = () => {
+        setColorItems((prevState: any) => {
+            const newState = [...prevState];
+            newState.pop();
+            return [ ...newState ];
+        })
+    }
+
+    const handleModelColorTextChange = (e: any, index: number, key: string) => {
+        setColorItems((prevState: any) => {
+            const newState = [...prevState];
+            newState[index][key] = e.target.value;
+            return [...newState];
+        })
+    }
 
     const getPresetCheckState = (preset_id: string) => {
         return modelsPresets.filter((item: any) => {
@@ -179,110 +186,46 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                 </div>
 
                 {/* Model */}
-                <div className="mb-4">
-                    <label htmlFor="model" className="mb-2 block text-sm font-medium">
-                        Model
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            <input
-                                id="model"
-                                name="model"
-                                type="text"
-                                defaultValue={model?.name}
-                                placeholder="Model name"
-                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="model-error"
-                            />
-                            <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                        </div>
-                    </div>
+                <TextField name='model' type='text' defaultValue={model?.name} label='Model' placeholder='Model name' />
+
+                <div className='flex gap-5'>
+                    {/* Image URL */}
+                    <TextField name='image_url' type='text' defaultValue={model?.image_url} label='Image URL' fullWidth />
+                    {/* Size chart URL */}
+                    <TextField name='size_chart_url' type='text' defaultValue={model?.size_chart_url} label='Size chart URL' fullWidth />
                 </div>
 
-                {/* Image URL */}
-                <div className="mb-4">
-                    <label htmlFor="image_url" className="mb-2 block text-sm font-medium">
-                        Image URL
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            <input
-                                id="image_url"
-                                name="image_url"
-                                type="text"
-                                defaultValue={model?.image_url}
-                                placeholder="Image URL"
-                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="image_url-error"
-                            />
-                            <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                        </div>
-                    </div>
+                <div className='flex gap-5'>
+                    {/* Actual width */}
+                    <TextField name='actual_width' defaultValue={model?.actual_width} label='Actual width' fullWidth />
+                    {/* Price */}
+                    <TextField name='price' step={0.01} min={0.0} defaultValue={model?.price} label='Price' fullWidth />
                 </div>
 
-                {/* Size chart URL */}
-                <div className="mb-4">
-                    <label htmlFor="size_chart_url" className="mb-2 block text-sm font-medium">
-                        Size chart URL
+                {/* Colors */}
+                <div>
+                    <label className="block text-sm font-medium">
+                        Model colors
                     </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            <input
-                                id="size_chart_url"
-                                name="size_chart_url"
-                                type="text"
-                                defaultValue={model?.size_chart_url}
-                                placeholder="Size chart URL"
-                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="size_chart_url-error"
-                            />
-                            <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Actual width */}
-                <div className="mb-4">
-                    <label htmlFor="actual_width" className="mb-2 block text-sm font-medium">
-                        Actual width
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            <input
-                                id="actual_width"
-                                name="actual_width"
-                                type="number"
-                                defaultValue={model?.actual_width}
-                                placeholder="Actual width"
-                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="actual_width-error"
-                            />
-                            <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Price */}
-                <div className="mb-4">
-                    <label htmlFor="price" className="mb-2 block text-sm font-medium">
-                        Price
-                    </label>
-                    <div className="relative mt-2 rounded-md">
-                        <div className="relative">
-                            <input
-                                id="price"
-                                name="price"
-                                type="number"
-                                step={0.01}
-                                min={0.00}
-                                defaultValue={model?.price}
-                                placeholder="Price"
-                                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                aria-describedby="price-error"
-                            />
-                            <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                        </div>
-                    </div>
+                    {
+                        colorItems.map((colorItem: any, index: number) => (
+                            <div key={index} className='flex gap-5 items-center'>
+                                {/* Model Image Color */}
+                                <TextField name='color_name' value={colorItem.name} onChange={(e: any) => { handleModelColorTextChange(e, index, "name") }} type='text' placeholder='Model Image Color' fullWidth />
+                                {/* Model Image URL */}
+                                <div className='flex w-full gap-3'>
+                                    <TextField name='color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Image URL' fullWidth />
+                                    {
+                                        index === (colorItems.length - 1) &&
+                                        <div className='flex gap-2 text-blue-600 items-center mb-4 mt-2'>
+                                            <AddOutlined className='cursor-pointer' fontSize='large' onClick={addModelColors} />
+                                            <RemoveOutlined className='cursor-pointer' fontSize='large' onClick={removeModelColors} />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        ))
+                    }
                 </div>
 
                 {/* Length */}
@@ -399,19 +342,19 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                 </div>
                                 < div className="flex flex-wrap gap-4 pt-5">
                                     {/* Aerodynamics */}
-                                    <OffsetTextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics ?? "0.0"} label='Aerodynamics' />
+                                    <TextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics ?? "0.0"} label='Aerodynamics' />
 
                                     {/* Weight */}
-                                    <OffsetTextField name='weight' step={0.5} min={0.0} max={5.0} defaultValue={model?.weight ?? "0.0"} label='Weight' />
+                                    <TextField name='weight' step={0.5} min={0.0} max={5.0} defaultValue={model?.weight ?? "0.0"} label='Weight' />
 
                                     {/* Comfort */}
-                                    <OffsetTextField name='comfort' step={0.5} min={0.0} max={5.0} defaultValue={model?.comfort ?? "0.0"} label='Comfort' />
+                                    <TextField name='comfort' step={0.5} min={0.0} max={5.0} defaultValue={model?.comfort ?? "0.0"} label='Comfort' />
 
                                     {/* Stiffness */}
-                                    <OffsetTextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness ?? "0.0"} label='Stiffness-to-Weight' />
+                                    <TextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness ?? "0.0"} label='Stiffness-to-Weight' />
 
                                     {/* Overall */}
-                                    <OffsetTextField name='overall' step={0.5} min={0.0} max={5.0} defaultValue={model?.overall ?? "0.0"} label='Overall' />
+                                    <TextField name='overall' step={0.5} min={0.0} max={5.0} defaultValue={model?.overall ?? "0.0"} label='Overall' />
                                 </div>
                             </div>
                         </fieldset>
@@ -478,42 +421,42 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                             <>
                                                 <div className="flex gap-4">
                                                     {/* Stem Offset X */}
-                                                    <OffsetTextField name='stem_x' defaultValue={model?.stem_x ?? "600"} label='Stem Offset X' />
+                                                    <TextField name='stem_x' defaultValue={model?.stem_x ?? "600"} label='Stem Offset X' />
 
                                                     {/* Stem Offset Y */}
-                                                    <OffsetTextField name='stem_y' defaultValue={model?.stem_y ?? "150"} label='Stem Offset Y' />
+                                                    <TextField name='stem_y' defaultValue={model?.stem_y ?? "150"} label='Stem Offset Y' />
                                                 </div>
 
                                                 <div className="flex gap-4">
                                                     {/* Saddle Offset X */}
-                                                    <OffsetTextField name='saddle_x' defaultValue={model?.saddle_x ?? "240"} label='Saddle Offset X' />
+                                                    <TextField name='saddle_x' defaultValue={model?.saddle_x ?? "240"} label='Saddle Offset X' />
 
                                                     {/* Saddle Offset Y */}
-                                                    <OffsetTextField name='saddle_y' defaultValue={model?.saddle_y ?? "110"} label='Saddle Offset Y' />
+                                                    <TextField name='saddle_y' defaultValue={model?.saddle_y ?? "110"} label='Saddle Offset Y' />
                                                 </div>
 
                                                 <div className="flex gap-4">
                                                     {/* Front Wheel Offset X */}
-                                                    <OffsetTextField name='front_wheel_x' defaultValue={model?.front_wheel_x ?? "550"} label='Front Wheel Offset X' />
+                                                    <TextField name='front_wheel_x' defaultValue={model?.front_wheel_x ?? "550"} label='Front Wheel Offset X' />
 
                                                     {/* Front Wheel Offset Y */}
-                                                    <OffsetTextField name='front_wheel_y' defaultValue={model?.front_wheel_y ?? "265"} label='Front Wheel Offset Y' />
+                                                    <TextField name='front_wheel_y' defaultValue={model?.front_wheel_y ?? "265"} label='Front Wheel Offset Y' />
                                                 </div>
 
                                                 <div className="flex gap-4">
                                                     {/* Back Wheel Offset X */}
-                                                    <OffsetTextField name='back_wheel_x' defaultValue={model?.back_wheel_x ?? "45"} label='Back Wheel Offset X' />
+                                                    <TextField name='back_wheel_x' defaultValue={model?.back_wheel_x ?? "45"} label='Back Wheel Offset X' />
 
                                                     {/* Back Wheel Offset Y */}
-                                                    <OffsetTextField name='back_wheel_y' defaultValue={model?.back_wheel_y ?? "265"} label='Back Wheel Offset Y' />
+                                                    <TextField name='back_wheel_y' defaultValue={model?.back_wheel_y ?? "265"} label='Back Wheel Offset Y' />
                                                 </div>
 
                                                 <div className="flex gap-4">
                                                     {/* Group Set Drivetrain Offset X */}
-                                                    <OffsetTextField name='groupset_drivetrain_x' defaultValue={model?.groupset_drivetrain_x ?? "185"} label='Groupset Drivetrain Offset X' />
+                                                    <TextField name='groupset_drivetrain_x' defaultValue={model?.groupset_drivetrain_x ?? "185"} label='Groupset Drivetrain Offset X' />
 
                                                     {/* Group Set Drivetrain Offset Y */}
-                                                    <OffsetTextField name='groupset_drivetrain_y' defaultValue={model?.groupset_drivetrain_y ?? "380"} label='Groupset Drivetrain Offset Y' />
+                                                    <TextField name='groupset_drivetrain_y' defaultValue={model?.groupset_drivetrain_y ?? "380"} label='Groupset Drivetrain Offset Y' />
                                                 </div>
                                             </>
                                             : null
@@ -523,10 +466,10 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                             <>
                                                 <div className="flex gap-4">
                                                     {/* Group Set Shifter Offset X */}
-                                                    <OffsetTextField name='groupset_shifter_x' defaultValue={model?.groupset_shifter_x ?? "704"} label='Groupset Shifter Offset X' />
+                                                    <TextField name='groupset_shifter_x' defaultValue={model?.groupset_shifter_x ?? "704"} label='Groupset Shifter Offset X' />
 
                                                     {/* Group Set Shifter Offset Y */}
-                                                    <OffsetTextField name='groupset_shifter_y' defaultValue={model?.groupset_shifter_y ?? "121"} label='Groupset Shifter Offset Y' />
+                                                    <TextField name='groupset_shifter_y' defaultValue={model?.groupset_shifter_y ?? "121"} label='Groupset Shifter Offset Y' />
                                                 </div>
                                             </>
                                             : null
@@ -536,10 +479,10 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                             <>
                                                 <div className="flex gap-4">
                                                     {/* Handle Bar Offset X */}
-                                                    <OffsetTextField name='handle_bar_x' defaultValue={model?.handle_bar_x ?? "600"} label='Handle Bar Offset X' />
+                                                    <TextField name='handle_bar_x' defaultValue={model?.handle_bar_x ?? "600"} label='Handle Bar Offset X' />
 
                                                     {/* Handle Bar Offset Y */}
-                                                    <OffsetTextField name='handle_bar_y' defaultValue={model?.handle_bar_y ?? "150"} label='Handle Bar Offset Y' />
+                                                    <TextField name='handle_bar_y' defaultValue={model?.handle_bar_y ?? "150"} label='Handle Bar Offset Y' />
                                                 </div>
                                             </>
                                             : null
@@ -574,12 +517,14 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     );
 }
 
-function OffsetTextField({ name, defaultValue, label, step, min, max }: { name: string, defaultValue: string, label: string, step?: number, min?: number, max?: number }) {
+function TextField({ type, name, defaultValue, label, step, min, max, placeholder, value, onChange, fullWidth }: { type?: string, name: string, defaultValue?: string, label?: string, step?: number, min?: number, max?: number, placeholder?: string, value?: string, onChange?: any, fullWidth?: boolean }) {
     return (
-        <div className="mb-4">
-            <label htmlFor={name} className="mb-2 block text-sm font-medium">
-                {label}
-            </label>
+        <div className={`mb-4 ${fullWidth && "w-full"}`}>
+            {
+                label && <label htmlFor={name} className="mb-2 block text-sm font-medium">
+                    {label}
+                </label>
+            }
             <div className="relative mt-2 rounded-md">
                 <div className="relative">
                     <input
@@ -588,9 +533,11 @@ function OffsetTextField({ name, defaultValue, label, step, min, max }: { name: 
                         step={step}
                         min={min}
                         max={max}
-                        type="number"
+                        type={type || "number"}
+                        value={value}
+                        onChange={onChange}
                         defaultValue={defaultValue}
-                        placeholder={label}
+                        placeholder={placeholder || label}
                         className={`peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500 ${max ? "min-w-[200px]" : ""}`}
                         aria-describedby={`${name}-error`}
                     />

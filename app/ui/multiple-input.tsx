@@ -20,11 +20,12 @@ export default function MultipleInput({ title, name, buttonText, initialItems }:
     return (
         <div className="rounded-md mb-4">
             <div className="">
-                <label htmlFor="category_id" className="mb-2 block text-sm font-medium">
+                <label htmlFor={name} className="mb-2 block text-sm font-medium">
                     {title}
                 </label>
                 <div className="flex items-center w-full">
                     <input
+                        id={name}
                         type="text"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
