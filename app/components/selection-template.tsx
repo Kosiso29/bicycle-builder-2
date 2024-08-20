@@ -16,7 +16,7 @@ import SizeChart from "./size_chart";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
-        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips } = parentProps;
+        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -210,7 +210,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     return (
         <div id={identifier} className="flex flex-col gap-4">
             <div className="flex justify-between items-end">
-                <h1 className="text-2xl font-bold">{displayLabel || label}</h1>
+                <div className="flex gap-2">
+                    <h1 className="text-2xl font-bold">{displayLabel || label}</h1>
+                    {imageLoaded ? null : <div className='self-center'><Loading small /></div>}
+                </div>
                 <SizeChart size_chart_url={modelData?.size_chart_url} />
             </div>
             <TextField select size="small" value={brand} onChange={handleBrandChange} label="Brands">
@@ -263,10 +266,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     </List>
                     : null
             }
-            {imageLoaded ? null : <div className='self-center'><Loading small /></div>}
             <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
             <div className="mt-5">
+                <SizeSelector values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.name)} type="colors" label={label} colors={colors} modelData={modelData} handleModelChange={handleModelChange} selectedIndex={selectedIndex} />
                 <SizeSelector values={modelData?.lengths} type="lengths" label={label} />
                 <SizeSelector values={modelData?.sizes} type="sizes" label={label} />
                 <SizeSelector values={modelData?.ratios} type="ratios" label={label} />

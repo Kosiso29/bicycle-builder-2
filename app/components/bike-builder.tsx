@@ -69,7 +69,8 @@ export default function BikeBuilder({
         initialCanvasDrawImageProps,
         stemDimensions,
         handleBarDimensions,
-        setHandleBarDimensions
+        setHandleBarDimensions,
+        colors
     }
 
     const canvasNumberData = [
