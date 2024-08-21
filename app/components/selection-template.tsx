@@ -269,7 +269,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
             <div className="mt-5">
-                <SizeSelector values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.name)} type="colors" label={label} colors={colors} modelData={modelData} handleModelChange={handleModelChange} selectedIndex={selectedIndex} />
+                <SizeSelector values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)} type="colors" label={label} colors={colors?.filter(color => color?.model_id === modelData?.id)} modelData={modelData} handleModelChange={handleModelChange} selectedIndex={selectedIndex} />
                 <SizeSelector values={modelData?.lengths} type="lengths" label={label} />
                 <SizeSelector values={modelData?.sizes} type="sizes" label={label} />
                 <SizeSelector values={modelData?.ratios} type="ratios" label={label} />

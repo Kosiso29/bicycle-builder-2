@@ -22,10 +22,10 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
     const [loading, setLoading] = useState(false);
-    const [colorItems, setColorItems] = useState([{ name: "", image_url: "", price: "" }])
+    const [colorItems, setColorItems] = useState([{ name: "", value: "", image_url: "", price: "" }])
 
     const addModelColors = () => {
-        setColorItems((prevState: any) => [...prevState, { name: "", image_url: "", price: "" }])
+        setColorItems((prevState: any) => [...prevState, { name: "", value: "", image_url: "", price: "" }])
     }
 
     const removeModelColors = () => {
@@ -40,8 +40,8 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
         console.log('colors', colors);
         if (model) {
             const newColorItems = colors.filter((color: any) => color.model_id === model.id).map((color: any) => {
-                const { name, image_url, price } = color;
-                return { name, image_url, price };
+                const { name, value, image_url, price } = color;
+                return { name, value, image_url, price };
             });
     
             if (newColorItems.length > 0) {
@@ -226,8 +226,10 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                         {
                             colorItems.map((colorItem: any, index: number) => (
                                 <div key={index} className='flex gap-5 items-center'>
-                                    {/* Model Color */}
-                                    <TextField name='color_name' value={colorItem.name} onChange={(e: any) => { handleModelColorTextChange(e, index, "name") }} type='text' placeholder='Model Color' fullWidth />
+                                    {/* Model Color Name */}
+                                    <TextField name='color_name' value={colorItem.name} onChange={(e: any) => { handleModelColorTextChange(e, index, "name") }} type='text' placeholder='Model Color Name' fullWidth />
+                                    {/* Model Color Value */}
+                                    <TextField name='color_value' value={colorItem.value} onChange={(e: any) => { handleModelColorTextChange(e, index, "value") }} type='text' placeholder='Model Color Value' fullWidth />
                                     {/* Model Color Image URL */}
                                     <TextField name='color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Color Image URL' fullWidth />
                                     <div className='flex w-full gap-3'>

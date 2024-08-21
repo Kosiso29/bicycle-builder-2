@@ -53,7 +53,7 @@ export async function createComponent(formData: FormData) {
         for (const color_prop of JSON.parse(color_props)) {
             const model_id = selectedModel.rows[0]?.id;
             await sql`
-                INSERT INTO colors (model_id, name, image_url, price) VALUES (${model_id}::uuid, ${color_prop.name}, ${color_prop.image_url}, ${color_prop.price});
+                INSERT INTO colors (model_id, name, value, image_url, price) VALUES (${model_id}::uuid, ${color_prop.name}, ${color_prop.value}, ${color_prop.image_url}, ${color_prop.price});
             `
         }
 
@@ -155,7 +155,7 @@ export async function updateModel(id: string, formData: any) {
         // recreate colors
         for (const color_prop of JSON.parse(color_props)) {
             await sql`
-                INSERT INTO colors (model_id, name, image_url, price) VALUES (${id}::uuid, ${color_prop.name}, ${color_prop.image_url}, ${color_prop.price});
+                INSERT INTO colors (model_id, name, value, image_url, price) VALUES (${id}::uuid, ${color_prop.name}, ${color_prop.value}, ${color_prop.image_url}, ${color_prop.price});
             `
         }
 

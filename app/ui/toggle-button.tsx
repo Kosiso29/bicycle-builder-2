@@ -24,15 +24,15 @@ const mapping: any = {
 }
 
 export default function SizeSelector({ values, label, type, modelData, handleModelChange, colors, selectedIndex }: { values: string[], label: string, type: string, modelData: any, handleModelChange: any, colors: any, selectedIndex: number }) {
-    const [selectedSize, setSelectedSize] = useState(values?.[0]);
+    const [selectedValue, setSelectedValue] = useState(values?.[0]);
     const [initialSrc, setInitialSrc] = useState("");
     const [initialPrice, setInitialPrice] = useState("");
     const defaultValue = values?.[0];
 
     const handleSizeChange = (value: string) => {
-        setSelectedSize(value);
+        setSelectedValue(value);
         if (type === 'colors') {
-            const colorData = colors.filter((color: any) => color.name === value)?.[0];
+            const colorData = colors.filter((color: any) => color.value === value)?.[0];
             const newModelData = { ...modelData, src: colorData?.image_url || initialSrc, price: colorData?.price || initialPrice };
             handleModelChange(selectedIndex, newModelData);
         }
@@ -40,11 +40,11 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
 
     useEffect(() => {
         if (type === 'colors' && modelData) {
-            setSelectedSize("default");
+            setSelectedValue("default");
             setInitialSrc(modelData?.src);
             setInitialPrice(modelData?.price);
         } else {
-            setSelectedSize(defaultValue);
+            setSelectedValue(defaultValue);
         }
     }, [defaultValue, type])
 
@@ -63,21 +63,22 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
                         className='p-1'
                         onClick={() => handleSizeChange('default')}
                     >
-                        {selectedSize === 'default' && <CheckOutlined />}
+                        {selectedValue === 'default' && <CheckOutlined />}
                     </Button>
                 }
                 {values?.map((value) => (
                     <Button
                         key={value}
                         style={type === 'colors' ? { backgroundColor: value, color: value } : {}}
-                        variant={selectedSize === value ? 'contained' : 'outlined'}
+                        variant={selectedValue === value ? 'contained' : 'outlined'}
                         className='p-1'
                         onClick={() => handleSizeChange(value)}
                     >
-                        {type === 'colors' ? (selectedSize === value ? <CheckOutlined style={{ filter: "invert(1)" }} /> : " ") : value}
+                        {type === 'colors' ? (selectedValue === value ? <CheckOutlined style={{ filter: "invert(1)" }} /> : " ") : value}
                     </Button>
                 ))}
             </Box>
+            {type === 'colors' && <p className='text-primary mt-2'>{colors?.filter((color: any) => color.value === selectedValue)?.[0]?.name || "Spock"}</p>}
         </div>
     );
 }

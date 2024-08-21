@@ -156,6 +156,7 @@ export async function fetchColors() {
             m.name AS model,
             c.model_id,
             c.name,
+            c.value,
             c.image_url,
             c.price
         FROM
