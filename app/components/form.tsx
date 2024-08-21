@@ -22,7 +22,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
     const [loading, setLoading] = useState(false);
-    const [colorItems, setColorItems] = useState([{ name: "", value: "", image_url: "", price: "" }])
+    const [colorItems, setColorItems] = useState<any>([])
 
     const addModelColors = () => {
         setColorItems((prevState: any) => [...prevState, { name: "", value: "", image_url: "", price: "" }])
@@ -204,17 +204,10 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                 <TextField name='model' type='text' defaultValue={model?.name} label='Model' placeholder='Model name' />
 
                 <div className='flex gap-5'>
-                    {/* Image URL */}
-                    <TextField name='image_url' type='text' defaultValue={model?.image_url} label='Image URL' fullWidth />
-                    {/* Size chart URL */}
-                    <TextField name='size_chart_url' type='text' defaultValue={model?.size_chart_url} label='Size chart URL' fullWidth />
-                </div>
-
-                <div className='flex gap-5'>
                     {/* Actual width */}
                     <TextField name='actual_width' defaultValue={model?.actual_width} label='Actual width' fullWidth />
-                    {/* Price */}
-                    <TextField name='price' step={0.01} min={0.0} defaultValue={model?.price} label='Price' fullWidth />
+                    {/* Size chart URL */}
+                    <TextField name='size_chart_url' type='text' defaultValue={model?.size_chart_url} label='Size chart URL' fullWidth />
                 </div>
 
                 {/* Colors */}
@@ -223,26 +216,41 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                         Model colors
                     </label>
                     <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+                        <div className='flex gap-5 items-center'>
+                            {/* Model Color Name */}
+                            <TextField name='color_name' defaultValue={model?.color_name} type='text' placeholder='Model Color Name' fullWidth />
+                            {/* Model Color Value */}
+                            <TextField name='color_value' defaultValue={model?.color_value} type='text' placeholder='Model Color Value' fullWidth />
+                            {/* Image URL */}
+                            <TextField name='image_url' type='text' defaultValue={model?.image_url} placeholder='Model Color Image URL' fullWidth />
+                            <div className='flex w-full gap-3'>
+                                {/* Price */}
+                                <TextField name='price' step={0.01} min={0.0} defaultValue={model?.price} placeholder='Model Color Price' fullWidth />
+                                {
+                                    colorItems.length === 0 &&
+                                    <div className='flex gap-2 text-blue-600 items-center mb-4 mt-2'>
+                                        <AddOutlined className='cursor-pointer' fontSize='large' onClick={addModelColors} />
+                                    </div>
+                                }
+                            </div>
+                        </div>
                         {
                             colorItems.map((colorItem: any, index: number) => (
                                 <div key={index} className='flex gap-5 items-center'>
                                     {/* Model Color Name */}
-                                    <TextField name='color_name' value={colorItem.name} onChange={(e: any) => { handleModelColorTextChange(e, index, "name") }} type='text' placeholder='Model Color Name' fullWidth />
+                                    <TextField name='model_color_name' value={colorItem.name} onChange={(e: any) => { handleModelColorTextChange(e, index, "name") }} type='text' placeholder='Model Color Name' fullWidth />
                                     {/* Model Color Value */}
-                                    <TextField name='color_value' value={colorItem.value} onChange={(e: any) => { handleModelColorTextChange(e, index, "value") }} type='text' placeholder='Model Color Value' fullWidth />
+                                    <TextField name='model_color_value' value={colorItem.value} onChange={(e: any) => { handleModelColorTextChange(e, index, "value") }} type='text' placeholder='Model Color Value' fullWidth />
                                     {/* Model Color Image URL */}
-                                    <TextField name='color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Color Image URL' fullWidth />
+                                    <TextField name='model_color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Color Image URL' fullWidth />
                                     <div className='flex w-full gap-3'>
                                         {/* Model Color Price */}
-                                        <TextField name='color_price' value={colorItem.price} onChange={(e: any) => { handleModelColorTextChange(e, index, "price") }} step={0.01} min={0.0} placeholder='Model Color Price' fullWidth />
+                                        <TextField name='model_color_price' value={colorItem.price} onChange={(e: any) => { handleModelColorTextChange(e, index, "price") }} step={0.01} min={0.0} placeholder='Model Color Price' fullWidth />
                                         {
                                             index === (colorItems.length - 1) &&
                                             <div className='flex gap-2 text-blue-600 items-center mb-4 mt-2'>
                                                 <AddOutlined className='cursor-pointer' fontSize='large' onClick={addModelColors} />
-                                                {
-                                                    index !== 0 &&
-                                                    <RemoveOutlined className='cursor-pointer' fontSize='large' onClick={removeModelColors} />
-                                                }
+                                                <RemoveOutlined className='cursor-pointer' fontSize='large' onClick={removeModelColors} />
                                             </div>
                                         }
                                     </div>

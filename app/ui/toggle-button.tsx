@@ -40,7 +40,7 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
 
     useEffect(() => {
         if (type === 'colors' && modelData) {
-            setSelectedValue("default");
+            setSelectedValue(modelData?.color_value);
             setInitialSrc(modelData?.src);
             setInitialPrice(modelData?.price);
         } else {
@@ -60,10 +60,11 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
                     type === 'colors' &&
                     <Button
                         variant='outlined'
+                        style={{ backgroundColor: modelData?.color_value, color: modelData?.color_value }}
                         className='p-1'
-                        onClick={() => handleSizeChange('default')}
+                        onClick={() => handleSizeChange(modelData?.color_value)}
                     >
-                        {selectedValue === 'default' && <CheckOutlined />}
+                        {selectedValue === modelData?.color_value && <CheckOutlined style={{ filter: "invert(1)" }} />}
                     </Button>
                 }
                 {values?.map((value) => (
@@ -78,7 +79,7 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
                     </Button>
                 ))}
             </Box>
-            {type === 'colors' && <p className='text-primary mt-2'>{colors?.filter((color: any) => color.value === selectedValue)?.[0]?.name || "Spock"}</p>}
+            {type === 'colors' && <p className='text-primary mt-2'>{colors?.filter((color: any) => color.value === selectedValue)?.[0]?.name || modelData?.color_name || "Stock"}</p>}
         </div>
     );
 }

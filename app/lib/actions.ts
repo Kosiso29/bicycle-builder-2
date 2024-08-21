@@ -17,7 +17,7 @@ export async function createComponent(formData: FormData) {
     const { category_id, brand_id, model, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
         back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
         groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
-        lengths, sizes, ratios, size_chart_url, is_primary, color_props } = formDataObject;
+        lengths, sizes, ratios, size_chart_url, is_primary, color_name, color_value, color_props } = formDataObject;
 
     const modelsPresets: any = Object.entries(formDataObject).filter(item => item[0].includes("preset_"));
 
@@ -26,11 +26,11 @@ export async function createComponent(formData: FormData) {
             INSERT INTO models (category_id, brand_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
             back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
             groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
-            lengths, sizes, ratios, size_chart_url, is_primary)
+            lengths, sizes, ratios, size_chart_url, is_primary, color_name, color_value)
             VALUES (${category_id}, ${brand_id}, ${model}, ${image_url}, ${Number(actual_width)}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
             ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
             ${groupset_drivetrain_x}, ${groupset_drivetrain_y}, ${groupset_shifter_x}, ${groupset_shifter_y}, ${handle_bar_x}, ${handle_bar_y}, ${global_composite_operation}, ${canvas_layer_level},
-            ${JSON.parse(lengths)}, ${JSON.parse(sizes)}, ${JSON.parse(ratios)}, ${size_chart_url}, ${!!is_primary})
+            ${JSON.parse(lengths)}, ${JSON.parse(sizes)}, ${JSON.parse(ratios)}, ${size_chart_url}, ${!!is_primary}, ${color_name}, ${color_value})
         `;
 
         const selectedModel: any = await sql`
@@ -118,7 +118,7 @@ export async function updateModel(id: string, formData: any) {
     const { category_id, brand_id, model, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
         back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
         groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
-        lengths, sizes, ratios, size_chart_url, is_primary, color_props } = formDataObject;
+        lengths, sizes, ratios, size_chart_url, is_primary, color_name, color_value, color_props } = formDataObject;
 
     try {
         await sql`
@@ -126,7 +126,7 @@ export async function updateModel(id: string, formData: any) {
         SET category_id = ${category_id}, brand_id = ${brand_id}, name = ${model}, image_url = ${image_url}, actual_width = ${actual_width}, stem_x = ${stem_x}, stem_y = ${stem_y}, saddle_x = ${saddle_x}, saddle_y = ${saddle_y}, front_wheel_x = ${front_wheel_x}, front_wheel_y = ${front_wheel_y}, 
         back_wheel_x = ${back_wheel_x}, back_wheel_y = ${back_wheel_y}, has_stem = ${!!has_stem}, has_handle_bar = ${!!has_handle_bar}, price = ${price}, key_metrics = ${key_metrics}, aerodynamics = ${aerodynamics}, weight = ${weight}, comfort = ${comfort}, stiffness = ${stiffness}, overall = ${overall}, 
         groupset_drivetrain_x = ${groupset_drivetrain_x}, groupset_drivetrain_y = ${groupset_drivetrain_y}, groupset_shifter_x = ${groupset_shifter_x}, groupset_shifter_y = ${groupset_shifter_y}, handle_bar_x = ${handle_bar_x}, handle_bar_y = ${handle_bar_y}, global_composite_operation = ${global_composite_operation}, canvas_layer_level = ${canvas_layer_level},
-        lengths = ${JSON.parse(lengths)}, sizes = ${JSON.parse(sizes)}, ratios = ${JSON.parse(ratios)}, size_chart_url = ${size_chart_url}, is_primary = ${!!is_primary}
+        lengths = ${JSON.parse(lengths)}, sizes = ${JSON.parse(sizes)}, ratios = ${JSON.parse(ratios)}, size_chart_url = ${size_chart_url}, is_primary = ${!!is_primary}, color_name = ${color_name}, color_value = ${color_value}
         WHERE id = ${id};
         `
 
