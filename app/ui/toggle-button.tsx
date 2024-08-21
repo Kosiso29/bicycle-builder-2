@@ -26,12 +26,14 @@ const mapping: any = {
 export default function SizeSelector({ values, label, type, modelData, handleModelChange, colors, selectedIndex }: { values: string[], label: string, type: string, modelData: any, handleModelChange: any, colors: any, selectedIndex: number }) {
     const [selectedSize, setSelectedSize] = useState(values?.[0]);
     const [initialSrc, setInitialSrc] = useState("");
+    const [initialPrice, setInitialPrice] = useState("");
     const defaultValue = values?.[0];
 
     const handleSizeChange = (value: string) => {
         setSelectedSize(value);
         if (type === 'colors') {
-            const newModelData = { ...modelData, src: colors.filter((color: any) => color.name === value)?.[0]?.image_url || initialSrc };
+            const colorData = colors.filter((color: any) => color.name === value)?.[0];
+            const newModelData = { ...modelData, src: colorData?.image_url || initialSrc, price: colorData?.price || initialPrice };
             handleModelChange(selectedIndex, newModelData);
         }
     };
@@ -39,7 +41,8 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
     useEffect(() => {
         if (type === 'colors' && modelData) {
             setSelectedSize("default");
-            setInitialSrc(modelData?.src)
+            setInitialSrc(modelData?.src);
+            setInitialPrice(modelData?.price);
         } else {
             setSelectedSize(defaultValue);
         }

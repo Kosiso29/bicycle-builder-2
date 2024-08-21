@@ -156,11 +156,14 @@ export async function fetchColors() {
             m.name AS model,
             c.model_id,
             c.name,
-            c.image_url
+            c.image_url,
+            c.price
         FROM
             colors c
         JOIN
-            models m ON m.id = c.model_id`;
+            models m ON m.id = c.model_id
+        ORDER BY
+            c.name;`;
 
         const colors = data.rows;
 

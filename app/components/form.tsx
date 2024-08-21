@@ -22,10 +22,10 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
     const [loading, setLoading] = useState(false);
-    const [colorItems, setColorItems] = useState([{ name: "", image_url: "" }])
+    const [colorItems, setColorItems] = useState([{ name: "", image_url: "", price: "" }])
 
     const addModelColors = () => {
-        setColorItems((prevState: any) => [...prevState, { name: "", image_url: "" }])
+        setColorItems((prevState: any) => [...prevState, { name: "", image_url: "", price: "" }])
     }
 
     const removeModelColors = () => {
@@ -40,8 +40,8 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
         console.log('colors', colors);
         if (model) {
             const newColorItems = colors.filter((color: any) => color.model_id === model.id).map((color: any) => {
-                const { name, image_url } = color;
-                return { name, image_url };
+                const { name, image_url, price } = color;
+                return { name, image_url, price };
             });
     
             if (newColorItems.length > 0) {
@@ -226,11 +226,13 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                         {
                             colorItems.map((colorItem: any, index: number) => (
                                 <div key={index} className='flex gap-5 items-center'>
-                                    {/* Model Image Color */}
-                                    <TextField name='color_name' value={colorItem.name} onChange={(e: any) => { handleModelColorTextChange(e, index, "name") }} type='text' placeholder='Model Image Color' fullWidth />
-                                    {/* Model Image URL */}
+                                    {/* Model Color */}
+                                    <TextField name='color_name' value={colorItem.name} onChange={(e: any) => { handleModelColorTextChange(e, index, "name") }} type='text' placeholder='Model Color' fullWidth />
+                                    {/* Model Color Image URL */}
+                                    <TextField name='color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Color Image URL' fullWidth />
                                     <div className='flex w-full gap-3'>
-                                        <TextField name='color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Image URL' fullWidth />
+                                        {/* Model Color Price */}
+                                        <TextField name='color_price' value={colorItem.price} onChange={(e: any) => { handleModelColorTextChange(e, index, "price") }} step={0.01} min={0.0} placeholder='Model Color Price' fullWidth />
                                         {
                                             index === (colorItems.length - 1) &&
                                             <div className='flex gap-2 text-blue-600 items-center mb-4 mt-2'>
