@@ -77,7 +77,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         loadImage2(/Wheel Set/i, modelData2 || backWheetSet);
         loadImage2(/Group Set/i, modelData2 || groupSetShifter);
 
-        imageRef.current?.setAttribute("src", modelData?.src);
+        imageRef.current?.setAttribute("src", modelData?.src + '?random=' + Math.random());
         if (setActualWidth) {
             setActualWidth(modelData?.actualWidth);
         }
@@ -152,7 +152,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     function loadImage2(regex, modelData2) {
         if (regex.test(label)) {
             setImage2Loaded(false);
-            imageRef2.current?.setAttribute("src", modelData2?.src);
+            imageRef2.current?.setAttribute("src", modelData2?.src + '?random=' + Math.random());
         }
     }
 
