@@ -361,9 +361,9 @@ export default function BikeBuilder({
             switch (item.category + " - " + item.model) {
                 case "Frame Set - Allez Sprint":
                     return true;
-                case "Group Set - Drivetrain - Dura-Ace DI2":
+                case "Group Set - Drivetrain - Dura-Ace Di2":
                     return true;
-                case "Group Set - Shifter - Dura-Ace DI2":
+                case "Group Set - Shifter - Dura-Ace Di2":
                     return true;
                 case "Front Wheel Set - SES 4.5 LTD - Limited Edition Tour De France Decals":
                     return true;

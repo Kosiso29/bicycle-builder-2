@@ -23,18 +23,24 @@ const mapping: any = {
     }
 }
 
-export default function SizeSelector({ values, label, type, modelData, handleModelChange, colors, selectedIndex }: { values: string[], label: string, type: string, modelData: any, handleModelChange: any, colors: any, selectedIndex: number }) {
+export default function SizeSelector({ values, label, type, modelData, handleModelChange, colors, selectedIndex, databaseModels }: { values: string[], label: string, type: string, modelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any }) {
     const [selectedValue, setSelectedValue] = useState(values?.[0]);
     const [initialSrc, setInitialSrc] = useState("");
     const [initialPrice, setInitialPrice] = useState("");
+    const [filteredColors, setFilteredColors] = useState<any>([]);
     const defaultValue = values?.[0];
 
     const handleSizeChange = (value: string) => {
         setSelectedValue(value);
         if (type === 'colors') {
-            const colorData = colors.filter((color: any) => color.value === value)?.[0];
+            let backWheelSetColor = null;
+            const colorData = filteredColors.filter((color: any) => color.value === value)?.[0];
             const newModelData = { ...modelData, src: colorData?.image_url || initialSrc, price: colorData?.price || initialPrice };
-            handleModelChange(selectedIndex, newModelData);
+            if (/Wheel Set/i.test(label)) {
+                const backWheetSet = databaseModels.filter((item: any) => item.model === modelData.model && item.category === 'Back Wheel Set')[0];
+                backWheelSetColor = colors.filter((color: any) => color?.model_id === backWheetSet?.id && color?.value === value);
+            }
+            handleModelChange(selectedIndex, newModelData, backWheelSetColor?.[0]?.image_url && { src: backWheelSetColor[0].image_url });
         }
     };
 
@@ -43,6 +49,7 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
             setSelectedValue(modelData?.color_value);
             setInitialSrc(modelData?.src);
             setInitialPrice(modelData?.price);
+            setFilteredColors(colors?.filter((color: any) => color?.model_id === modelData?.id))
         } else {
             setSelectedValue(defaultValue);
         }
@@ -79,7 +86,7 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
                     </Button>
                 ))}
             </Box>
-            {type === 'colors' && <p className='text-primary mt-2'>{colors?.filter((color: any) => color.value === selectedValue)?.[0]?.name || modelData?.color_name || "Stock"}</p>}
+            {type === 'colors' && <p className='text-primary mt-2'>{filteredColors?.filter((color: any) => color.value === selectedValue)?.[0]?.name || modelData?.color_name || "Stock"}</p>}
         </div>
     );
 }

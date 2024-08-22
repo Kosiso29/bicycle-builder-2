@@ -31,6 +31,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const imageRef2 = useRef(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [price, setPrice] = useState(0.00);
+    const [resetToggleButtons, setResetToggleButtons] = useState(0);
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
@@ -39,7 +40,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setSelectedIndex(null);
     }
 
-    const handleModelChange = (index, modelData) => {
+    const handleModelChange = (index, modelData, modelData2) => {
         setModel(modelData?.model);
         setPrice(modelData?.price);
         setModelData(modelData);
@@ -71,16 +72,11 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             })
         }
         setImageLoaded(false);
-        if (/Wheel Set/i.test(label)) {
-            setImage2Loaded(false);
-            const backWheetSet = databaseModels.filter(item => item.model === modelData.model && item.category === 'Back Wheel Set')[0];
-            imageRef2.current?.setAttribute("src", backWheetSet?.src);
-        }
-        if (/Group Set/i.test(label)) {
-            setImage2Loaded(false);
-            const groupSetShifter = databaseModels.filter(item => item.model === modelData.model && item.category === 'Group Set - Shifter')[0];
-            imageRef2.current?.setAttribute("src", groupSetShifter?.src);
-        }
+        const backWheetSet = databaseModels.filter(item => item.model === modelData.model && item.category === 'Back Wheel Set')[0];
+        const groupSetShifter = databaseModels.filter(item => item.model === modelData.model && item.category === 'Group Set - Shifter')[0];
+        loadImage2(/Wheel Set/i, modelData2 || backWheetSet);
+        loadImage2(/Group Set/i, modelData2 || groupSetShifter);
+
         imageRef.current?.setAttribute("src", modelData?.src);
         if (setActualWidth) {
             setActualWidth(modelData?.actualWidth);
@@ -151,6 +147,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         if (frameValue) return frameValue;
 
         return originalValue
+    }
+
+    function loadImage2(regex, modelData2) {
+        if (regex.test(label)) {
+            setImage2Loaded(false);
+            imageRef2.current?.setAttribute("src", modelData2?.src);
+        }
     }
 
     useEffect(() => {
@@ -251,7 +254,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         data-actual-width={item.actualWidth || "0"}
                                         onClick={() => {
                                             if (selectedIndex !== index) {
-                                                handleModelChange(index, item)
+                                                setResetToggleButtons(prevState => prevState + 1);
+                                                handleModelChange(index, item);
                                             }
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
@@ -268,8 +272,17 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
             <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
-            <div className="mt-5">
-                <SizeSelector values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)} type="colors" label={label} colors={colors?.filter(color => color?.model_id === modelData?.id)} modelData={modelData} handleModelChange={handleModelChange} selectedIndex={selectedIndex} />
+            <div className="mt-5" key={resetToggleButtons}>
+                <SizeSelector
+                    values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)}
+                    type="colors"
+                    label={label}
+                    colors={colors}
+                    modelData={modelData}
+                    handleModelChange={handleModelChange}
+                    selectedIndex={selectedIndex}
+                    databaseModels={databaseModels}
+                />
                 <SizeSelector values={modelData?.lengths} type="lengths" label={label} />
                 <SizeSelector values={modelData?.sizes} type="sizes" label={label} />
                 <SizeSelector values={modelData?.ratios} type="ratios" label={label} />
