@@ -77,7 +77,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         loadImage2(/Wheel Set/i, modelData2 || backWheetSet);
         loadImage2(/Group Set/i, modelData2 || groupSetShifter);
 
-        imageRef.current?.setAttribute("src", modelData?.src + '?random=' + Math.random());
+        reloadImage(imageRef.current, modelData);
+
         if (setActualWidth) {
             setActualWidth(modelData?.actualWidth);
         }
@@ -152,7 +153,15 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     function loadImage2(regex, modelData2) {
         if (regex.test(label)) {
             setImage2Loaded(false);
-            imageRef2.current?.setAttribute("src", modelData2?.src + '?random=' + Math.random());
+            reloadImage(imageRef2.current, modelData2);
+        }
+    }
+
+    function reloadImage(imageElement, modelData) {
+        if (imageElement?.getAttribute("src") === modelData?.src) {
+            imageElement?.setAttribute("src", modelData?.src + '?random=' + Math.random());
+        } else {
+            imageElement?.setAttribute("src", modelData?.src);
         }
     }
 
