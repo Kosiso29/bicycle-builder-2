@@ -43,11 +43,11 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
                 }
                 return prevState.stem[axisLength] + axisLength === 'x' ? 38 : 2 + handleBarShifterShifted;
             }
+            if (!hasStem && (stemDimensions.hasHandleBar || !prevState.stem.model)) {
+                return (stemAxis ?? prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
+            }
             if (!hasStem && !stemDimensions.hasHandleBar) {
                 return (stemAxis ?? prevState.stem[axisLength]) + (prevState.handleBar['stemHandleBar' + axisLength.toUpperCase()] ?? 0) + handleBarShifterShifted;
-            }
-            if (!hasStem && stemDimensions.hasHandleBar) {
-                return (stemAxis ?? prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
             }
             if (hasStem && !hasHandleBar) {
                 return handleBarAxis + handleBarShifterShifted;
@@ -65,6 +65,9 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
                 return prevState.handleBar[axisLength] + handleBarShifterShifted;
             } else if (!frameSetDimensions.hasStem && !frameSetDimensions.hasHandleBar && stemDimensions.hasHandleBar) {
                 return prevState.stem[axisLength] + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
+            } else if (frameSetDimensions.hasStem && !frameSetDimensions.hasHandleBar) {
+                // this condition is not yet tested, just assumed.
+                return handleBarAxis + handleBarShifterShifted;
             } else if (frameSetDimensions.hasHandleBar) {
                 return prevState.frameSet['groupSet_shifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
             }

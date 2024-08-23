@@ -9,7 +9,7 @@ const FRAMESET_PROP = 'frameSet';
 
 export default function FrameSet({ parentProps, show, handleReset, setFrameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
-    const { setSelectionLevelProps, setTooltips, setStemDimensions } = parentProps;
+    const { setSelectionLevelProps, setTooltips, setStemDimensions, canvasDrawImageProps } = parentProps;
     
     const updateDrawImageProps = (extraDrawImageProps, { allModels, modelData }) => {
         const x = 200;
@@ -33,6 +33,11 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
 
         if (hasStem && !hasHandleBar) {
             setStemDimensions(prevState => ({ ...prevState, hasHandleBar: false }))
+        }
+
+        // set hasHandleBar to true for the placeholder stem which has handleBar
+        if (!hasStem && !canvasDrawImageProps.stem.model) {
+            setStemDimensions(prevState => ({ ...prevState, hasHandleBar: true }))
         }
 
         return { frameSet: { image, x, y, width, height, ...extraDrawImageProps, ...offsets, hasStem, hasHandleBar } };

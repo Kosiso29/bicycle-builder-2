@@ -8,10 +8,16 @@ const HANDLE_BAR_PROP = 'handleBar';
 
 export default function HandleBar({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0")
-    const { setSelectionLevelProps, setHandleBarDimensions } = parentProps;
+    const { setSelectionLevelProps, setHandleBarDimensions, stemDimensions } = parentProps;
     const updateDrawImageProps = (extraDrawImageProps, { allModels }) => {
-        const x = frameSetDimensions.stemX ? frameSetDimensions.stemX + 38 : canvasX;
-        const y = frameSetDimensions.stemY ? frameSetDimensions.stemY + 2 : canvasY;
+        let x, y;
+        if (frameSetDimensions.hasStem) {
+            x = frameSetDimensions.handleBarX || canvasX;
+            y = frameSetDimensions.handleBarY || canvasY;
+        } else {
+            x = frameSetDimensions.stemX ? frameSetDimensions.stemX + stemDimensions.handleBarX : canvasX;
+            y = frameSetDimensions.stemY ? frameSetDimensions.stemY + stemDimensions.handleBarY : canvasY;
+        }
 
         const image = document.querySelector('#handleBar')?.querySelector('#preview');
         const handleBarModelData = allModels.filter(item => item.model === extraDrawImageProps.model && item.brand === extraDrawImageProps.brand && item.category === 'Handle Bar')[0];

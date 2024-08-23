@@ -442,10 +442,11 @@ export default function BikeBuilder({
     useEffect(() => {
         // reset handlebar props when there's no handlebar
         if ((!canvasDrawImageProps.stem.model && canvasDrawImageProps.handleBar.model && !frameSetDimensions.hasStem)) {
+            setStemDimensions(prevState => ({ ...prevState, hasHandleBar: true }));
             setCanvasDrawImageProps(prevState => ({
                 ...prevState,
-                handleBar: { ...initialCanvasDrawImageProps.handleBar, x: prevState.handleBar.x, y: prevState.handlbeBar.y },
-                groupSet_shifter: { ...initialCanvasDrawImageProps.groupSet_shifter, x: prevState.groupSet_shifter.x, y: prevState.groupSet_shifter.y },
+                handleBar: { ...initialCanvasDrawImageProps.handleBar, x: prevState.handleBar.x, y: prevState.handleBar.y },
+                // groupSet_shifter: { ...initialCanvasDrawImageProps.groupSet_shifter, x: prevState.groupSet_shifter.x, y: prevState.groupSet_shifter.y },
             }));
             setRerender(prevState => !prevState);
         }
