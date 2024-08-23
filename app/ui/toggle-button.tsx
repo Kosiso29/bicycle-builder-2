@@ -23,15 +23,14 @@ const mapping: any = {
     }
 }
 
-export default function SizeSelector({ values, label, type, modelData, handleModelChange, colors, selectedIndex, databaseModels }: { values: string[], label: string, type: string, modelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any }) {
-    const [selectedValue, setSelectedValue] = useState(values?.[0]);
+export default function SizeSelector({ values, label, type, modelData, handleModelChange, colors, selectedIndex, databaseModels, selectedFeatures, setSelectedFeatures }: { values: string[], label: string, type: string, modelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any, selectedFeatures: any, setSelectedFeatures: any }) {
     const [initialSrc, setInitialSrc] = useState("");
     const [initialPrice, setInitialPrice] = useState("");
     const [filteredColors, setFilteredColors] = useState<any>([]);
     const defaultValue = values?.[0];
 
     const handleSizeChange = (value: string) => {
-        setSelectedValue(value);
+        setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: value }));
         if (type === 'colors') {
             let backWheelSetColor = null;
             const colorData = filteredColors.filter((color: any) => color.value === value)?.[0];
@@ -46,12 +45,12 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
 
     useEffect(() => {
         if (type === 'colors' && modelData) {
-            setSelectedValue(modelData?.color_value);
+            setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type] || modelData?.color_value }));
             setInitialSrc(modelData?.src);
             setInitialPrice(modelData?.price);
             setFilteredColors(colors?.filter((color: any) => color?.model_id === modelData?.id))
         } else {
-            setSelectedValue(defaultValue);
+            setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type] || defaultValue }));
         }
     }, [defaultValue, type])
 
@@ -71,22 +70,22 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
                         className='p-1'
                         onClick={() => handleSizeChange(modelData?.color_value)}
                     >
-                        {selectedValue === modelData?.color_value && <CheckOutlined style={{ filter: "invert(1)" }} />}
+                        {selectedFeatures?.[type] === modelData?.color_value && <CheckOutlined style={{ filter: "invert(1)" }} />}
                     </Button>
                 }
                 {values?.map((value) => (
                     <Button
                         key={value}
                         style={type === 'colors' ? { backgroundColor: value, color: value } : {}}
-                        variant={selectedValue === value ? 'contained' : 'outlined'}
+                        variant={selectedFeatures?.[type] === value ? 'contained' : 'outlined'}
                         className='p-1'
                         onClick={() => handleSizeChange(value)}
                     >
-                        {type === 'colors' ? (selectedValue === value ? <CheckOutlined style={{ filter: "invert(1)" }} /> : " ") : value}
+                        {type === 'colors' ? (selectedFeatures?.[type] === value ? <CheckOutlined style={{ filter: "invert(1)" }} /> : " ") : value}
                     </Button>
                 ))}
             </Box>
-            {type === 'colors' && <p className='text-primary mt-2'>{filteredColors?.filter((color: any) => color.value === selectedValue)?.[0]?.name || modelData?.color_name || "Stock"}</p>}
+            {type === 'colors' && <p className='text-primary mt-2'>{filteredColors?.filter((color: any) => color.value === selectedFeatures?.[type])?.[0]?.name || modelData?.color_name || "Stock"}</p>}
         </div>
     );
 }

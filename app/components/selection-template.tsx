@@ -31,7 +31,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const imageRef2 = useRef(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [price, setPrice] = useState(0.00);
-    const [resetToggleButtons, setResetToggleButtons] = useState(0);
+    const [selectedFeatures, setSelectedFeatures] = useState({});
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
@@ -263,7 +263,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         data-actual-width={item.actualWidth || "0"}
                                         onClick={() => {
                                             if (selectedIndex !== index) {
-                                                setResetToggleButtons(prevState => prevState + 1);
+                                                setSelectedFeatures({});
                                                 handleModelChange(index, item);
                                             }
                                         }}>
@@ -281,7 +281,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
             <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
-            <div className="mt-5" key={resetToggleButtons}>
+            <div className="mt-5">
                 <SizeSelector
                     values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)}
                     type="colors"
@@ -291,10 +291,12 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     handleModelChange={handleModelChange}
                     selectedIndex={selectedIndex}
                     databaseModels={databaseModels}
+                    selectedFeatures={selectedFeatures}
+                    setSelectedFeatures={setSelectedFeatures}
                 />
-                <SizeSelector values={modelData?.lengths} type="lengths" label={label} />
-                <SizeSelector values={modelData?.sizes} type="sizes" label={label} />
-                <SizeSelector values={modelData?.ratios} type="ratios" label={label} />
+                <SizeSelector values={modelData?.lengths} type="lengths" label={label} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                <SizeSelector values={modelData?.sizes} type="sizes" label={label} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                <SizeSelector values={modelData?.ratios} type="ratios" label={label} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
             </div>
         </div>
     )
