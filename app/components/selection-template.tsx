@@ -90,7 +90,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setModelData(null);
         setSelectedIndex(null);
         imageRef.current?.setAttribute("src", "/Cadex-Saddle.png");
-        if (/Wheel Set/i.test(label)) { 
+        if (/Wheel Set/i.test(label)) {
             setTooltips(prevState => ({ ...prevState, aerodynamics: getToolTipValue(null, prevState.aerodynamicsFrame, prevState.aerodynamics), weight: getToolTipValue(null, prevState.weightFrame, prevState.weight), overall: getToolTipValue(null, prevState.overallFrame, prevState.overall), aerodynamicsWheel: null, weightWheel: null, overallWheel: null }));
         }
         if (/Wheel Set|Group Set/i.test(label)) {
@@ -140,7 +140,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setRerender(prevState => !prevState);
     }
 
-    function getToolTipValue (wheelValue: number, frameValue: number, originalValue: number) {
+    function getToolTipValue(wheelValue: number, frameValue: number, originalValue: number) {
         if (wheelValue && frameValue) return (wheelValue + frameValue) / 2;
 
         if (wheelValue) return wheelValue;

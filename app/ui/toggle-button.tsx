@@ -52,7 +52,7 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
         } else {
             setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type] || defaultValue }));
         }
-    }, [defaultValue, type])
+    }, [defaultValue, type, modelData])
 
     if (!values || values.length === 0) {
         return null;
