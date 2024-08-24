@@ -16,12 +16,21 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
         const uniqueImagePresets: any = [];
         const multipleImagePresets: any = [];
         
-        filteredPresets.forEach((filteredPreset: any, filteredPresetIndex: number) => {
-          const duplicateIndex = filteredPresets.findIndex((item: any, index: number) => item.category === filteredPreset.category && item.brand === filteredPreset.brand && item.model === filteredPreset.model && index !== filteredPresetIndex);
-            if (duplicateIndex === -1) {
+        filteredPresets.forEach((filteredPreset: any) => {
+            const filteredDuplicates = models.filter((item: any) => {
+                return item.category === filteredPreset.category && item.brand === filteredPreset.brand && item.model === filteredPreset.model && !item.is_primary
+            });
+            if (filteredPreset.category === 'Group Set - Drivetrain') {
+                const filteredGroupSetShifter = models.filter((item: any) => {
+                    return item.category === 'Group Set - Shifter' && item.brand === filteredPreset.brand && item.model === filteredPreset.model
+                });
+                uniqueImagePresets.push(filteredGroupSetShifter[0]);
+            }
+            if (filteredDuplicates.length === 0) {
                 uniqueImagePresets.push(filteredPreset);
             } else {
                 multipleImagePresets.push(filteredPreset);
+                filteredDuplicates.forEach((duplicate: any) => multipleImagePresets.push(duplicate));
             }
         });
 
@@ -48,7 +57,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
     const getPresetComponents = (preset: string) => {
         const filteredPresets = getFilteredPresets(preset);
-        let loadedCountUnique = 0, loadedCountMultiple = 0, finalUniqueCount = false, finalMultipleCount = false, newFrameSetDimensions = frameSetDimensions;
+        let loadedCountUnique = 0, newFrameSetDimensions = frameSetDimensions;
         const { uniqueImagePresets, multipleImagePresets } = populateMultipleImages(filteredPresets);
         setUniqueImagePresetsProps(null);
 
@@ -103,7 +112,16 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                     [canvasProp]: { brand, model }
                 }));
                 if (loadedCountUnique === uniqueImagePresets.length) {
-                    setUniqueImagePresetsProps({ multipleImagePresets, newFrameSetDimensions })
+                    if (multipleImagePresets.length > 0) {
+                        setUniqueImagePresetsProps({ multipleImagePresets, newFrameSetDimensions })
+                    } else {
+                        setTooltips((prevState: any) => ({ ...prevState, model: "", key_metrics: "---" }))
+                        setRerender((prevState: any) => !prevState);
+                        setLoading(0.5);
+                        setCanvasSelectionLevelState(6);
+                        setShowSummary(true);
+                        setSelectionLevel(7);
+                    }
                 }
             };
 
