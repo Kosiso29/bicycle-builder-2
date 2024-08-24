@@ -36,6 +36,9 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
     useEffect(() => {
         if (show) {
             setSelectionLevelProps(prevState => {
+                if (!prevState.includes('stem')) {
+                    return [HANDLE_BAR_PROP];
+                }
                 if (!prevState.includes(HANDLE_BAR_PROP)) {
                     prevState.push(HANDLE_BAR_PROP);
                 }
