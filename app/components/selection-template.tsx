@@ -21,6 +21,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
     const [model, setModel] = useState("");
+    const [initialModelData, setInitialModelData] = useState(null);
     const [modelData, setModelData] = useState(null);
     const [allModels, setAllModels] = useState([]);
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -268,6 +269,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                             if (selectedIndex !== index) {
                                                 setSelectedFeatures({});
                                                 handleModelChange(index, item);
+                                                setInitialModelData(item);
                                             }
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
@@ -291,6 +293,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     label={label}
                     colors={colors}
                     modelData={modelData}
+                    initialModelData={initialModelData}
                     handleModelChange={handleModelChange}
                     selectedIndex={selectedIndex}
                     databaseModels={databaseModels}

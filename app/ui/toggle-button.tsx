@@ -23,9 +23,7 @@ const mapping: any = {
     }
 }
 
-export default function SizeSelector({ values, label, type, modelData, handleModelChange, colors, selectedIndex, databaseModels, selectedFeatures, setSelectedFeatures }: { values: string[], label: string, type: string, modelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any, selectedFeatures: any, setSelectedFeatures: any }) {
-    const [initialSrc, setInitialSrc] = useState("");
-    const [initialPrice, setInitialPrice] = useState("");
+export default function SizeSelector({ values, label, type, modelData, initialModelData, handleModelChange, colors, selectedIndex, databaseModels, selectedFeatures, setSelectedFeatures }: { values: string[], label: string, type: string, modelData: any, initialModelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any, selectedFeatures: any, setSelectedFeatures: any }) {
     const [filteredColors, setFilteredColors] = useState<any>([]);
     const defaultValue = values?.[0];
 
@@ -34,8 +32,8 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
         if (type === 'colors') {
             let backWheelSetColor = null;
             const colorData = filteredColors.filter((color: any) => color.value === value)?.[0];
-            console.log('color change data', colorData?.image_url, initialSrc);
-            const newModelData = { ...modelData, src: colorData?.image_url || initialSrc, price: colorData?.price || initialPrice };
+            console.log('color change data', colorData?.image_url, initialModelData?.src);
+            const newModelData = { ...modelData, src: colorData?.image_url || initialModelData?.src, price: colorData?.price || initialModelData?.price };
             if (/Wheel Set/i.test(label)) {
                 const backWheetSet = databaseModels.filter((item: any) => item.model === modelData.model && item.category === 'Back Wheel Set')[0];
                 backWheelSetColor = colors.filter((color: any) => color?.model_id === backWheetSet?.id && color?.value === value);
@@ -45,16 +43,9 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
     };
 
     useEffect(() => {
-        if (type === 'colors' && modelData) { 
-            setInitialSrc(modelData?.src);
-            setInitialPrice(modelData?.price);
-            setFilteredColors(colors?.filter((color: any) => color?.model_id === modelData?.id));
-        }
-    }, [defaultValue, type])
-
-    useEffect(() => {
         if (type === 'colors' && modelData) {
             setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type] || modelData?.color_value }));
+            setFilteredColors(colors?.filter((color: any) => color?.model_id === modelData?.id));
         } else {
             setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type] || defaultValue }));
         }
