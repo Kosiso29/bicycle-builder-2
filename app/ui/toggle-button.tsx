@@ -3,23 +3,24 @@ import { CheckOutlined } from "@mui/icons-material";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
-const mapping: any = {
-    'lengths': {
-        'Group Set - Drivetrain': 'Crankset Length',
-        'Stem': 'Stem Length',
-    },
-    'sizes': {
-        'Group Set - Drivetrain': 'Crankset Size',
-        'Frame Set': 'Frameset Size',
-        'Stem': 'Stem Size',
-    },
-    'ratios': {
-        'Group Set - Drivetrain': 'Cassette Ratio'
-    },
-    'colors': {
-        'Group Set - Drivetrain': 'Crankset Colors',
-        'Frame Set': 'Frameset Colors',
-        'Stem': 'Stem Colors',
+const mapToLabel: any = (label: string) => {
+    return {
+        'lengths': {
+            [label]: `${label} Length`,
+            'Group Set - Drivetrain': 'Crankset Length',
+        },
+        'sizes': {
+            [label]: `${label} Size`,
+            'Group Set - Drivetrain': 'Crankset Size',
+            
+        },
+        'ratios': {
+            'Group Set - Drivetrain': 'Cassette Ratio'
+        },
+        'colors': {
+            [label]: `${label} Color`,
+            'Group Set - Drivetrain': 'Crankset Color',
+        }
     }
 }
 
@@ -56,7 +57,7 @@ export default function SizeSelector({ values, label, type, model, modelData, in
 
     return (
         <div className="mb-4">
-            {values?.length > 0 && <h2 className="mb-4 font-bold">{mapping[type][label]}</h2>}
+            {values?.length > 0 && <h2 className="mb-4 font-bold">{mapToLabel(label)[type][label].replace(/Front|Set/ig, "")}</h2>}
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: "1rem" }}>
                 {
                     type === 'colors' &&
