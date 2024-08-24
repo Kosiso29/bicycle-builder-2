@@ -34,6 +34,7 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
         if (type === 'colors') {
             let backWheelSetColor = null;
             const colorData = filteredColors.filter((color: any) => color.value === value)?.[0];
+            console.log('color change data', colorData?.image_url, initialSrc);
             const newModelData = { ...modelData, src: colorData?.image_url || initialSrc, price: colorData?.price || initialPrice };
             if (/Wheel Set/i.test(label)) {
                 const backWheetSet = databaseModels.filter((item: any) => item.model === modelData.model && item.category === 'Back Wheel Set')[0];
@@ -44,11 +45,16 @@ export default function SizeSelector({ values, label, type, modelData, handleMod
     };
 
     useEffect(() => {
-        if (type === 'colors' && modelData) {
-            setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type] || modelData?.color_value }));
+        if (type === 'colors' && modelData) { 
             setInitialSrc(modelData?.src);
             setInitialPrice(modelData?.price);
-            setFilteredColors(colors?.filter((color: any) => color?.model_id === modelData?.id))
+            setFilteredColors(colors?.filter((color: any) => color?.model_id === modelData?.id));
+        }
+    }, [defaultValue, type])
+
+    useEffect(() => {
+        if (type === 'colors' && modelData) {
+            setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type] || modelData?.color_value }));
         } else {
             setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type] || defaultValue }));
         }
