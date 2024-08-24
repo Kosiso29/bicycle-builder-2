@@ -291,6 +291,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)}
                     type="colors"
                     label={label}
+                    model={model}
                     colors={colors}
                     modelData={modelData}
                     initialModelData={initialModelData}
@@ -300,9 +301,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     selectedFeatures={selectedFeatures}
                     setSelectedFeatures={setSelectedFeatures}
                 />
-                <SizeSelector values={modelData?.lengths} type="lengths" label={label} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                <SizeSelector values={modelData?.sizes} type="sizes" label={label} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                <SizeSelector values={modelData?.ratios} type="ratios" label={label} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                <SizeSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                <SizeSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
             </div>
         </div>
     )
