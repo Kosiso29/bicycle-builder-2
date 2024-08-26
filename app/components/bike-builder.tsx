@@ -434,7 +434,7 @@ export default function BikeBuilder({
     }, [canvasContext]);
 
     useEffect(() => {
-        if (selectionLevel < 7) {
+        if (selectionLevel < 6) {
             setShowSummary(false);
         }
     }, [selectionLevel]);
@@ -502,9 +502,9 @@ export default function BikeBuilder({
                             <>
                                 <div className="flex justify-between py-2">
                                     <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={selectionLevel === 1} onClick={handleSelectionLevel}>Prev</Button>
-                                    <Button size="small" variant="text" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 6 || selectionLevel === 1 ? true : false} onClick={handleSelectionLevel}>Skip</Button>
+                                    <Button size="small" variant="text" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 5 || selectionLevel === 1 ? true : false} onClick={handleSelectionLevel}>Skip</Button>
                                     {
-                                        selectionLevel < 6 ?
+                                        selectionLevel < 5 ?
                                             <Button size="small" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSelectionLevel} disabled={canvasSelectionLevelState === 1 || (canvasSelectionLevelState <= selectionLevel && selectionLevel !== 2)}>Next</Button> :
                                             <Button size="small" variant="contained" onClick={() => { setSelectionLevel(prevState => prevState + 1); setShowSummary(true); }}>Summary</Button>
                                     }
@@ -512,16 +512,16 @@ export default function BikeBuilder({
                             </>
                     }
                     <div className="mt-2">
-                        <SelectionTabs indexArray={frameSetDimensions.hasStem && frameSetDimensions.hasHandleBar ? [1, 2, 3, 5, 6] : [1, 2, 3, 4, 5, 6]} value={selectionLevel < 7 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
+                        <SelectionTabs indexArray={frameSetDimensions.hasStem && frameSetDimensions.hasHandleBar ? [1, 2, 3, 5] : [1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
                     </div>
                 </div>
                 <FrameSet parentProps={parentProps} handleReset={handleReset} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <GroupSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
+                <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4 && !frameSetDimensions.hasStem} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4 && (handleBarStemConditions || frameSetDimensions.hasStem)} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 6} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 {
                     showSummary ?
                         <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} small /> : null

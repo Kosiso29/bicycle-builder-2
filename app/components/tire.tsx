@@ -16,7 +16,7 @@ export default function Tire({ parentProps, show, canvasContext, canvasX, canvas
         const x2 = frameSetDimensions.backWheelSetX ? frameSetDimensions.backWheelSetX - 11 : 35;
         const y2 = frameSetDimensions.backWheelSetY ? frameSetDimensions.backWheelSetY - 11 : canvasY;
 
-        const image = document.getElementById('preview');
+        const image = document.querySelector('#tire')?.querySelector('#preview')
 
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = image?.height * (width / image?.width);
@@ -26,7 +26,12 @@ export default function Tire({ parentProps, show, canvasContext, canvasX, canvas
 
     useEffect(() => {
         if (show) {
-            setSelectionLevelProps([TYRE_PROP])
+            setSelectionLevelProps(prevState => {
+                if (!prevState.includes(TYRE_PROP)) {
+                    prevState.push(TYRE_PROP);
+                }
+                return [ ...prevState ];
+            })
         }
     }, [setSelectionLevelProps, show])
 
