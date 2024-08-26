@@ -71,10 +71,15 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
             const canvasProp = joinedHyphenatedProp.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
 
+            if (canvasProp === 'frameSet') {
+                const { actualWidth } = item;
+                newFrameSetDimensions.actualWidth = actualWidth;
+            }
+
             image.onload = function () {
                 const { actualWidth, brand, model, price } = item;
-                const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
-                const height = image?.naturalHeight * (width / image?.naturalWidth);
+                const width = (newFrameSetDimensions?.width * actualWidth) / newFrameSetDimensions?.actualWidth;
+                const height = image?.height * (width / image?.width);
                 let offsets = {};
 
                 if (canvasProp === 'frameSet') {
@@ -98,7 +103,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
                 setCanvasDrawImageProps((prevState: any) => ({
                     ...prevState,
-                    [canvasProp]: { ...prevState[canvasProp], ...offsets, image, image2: canvasProp === 'tire' ? image : undefined, width, height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                    [canvasProp]: { ...prevState[canvasProp], ...offsets, image, image2: canvasProp === 'tire' ? image : undefined, width, height, width2: width, height2: height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
 
                 updateTooltips(item, canvasProp, setTooltips);
@@ -147,8 +152,8 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
             image.onload = function () {
                 const { actualWidth, brand, model, price } = item;
-                const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
-                const height = image?.naturalHeight * (width / image?.naturalWidth);
+                const width = (newFrameSetDimensions?.width * actualWidth) / newFrameSetDimensions?.actualWidth;
+                const height = image?.height * (width / image?.width);
     
                 setMultipleImages((prevState: any) => {
                     prevState.push({ image, globalCompositeOperation: item.globalCompositeOperation, canvasLayerLevel: item.canvasLayerLevel });

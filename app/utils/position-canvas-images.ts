@@ -128,9 +128,9 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
             },
             tire: {
                 ...prevState.tire,
-                x: frontWheelSetX ? frontWheelSetX - 10 : prevState.tire.x,
+                x: frontWheelSetX ? frontWheelSetX - 11 : prevState.tire.x,
                 y: frontWheelSetY ? frontWheelSetY - 11 : prevState.tire.y,
-                x2: backWheelSetX ? backWheelSetX - 10 : prevState.tire.x2,
+                x2: backWheelSetX ? backWheelSetX - 11 : prevState.tire.x2,
                 y2: backWheelSetY ? backWheelSetY - 11 : prevState.tire.y2
             },
             groupSet_drivetrain: {
