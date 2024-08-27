@@ -5,7 +5,8 @@ const {
     models,
     presets,
     users,
-    colors
+    colors,
+    accessories
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -79,6 +80,41 @@ async function seedPresets(client) {
         };
     } catch (error) {
         console.error('Error seeding presets:', error);
+        throw error;
+    }
+}
+
+async function seedAccessories(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+        // Create the "accessories" table if it doesn't exist
+        const createTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS accessories (
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            name VARCHAR(255) NOT NULL UNIQUE
+        );
+        `;
+
+        console.log(`Created "accessories" table`);
+
+        // Insert data into the "accessories" table
+        const insertedAccessories = await Promise.all(
+            accessories.map((accessory) => client.sql`
+                    INSERT INTO accessories (name)
+                    VALUES (${accessory.name});
+                `,
+            ),
+        );
+
+        console.log(`Seeded ${insertedAccessories.length} accessories`);
+
+        return {
+            createTable,
+            accessories: insertedAccessories,
+        };
+    } catch (error) {
+        console.error('Error seeding accessories:', error);
         throw error;
     }
 }
@@ -360,7 +396,10 @@ async function getModelsPresets(client) {
         
         const modelsPresetsTable = await client.sql`SELECT * FROM models_presets;`;
 
-        console.log('model data', modelsTable?.rows, presetsTable?.rows, colorsTable?.rows, modelsPresetsTable?.rows);
+        console.log('models data', modelsTable?.rows);
+        console.log('presets data', presetsTable?.rows);
+        console.log('colors data', colorsTable?.rows);
+        console.log('modelsPresets data', modelsPresetsTable?.rows);
 
         return {
             modelsTable,
@@ -376,6 +415,7 @@ async function main() {
     const client = await db.connect();
 
     // await seedPresets(client);
+    // await seedAccessories(client);
     // await seedCategories(client);
     // await seedBrands(client);
     // await seedColors(client);

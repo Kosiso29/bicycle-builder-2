@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
-export default function SelectionTabs({ indexArray = [1, 2, 3], value, updateSelectionLevel }: { indexArray?: number[], value: number, updateSelectionLevel: Function }) {
+export default function SelectionTabs({ indexArray = [1, 2, 3], value, updateSelectionLevel }: { indexArray?: number[] | string[], value: number | string, updateSelectionLevel: Function }) {
 
     const handleChange = (_: React.SyntheticEvent, newValue: number) => {
         updateSelectionLevel(newValue);

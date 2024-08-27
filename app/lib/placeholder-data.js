@@ -15,6 +15,21 @@ const users = [
     },
 ];
 
+const accessories = [
+    {
+        id: '4e4d2de9-effd-4463-bf0e-892b52c07826',
+        name: 'Tube'
+    },
+    {
+        id: '7f66edc9-0c27-48c8-8ea8-63f0d9eea603',
+        name: 'Pedals'
+    },
+    {
+        id: 'f559a21b-a23b-4267-a749-bafecf84e715',
+        name: 'Bar Tape'
+    },
+];
+
 const categories = [
     {
         id: 'f559ade9-effd-4463-bf0e-892b52c07826',
@@ -305,5 +320,6 @@ module.exports = {
     categories,
     presets,
     users,
-    colors
+    colors,
+    accessories
 };
