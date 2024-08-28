@@ -10,7 +10,8 @@ export const componentsSlice = createSlice({
         brands: [],
         presets: [],
         modelsPresets: [],
-        colors: []
+        colors: [],
+        accessoryModels: []
     },
     reducers: {
         updateModels(state, actions) {
@@ -47,6 +48,12 @@ export const componentsSlice = createSlice({
             const colors = actions.payload;
             if (colors) {
                 state.colors = colors;
+            }
+        },
+        updateAccessoryModels(state, actions) {
+            const accessoryModels = actions.payload;
+            if (accessoryModels) {
+                state.accessoryModels = accessoryModels;
             }
         },
     }

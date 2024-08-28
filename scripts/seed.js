@@ -6,7 +6,8 @@ const {
     presets,
     users,
     colors,
-    accessories
+    accessories,
+    accessory_models
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -115,6 +116,43 @@ async function seedAccessories(client) {
         };
     } catch (error) {
         console.error('Error seeding accessories:', error);
+        throw error;
+    }
+}
+
+async function seedAccessoryModels(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+        // Create the "accessory_models" table if it doesn't exist
+        const createTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS accessory_models (
+                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+                accessory_id UUID REFERENCES accessories(id),
+                brand_id UUID REFERENCES brands(id),
+                name VARCHAR(255) NOT NULL
+            );
+        `;
+
+        console.log(`Created "accessory_models" table`);
+
+        // Insert data into the "accessory_models" table
+        const insertedAccessoryModels = await Promise.all(
+            accessory_models.map((accessory_model) => client.sql`
+                    INSERT INTO accessory_models (accessory_id, brand_id, name)
+                    VALUES (${accessory_model.accessory_id}, ${accessory_model.brand_id}, ${accessory_model.name})
+                `,
+            ),
+        );
+
+        console.log(`Seeded ${insertedAccessoryModels.length} accessory_models`);
+
+        return {
+            createTable,
+            accessory_models: insertedAccessoryModels,
+        };
+    } catch (error) {
+        console.error('Error seeding accessory_models:', error);
         throw error;
     }
 }
@@ -416,6 +454,7 @@ async function main() {
 
     // await seedPresets(client);
     // await seedAccessories(client);
+    // await seedAccessoryModels(client);
     // await seedCategories(client);
     // await seedBrands(client);
     // await seedColors(client);

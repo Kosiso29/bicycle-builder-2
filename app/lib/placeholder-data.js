@@ -17,15 +17,15 @@ const users = [
 
 const accessories = [
     {
-        id: '4e4d2de9-effd-4463-bf0e-892b52c07826',
+        id: '30b134b9-1498-48d5-987d-198d3c449d28',
         name: 'Tube'
     },
     {
-        id: '7f66edc9-0c27-48c8-8ea8-63f0d9eea603',
+        id: '0a5d4387-411a-4807-9f3e-cd07d0136622',
         name: 'Pedals'
     },
     {
-        id: 'f559a21b-a23b-4267-a749-bafecf84e715',
+        id: '5b678460-a17a-4717-b53e-8eb5e3d58654',
         name: 'Bar Tape'
     },
 ];
@@ -86,6 +86,18 @@ const brands = [
         id: 'ec0888ec-584f-4834-ab17-489ae983d608',
         name: 'ENVE'
     },
+    {
+        id: 'c712ba8d-44d6-4a63-932e-13a167dabe4a',
+        name: 'RideNow'
+    },
+    {
+        id: '82603cb2-f0e6-4506-988a-99169d274c62',
+        name: 'Pirelli'
+    },
+    {
+        id: '223b012d-1f16-4594-875b-bf0a414ba542',
+        name: 'Vittoria'
+    }
 ];
 
 const presets = [
@@ -313,6 +325,24 @@ const models = [
     },
 ];
 
+const accessory_models = [
+    {
+        accessory_id: accessories[0].id,
+        brand_id: brands[6].id,
+        name: 'TPU Race Formula Lightweight Inner Tube'
+    },
+    {
+        accessory_id: accessories[0].id,
+        brand_id: brands[7].id,
+        name: 'P Zero SmarTUBE'
+    },
+    {
+        accessory_id: accessories[0].id,
+        brand_id: brands[8].id,
+        name: 'Ultra Light Speed TPU inner tube'
+    }
+]
+
 
 module.exports = {
     brands,
@@ -321,5 +351,6 @@ module.exports = {
     presets,
     users,
     colors,
-    accessories
+    accessories,
+    accessory_models
 };

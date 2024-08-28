@@ -73,6 +73,33 @@ export async function fetchModels(): Promise<Models> {
     }
 }
 
+export async function fetchAccessoryModels(): Promise<Models> {
+    noStore();
+    try {
+        const data = await sql`
+        SELECT
+            a.name AS accessory,
+            b.name AS brand,
+            am.name AS model
+        FROM
+            accessories a
+        JOIN
+            accessory_models am ON a.id = am.accessory_id
+        JOIN
+            brands b ON am.brand_id = b.id
+        ORDER BY
+            b.name, am.name;`;
+
+        const accessoryModels: any = data.rows.map((accessoryModel: QueryResultRow) => ({
+            ...accessoryModel
+        }));
+        return accessoryModels;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the accessoryModels.');
+    }
+}
+
 export async function fetchModelsPresets() {
     noStore();
     try {

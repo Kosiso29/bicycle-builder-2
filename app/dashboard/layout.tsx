@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from "../components/sidebar";
 import Topbar from "../components/topbar";
-import { fetchModels, fetchCategories, fetchBrands, fetchPresets, fetchModelsPresets, fetchUsers, fetchColors } from "@/app/lib/data";
+import { fetchModels, fetchCategories, fetchBrands, fetchPresets, fetchModelsPresets, fetchUsers, fetchColors, fetchAccessoryModels } from "@/app/lib/data";
 import { signOut } from "@/auth";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
@@ -12,6 +12,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     const modelsPresets = await fetchModelsPresets();
     const users = await fetchUsers();
     const colors = await fetchColors();
+    const accessoryModels = await fetchAccessoryModels();
     
     return (
         <div className='max-w-full h-screen'>
@@ -19,7 +20,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                 'use server';
                 await signOut();
             }} className='hidden sm:block w-[var(--sidebar-width)] fixed z-10 h-screen max-h-screen bg-primary'>
-                <Sidebar models={models} categories={categories} brands={brands} presets={presets} modelsPresets={modelsPresets} colors={colors} />
+                <Sidebar models={models} categories={categories} brands={brands} presets={presets} modelsPresets={modelsPresets} colors={colors} accessoryModels={accessoryModels} />
             </form>
             <div className="max-w-full sm:ml-[var(--sidebar-width)] sm:w-[calc(100%-var(--sidebar-width))] px-5 pb-10 sm:pb-10 sm:px-10 bg-blue-100 min-h-screen">
                 <Topbar users={users} />
