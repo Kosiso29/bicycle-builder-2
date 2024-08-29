@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Loading from "./loading";
 import { EditOutlined, DeleteOutline } from '@mui/icons-material';
-import { deleteModel } from "../lib/actions";
+import { deleteAccessoryModel } from "../lib/actions";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import YesNo from "./yesno";
@@ -34,15 +34,15 @@ export default function AccessoriesTable({ models }) {
     useEffect(() => {
         if (answer === "yes") {
             setLoadingForDelete(true);
-            deleteModel(deleteId).then(() => {
+            deleteAccessoryModel(deleteId).then(() => {
                 setDeleteId("");
                 setLoadingForDelete(false);
                 setAnswer("");
-                toast.success("Component deleted!")
+                toast.success("Accessory deleted!")
             })
                 .then(() => window.location.reload())
                 .catch(error => {
-                    toast.error(`Component failed to delete: ${error}`)
+                    toast.error(`Accessory failed to delete: ${error}`)
                 });
         }
         if (answer === "no") {
@@ -117,7 +117,7 @@ export default function AccessoriesTable({ models }) {
                     }
                 </div>
             </div>
-            <YesNo setAnswer={setAnswer} show={!!deleteId && !answer} message="Delete component?" />
+            <YesNo setAnswer={setAnswer} show={!!deleteId && !answer} message="Delete accessory?" />
             <ToastContainer autoClose={3500} position="top-right" />
         </div>
     )

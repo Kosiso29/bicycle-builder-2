@@ -64,9 +64,41 @@ export async function createComponent(formData: FormData) {
     revalidatePath('/dashboard/components');
 }
 
+export async function createAccessoryModel(formData: FormData) {
+    const formDataObject: any = {};
+
+    formData.forEach((value: any, key: any) => {
+        formDataObject[key] = value;
+    });
+
+    const { accessory_id, brand_id, model } = formDataObject;
+
+    try {
+        await sql`
+            INSERT INTO accessory_models (accessory_id, brand_id, name)
+            VALUES (${accessory_id}, ${brand_id}, ${model})
+        `;
+
+    } catch (error) {
+        console.log('error', error)
+    }
+
+    revalidatePath('/dashboard/components');
+}
+
 export async function deleteModel(id: string) {
     try {
         await sql`DELETE FROM models WHERE id = ${id}`;
+
+        revalidatePath('/dashboard/components');
+    } catch (error) {
+        console.log('error', error)
+    }
+}
+
+export async function deleteAccessoryModel(id: string) {
+    try {
+        await sql`DELETE FROM accessory_models WHERE id = ${id}`;
 
         revalidatePath('/dashboard/components');
     } catch (error) {
@@ -161,6 +193,29 @@ export async function updateModel(id: string, formData: any) {
 
         revalidatePath('/dashboard/components');
         revalidatePath(`/dashboard/components/${id}/edit`);
+    } catch (error) {
+        console.log('error', error);
+    }
+}
+
+export async function updateAccessoryModel(id: string, formData: any) {
+    const formDataObject: any = {};
+
+    formData.forEach((value: any, key: any) => {
+        formDataObject[key] = value;
+    });
+
+    const { accessory_id, brand_id, model } = formDataObject;
+
+    try {
+        await sql`
+        UPDATE accessory_models
+        SET accessory_id = ${accessory_id}, brand_id = ${brand_id}, name = ${model}
+        WHERE id = ${id};
+        `
+
+        revalidatePath('/dashboard/components');
+        revalidatePath(`/dashboard/components/accessory/${id}/edit`);
     } catch (error) {
         console.log('error', error);
     }

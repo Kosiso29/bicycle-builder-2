@@ -1,9 +1,9 @@
 'use client'
 
 import Link from 'next/link';
-import { CheckOutlined, TimerOutlined, PersonOutline, AddOutlined, RemoveOutlined } from '@mui/icons-material';
+import { TimerOutlined, PersonOutline, AddOutlined } from '@mui/icons-material';
 import { useSelector } from "react-redux";
-import { updateModel, createComponent } from "@/app/lib/actions";
+import { updateModel, updateAccessoryModel, createAccessoryModel } from "@/app/lib/actions";
 import Loading from "./loading";
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -19,30 +19,30 @@ export default function AccessoryForm({ model }: { model?: any, model_id?: strin
     const [loading, setLoading] = useState(false);
 
     const handleFormUpdate = (formData: any) => {
-        updateModel(model.id, formData)
+        updateAccessoryModel(model.id, formData)
             .then(() => {
                 setLoading(false);
-                toast.success("Component updated!")
+                toast.success("Accessory updated!")
             })
             .then(() => {
                 window.location.href = "/dashboard/components?tab=accessory"
             })
             .catch(error => {
-                toast.error(`Component failed to update: ${error}`)
+                toast.error(`Accessory failed to update: ${error}`)
             });
     }
 
     const handleFormCreation = (formData: any) => {
-        createComponent(formData)
+        createAccessoryModel(formData)
             .then(() => {
                 setLoading(false);
-                toast.success("Component created!")
+                toast.success("Accessory created!")
             })
             .then(() => {
                 window.location.href = "/dashboard/components?tab=accessory"
             })
             .catch(error => {
-                toast.error(`Component failed to create: ${error}`)
+                toast.error(`Accessory failed to create: ${error}`)
             });
     }
 
@@ -132,7 +132,7 @@ export default function AccessoryForm({ model }: { model?: any, model_id?: strin
                     onClick={() => setLoading(true)}
                     disabled={user.permission > 1}
                 >
-                    <span className="hidden md:block">{model ? "Update Component" : "Create Component"}</span>
+                    <span className="hidden md:block">{model ? "Update Accessory" : "Create Accessory"}</span>
                 </button>
                 {
                     loading ? <div className='self-center'><Loading small /></div> : null
