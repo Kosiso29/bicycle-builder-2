@@ -80,7 +80,8 @@ export async function fetchAccessoryModels(): Promise<Models> {
         SELECT
             a.name AS accessory,
             b.name AS brand,
-            am.name AS model
+            am.name AS model,
+            am.id
         FROM
             accessories a
         JOIN
@@ -97,6 +98,24 @@ export async function fetchAccessoryModels(): Promise<Models> {
     } catch (error) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch the accessoryModels.');
+    }
+}
+
+export async function fetchAccessories() {
+    noStore();
+    try {
+        const data = await sql`
+        SELECT * FROM accessories;`;
+
+        const accessories = data.rows.reduce((acc, row) => {
+            acc[row.id] = row.name;
+            return acc;
+        }, {});
+
+        return accessories;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the accessories.');
     }
 }
 
@@ -218,6 +237,23 @@ export async function fetchModelById(id: string) {
     } catch (error) {
         console.log('Database Error:', error);
         throw new Error('Failed to fetch the model.');
+    }
+}
+
+export async function fetchAccessoryModelById(id: string) {
+    noStore();
+    try {
+        const data = await sql`
+            SELECT * FROM accessory_models
+            WHERE accessory_models.id = ${id};
+        `
+
+        const accessory_model = data.rows[0];
+
+        return accessory_model;
+    } catch (error) {
+        console.log('Database Error:', error);
+        throw new Error('Failed to fetch the accessory_model.');
     }
 }
 

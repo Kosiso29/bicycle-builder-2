@@ -33,7 +33,7 @@ export default function Components() {
 
     return (
         <div>
-            <SelectionTabs indexArray={["inventory", "accessory"]} value={tabSelectionState} updateSelectionLevel={setTabSelectionState} />
+            <SelectionTabs indexArray={["inventory", "accessory"]} value={tabSelectionState || false} updateSelectionLevel={setTabSelectionState} />
             { tabSelectionState === "inventory" && <Inventory /> }
             { tabSelectionState === "accessory" && <Accessory /> }
         </div>
