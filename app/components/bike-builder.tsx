@@ -24,7 +24,7 @@ import { positionCanvasImages } from "@/app/utils/position-canvas-images";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
-    frameSetDimensions, setFrameSetDimensions, models, presets, modelsPresets, colors, setResetComponent, stemDimensions, setStemDimensions,
+    frameSetDimensions, setFrameSetDimensions, models, presets, modelsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
     handleBarDimensions, setHandleBarDimensions
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
@@ -70,7 +70,8 @@ export default function BikeBuilder({
         stemDimensions,
         handleBarDimensions,
         setHandleBarDimensions,
-        colors
+        colors,
+        accessoryModels
     }
 
     const canvasNumberData = [

@@ -16,7 +16,7 @@ import SizeChart from "./size_chart";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
-        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors } = parentProps;
+        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -33,6 +33,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [price, setPrice] = useState(0.00);
     const [selectedFeatures, setSelectedFeatures] = useState({});
+    const [tyreTube, setTyreTube] = useState({})
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
@@ -207,6 +208,12 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }, [databaseModels]);
 
     useEffect(() => {
+        const allTubeData = accessoryModels.filter(item => item.accessory === "Tube")
+        const tubeBrands = allTubeData.map(item => item.brand);
+        setTyreTube(prevState => ({ ...prevState, allTubeData, tubeBrands }));
+    }, [accessoryModels]);
+
+    useEffect(() => {
         if (modelData && show) {
             updateTooltips(modelData, identifier, setTooltips);
         }
@@ -284,9 +291,67 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     </List>
                     : null
             }
+            {
+                identifier === "tire" && modelData &&
+                <TextField className="mt-2" value={tyreTube.tube} onChange={(e) => { setTyreTube(prevState => ({ ...prevState, tube: e.target.value })) }} select size="small" label="Tube/Tubeless">
+                    <MenuItem value="Tube">Tube</MenuItem>
+                    <MenuItem value="Tubeless">Tubeless</MenuItem>
+                </TextField>
+            }
+            {
+                tyreTube.tube === "Tube" && 
+                <div className="flex flex-col gap-4">
+                    <h1 className="text-xl font-bold">Tube</h1>
+                    <TextField select size="small" value={tyreTube.tubeBrand} onChange={(e) => { setTyreTube(prevState => ({ ...prevState, tubeBrand: e.target.value, tubeModels: prevState.allTubeData.filter(item => item.brand === e.target.value) })) }} label="Brands">
+                        {
+                            tyreTube.tubeBrands?.map(tubeBrand => (
+                                <MenuItem value={tubeBrand} key={tubeBrand}>{tubeBrand}</MenuItem>
+                            ))
+                        }
+                    </TextField>
+                    {
+                        tyreTube.tubeModels?.length > 0 ?
+                            <List
+                                sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}
+                                subheader={
+                                    <ListSubheader sx={{ backgroundColor: "rgb(156 163 175)", color: "white", lineHeight: "2.5rem" }}>
+                                        Models
+                                    </ListSubheader>
+                                }
+                                dense
+                            >
+                                {
+                                    tyreTube.tubeModels.map((item, index) => (
+                                        <ListItem
+                                            key={label + item.model + index}
+                                            disablePadding
+                                            sx={{
+                                                backgroundColor: tyreTube.selectedIndex === index ? "rgb(25, 118, 210)" : "initial",
+                                                color: tyreTube.selectedIndex === index ? "white" : "initial",
+                                                transition: ".2s ease-in"
+                                            }}>
+                                            <ListItemButton
+                                                divider={index !== (tyreTube.tubeModels.length - 1) ? true : false}
+                                                selected={tyreTube.selectedIndex === index}
+                                                onClick={() => {
+                                                    setTyreTube(prevState => ({ ...prevState, selectedIndex: index }));
+                                                }}>
+                                                <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
+                                                <div className="flex items-center gap-2">
+                                                    <ListItemText className={`flex justify-end ${tyreTube.selectedIndex === index ? "text-white" : tyreTube.selectedIndex === null ? "hidden" : "invisible"}`} onClick={() => { handleModelRemove(index) }} primary={<CloseOutlined fontSize="small" />} />
+                                                </div>
+                                            </ListItemButton>
+                                        </ListItem>
+                                    ))
+                                }
+                            </List>
+                            : null
+                    }
+                </div>
+            }
             <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
-            <div className="mt-5">
+            <div className="mt-2">
                 <SizeSelector
                     values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)}
                     type="colors"
