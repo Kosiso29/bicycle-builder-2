@@ -37,7 +37,6 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     }
 
     useEffect(() => {
-        console.log('colors', colors);
         if (model) {
             const newColorItems = colors.filter((color: any) => color.model_id === model.id).map((color: any) => {
                 const { name, value, image_url, price } = color;

@@ -33,7 +33,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [price, setPrice] = useState(0.00);
     const [selectedFeatures, setSelectedFeatures] = useState({});
-    const [tyreTube, setTyreTube] = useState({})
+    const [tyreTube, setTyreTube] = useState({});
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
@@ -334,11 +334,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                                 divider={index !== (tyreTube.tubeModels.length - 1) ? true : false}
                                                 selected={tyreTube.selectedIndex === index}
                                                 onClick={() => {
-                                                    setTyreTube(prevState => ({ ...prevState, selectedIndex: index }));
+                                                    if (tyreTube.selectedIndex !== index) {
+                                                        setTyreTube(prevState => ({ ...prevState, selectedIndex: index }));
+                                                    }
                                                 }}>
                                                 <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                                 <div className="flex items-center gap-2">
-                                                    <ListItemText className={`flex justify-end ${tyreTube.selectedIndex === index ? "text-white" : tyreTube.selectedIndex === null ? "hidden" : "invisible"}`} onClick={() => { handleModelRemove(index) }} primary={<CloseOutlined fontSize="small" />} />
+                                                    <ListItemText className={`flex justify-end ${tyreTube.selectedIndex === index ? "text-white" : tyreTube.selectedIndex === null ? "hidden" : "invisible"}`} onClick={() => { setTyreTube(prevState => ({ ...prevState, selectedIndex: tyreTube.tubeModels.length })); setRerender(prevState => !prevState) }} primary={<CloseOutlined fontSize="small" />} />
                                                 </div>
                                             </ListItemButton>
                                         </ListItem>
