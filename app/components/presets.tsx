@@ -17,6 +17,13 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
         const multipleImagePresets: any = [];
         
         filteredPresets.forEach((filteredPreset: any) => {
+            if (filteredPreset.category === "Back Wheel Set") {
+                return;
+            }
+            if (filteredPreset.category === "Front Wheel Set") {
+                const backWheelSet = models.filter((item: any) => item.model === filteredPreset.model && item.brand === filteredPreset.brand && item.category === 'Back Wheel Set')[0]
+                uniqueImagePresets.push(backWheelSet);
+            }
             const filteredDuplicates = models.filter((item: any) => {
                 return item.category === filteredPreset.category && item.brand === filteredPreset.brand && item.model === filteredPreset.model && !item.is_primary
             });
