@@ -232,9 +232,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     return (
         <div id={identifier} className="flex flex-col gap-4">
+            {identifier === "stem" && <h1 className="text-2xl font-bold">Cockpit</h1>}
             <div className="flex justify-between items-end">
                 <div className="flex gap-2">
-                    <h1 className="text-2xl font-bold">{displayLabel || label}</h1>
+                    <h1 className={`${identifier === "stem" || identifier === "handleBar" ? "text-xl" : "text-2xl"} font-bold`}>{displayLabel || label}</h1>
                     {imageLoaded ? null : <div className='self-center'><Loading small /></div>}
                 </div>
                 <SizeChart size_chart_url={modelData?.size_chart_url} />

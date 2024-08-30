@@ -489,7 +489,7 @@ export default function BikeBuilder({
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} />
             </div>
-            <div id="selection" className="flex flex-col gap-10 fixed right-0 top-0 h-screen w-[22rem] border-l-8 bg-gray-100 border-gray-400 p-5 pb-0 overflow-auto">
+            <div id="selection" className="flex flex-col gap-6 fixed right-0 top-0 h-screen w-[22rem] border-l-8 bg-gray-100 border-gray-400 p-5 pb-0 overflow-auto">
                 <div>
                     {
                         showSummary ?
