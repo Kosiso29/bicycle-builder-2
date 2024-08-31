@@ -210,7 +210,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     useEffect(() => {
         const allTubeData = accessoryModels.filter(item => item.accessory === "Tube")
         const tubeBrands = allTubeData.map(item => item.brand);
-        setTyreTube(prevState => ({ ...prevState, allTubeData, tubeBrands }));
+        setTyreTube(prevState => ({ ...prevState, tube: "Tubeless", tubeBrand: "Tubeless", allTubeData, tubeBrands }));
     }, [accessoryModels]);
 
     useEffect(() => {
@@ -292,18 +292,33 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     </List>
                     : null
             }
+            <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
+            <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
+            <div className="mt-2">
+                <SizeSelector
+                    values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)}
+                    type="colors"
+                    label={label}
+                    model={model}
+                    colors={colors}
+                    modelData={modelData}
+                    initialModelData={initialModelData}
+                    handleModelChange={handleModelChange}
+                    selectedIndex={selectedIndex}
+                    databaseModels={databaseModels}
+                    selectedFeatures={selectedFeatures}
+                    setSelectedFeatures={setSelectedFeatures}
+                />
+                <SizeSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                <SizeSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+            </div>
             {
                 identifier === "tire" && modelData &&
-                <TextField className="mt-2" value={tyreTube.tube} onChange={(e) => { setTyreTube(prevState => ({ ...prevState, tube: e.target.value })) }} select size="small" label="Tube/Tubeless">
-                    <MenuItem value="Tube">Tube</MenuItem>
-                    <MenuItem value="Tubeless">Tubeless</MenuItem>
-                </TextField>
-            }
-            {
-                tyreTube.tube === "Tube" && 
                 <div className="flex flex-col gap-4">
                     <h1 className="text-xl font-bold">Tube</h1>
-                    <TextField select size="small" value={tyreTube.tubeBrand} onChange={(e) => { setTyreTube(prevState => ({ ...prevState, tubeBrand: e.target.value, tubeModels: prevState.allTubeData.filter(item => item.brand === e.target.value) })) }} label="Brands">
+                    <TextField select size="small" value={tyreTube.tubeBrand} onChange={(e) => { setTyreTube(prevState => ({ ...prevState, tube: e.target.value === "Tubeless" ? "Tubeless" : "Tube", tubeBrand: e.target.value, tubeModels: e.target.value === "Tubeless" ? null : prevState.allTubeData.filter(item => item.brand === e.target.value), selectedIndex: null })) }} label="Brands">
+                        <MenuItem value={"Tubeless"}>Tubeless</MenuItem>
                         {
                             tyreTube.tubeBrands?.map(tubeBrand => (
                                 <MenuItem value={tubeBrand} key={tubeBrand}>{tubeBrand}</MenuItem>
@@ -352,27 +367,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     }
                 </div>
             }
-            <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
-            <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
-            <div className="mt-2">
-                <SizeSelector
-                    values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)}
-                    type="colors"
-                    label={label}
-                    model={model}
-                    colors={colors}
-                    modelData={modelData}
-                    initialModelData={initialModelData}
-                    handleModelChange={handleModelChange}
-                    selectedIndex={selectedIndex}
-                    databaseModels={databaseModels}
-                    selectedFeatures={selectedFeatures}
-                    setSelectedFeatures={setSelectedFeatures}
-                />
-                <SizeSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                <SizeSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-            </div>
         </div>
     )
 }
