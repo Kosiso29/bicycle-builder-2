@@ -316,8 +316,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             {
                 identifier === "tire" && modelData &&
                 <div className="flex flex-col gap-4">
-                    <h1 className="text-xl font-bold">Tube</h1>
-                    <TextField select size="small" value={tyreTube.tubeBrand} onChange={(e) => { setTyreTube(prevState => ({ ...prevState, tube: e.target.value === "Tubeless" ? "Tubeless" : "Tube", tubeBrand: e.target.value, tubeModels: e.target.value === "Tubeless" ? null : prevState.allTubeData.filter(item => item.brand === e.target.value), selectedIndex: null })) }} label="Brands">
+                    <TextField select size="small" value={tyreTube.tubeBrand} onChange={(e) => { setTyreTube(prevState => ({ ...prevState, tube: e.target.value === "Tubeless" ? "Tubeless" : "Tube", tubeBrand: e.target.value, tubeModels: e.target.value === "Tubeless" ? null : prevState.allTubeData.filter(item => item.brand === e.target.value), selectedIndex: null })) }} label="Tube/Tubeless">
                         <MenuItem value={"Tubeless"}>Tubeless</MenuItem>
                         {
                             tyreTube.tubeBrands?.map(tubeBrand => (

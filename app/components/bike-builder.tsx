@@ -23,7 +23,7 @@ import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import { positionCanvasImages } from "@/app/utils/position-canvas-images";
 
 export default function BikeBuilder({
-    canvasDrawImageProps, setCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
+    canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
     frameSetDimensions, setFrameSetDimensions, models, presets, modelsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
     handleBarDimensions, setHandleBarDimensions
 }) {
@@ -32,7 +32,6 @@ export default function BikeBuilder({
     const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
     const [rerender, setRerender] = useState(false);
     const [canvasContext, setCanvasContext] = useState(null);
-    const [initialCanvasDrawImageProps, setInitialCanvasDrawImageProps] = useState(canvasDrawImageProps);
     const [totalPrice, setTotalPrice] = useState(null);
     const [tooltips, setTooltips] = useState({
         key_metrics: "---",

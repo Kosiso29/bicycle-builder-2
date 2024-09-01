@@ -25,6 +25,7 @@ export default function Builder({ models, presets, modelsPresets, colors, access
         saddle: {},
         tire: {},
     });
+    const [initialCanvasDrawImageProps, setInitialCanvasDrawImageProps] = useState(canvasDrawImageProps);
 
     return (
         <div>
@@ -32,6 +33,8 @@ export default function Builder({ models, presets, modelsPresets, colors, access
                 key={resetComponent}
                 canvasDrawImageProps={canvasDrawImageProps}
                 setCanvasDrawImageProps={setCanvasDrawImageProps}
+                initialCanvasDrawImageProps={initialCanvasDrawImageProps}
+                setInitialCanvasDrawImageProps={setInitialCanvasDrawImageProps}
                 setCanvasImage={setCanvasImage}
                 showSummary={showSummary}
                 setShowSummary={setShowSummary}
