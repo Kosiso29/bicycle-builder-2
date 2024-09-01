@@ -183,20 +183,7 @@ export default function BikeBuilder({
     }
 
     const updateSelectionLevel = (newSelectionLevel) => {
-        if (canvasSelectionLevelState > 1) {
-            if (canvasSelectionLevelState > (newSelectionLevel - 1)) {
-                setSelectionLevel(newSelectionLevel);
-            } else if (newSelectionLevel === 2 || newSelectionLevel === 3) {
-                setSelectionLevel(newSelectionLevel);
-                if (newSelectionLevel > canvasSelectionLevelState) {
-                    setCanvasSelectionLevelState(newSelectionLevel);
-                }
-            } else {
-                toast.error("Please either skip or complete selection before proceeding");
-            }
-        } else {
-            toast.error("Frame Set must be selected to proceed");
-        }
+        setSelectionLevel(newSelectionLevel);
     }
 
     const handleCanvasEvents = (e, callback) => {
@@ -241,65 +228,19 @@ export default function BikeBuilder({
         return context;
     }
 
-    const hasParts = (selectionLevel) => {
-        if (selectionLevel === 4 && frameSetDimensions.hasHandleBar) {
-            return true;
-        }
-        return false;
-    }
-
-    const autoSkipExistingPartsSelection = (currentSelectionLevel, selectionButtonText) => {
-        if (hasParts(currentSelectionLevel) && /Next|Skip/i.test(selectionButtonText)) {
-            currentSelectionLevel++;
-            if (currentSelectionLevel > canvasSelectionLevelState) {
-                setCanvasSelectionLevelState(currentSelectionLevel);
-            };
-            return autoSkipExistingPartsSelection(currentSelectionLevel, selectionButtonText);
-        }
-        if (hasParts(currentSelectionLevel) && /Prev/i.test(selectionButtonText)) {
-            currentSelectionLevel--;
-            return autoSkipExistingPartsSelection(currentSelectionLevel, selectionButtonText);
-        }
-        return currentSelectionLevel;
-    }
-
     const handleSelectionLevel = (e) => {
         let newSelectionLevel = selectionLevel;
         if (/Prev/i.test(e.target.textContent)) {
             if (selectionLevel > 1) {
                 newSelectionLevel--;
-                newSelectionLevel = autoSkipExistingPartsSelection(newSelectionLevel, e.target.textContent);
             } else {
                 toast.info("You're at the beginning");
             }
         }
 
         if (/Next/i.test(e.target.textContent)) {
-            if (canvasSelectionLevelState > 1) {
-                if (canvasSelectionLevelState > selectionLevel) {
-                    newSelectionLevel++;
-                    newSelectionLevel = autoSkipExistingPartsSelection(newSelectionLevel, e.target.textContent);
-                } else if (selectionLevel === 2) {
-                    newSelectionLevel++;
-                    if (newSelectionLevel > canvasSelectionLevelState) {
-                        setCanvasSelectionLevelState(newSelectionLevel);
-                    }
-                } else {
-                    toast.error("Please either skip or complete selection before proceeding");
-                }
-            } else {
-                toast.error("Frame Set must be selected to proceed");
-            }
-        }
-
-        if (/Skip/i.test(e.target.textContent)) {
             newSelectionLevel++;
-            newSelectionLevel = autoSkipExistingPartsSelection(newSelectionLevel, e.target.textContent);
-            if (newSelectionLevel > canvasSelectionLevelState) {
-                setCanvasSelectionLevelState(newSelectionLevel);
-            }
         }
-
 
         setSelectionLevel(newSelectionLevel)
     };
@@ -333,6 +274,21 @@ export default function BikeBuilder({
 
     const updateCanvasPlaceholderImageDimensions = (filteredModelPlaceholders, image, componentKey, componentData) => {
         const filteredComponentData = filterComponentData(filteredModelPlaceholders, componentKey);
+
+        if (componentKey === 'frameSet') {
+            const { actualWidth, stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
+                groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY,
+                hasStem, hasHandleBar } = filteredComponentData[0];
+            const offsets = {
+                stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
+                groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY,
+                hasStem, hasHandleBar
+            };
+            setFrameSetDimensions({ ...offsets, actualWidth, width: 528 });
+            setCanvasDrawImageProps(prevState => {
+                return { ...prevState, [componentKey]: { ...prevState[componentKey], ...offsets } }
+            })
+        }
 
         if (filteredComponentData.length > 0) {
             const width = (528 * filteredComponentData[0].actualWidth) / 990;
@@ -406,7 +362,6 @@ export default function BikeBuilder({
                         return { ...prevState };
                     })
 
-                    setFrameSetDimensions({ actualWidth: 990, width: 528 });
                     setRerender(prevState => !prevState);
                 }
             };
@@ -503,10 +458,9 @@ export default function BikeBuilder({
                             <>
                                 <div className="flex justify-between py-2">
                                     <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={selectionLevel === 1} onClick={handleSelectionLevel}>Prev</Button>
-                                    <Button size="small" variant="text" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={canvasSelectionLevelState > selectionLevel || selectionLevel === 5 || selectionLevel === 1 ? true : false} onClick={handleSelectionLevel}>Skip</Button>
                                     {
                                         selectionLevel < 5 ?
-                                            <Button size="small" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSelectionLevel} disabled={canvasSelectionLevelState === 1 || (canvasSelectionLevelState <= selectionLevel && selectionLevel !== 2)}>Next</Button> :
+                                            <Button size="small" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSelectionLevel}>Next</Button> :
                                             <Button size="small" variant="contained" onClick={() => { setSelectionLevel(prevState => prevState + 1); setShowSummary(true); }}>Summary</Button>
                                     }
                                 </div>
