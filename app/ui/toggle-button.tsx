@@ -24,7 +24,9 @@ const mapToLabel: any = (label: string) => {
     }
 }
 
-export default function SizeSelector({ values, label, type, model, modelData, initialModelData, handleModelChange, colors, selectedIndex, databaseModels, selectedFeatures, setSelectedFeatures }: { values: string[], label: string, type: string, model: string, modelData: any, initialModelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any, selectedFeatures: any, setSelectedFeatures: any }) {
+export default function SizeSelector(
+    { values, label, type, model, modelData, initialModelData, handleModelChange, colors, selectedIndex, databaseModels, selectedFeatures, setSelectedFeatures, setPrice }:
+        { values: string[], label: string, type: string, model: string, modelData: any, initialModelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any, selectedFeatures: any, setSelectedFeatures: any, setPrice: any }) {
     const [filteredColors, setFilteredColors] = useState<any>([]);
     const defaultValue = values?.[0];
 
@@ -34,6 +36,7 @@ export default function SizeSelector({ values, label, type, model, modelData, in
             let backWheelSetColor = null;
             const colorData = filteredColors.filter((color: any) => color.value === value)?.[0];
             const newModelData = { ...modelData, src: colorData?.image_url || initialModelData?.src, price: colorData?.price || initialModelData?.price };
+            setPrice(colorData?.price || initialModelData?.price);
             if (/Wheel Set/i.test(label)) {
                 const backWheetSet = databaseModels.filter((item: any) => item.model === modelData.model && item.category === 'Back Wheel Set')[0];
                 backWheelSetColor = colors.filter((color: any) => color?.model_id === backWheetSet?.id && color?.value === value);

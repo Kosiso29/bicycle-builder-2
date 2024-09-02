@@ -282,7 +282,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                         <div className="flex items-center gap-2">
-                                            <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white whitespace-nowrap" : "text-primary"}`} primary={<>$&nbsp;{CurrencyFormatter(item.price)}</>} style={{ lineHeight: 1, fontSize: ".2rem" }} />
+                                            <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white whitespace-nowrap" : "text-primary"}`} primary={<>$&nbsp;{CurrencyFormatter(price && selectedIndex === index ? price : item.price)}</>} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                             <ListItemText className={`flex justify-end hover:text-red-500 ${selectedIndex === index ? "text-white" : selectedIndex === null ? "hidden" : "invisible"}`} onClick={() => { handleModelRemove(index) }} primary={<CloseOutlined fontSize="small" />} />
                                         </div>
                                     </ListItemButton>
@@ -308,6 +308,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     databaseModels={databaseModels}
                     selectedFeatures={selectedFeatures}
                     setSelectedFeatures={setSelectedFeatures}
+                    setPrice={setPrice}
                 />
                 <SizeSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
                 <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
