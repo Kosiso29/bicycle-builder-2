@@ -179,6 +179,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             setSelectedIndex(selectedModelIndex);
             const selectedModelData = models.filter(itemModel => itemModel.model === selectionPresetProps[identifier]?.model);
             setModelData(selectedModelData[0]);
+            setInitialModelData(selectedModelData[0]);
         }
     }, [selectionPresetProps[identifier]?.model]);
 
