@@ -70,7 +70,7 @@ export default function SizeSelector(
                         className='p-1'
                         onClick={() => handleSizeChange(modelData?.color_value)}
                     >
-                        {selectedFeatures?.[type] === modelData?.color_value && <CheckOutlined style={{ filter: "invert(1)" }} />}
+                        {selectedFeatures?.[type] === modelData?.color_value ? <CheckOutlined style={{ filter: "invert(1)" }} /> : " "}
                     </Button>
                 }
                 {values?.map((value) => (
