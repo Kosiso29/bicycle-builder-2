@@ -37,6 +37,9 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
         const handleBarShifter = prevState.groupSet_shifter['handleBarShifter' + axisLength.toUpperCase()];
         const handleBarShifterShifted = handleBarShifter ? handleBarShifter - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0) : 0;
         if (identifier === 'frameSet') {
+            if (hasStem && !hasHandleBar) {
+                return handleBarAxis + handleBarShifterShifted;
+            }
             if (!hasHandleBar && canvasDrawImageProps.stem.model && hasStem) {
                 if (stemDimensions.hasHandleBar) {
                     return (stemAxis ?? prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
@@ -48,9 +51,6 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
             }
             if (!hasStem && !stemDimensions.hasHandleBar) {
                 return (stemAxis ?? prevState.stem[axisLength]) + (prevState.handleBar['stemHandleBar' + axisLength.toUpperCase()] ?? 0) + handleBarShifterShifted;
-            }
-            if (hasStem && !hasHandleBar) {
-                return handleBarAxis + handleBarShifterShifted;
             }
             return groupSet_shifter - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0)
         }
