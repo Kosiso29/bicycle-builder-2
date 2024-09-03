@@ -378,19 +378,19 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                 </div>
                                 < div className="flex flex-wrap gap-4 pt-5">
                                     {/* Aerodynamics */}
-                                    <TextField name='aerodynamics' step={0.5} min={0.0} max={5.0} defaultValue={model?.aerodynamics ?? "0.0"} label='Aerodynamics' />
+                                    <TextField name='aerodynamics' step={0.1} min={0.0} max={5.0} defaultValue={model?.aerodynamics ?? "0.0"} label='Aerodynamics' />
 
                                     {/* Weight */}
-                                    <TextField name='weight' step={0.5} min={0.0} max={5.0} defaultValue={model?.weight ?? "0.0"} label='Weight' />
+                                    <TextField name='weight' step={0.1} min={0.0} max={5.0} defaultValue={model?.weight ?? "0.0"} label='Weight' />
 
                                     {/* Comfort */}
-                                    <TextField name='comfort' step={0.5} min={0.0} max={5.0} defaultValue={model?.comfort ?? "0.0"} label='Comfort' />
+                                    <TextField name='comfort' step={0.1} min={0.0} max={5.0} defaultValue={model?.comfort ?? "0.0"} label='Comfort' />
 
                                     {/* Stiffness */}
-                                    <TextField name='stiffness' step={0.5} min={0.0} max={5.0} defaultValue={model?.stiffness ?? "0.0"} label='Stiffness-to-Weight' />
+                                    <TextField name='stiffness' step={0.1} min={0.0} max={5.0} defaultValue={model?.stiffness ?? "0.0"} label='Stiffness-to-Weight' />
 
                                     {/* Overall */}
-                                    <TextField name='overall' step={0.5} min={0.0} max={5.0} defaultValue={model?.overall ?? "0.0"} label='Overall' />
+                                    <TextField name='overall' step={0.1} min={0.0} max={5.0} defaultValue={model?.overall ?? "0.0"} label='Overall' />
                                 </div>
                             </div>
                         </fieldset>
