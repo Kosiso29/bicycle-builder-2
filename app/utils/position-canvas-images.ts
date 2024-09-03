@@ -46,7 +46,8 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
                 }
                 return prevState.stem[axisLength] + axisLength === 'x' ? 38 : 2 + handleBarShifterShifted;
             }
-            if (!hasStem && (stemDimensions.hasHandleBar || !prevState.stem.model)) {
+            // The !prevState.stem.model is for when it's the placeholder
+            if (!hasStem && ((stemDimensions.hasHandleBar || prevState.stem.hasHandleBar) || !prevState.stem.model)) {
                 return (stemAxis ?? prevState.stem[axisLength]) + prevState.groupSet_shifter['stemShifter' + axisLength.toUpperCase()] - (axisLength === 'y' ? prevState.groupSet_shifter.height : 0);
             }
             if (!hasStem && !stemDimensions.hasHandleBar) {
