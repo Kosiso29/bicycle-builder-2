@@ -9,7 +9,6 @@ import { RotateLeft as RotateLeftIcon } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import Link from "next/link";
 import SelectionTabs from "./selection-tabs";
-import SummaryList from "@/app/components/summary-list";
 import FrameSet from "./frame-set";
 import GroupSet from "./group-set";
 import WheelSet from "./wheel-set";
@@ -21,6 +20,7 @@ import Presets from "./presets";
 import Tooltips from "./tooltips";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import { positionCanvasImages } from "@/app/utils/position-canvas-images";
+import AddonSummary from "./addon-summary";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
@@ -476,8 +476,7 @@ export default function BikeBuilder({
                 <GroupSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
                 <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 {
-                    showSummary ?
-                        <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} small /> : null
+                    showSummary ? <AddonSummary parentProps={parentProps} /> : null
                 }
                 <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-3 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
                     <div className='flex justify-between items-center'>
