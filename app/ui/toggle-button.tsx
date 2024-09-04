@@ -54,7 +54,7 @@ export default function SizeSelector(
         }
     }, [defaultValue, type, modelData, model])
 
-    if (!values || values.length === 0) {
+    if ((type !== 'colors' && (!values || values.length === 0)) || (type === 'colors' && !modelData)) {
         return null;
     }
 
