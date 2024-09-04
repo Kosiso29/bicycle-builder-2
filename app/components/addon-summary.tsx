@@ -6,6 +6,7 @@ import Addon from "./addon";
 export default function AddonSummary({ parentProps }: { parentProps: any }) {
     const { canvasDrawImageProps, frameSetDimensions, accessoryModels } = parentProps;
     const [showAddons, setShowAddons] = useState(false);
+    const [addons, setAddons] = useState({});
 
     if (showAddons) {
         return (
@@ -17,10 +18,10 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
                             t.accessory === obj.accessory
                         )) && obj.accessory !== "Tube"
                     ).map((item: any) => (
-                        <Addon key={item.accessory} label={item.accessory} parentProps={parentProps} />
+                        <Addon key={item.accessory} label={item.accessory} parentProps={parentProps} addons={addons} setAddons={setAddons} />
                     ))
                 }
-                <Button fullWidth variant="contained" onClick={() => setShowAddons(false)}>Done</Button>
+                <Button fullWidth variant="contained" onClick={() => { setShowAddons(false); console.log('addons', addons) }}>Done</Button>
             </div>
         )
     }

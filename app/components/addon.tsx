@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
 import { CloseOutlined } from "@mui/icons-material";
 
-export default function Addon({ label, parentProps }: { label: string, parentProps: any }) {
+export default function Addon({ label, parentProps, addons, setAddons }: { label: string, parentProps: any, addons: any, setAddons: any }) {
     const { setRerender, accessoryModels } = parentProps;
-    const [addon, setAddon] = useState<any>({});
+    // const [addon, setAddon] = useState<any>({});
 
     useEffect(() => {
         const allBrandsData = accessoryModels.filter((item: any) => item.accessory === label)
@@ -14,20 +14,20 @@ export default function Addon({ label, parentProps }: { label: string, parentPro
             ))
         );
         const brands = uniqueBrandsData.map((item: any) => item.brand);
-        setAddon((prevState: any) => ({ ...prevState, brand: "", allBrandsData, brands }));
-    }, [accessoryModels, label]);
+        setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], brand: "", allBrandsData, brands } }));
+    }, [accessoryModels, label, setAddons]);
 
     return (
         <div className="flex flex-col gap-4">
-            <TextField select size="small" value={addon.brand} onChange={(e) => { setAddon((prevState: any) => ({ ...prevState, tube: e.target.value === "Tubeless" ? "Tubeless" : "Tube", brand: e.target.value, models: e.target.value === "Tubeless" ? null : prevState.allBrandsData.filter((item: any) => item.brand === e.target.value), selectedIndex: null })) }} label={label}>
+            <TextField select size="small" value={addons[label]?.brand} onChange={(e) => { setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], brand: e.target.value, models: prevState[label].allBrandsData.filter((item: any) => item.brand === e.target.value), selectedIndex: null } })) }} label={label}>
                 {
-                    addon.brands?.map((brand: string) => (
+                    addons[label]?.brands?.map((brand: string) => (
                         <MenuItem value={brand} key={brand}>{brand}</MenuItem>
                     ))
                 }
             </TextField>
             {
-                addon.models?.length > 0 ?
+                addons[label]?.models?.length > 0 ?
                     <List
                         sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}
                         subheader={
@@ -38,26 +38,26 @@ export default function Addon({ label, parentProps }: { label: string, parentPro
                         dense
                     >
                         {
-                            addon.models.map((item: any, index: number) => (
+                            addons[label]?.models.map((item: any, index: number) => (
                                 <ListItem
                                     key={label + item.model + index}
                                     disablePadding
                                     sx={{
-                                        backgroundColor: addon.selectedIndex === index ? "rgb(25, 118, 210)" : "initial",
-                                        color: addon.selectedIndex === index ? "white" : "initial",
+                                        backgroundColor: addons[label]?.selectedIndex === index ? "rgb(25, 118, 210)" : "initial",
+                                        color: addons[label]?.selectedIndex === index ? "white" : "initial",
                                         transition: ".2s ease-in"
                                     }}>
                                     <ListItemButton
-                                        divider={index !== (addon.models.length - 1) ? true : false}
-                                        selected={addon.selectedIndex === index}
+                                        divider={index !== (addons[label]?.models.length - 1) ? true : false}
+                                        selected={addons[label]?.selectedIndex === index}
                                         onClick={() => {
-                                            if (addon.selectedIndex !== index) {
-                                                setAddon((prevState: any) => ({ ...prevState, selectedIndex: index }));
+                                            if (addons[label]?.selectedIndex !== index) {
+                                                setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: index } }));
                                             }
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                         <div className="flex items-center gap-2">
-                                            <ListItemText className={`flex justify-end ${addon.selectedIndex === index ? "text-white" : addon.selectedIndex === null ? "hidden" : "invisible"}`} onClick={() => { setAddon((prevState: any) => ({ ...prevState, selectedIndex: addon.models.length })); setRerender((prevState: any) => !prevState) }} primary={<CloseOutlined fontSize="small" />} />
+                                            <ListItemText className={`flex justify-end ${addons[label]?.selectedIndex === index ? "text-white" : addons[label]?.selectedIndex === null ? "hidden" : "invisible"}`} onClick={() => { setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: addons[label]?.models.length } })); setRerender((prevState: any) => !prevState) }} primary={<CloseOutlined fontSize="small" />} />
                                         </div>
                                     </ListItemButton>
                                 </ListItem>
