@@ -277,7 +277,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         data-value={item.src}
                                         data-actual-width={item.actualWidth || "0"}
                                         onClick={() => {
-                                            if (selectedIndex !== index) {
+                                            if (!checkSelectedIndex(index)) {
                                                 setSelectedFeatures({});
                                                 handleModelChange(index, item);
                                                 setInitialModelData(item);
