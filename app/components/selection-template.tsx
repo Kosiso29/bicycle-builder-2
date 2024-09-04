@@ -39,7 +39,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setBrand(e.target.value);
         const models = allBrandsData.filter(itemBrand => itemBrand.brand === e.target.value && itemBrand.is_primary);
         setAllModels(models);
-        setSelectedIndex(null);
     }
 
     const handleModelChange = (index, modelData, modelData2) => {
@@ -170,6 +169,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         }
     }
 
+    const checkSelectedIndex = (index) => selectedIndex === index && modelData?.brand === brand;
+
     useEffect(() => {
         if (selectionPresetProps[identifier]?.model) {
             setBrand(selectionPresetProps[identifier].brand);
@@ -266,13 +267,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                     key={label + item.model + index}
                                     disablePadding
                                     sx={{
-                                        backgroundColor: selectedIndex === index ? "rgb(25, 118, 210)" : "initial",
-                                        color: selectedIndex === index ? "white" : "initial",
+                                        backgroundColor: checkSelectedIndex(index) ? "rgb(25, 118, 210)" : "initial",
+                                        color: checkSelectedIndex(index) ? "white" : "initial",
                                         transition: ".2s ease-in"
                                     }}>
                                     <ListItemButton
                                         divider={index !== (allModels.length - 1) ? true : false}
-                                        selected={selectedIndex === index}
+                                        selected={checkSelectedIndex(index)}
                                         data-value={item.src}
                                         data-actual-width={item.actualWidth || "0"}
                                         onClick={() => {
@@ -284,8 +285,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                         <div className="flex items-center gap-2">
-                                            <ListItemText className={`flex justify-end ${selectedIndex === index ? "text-white whitespace-nowrap" : "text-primary"}`} primary={<>$&nbsp;{CurrencyFormatter(price && selectedIndex === index ? price : item.price)}</>} style={{ lineHeight: 1, fontSize: ".2rem" }} />
-                                            <ListItemText className={`flex justify-end hover:text-red-500 ${selectedIndex === index ? "text-white" : selectedIndex === null ? "hidden" : "invisible"}`} onClick={() => { handleModelRemove(index) }} primary={<CloseOutlined fontSize="small" />} />
+                                            <ListItemText className={`flex justify-end ${checkSelectedIndex(index) ? "text-white whitespace-nowrap" : "text-primary"}`} primary={<>$&nbsp;{CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}</>} style={{ lineHeight: 1, fontSize: ".2rem" }} />
+                                            <ListItemText className={`flex justify-end hover:text-red-500 ${checkSelectedIndex(index) ? "text-white" : selectedIndex !== index && modelData?.brand === brand ? "invisible" : "hidden"}`} onClick={() => { handleModelRemove(index) }} primary={<CloseOutlined fontSize="small" />} />
                                         </div>
                                     </ListItemButton>
                                 </ListItem>
@@ -296,26 +297,29 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
             <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
-            <div className="mt-2">
-                <SizeSelector
-                    values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)}
-                    type="colors"
-                    label={label}
-                    model={model}
-                    colors={colors}
-                    modelData={modelData}
-                    initialModelData={initialModelData}
-                    handleModelChange={handleModelChange}
-                    selectedIndex={selectedIndex}
-                    databaseModels={databaseModels}
-                    selectedFeatures={selectedFeatures}
-                    setSelectedFeatures={setSelectedFeatures}
-                    setPrice={setPrice}
-                />
-                <SizeSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                <SizeSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-            </div>
+            {
+                brand === modelData?.brand &&
+                <div className="mt-2">
+                    <SizeSelector
+                        values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)}
+                        type="colors"
+                        label={label}
+                        model={model}
+                        colors={colors}
+                        modelData={modelData}
+                        initialModelData={initialModelData}
+                        handleModelChange={handleModelChange}
+                        selectedIndex={selectedIndex}
+                        databaseModels={databaseModels}
+                        selectedFeatures={selectedFeatures}
+                        setSelectedFeatures={setSelectedFeatures}
+                        setPrice={setPrice}
+                    />
+                    <SizeSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                    <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                    <SizeSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                </div>
+            }
             {
                 identifier === "tire" && modelData &&
                 <div className="flex flex-col gap-4">
