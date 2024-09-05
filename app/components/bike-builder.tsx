@@ -411,7 +411,7 @@ export default function BikeBuilder({
                 setImage(false, true);
             } else {
                 setImage();
-                setTotalPrice(Object.keys(canvasDrawImageProps).reduce((acc, key) => {
+                const componentsPrice = Object.keys(canvasDrawImageProps).reduce((acc, key) => {
                     if (key !== "backWheelSet" && key !== "groupSet_shifter") {
                         acc.push(canvasDrawImageProps[key]);
                     }
@@ -421,7 +421,12 @@ export default function BikeBuilder({
                         acc = (parseFloat(acc) + parseFloat(item.price)).toFixed(2);
                     }
                     return acc;
-                }, 0));
+                }, 0);
+                const accessoriesPrice = Object.values(addonAccessories).reduce((acc, value) => {
+                    acc = (parseFloat(acc) + parseFloat(value.price)).toFixed(2);
+                    return acc;
+                }, 0);
+                setTotalPrice(parseFloat(componentsPrice) + parseFloat(accessoriesPrice));
             }
         }
     }, [rerender]);

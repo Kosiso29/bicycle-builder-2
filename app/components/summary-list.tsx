@@ -35,7 +35,7 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                             <div className='flex justify-between py-3'>
                                 <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[30%]`}>{item[0]}</h1>
                                 <p className={`basis-[30%] text-primary ${small ? "text-sm" : ""}`}>{item[1].brand + " - " + item[1].model}</p>
-                                <p className={`basis-[20%] text-primary ${small ? "text-sm" : ""}`}>{"---"}</p>
+                                <p className={`basis-[20%] text-primary ${small ? "text-sm" : ""}`}>{"$" + item[1].price}</p>
                             </div>
                             <hr className='h-[2px] bg-gray-400' />
                         </div>

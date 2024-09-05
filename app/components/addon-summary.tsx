@@ -13,10 +13,11 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
         const newAddonAccessories: any = {};
         Object.entries(addons).forEach((addon: any) => {
             if (addon[1].selectedIndex || addon[1].selectedIndex === 0) {
-                newAddonAccessories[addon[0]] = { brand: addon[1].brand, model: addon[1].model };
+                newAddonAccessories[addon[0]] = { brand: addon[1].brand, model: addon[1].model, price: addon[1].price };
             }
         });
         setAddonAccessories(newAddonAccessories);
+        setRerender((prevState: any) => !prevState);
     };
 
     if (showAddons) {

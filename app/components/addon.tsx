@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
 import { CloseOutlined } from "@mui/icons-material";
+import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
 export default function Addon({ label, parentProps, addons, setAddons }: { label: string, parentProps: any, addons: any, setAddons: any }) {
     const { setRerender, accessoryModels } = parentProps;
-    // const [addon, setAddon] = useState<any>({});
 
     const handleAddonRemove = () => {
         setAddons((prevState: any) => ({
@@ -59,11 +59,12 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                                         selected={addons[label]?.selectedIndex === index}
                                         onClick={() => {
                                             if (addons[label]?.selectedIndex !== index) {
-                                                setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: index, model: item.model } }));
+                                                setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: index, model: item.model, price: item.price } }));
                                             }
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                         <div className="flex items-center gap-2">
+                                            <ListItemText className={`flex justify-end ${addons[label]?.selectedIndex === index ? "text-white whitespace-nowrap" : "text-primary"}`} primary={<>$&nbsp;{CurrencyFormatter(item.price)}</>} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                             <ListItemText className={`flex justify-end ${addons[label]?.selectedIndex === index ? "text-white" : addons[label]?.selectedIndex === null ? "hidden" : "invisible"}`} onClick={handleAddonRemove} primary={<CloseOutlined fontSize="small" />} />
                                         </div>
                                     </ListItemButton>

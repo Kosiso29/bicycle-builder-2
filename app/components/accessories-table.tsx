@@ -67,6 +67,9 @@ export default function AccessoriesTable({ models }) {
                                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
                                     Model name
                                 </th>
+                                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                                    Price
+                                </th>
                                 <th scope="col" className="relative px-3 py-5 font-medium">
                                     <span className="sr-only">Edit</span>
                                 </th>
@@ -86,6 +89,9 @@ export default function AccessoriesTable({ models }) {
                                     </td>
                                     <td className="py-3 pl-6 pr-3 max-w-48">
                                         {model.model}
+                                    </td>
+                                    <td className="py-3 pl-6 pr-3 max-w-48">
+                                        {model.price ?? "0.00"}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
                                         <div className="flex justify-center gap-3">

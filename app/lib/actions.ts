@@ -71,12 +71,12 @@ export async function createAccessoryModel(formData: FormData) {
         formDataObject[key] = value;
     });
 
-    const { accessory_id, brand_id, model } = formDataObject;
+    const { accessory_id, brand_id, model, price } = formDataObject;
 
     try {
         await sql`
-            INSERT INTO accessory_models (accessory_id, brand_id, name)
-            VALUES (${accessory_id}, ${brand_id}, ${model})
+            INSERT INTO accessory_models (accessory_id, brand_id, name, price)
+            VALUES (${accessory_id}, ${brand_id}, ${model}, ${price})
         `;
 
     } catch (error) {
@@ -205,12 +205,12 @@ export async function updateAccessoryModel(id: string, formData: any) {
         formDataObject[key] = value;
     });
 
-    const { accessory_id, brand_id, model } = formDataObject;
+    const { accessory_id, brand_id, model, price } = formDataObject;
 
     try {
         await sql`
         UPDATE accessory_models
-        SET accessory_id = ${accessory_id}, brand_id = ${brand_id}, name = ${model}
+        SET accessory_id = ${accessory_id}, brand_id = ${brand_id}, name = ${model}, price = ${price}
         WHERE id = ${id};
         `
 

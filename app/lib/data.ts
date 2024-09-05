@@ -81,7 +81,8 @@ export async function fetchAccessoryModels(): Promise<Models> {
             a.name AS accessory,
             b.name AS brand,
             am.name AS model,
-            am.id
+            am.id,
+            am.price
         FROM
             accessories a
         JOIN

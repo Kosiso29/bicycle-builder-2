@@ -119,6 +119,9 @@ export default function AccessoryForm({ model }: { model?: any, model_id?: strin
                 {/* Model */}
                 <TextField name='model' type='text' defaultValue={model?.name} label='Model' placeholder='Model name' />
 
+                {/* Price */}
+                <TextField name='price' step={0.01} min={0.0} defaultValue={model?.price} label='Price' placeholder='Model price' fullWidth />
+
             </div >
             <div className="mt-6 flex justify-end gap-4">
                 <Link
