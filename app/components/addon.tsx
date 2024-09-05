@@ -8,7 +8,7 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
 
     const handleAddonRemove = () => {
         setAddons((prevState: any) => ({
-            ...prevState, [label]: { ...prevState[label], selectedIndex: addons[label]?.models.length }
+            ...prevState, [label]: { ...prevState[label], selectedIndex: null }
         }));
         setRerender((prevState: any) => !prevState);
     }

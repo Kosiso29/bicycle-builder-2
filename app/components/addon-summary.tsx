@@ -4,7 +4,7 @@ import SummaryList from "./summary-list";
 import Addon from "./addon";
 
 export default function AddonSummary({ parentProps }: { parentProps: any }) {
-    const { canvasDrawImageProps, frameSetDimensions, accessoryModels, setAddonAccessories, setRerender } = parentProps;
+    const { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, setRerender } = parentProps;
     const [showAddons, setShowAddons] = useState(false);
     const [addons, setAddons] = useState({});
 
@@ -17,7 +17,6 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
             }
         });
         setAddonAccessories(newAddonAccessories);
-        setRerender((prevState: any) => !prevState);
     };
 
     if (showAddons) {
@@ -41,7 +40,7 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
     return (
         <div>
             <Button className="mb-8" fullWidth variant="contained" onClick={() => setShowAddons(true)}>Get Addons →</Button>
-            <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} small />
+            <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} addonAccessories={addonAccessories} small />
         </div>
     )
 }
