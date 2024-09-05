@@ -25,7 +25,7 @@ import AddonSummary from "./addon-summary";
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
     frameSetDimensions, setFrameSetDimensions, models, presets, modelsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
-    handleBarDimensions, setHandleBarDimensions
+    handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
     const [selectionLevelProps, setSelectionLevelProps] = useState([]);
@@ -70,7 +70,9 @@ export default function BikeBuilder({
         handleBarDimensions,
         setHandleBarDimensions,
         colors,
-        accessoryModels
+        accessoryModels,
+        addonAccessories,
+        setAddonAccessories
     }
 
     const canvasNumberData = [

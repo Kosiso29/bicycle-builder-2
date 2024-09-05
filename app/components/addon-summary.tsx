@@ -4,9 +4,21 @@ import SummaryList from "./summary-list";
 import Addon from "./addon";
 
 export default function AddonSummary({ parentProps }: { parentProps: any }) {
-    const { canvasDrawImageProps, frameSetDimensions, accessoryModels } = parentProps;
+    const { canvasDrawImageProps, frameSetDimensions, accessoryModels, setAddonAccessories, setRerender } = parentProps;
     const [showAddons, setShowAddons] = useState(false);
     const [addons, setAddons] = useState({});
+
+    const handleAddonComplete = () => {
+        setShowAddons(false);
+        const newAddonAccessories: any = {};
+        Object.entries(addons).forEach((addon: any) => {
+            if (addon[1].selectedIndex || addon[1].selectedIndex === 0) {
+                newAddonAccessories[addon[0]] = { brand: addon[1].brand, model: addon[1].model };
+            }
+        });
+        setAddonAccessories(newAddonAccessories);
+        setRerender((prevState: any) => !prevState);
+    };
 
     if (showAddons) {
         return (
@@ -21,7 +33,7 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
                         <Addon key={item.accessory} label={item.accessory} parentProps={parentProps} addons={addons} setAddons={setAddons} />
                     ))
                 }
-                <Button fullWidth variant="contained" onClick={() => { setShowAddons(false); console.log('addons', addons) }}>Done</Button>
+                <Button fullWidth variant="contained" onClick={handleAddonComplete}>Done</Button>
             </div>
         )
     }

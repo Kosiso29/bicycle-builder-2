@@ -6,6 +6,13 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
     const { setRerender, accessoryModels } = parentProps;
     // const [addon, setAddon] = useState<any>({});
 
+    const handleAddonRemove = () => {
+        setAddons((prevState: any) => ({
+            ...prevState, [label]: { ...prevState[label], selectedIndex: addons[label]?.models.length }
+        }));
+        setRerender((prevState: any) => !prevState);
+    }
+
     useEffect(() => {
         const allBrandsData = accessoryModels.filter((item: any) => item.accessory === label)
         const uniqueBrandsData = allBrandsData.filter((obj: any, index: number, self: any) =>
@@ -14,7 +21,7 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
             ))
         );
         const brands = uniqueBrandsData.map((item: any) => item.brand);
-        setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], brand: "", allBrandsData, brands } }));
+        setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], brand: prevState[label]?.brand || "", allBrandsData, brands } }));
     }, [accessoryModels, label, setAddons]);
 
     return (
@@ -52,12 +59,12 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                                         selected={addons[label]?.selectedIndex === index}
                                         onClick={() => {
                                             if (addons[label]?.selectedIndex !== index) {
-                                                setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: index } }));
+                                                setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: index, model: item.model } }));
                                             }
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                         <div className="flex items-center gap-2">
-                                            <ListItemText className={`flex justify-end ${addons[label]?.selectedIndex === index ? "text-white" : addons[label]?.selectedIndex === null ? "hidden" : "invisible"}`} onClick={() => { setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: addons[label]?.models.length } })); setRerender((prevState: any) => !prevState) }} primary={<CloseOutlined fontSize="small" />} />
+                                            <ListItemText className={`flex justify-end ${addons[label]?.selectedIndex === index ? "text-white" : addons[label]?.selectedIndex === null ? "hidden" : "invisible"}`} onClick={handleAddonRemove} primary={<CloseOutlined fontSize="small" />} />
                                         </div>
                                     </ListItemButton>
                                 </ListItem>
