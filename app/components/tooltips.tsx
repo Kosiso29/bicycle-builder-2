@@ -1,20 +1,13 @@
-import { Star, StarHalf, StarOutline, SquareOutlined, ArrowDownwardOutlined, ArrowUpwardOutlined } from "@mui/icons-material";
+import { ArrowDownwardOutlined, ArrowUpwardOutlined } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
+import ProgressBar from "@/app/ui/progress-bar";
 
 export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips: any, canvasDrawImageProps: any }) {
     const [openFullTooltips, setOpenFullToolTips] = useState(false);
     const tooltipsRef = useRef<HTMLDivElement>(null);
 
-    const renderStars = (tooltip: number | string) => {
-        return tooltip === "---" ? " " + tooltip : [1, 2, 3, 4, 5].map(number => {
-            if (number <= parseFloat(tooltip.toString())) {
-                return <Star color="primary" key={number} />;
-            }
-            if (number === Math.ceil(parseFloat(tooltip.toString())) && parseFloat(tooltip.toString()) % 1 !== 0) {
-                return <StarHalf color="primary" key={number} />;
-            }
-            return <StarOutline color="primary" key={number} />;
-        })
+    const renderProgressBar = (tooltip: number | string) => {
+        return tooltip === "---" ? " " + tooltip : <ProgressBar value={Number(tooltip) * 20} />
     }
 
     const handleArrowClick = () => {
@@ -44,11 +37,18 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
                 {openFullTooltips ? <ArrowUpwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" /> :
                     <ArrowDownwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" />}
                 <div className="text-right [&>p]:h-6">
-                    <p>Aerodynamics - {tooltips.aerodynamics ? renderStars(tooltips.aerodynamics) : "---"}</p>
-                    <p>Lightweight - {tooltips.weight ? renderStars(tooltips.weight) : "---"}</p>
-                    {/* <p>Comfort -  {tooltips.comfort ? renderStars(tooltips.comfort) : "---"}​</p>
-                    <p>Stiffness-to-Weight -  {tooltips.stiffness ? renderStars(tooltips.stiffness) : "---"}</p> */}
-                    <p>Overall -  {tooltips.overall ? renderStars(tooltips.overall) : "---"}</p>
+                    <div className="flex justify-end gap-3">
+                        <p>Aerodynamics</p>
+                        {tooltips.aerodynamics ? renderProgressBar(tooltips.aerodynamics) : "---"}
+                    </div>
+                    <div className="flex justify-end gap-3">
+                        <p>Lightweight</p>
+                        {tooltips.weight ? renderProgressBar(tooltips.weight) : "---"}
+                    </div>
+                    <div className="flex justify-end gap-3">
+                        <p>Overall</p>
+                        {tooltips.overall ? renderProgressBar(tooltips.overall) : "---"}
+                    </div>
                 </div>
             </div>
         </div>
