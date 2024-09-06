@@ -60,7 +60,7 @@ export default function SizeSelector(
 
     return (
         <div className="mb-4">
-            {values?.length > 0 && <h2 className="mb-4 font-bold">{mapToLabel(label)[type][label].replace(/Front|Set/ig, "")}</h2>}
+            {values?.length > 0 && <h2 className="mb-4 font-bold">{mapToLabel(label)[type][label].replace(/Front|\sSet/ig, "")}</h2>}
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: "1rem" }}>
                 {
                     type === 'colors' &&
