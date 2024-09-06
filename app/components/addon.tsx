@@ -63,7 +63,7 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                                             }
                                         }}>
                                         <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex items-center gap-2 ml-2">
                                             <ListItemText className={`flex justify-end ${addons[label]?.selectedIndex === index ? "text-white whitespace-nowrap" : "text-primary"}`} primary={<>$&nbsp;{CurrencyFormatter(item.price)}</>} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                             <ListItemText className={`flex justify-end ${addons[label]?.selectedIndex === index ? "text-white" : addons[label]?.selectedIndex === null ? "hidden" : "invisible"}`} onClick={handleAddonRemove} primary={<CloseOutlined fontSize="small" />} />
                                         </div>

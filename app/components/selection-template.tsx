@@ -16,7 +16,7 @@ import SizeChart from "./size_chart";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
-        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels } = parentProps;
+        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -358,11 +358,23 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                                 onClick={() => {
                                                     if (tyreTube.selectedIndex !== index) {
                                                         setTyreTube(prevState => ({ ...prevState, selectedIndex: index }));
+                                                        setAddonAccessories(prevState => ({ ...prevState, ["Tube"]: { brand: item.brand, model: item.model, price: item.price } }))
                                                     }
                                                 }}>
                                                 <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
                                                 <div className="flex items-center gap-2">
-                                                    <ListItemText className={`flex justify-end ${tyreTube.selectedIndex === index ? "text-white" : tyreTube.selectedIndex === null ? "hidden" : "invisible"}`} onClick={() => { setTyreTube(prevState => ({ ...prevState, selectedIndex: tyreTube.tubeModels.length })); setRerender(prevState => !prevState) }} primary={<CloseOutlined fontSize="small" />} />
+                                                    <ListItemText className={`flex justify-end ${tyreTube.selectedIndex === index ? "text-white whitespace-nowrap" : "text-primary"}`} primary={<>$&nbsp;{CurrencyFormatter(item.price)}</>} style={{ lineHeight: 1, fontSize: ".2rem" }} />
+                                                    <ListItemText
+                                                        className={`flex justify-end ${tyreTube.selectedIndex === index ? "text-white" : tyreTube.selectedIndex === null ? "hidden" : "invisible"}`}
+                                                        onClick={() => {
+                                                            setTyreTube(prevState => ({ ...prevState, selectedIndex: tyreTube.tubeModels.length }));
+                                                            setAddonAccessories(prevState => {
+                                                                const { Tube, ...restProps } = prevState;
+                                                                return { ...restProps };
+                                                            })
+                                                            setRerender(prevState => !prevState);
+                                                        }}
+                                                        primary={<CloseOutlined fontSize="small" />} />
                                                 </div>
                                             </ListItemButton>
                                         </ListItem>
