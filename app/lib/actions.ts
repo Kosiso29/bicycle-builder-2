@@ -96,6 +96,16 @@ export async function deleteModel(id: string) {
     }
 }
 
+export async function deleteBuild(id: string) {
+    try {
+        await sql`DELETE FROM presets WHERE id = ${id}`;
+
+        revalidatePath('/dashboard/components');
+    } catch (error) {
+        console.log('error', error)
+    }
+}
+
 export async function deleteAccessoryModel(id: string) {
     try {
         await sql`DELETE FROM accessory_models WHERE id = ${id}`;
