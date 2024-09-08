@@ -86,6 +86,40 @@ export async function createAccessoryModel(formData: FormData) {
     revalidatePath('/dashboard/components');
 }
 
+export async function createBuildsAndModelsBuilds(formData: FormData) {
+    const formDataObject: any = {};
+
+    formData.forEach((value: any, key: any) => {
+        formDataObject[key] = value;
+    });
+
+    const { name } = formDataObject;
+    const model_ids: any = formData.getAll('model[]');
+
+    try {
+        await sql`
+            INSERT INTO presets (name)
+            VALUES (${name})
+        `;
+
+        const selectedBuild: any = await sql`
+            SELECT * FROM presets WHERE name = ${name};
+        `;
+
+        for (const model_id of model_ids) {
+            const build_id = selectedBuild.rows[0].id;
+            await sql`
+                INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${build_id}::uuid);
+            `
+        }
+        
+    } catch (error) {
+        console.log('error', error)
+    }
+
+    revalidatePath('/dashboard/components');
+}
+
 export async function deleteModel(id: string) {
     try {
         await sql`DELETE FROM models WHERE id = ${id}`;

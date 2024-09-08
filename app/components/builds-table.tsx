@@ -88,10 +88,10 @@ export default function AccessoriesTable({ builds }) {
                                     className="w-full max-w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                                 >
                                     <td className="whitespace-nowrap px-3 py-3">
-                                        {build[0]}
+                                        {build[1]}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[1].reduce((acc, item) => {
+                                        {build[2].reduce((acc, item) => {
                                             if (item.category === "Frame Set") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -99,7 +99,7 @@ export default function AccessoriesTable({ builds }) {
                                         }, "") || "---"}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[1].reduce((acc, item) => {
+                                        {build[2].reduce((acc, item) => {
                                             if (item.category === "Front Wheel Set") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -107,7 +107,7 @@ export default function AccessoriesTable({ builds }) {
                                         }, "") || "---"}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[1].reduce((acc, item) => {
+                                        {build[2].reduce((acc, item) => {
                                             if (item.category === "Stem") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -115,7 +115,7 @@ export default function AccessoriesTable({ builds }) {
                                         }, "") || "---"}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[1].reduce((acc, item) => {
+                                        {build[2].reduce((acc, item) => {
                                             if (item.category === "Handle Bar") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -123,7 +123,7 @@ export default function AccessoriesTable({ builds }) {
                                         }, "") || "---"}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[1].reduce((acc, item) => {
+                                        {build[2].reduce((acc, item) => {
                                             if (item.category === "Group Set - Drivetrain") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -131,7 +131,7 @@ export default function AccessoriesTable({ builds }) {
                                         }, "") || "---"}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[1].reduce((acc, item) => {
+                                        {build[2].reduce((acc, item) => {
                                             if (item.category === "Saddle") {
                                                 return item.brand + " - " + item.model;
                                             };
