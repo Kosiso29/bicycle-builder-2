@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from "../components/sidebar";
 import Topbar from "../components/topbar";
-import { fetchModels, fetchCategories, fetchBrands, fetchPresets, fetchModelsPresets, fetchUsers, fetchColors, fetchAccessories, fetchAccessoryModels, fetchBuildsAndModelsBuilds } from "@/app/lib/data";
+import { fetchModels, fetchCategories, fetchBrands, fetchPresets, fetchModelsPresets, fetchUsers, fetchColors, fetchAccessories, fetchAccessoryModels } from "@/app/lib/data";
 import { signOut } from "@/auth";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
@@ -30,4 +30,20 @@ export default async function Layout({ children }: { children: React.ReactNode }
             </div>
         </div>
     )
+}
+
+export async function fetchBuildsAndModelsBuilds(builds: any, modelsPresets: any, models: any) {
+    try {
+        return Object.entries(builds).filter((build: any) => build[1] !== "None").map((build: any) => {
+            const filteredModelsPresets = modelsPresets.filter((modelPreset: any) => modelPreset.preset_id === build[0]);
+            return [ build[0], build[1], filteredModelsPresets.map((filteredModelsPreset: any) => {
+                    const filteredModel = models.filter((model: any) => model.id === filteredModelsPreset.model_id);
+                    return { brand: filteredModel[0].brand, model: filteredModel[0].model, category: filteredModel[0].category, id: filteredModel[0].id }
+                })
+            ]
+        });
+    } catch (error) {
+        console.error('Evaluation Error:', error);
+        throw new Error('Failed to evaluate the builds and modelsbuilds data');
+    }
 }
