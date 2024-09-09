@@ -140,12 +140,12 @@ export default function AccessoriesTable({ builds }) {
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
                                         <div className="flex justify-center gap-3">
-                                            {/* <Link
-                                                href={`/dashboard/components/accessory/${build[0]}/edit`}
+                                            <Link
+                                                href={`/dashboard/components/builds/${build[0]}/edit`}
                                                 className="rounded-md border p-2 hover:bg-gray-100"
                                             >
                                                 <EditOutlined className="w-5" />
-                                            </Link> */}
+                                            </Link>
                                             <button
                                                 className="rounded-md border p-2 hover:bg-gray-100 cursor-pointer disabled:opacity-50 disabled:bg-transparent disabled:cursor-not-allowed"
                                                 onClick={() => handleDelete(build[0])}

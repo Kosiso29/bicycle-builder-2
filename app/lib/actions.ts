@@ -265,6 +265,41 @@ export async function updateAccessoryModel(id: string, formData: any) {
     }
 }
 
+export async function updateBuildsAndModelsBuilds(id: string, formData: any) {
+    const formDataObject: any = {};
+
+    formData.forEach((value: any, key: any) => {
+        formDataObject[key] = value;
+    });
+
+    const { name } = formDataObject;
+    const model_ids: any = formData.getAll('model[]');
+
+    try {
+        await sql`
+            UPDATE presets
+            SET name = ${name}
+            WHERE id = ${id};
+        `;
+
+        // Delete existing models - builds mapping for the current build so that new ones can be used to overwrite them (this is only required in models builds update)
+        await sql`
+            DELETE FROM models_presets WHERE preset_id = ${id};
+        `
+
+        for (const model_id of model_ids) {
+            await sql`
+                INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${id}::uuid);
+            `
+        }
+
+        revalidatePath('/dashboard/components');
+        revalidatePath(`/dashboard/components/builds/${id}/edit`);
+    } catch (error) {
+        console.log('error', error);
+    }
+}
+
  
 export async function authenticate(
     prevState: string | undefined,

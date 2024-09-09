@@ -203,7 +203,7 @@ export async function fetchBuildsAndModelsBuilds(builds: any, modelsPresets: any
             const filteredModelsPresets = modelsPresets.filter((modelPreset: any) => modelPreset.preset_id === build[0]);
             return [ build[0], build[1], filteredModelsPresets.map((filteredModelsPreset: any) => {
                     const filteredModel = models.filter((model: any) => model.id === filteredModelsPreset.model_id);
-                    return { brand: filteredModel[0].brand, model: filteredModel[0].model, category: filteredModel[0].category }
+                    return { brand: filteredModel[0].brand, model: filteredModel[0].model, category: filteredModel[0].category, id: filteredModel[0].id }
                 })
             ]
         });

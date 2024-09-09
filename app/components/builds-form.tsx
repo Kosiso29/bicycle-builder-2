@@ -3,23 +3,27 @@
 import Link from 'next/link';
 import { TimerOutlined, PersonOutline, AddOutlined } from '@mui/icons-material';
 import { useSelector } from "react-redux";
-import { updateAccessoryModel, createBuildsAndModelsBuilds } from "@/app/lib/actions";
+import { updateBuildsAndModelsBuilds, createBuildsAndModelsBuilds } from "@/app/lib/actions";
 import Loading from "./loading";
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
-import MultipleInput from "@/app/ui/multiple-input";
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function BuildForm({ model }: { model?: any, model_id?: string }) {
+export default function BuildForm({ build_id }: { build_id: string }) {
+    const buildsAndModelsBuilds = useSelector((state: any) => state.componentsReducer.buildsAndModelsBuilds);
     const models = useSelector((state: any) => state.componentsReducer.models);
-    const brands = useSelector((state: any) => state.componentsReducer.brands);
     const user = useSelector((state: any) => state.authReducer.user);
-    const [accessoryId, setAccessoryId] = useState(model?.accessory_id || "");
     const [loading, setLoading] = useState(false);
+    const builds = buildsAndModelsBuilds?.filter((buildsAndModelsBuild: any) => buildsAndModelsBuild[0] === build_id)[0];
+    const buildsName = builds?.[1]
+    const buildsModel = builds?.[2].reduce((acc: any, item: any) => {
+        acc[item.category] = item.id;
+        return acc;
+    }, {})
 
     const handleFormUpdate = (formData: any) => {
-        updateAccessoryModel(model.id, formData)
+        updateBuildsAndModelsBuilds(build_id, formData)
             .then(() => {
                 setLoading(false);
                 toast.success("Build updated!")
@@ -46,17 +50,17 @@ export default function BuildForm({ model }: { model?: any, model_id?: string })
             });
     }
 
-    const handleFormSubmission = model ? handleFormUpdate : handleFormCreation;
+    const handleFormSubmission = build_id ? handleFormUpdate : handleFormCreation;
 
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
             <div className="rounded-md bg-gray-100 p-4 md:p-6">
 
                 {/* build name */}
-                <TextField name='name' type='text' defaultValue={model?.name} label='Build name' placeholder='Build name' />
+                <TextField name='name' type='text' defaultValue={buildsName} label='Build name' placeholder='Build name' />
 
                 {/* Frame Set */}
-                <SelectField name='model[]' label='Frame Set' defaultValue={""} placeholder='Select a Frame Set'>
+                <SelectField name='model[]' label='Frame Set' defaultValue={buildsModel?.["Frame Set"] || ""} placeholder='Select a Frame Set'>
                     {
                         models.filter((item: any) => item.category === "Frame Set" && item.is_primary).map((item: any) => (
                             <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
@@ -66,7 +70,7 @@ export default function BuildForm({ model }: { model?: any, model_id?: string })
 
                 <div className='flex gap-5'>
                     {/* Wheel Set */}
-                    <SelectField name='model[]' label='Wheel Set' defaultValue={""} placeholder='Select a Wheel Set'>
+                    <SelectField name='model[]' label='Wheel Set' defaultValue={buildsModel?.["Front Wheel Set"] || ""} placeholder='Select a Wheel Set'>
                         {
                             models.filter((item: any) => item.category === "Front Wheel Set" && item.is_primary).map((item: any) => (
                                 <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
@@ -75,7 +79,7 @@ export default function BuildForm({ model }: { model?: any, model_id?: string })
                     </SelectField>
 
                     {/* Group Set */}
-                    <SelectField name='model[]' label='Group Set' defaultValue={""} placeholder='Select a Group Set'>
+                    <SelectField name='model[]' label='Group Set' defaultValue={buildsModel?.["Group Set - Drivetrain"] || ""} placeholder='Select a Group Set'>
                         {
                             models.filter((item: any) => item.category === "Group Set - Drivetrain" && item.is_primary).map((item: any) => (
                                 <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
@@ -86,7 +90,7 @@ export default function BuildForm({ model }: { model?: any, model_id?: string })
 
                 <div className='flex gap-5'>
                     {/* Stem */}
-                    <SelectField name='model[]' label='Stem' defaultValue={""} placeholder='Select a Stem'>
+                    <SelectField name='model[]' label='Stem' defaultValue={buildsModel?.["Stem"] || ""} placeholder='Select a Stem'>
                         {
                             models.filter((item: any) => item.category === "Stem" && item.is_primary).map((item: any) => (
                                 <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
@@ -95,7 +99,7 @@ export default function BuildForm({ model }: { model?: any, model_id?: string })
                     </SelectField>
 
                     {/* Handle Bar */}
-                    <SelectField name='model[]' label='Handle Bar' defaultValue={""} placeholder='Select a Handle Bar'>
+                    <SelectField name='model[]' label='Handle Bar' defaultValue={buildsModel?.["Handle Bar"] || ""} placeholder='Select a Handle Bar'>
                         {
                             models.filter((item: any) => item.category === "Handle Bar" && item.is_primary).map((item: any) => (
                                 <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
@@ -106,7 +110,7 @@ export default function BuildForm({ model }: { model?: any, model_id?: string })
 
                 <div className='flex gap-5'>
                     {/* Saddle */}
-                    <SelectField name='model[]' label='Saddle' defaultValue={""} placeholder='Select a Saddle'>
+                    <SelectField name='model[]' label='Saddle' defaultValue={buildsModel?.["Saddle"] || ""} placeholder='Select a Saddle'>
                         {
                             models.filter((item: any) => item.category === "Saddle" && item.is_primary).map((item: any) => (
                                 <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
@@ -115,7 +119,7 @@ export default function BuildForm({ model }: { model?: any, model_id?: string })
                     </SelectField>
 
                     {/* Tyre */}
-                    <SelectField name='model[]' label='Tyre' defaultValue={""} placeholder='Select a Tyre'>
+                    <SelectField name='model[]' label='Tyre' defaultValue={buildsModel?.["Tyre"] || ""} placeholder='Select a Tyre'>
                         {
                             models.filter((item: any) => item.category === "Tyre" && item.is_primary).map((item: any) => (
                                 <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
@@ -137,7 +141,7 @@ export default function BuildForm({ model }: { model?: any, model_id?: string })
                     onClick={() => setLoading(true)}
                     disabled={user.permission > 1}
                 >
-                    <span className="hidden md:block">{model ? "Update Build" : "Create Build"}</span>
+                    <span className="hidden md:block">{build_id ? "Update Build" : "Create Build"}</span>
                 </button>
                 {
                     loading ? <div className='self-center'><Loading small /></div> : null
