@@ -19,36 +19,23 @@ export default function GroupSet({ parentProps, show, canvasContext, label, canv
         const image = document.getElementById('preview');
         const image2 = document.getElementById('preview2');
 
+        const previewImageWidth = image?.width;
+        const previewImageHeight = image?.height;
+        const previewImage2Width = image2?.width;
+        const previewImage2Height = image2?.height;
+
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
-        const height = image?.height * (width / image?.width);
+        const height = previewImageHeight * (width / previewImageWidth);
         
         const width2 = (frameSetDimensions?.width * groupSetShifter.actualWidth) / frameSetDimensions?.actualWidth;
-        const height2 = image2?.height * (width2 / image2?.width);
+        const height2 = previewImage2Height * (width2 / previewImage2Width);
         
         const x = frameSetDimensions.groupSet_drivetrainX ? frameSetDimensions.groupSet_drivetrainX : 185;
         const y = frameSetDimensions.groupSet_drivetrainY ? frameSetDimensions.groupSet_drivetrainY : 380;
-        // const x2 = frameSetDimensions.groupSet_shifterX ? frameSetDimensions.groupSet_shifterX : 701;
-        // const y2 = canvasDrawImageProps.groupSet_shifter.y - (height2 - canvasDrawImageProps.groupSet_shifter.height);
-
-        // if (!frameSetDimensions.hasHandleBar && !stemDimensions.hasHandleBar) {
-        //     y2 = canvasDrawImageProps.groupSet_shifter.handleBarShifterY - height2;
-        // } else if (!frameSetDimensions.hasStem && stemDimensions.hasHandleBar) {
-        //     y2 = canvasDrawImageProps.groupSet_shifter.stemShifterY - height2;
-        // } else if (frameSetDimensions.hasHandleBar) {
-        //     y2 = frameSetDimensions.groupSet_shifterY - height2;
-        // }
-
-        // if (!frameSetDimensions.hasHandleBar) {
-        //     if (!frameSetDimensions.hasStem) {
-        //         if (!stemDimensions.hasHandleBar) {
-
-        //         }
-        //     }
-        // }
 
         return {
-            groupSet_drivetrain: { image, multipleImages, x, y, width, height, globalCompositeOperation: 'source-over', ...extraDrawImageProps },
-            groupSet_shifter: { ...canvasDrawImageProps.groupSet_shifter, image: image2, width: width2, height: height2, globalCompositeOperation: 'destination-over', ...extraDrawImageProps }
+            groupSet_drivetrain: { image, multipleImages, x, y, width, height, previewImageWidth, previewImageHeight, actualWidth, globalCompositeOperation: 'source-over', ...extraDrawImageProps },
+            groupSet_shifter: { ...canvasDrawImageProps.groupSet_shifter, image: image2, width: width2, height: height2, previewImageWidth: previewImage2Width, previewImageHeight: previewImage2Height, actualWidth: groupSetShifter.actualWidth, globalCompositeOperation: 'destination-over', ...extraDrawImageProps }
         }
     }
     

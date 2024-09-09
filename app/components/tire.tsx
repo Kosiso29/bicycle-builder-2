@@ -18,10 +18,13 @@ export default function Tire({ parentProps, show, canvasContext, canvasX, canvas
 
         const image = document.querySelector('#tire')?.querySelector('#preview')
 
-        const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
-        const height = image?.height * (width / image?.width);
+        const previewImageWidth = image?.width;
+        const previewImageHeight = image?.height;
 
-        return { tire: { image, x, y, width, height, image2: image, x2, y2, width2: width, height2: height, globalCompositeOperation: 'destination-over', ...extraDrawImageProps } };
+        const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
+        const height = previewImageHeight * (width / previewImageWidth);
+
+        return { tire: { image, x, y, width, height, image2: image, x2, y2, width2: width, height2: height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', ...extraDrawImageProps } };
     }
 
     useEffect(() => {

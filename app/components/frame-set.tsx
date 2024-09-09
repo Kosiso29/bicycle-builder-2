@@ -9,7 +9,7 @@ const FRAMESET_PROP = 'frameSet';
 
 export default function FrameSet({ parentProps, show, handleReset, setFrameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
-    const { setSelectionLevelProps, setTooltips, setStemDimensions, canvasDrawImageProps } = parentProps;
+    const { setSelectionLevelProps, setTooltips, setStemDimensions, canvasDrawImageProps, setCanvasDrawImageProps, setInitialCanvasDrawImageProps } = parentProps;
     
     const updateDrawImageProps = (extraDrawImageProps, { allModels, modelData }) => {
         const x = 200;
@@ -30,6 +30,10 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
         changeObjectValuesToNumber(offsets);
 
         setFrameSetDimensions({ width, height, actualWidth, ...offsets, hasStem, hasHandleBar });
+
+        recaliberateComponents(setCanvasDrawImageProps, actualWidth);
+
+        recaliberateComponents(setInitialCanvasDrawImageProps, actualWidth);
 
         if (hasStem && !hasHandleBar) {
             setStemDimensions(prevState => ({ ...prevState, hasHandleBar: false }))
@@ -58,4 +62,20 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
 function changeObjectValuesToNumber(obj) {
     Object.keys(obj).forEach(function (key) { obj[key] = Number(obj[key]) });
     return obj;
+}
+
+function recaliberateComponents(setCanvasDrawImageProps, actualWidth) {
+    // recalculate component dimensions
+    setCanvasDrawImageProps(prevState => {
+        Object.entries(prevState).forEach(component => {
+            if (component[0] !== "frameSet") {
+                const width = (PREDEFINED_FRAMESET_WIDTH * component[1].actualWidth) / actualWidth;
+                const height = component[1].previewImageHeight * (width / component[1].previewImageWidth);
+
+                prevState[component[0]] = { ...prevState[component[0]], width, height, width2: width, height2: height }
+            }
+        })
+
+        return { ...prevState };
+    });
 }

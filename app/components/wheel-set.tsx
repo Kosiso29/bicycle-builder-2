@@ -18,8 +18,11 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
         const image = document.getElementById('preview');
         const image2 = document.getElementById('preview2');
 
+        const previewImageWidth = image?.width;
+        const previewImageHeight = image?.height;
+
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
-        const height = image?.height * (width / image?.width);
+        const height = previewImageHeight * (width / previewImageWidth);
 
         const x = frameSetDimensions.frontWheelSetX ? frameSetDimensions.frontWheelSetX : 550;
         const y = frameSetDimensions.frontWheelSetY ? frameSetDimensions.frontWheelSetY : 265;
@@ -27,8 +30,8 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
         const y2 = frameSetDimensions.backWheelSetY ? frameSetDimensions.backWheelSetY : 265;
 
         return {
-            frontWheelSet: { image, x, y, width, height, globalCompositeOperation: 'destination-over', ...extraDrawImageProps },
-            backWheelSet: { image: image2, x: x2, y: y2, width, height, globalCompositeOperation: 'destination-over', brand: backWheetSet.brand, model: backWheetSet.model, price: backWheetSet.price }
+            frontWheelSet: { image, x, y, width, height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', ...extraDrawImageProps },
+            backWheelSet: { image: image2, x: x2, y: y2, width, height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', brand: backWheetSet.brand, model: backWheetSet.model, price: backWheetSet.price }
         }
     }
     

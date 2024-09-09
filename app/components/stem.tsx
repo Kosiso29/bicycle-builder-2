@@ -21,10 +21,13 @@ export default function Stem({ parentProps, show, canvasContext, canvasX, canvas
 
         setStemDimensions({ hasHandleBar, ...offsets });
 
-        const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
-        const height = image?.height * (width / image?.width);
+        const previewImageWidth = image?.width;
+        const previewImageHeight = image?.height;
 
-        return { stem: { image, x, y, width, height, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets, hasHandleBar } };
+        const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
+        const height = previewImageHeight * (width / previewImageWidth);
+
+        return { stem: { image, x, y, width, height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets, hasHandleBar } };
     }
 
     useEffect(() => {

@@ -66,6 +66,7 @@ export default function BikeBuilder({
         setSelectionLevel,
         setShowSummary,
         initialCanvasDrawImageProps,
+        setInitialCanvasDrawImageProps,
         stemDimensions,
         handleBarDimensions,
         setHandleBarDimensions,
@@ -272,7 +273,7 @@ export default function BikeBuilder({
         })
     }
 
-    const updateCanvasPlaceholderImageDimensions = (filteredModelPlaceholders, image, componentKey, componentData) => {
+    const updateCanvasPlaceholderImageDimensions = (filteredModelPlaceholders, image, componentKey, componentData, frameSetActualWidth) => {
         const filteredComponentData = filterComponentData(filteredModelPlaceholders, componentKey);
 
         if (componentKey === 'frameSet') {
@@ -291,10 +292,19 @@ export default function BikeBuilder({
         }
 
         if (filteredComponentData.length > 0) {
-            const width = (528 * filteredComponentData[0].actualWidth) / 990;
-            const height = image?.height * (width / image?.width);
+            const previewImageWidth = image?.width;
+            const previewImageHeight = image?.height;
+            const actualWidth = filteredComponentData[0].actualWidth;
+
+            const width = (528 * actualWidth) / frameSetActualWidth;
+            const height = previewImageHeight * (width / previewImageWidth);
             componentData.width = width;
             componentData.height = height;
+
+            componentData.previewImageWidth = previewImageWidth;
+            componentData.previewImageHeight = previewImageHeight;
+            componentData.actualWidth = actualWidth;
+            
             if (componentKey === 'tire') {
                 componentData.width2 = width;
                 componentData.height2 = height;
@@ -339,13 +349,15 @@ export default function BikeBuilder({
             }
         });
 
+        const frameSetActualWidth = filterComponentData(filteredModelPlaceholders, "frameSet")[0].actualWidth;
+
         Object.entries(canvasPlaceholderImages).forEach(entries => {
             const image = new Image();
 
             image.src = entries[1].image;
             image.crossOrigin = "anonymous";
             image.onload = function () {
-                updateCanvasPlaceholderImageDimensions(filteredModelPlaceholders, image, entries[0], entries[1]);
+                updateCanvasPlaceholderImageDimensions(filteredModelPlaceholders, image, entries[0], entries[1], frameSetActualWidth);
                 const returnPrevState = (prevState) => ({ ...prevState, [entries[0]]: { ...entries[1], ...prevState[entries[0]], width: entries[1].width, height: entries[1].height, image, image2: entries[0] === 'tire' ? image : null, width2: entries[0] === 'tire' ? entries[1].width2 : null, height2: entries[0] === 'tire' ? entries[1].height2 : null } }) 
                 setCanvasDrawImageProps(prevState => returnPrevState(prevState))
 

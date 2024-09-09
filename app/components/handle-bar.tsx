@@ -27,10 +27,13 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
 
         setHandleBarDimensions({ ...offsets });
 
-        const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
-        const height = image?.height * (width / image?.width);
+        const previewImageWidth = image?.width;
+        const previewImageHeight = image?.height;
 
-        return { handleBar: { image, x, y, width, height, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets } };
+        const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
+        const height = previewImageHeight * (width / previewImageWidth);
+
+        return { handleBar: { image, x, y, width, height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets } };
     }
 
     useEffect(() => {
