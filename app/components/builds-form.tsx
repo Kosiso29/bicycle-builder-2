@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function BuildForm({ build_id }: { build_id: string }) {
+export default function BuildForm({ build_id }: { build_id?: string }) {
     const buildsAndModelsBuilds = useSelector((state: any) => state.componentsReducer.buildsAndModelsBuilds);
     const models = useSelector((state: any) => state.componentsReducer.models);
     const user = useSelector((state: any) => state.authReducer.user);
@@ -23,7 +23,7 @@ export default function BuildForm({ build_id }: { build_id: string }) {
     }, {})
 
     const handleFormUpdate = (formData: any) => {
-        updateBuildsAndModelsBuilds(build_id, formData)
+        build_id && updateBuildsAndModelsBuilds(build_id, formData)
             .then(() => {
                 setLoading(false);
                 toast.success("Build updated!")
