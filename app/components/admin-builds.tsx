@@ -3,25 +3,9 @@
 import Link from "next/link";
 import BuildsTable from "@/app/components/builds-table";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 
 export default function AdminBuilds() {
-    const builds = useSelector((state: any) => state.componentsReducer.presets);
-    const modelsPresets = useSelector((state: any) => state.componentsReducer.modelsPresets);
-    const models = useSelector((state: any) => state.componentsReducer.models);
-    const [tableBuilds, setTableBuilds] = useState(builds);
-
-    useEffect(() => {
-        const newTableBuilds = Object.entries(builds).filter((build: any) => build[1] !== "None").map((build: any) => {
-            const filteredModelsPresets = modelsPresets.filter((modelPreset: any) => modelPreset.preset_id === build[0]);
-            return [ build[0], build[1], filteredModelsPresets.map((filteredModelsPreset: any) => {
-                    const filteredModel = models.filter((model: any) => model.id === filteredModelsPreset.model_id);
-                    return { brand: filteredModel[0].brand, model: filteredModel[0].model, category: filteredModel[0].category }
-                })
-            ]
-        });
-        setTableBuilds(newTableBuilds);
-    }, [builds, models, modelsPresets]);
+    const buildsAndModelsBuilds = useSelector((state: any) => state.componentsReducer.buildsAndModelsBuilds);
 
     return (
         <div>
@@ -36,7 +20,7 @@ export default function AdminBuilds() {
                 </Link>
             </div>
             <div className='bg-white w-full mt-8 rounded-lg md:p-8 py-8 px-2 h-auto'>
-                <BuildsTable builds={tableBuilds} />
+                <BuildsTable builds={buildsAndModelsBuilds} />
             </div>
         </div>
     )
