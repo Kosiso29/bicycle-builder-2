@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import MultipleInput from "@/app/ui/multiple-input";
+import SelectField from "@/app/ui/select-field";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Form({ model, model_id }: { model?: any, model_id?: string }) {
@@ -272,6 +273,15 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
 
                 {/* Ratio */}
                 <MultipleInput initialItems={model?.ratios} title='Ratio values' buttonText={<>Add&nbsp;Ratio</>} name='ratios' />
+
+                {/* Linked Model */}
+                <SelectField name='linked_model' label='Linked Model' defaultValue={model?.linked_model || ""} placeholder='Select a Linked Model'>
+                    {
+                        models.filter((item: any) => item.category === "Frame Set" && item.is_primary).map((item: any) => (
+                            <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
+                        ))
+                    }
+                </SelectField>
 
                 {/* Key Metrics */}
                 <div className="mb-4">

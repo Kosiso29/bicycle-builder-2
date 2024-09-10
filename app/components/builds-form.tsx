@@ -8,6 +8,7 @@ import Loading from "./loading";
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import SelectField from "@/app/ui/select-field";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function BuildForm({ build_id }: { build_id?: string }) {
@@ -150,41 +151,6 @@ export default function BuildForm({ build_id }: { build_id?: string }) {
             <ToastContainer autoClose={3500} position="top-right" />
         </form >
     );
-}
-
-function SelectField({ name, defaultValue, label, placeholder, value, onChange, children }: { name: string, defaultValue?: string, label?: string, placeholder?: string, value?: string, onChange?: any, children: React.ReactNode }) {
-    return (
-        <div className={`mb-4 w-full`}>
-            <div className="mb-2 flex items-center justify-between text-sm font-medium">
-                {
-                    label &&
-                    <label htmlFor={`${name}`}>
-                        {label}
-                    </label>
-                }
-            </div>
-            <div className="relative">
-                <select
-                    id={`${name}`}
-                    name={`${name}`}
-                    className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                    value={value}
-                    defaultValue={defaultValue}
-                    onChange={onChange}
-                    aria-describedby={`${name}-error`}
-                >
-                    {
-                        placeholder &&
-                        <option value="" disabled>
-                            {placeholder}
-                        </option>
-                    }
-                    { children }
-                </select>
-                <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-            </div>
-        </div>
-    )
 }
 
 function TextField({ type, name, defaultValue, label, step, min, max, placeholder, value, onChange, fullWidth }: { type?: string, name: string, defaultValue?: string, label?: string, step?: number, min?: number, max?: number, placeholder?: string, value?: string, onChange?: any, fullWidth?: boolean }) {

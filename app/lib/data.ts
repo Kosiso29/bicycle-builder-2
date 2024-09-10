@@ -49,7 +49,8 @@ export async function fetchModels(): Promise<Models> {
             m.size_chart_url,
             m.is_primary,
             m.color_name,
-            m.color_value
+            m.color_value,
+            m.linked_model
         FROM
             categories c1
         JOIN

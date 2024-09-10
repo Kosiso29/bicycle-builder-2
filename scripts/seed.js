@@ -314,8 +314,11 @@ async function addColumns(client) {
     try {
         const addColumn = await client.sql`
         ALTER TABLE models 
-        ADD COLUMN IF NOT EXISTS color_name VARCHAR(255),
-        ADD COLUMN IF NOT EXISTS color_value VARCHAR(255);
+        ADD COLUMN linked_model UUID,
+        ADD CONSTRAINT fk_linked_model
+            FOREIGN KEY (linked_model) 
+            REFERENCES models(id) 
+            ON DELETE CASCADE;
     `
 
         const modelsTable = await client.sql`SELECT * FROM models;`;
@@ -459,11 +462,11 @@ async function main() {
     // await seedBrands(client);
     // await seedColors(client);
     // await seedModels(client);
-    // await addColumns(client);
+    await addColumns(client);
     // await alterColumns(client);
     // await alterForeignKeyColumns(client);
     // await createManyToManyMappingTable(client);
-    await getModelsPresets(client);
+    // await getModelsPresets(client);
     // await seedUsers(client);
 
     await client.end();
