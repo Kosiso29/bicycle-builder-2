@@ -313,12 +313,12 @@ async function seedModels(client) {
 async function addColumns(client) {
     try {
         const addColumn = await client.sql`
-        ALTER TABLE models 
-        ADD COLUMN linked_model UUID,
-        ADD CONSTRAINT fk_linked_model
-            FOREIGN KEY (linked_model) 
+        ALTER TABLE models
+        ADD COLUMN linked_handle_bar UUID,
+        ADD CONSTRAINT fk_linked_handle_bar
+            FOREIGN KEY (linked_handle_bar) 
             REFERENCES models(id) 
-            ON DELETE CASCADE;
+            ON DELETE SET NULL;
     `
 
         const modelsTable = await client.sql`SELECT * FROM models;`;

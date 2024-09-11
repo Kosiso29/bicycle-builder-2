@@ -11,7 +11,6 @@ export async function fetchModels(): Promise<Models> {
         SELECT
             c1.name AS category,
             b.name AS brand,
-            p.name AS preset,
             m.name AS model,
             c2.name AS "canvasLayerLevel",
             m.id,
@@ -40,8 +39,6 @@ export async function fetchModels(): Promise<Models> {
             m.comfort,
             m.stiffness,
             m.overall,
-            m.best_aerodynamics,
-            m.best_lightweight,
             m.global_composite_operation AS "globalCompositeOperation",
             m.lengths,
             m.sizes,
@@ -49,17 +46,13 @@ export async function fetchModels(): Promise<Models> {
             m.size_chart_url,
             m.is_primary,
             m.color_name,
-            m.color_value,
-            m.linked_stem,
-            m.linked_handle_bar
+            m.color_value
         FROM
             categories c1
         JOIN
             models m ON c1.id = m.category_id
         JOIN
             brands b ON m.brand_id = b.id
-        JOIN
-            presets p ON m.preset_id = p.id
         LEFT JOIN
             categories c2 ON m.canvas_layer_level = c2.id 
         ORDER BY
