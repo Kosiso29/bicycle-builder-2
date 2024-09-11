@@ -1,6 +1,6 @@
 import { TimerOutlined } from "@mui/icons-material";
 
-export default function SelectField({ name, defaultValue, label, placeholder, value, onChange, children }: { name: string, defaultValue?: string, label?: string, placeholder?: string, value?: string, onChange?: any, children: React.ReactNode }) {
+export default function SelectField({ name, defaultValue, label, placeholder, placeholderDisabled = true, value, onChange, children }: { name: string, defaultValue?: string, label?: string, placeholder?: string, placeholderDisabled?: boolean, value?: string, onChange?: any, children: React.ReactNode }) {
     return (
         <div className={`mb-4 w-full`}>
             <div className="mb-2 flex items-center justify-between text-sm font-medium">
@@ -23,7 +23,7 @@ export default function SelectField({ name, defaultValue, label, placeholder, va
                 >
                     {
                         placeholder &&
-                        <option value="" disabled>
+                        <option value="" disabled={placeholderDisabled}>
                             {placeholder}
                         </option>
                     }

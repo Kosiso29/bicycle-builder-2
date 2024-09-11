@@ -11,13 +11,13 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
     const [actualWidth, setActualWidth] = useState("0");
     const { setSelectionLevelProps, setTooltips, setStemDimensions, canvasDrawImageProps, setCanvasDrawImageProps, setInitialCanvasDrawImageProps } = parentProps;
     
-    const updateDrawImageProps = (extraDrawImageProps, { allModels, modelData }) => {
+    const updateDrawImageProps = (extraDrawImageProps, { modelData }) => {
         const x = 200;
         const y = 100;
 
         const image = document.getElementById('preview');
         
-        const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
+        const { id, linked_stem, linked_handle_bar, stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
             groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY,
             hasStem, hasHandleBar, key_metrics, aerodynamics, weight, comfort, stiffness, overall } = modelData;
         const width = PREDEFINED_FRAMESET_WIDTH;
@@ -44,7 +44,7 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
             setStemDimensions(prevState => ({ ...prevState, hasHandleBar: true }))
         }
 
-        return { frameSet: { image, x, y, width, height, ...extraDrawImageProps, ...offsets, hasStem, hasHandleBar } };
+        return { frameSet: { image, x, y, width, height, id, linkedStem: linked_stem, linkedHandleBar: linked_handle_bar, ...extraDrawImageProps, ...offsets, hasStem, hasHandleBar } };
     }
 
     useEffect(() => {

@@ -50,7 +50,8 @@ export async function fetchModels(): Promise<Models> {
             m.is_primary,
             m.color_name,
             m.color_value,
-            m.linked_model
+            m.linked_stem,
+            m.linked_handle_bar
         FROM
             categories c1
         JOIN

@@ -34,6 +34,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [price, setPrice] = useState(0.00);
     const [selectedFeatures, setSelectedFeatures] = useState({});
     const [tyreTube, setTyreTube] = useState({});
+    const [disableSelections, setDisableSelections] = useState(false);
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
@@ -171,6 +172,26 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     const checkSelectedIndex = (index) => selectedIndex === index && modelData?.brand === brand;
 
+    const getLinkedBrandData = (brands, linkedModel) => {
+        const identifiers = ["stem", "handleBar"];
+        if (identifiers.includes(identifier)) {
+            const linkedBrandData = brands.filter(item => {
+                return item.id === canvasDrawImageProps.frameSet[linkedModel]
+            })?.[0];
+            if (linkedBrandData) {
+                setBrand(linkedBrandData.brand);
+                const models = allBrandsData.filter(itemBrand => itemBrand.brand === linkedBrandData.brand && itemBrand.is_primary);
+                setAllModels(models);
+                const selectedIndex = models.findIndex(item => item.id === canvasDrawImageProps.frameSet[linkedModel]);
+                setModel(linkedBrandData.model);
+                setPrice(linkedBrandData.price);
+                setModelData(linkedBrandData);
+                setSelectedIndex(selectedIndex);
+                setDisableSelections(true);
+            }
+        }
+    }
+
     useEffect(() => {
         if (selectionPresetProps[identifier]?.model) {
             setBrand(selectionPresetProps[identifier].brand);
@@ -208,7 +229,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
         });
         setUniqueBrands(reducedBrands);
-    }, [databaseModels]);
+        getLinkedBrandData(brands, "linkedStem");
+        getLinkedBrandData(brands, "linkedHandleBar");
+    }, [databaseModels, show]);
 
     useEffect(() => {
         const allTubeData = accessoryModels.filter(item => item.accessory === "Tube")
@@ -240,7 +263,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 <h1 className={`${identifier === "stem" || identifier === "handleBar" ? "text-xl" : "text-2xl"} font-bold`}>{displayLabel || label}</h1>
                 {imageLoaded ? null : <div className='self-center'><Loading small /></div>}
             </div>
-            <TextField select size="small" value={brand} onChange={handleBrandChange} label="Brands">
+            <TextField select size="small" value={brand} disabled={disableSelections} sx={{ '& .Mui-disabled.MuiSelect-select': { cursor: 'not-allowed' } }} onChange={handleBrandChange} label="Brands">
                 {
                     uniqueBrands.map(brand => (
                         <MenuItem value={brand} key={brand}>{brand}</MenuItem>
@@ -266,15 +289,18 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                     sx={{
                                         backgroundColor: checkSelectedIndex(index) ? "rgb(25, 118, 210)" : "initial",
                                         color: checkSelectedIndex(index) ? "white" : "initial",
-                                        transition: ".2s ease-in"
+                                        transition: ".2s ease-in",
+                                        "&.MuiListItem-root": disableSelections && { cursor: "not-allowed" }
                                     }}>
                                     <ListItemButton
                                         divider={index !== (allModels.length - 1) ? true : false}
                                         selected={checkSelectedIndex(index)}
                                         data-value={item.src}
                                         data-actual-width={item.actualWidth || "0"}
+                                        disabled={disableSelections}
+                                        sx={{ "&.Mui-disabled": { cursor: "not-allowed" } }}
                                         onClick={() => {
-                                            if (!checkSelectedIndex(index)) {
+                                            if (!checkSelectedIndex(index) && !disableSelections) {
                                                 setSelectedFeatures({});
                                                 handleModelChange(index, item);
                                                 setInitialModelData(item);

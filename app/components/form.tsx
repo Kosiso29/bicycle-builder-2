@@ -274,10 +274,19 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                 {/* Ratio */}
                 <MultipleInput initialItems={model?.ratios} title='Ratio values' buttonText={<>Add&nbsp;Ratio</>} name='ratios' />
 
-                {/* Linked Model */}
-                <SelectField name='linked_model' label='Linked Model' defaultValue={model?.linked_model || ""} placeholder='Select a Linked Model'>
+                {/* Linked Stem */}
+                <SelectField name='linked_stem' label='Linked Stem' defaultValue={model?.linked_stem || ""} placeholder='None' placeholderDisabled={false}>
                     {
-                        models.filter((item: any) => item.category === "Frame Set" && item.is_primary).map((item: any) => (
+                        models.filter((item: any) => item.category === "Stem" && item.is_primary).map((item: any) => (
+                            <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
+                        ))
+                    }
+                </SelectField>
+
+                {/* Linked Handle Bar */}
+                <SelectField name='linked_handle_bar' label='Linked Handle Bar' defaultValue={model?.linked_handle_bar || ""} placeholder='None' placeholderDisabled={false}>
+                    {
+                        models.filter((item: any) => item.category === "Handle Bar" && item.is_primary).map((item: any) => (
                             <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
                         ))
                     }
