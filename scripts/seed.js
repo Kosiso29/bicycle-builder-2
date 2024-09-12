@@ -425,7 +425,7 @@ async function createManyToManyMappingTable(client) {
 async function getModelsPresets(client) {
     try {
 
-        // const deleteTable = await client.sql`DELETE FROM presets WHERE name = 'TourDeFrance';`;
+        // const deleteTable = await client.sql`DELETE FROM accessories WHERE name = 'Test';`;
 
         const modelsTable = await client.sql`SELECT * FROM models;`;
         
@@ -462,11 +462,11 @@ async function main() {
     // await seedBrands(client);
     // await seedColors(client);
     // await seedModels(client);
-    await addColumns(client);
+    // await addColumns(client);
     // await alterColumns(client);
     // await alterForeignKeyColumns(client);
     // await createManyToManyMappingTable(client);
-    // await getModelsPresets(client);
+    await getModelsPresets(client);
     // await seedUsers(client);
 
     await client.end();
