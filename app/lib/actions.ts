@@ -184,6 +184,29 @@ export async function createPresets(presets: any) {
     revalidatePath('/dashboard/components');
 }
 
+export async function createAccessories(formData: any) {
+    const formDataObject: any = {};
+
+    formData.forEach((value: any, key: any) => {
+        formDataObject[key] = value;
+    });
+
+    const { accessories } = formDataObject;
+
+    try {
+        for (const accessory of JSON.parse(accessories)) {
+            await sql`
+                INSERT INTO accessories (name)
+                VALUES (${accessory})
+            `;
+        }
+    } catch (error) {
+        console.log('error', error)
+    }
+
+    revalidatePath('/dashboard/components');
+}
+
 export async function updateModel(id: string, formData: any) {
     const formDataObject: any = {};
 

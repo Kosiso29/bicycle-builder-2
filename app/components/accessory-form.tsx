@@ -59,25 +59,34 @@ export default function AccessoryForm({ model }: { model?: any, model_id?: strin
                             Accessory
                         </label>
                     </div>
-                    <div className="relative">
-                        <select
-                            id="accessory_id"
-                            name="accessory_id"
-                            className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                            value={accessoryId ?? model?.accessory_id ?? ""}
-                            onChange={(e) => setAccessoryId(e.target.value)}
-                            aria-describedby="accessory_id-error"
+                    <div className='relative flex gap-6 justify-between'>
+                        <div className="flex-grow">
+                            <select
+                                id="accessory_id"
+                                name="accessory_id"
+                                className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                value={accessoryId ?? model?.accessory_id ?? ""}
+                                onChange={(e) => setAccessoryId(e.target.value)}
+                                aria-describedby="accessory_id-error"
+                            >
+                                <option value="" disabled>
+                                    Select an accessory
+                                </option>
+                                {
+                                    Object.entries(accessories).map((item: any) => (
+                                        <option key={item[1]} value={item[0]}>{item[1]}</option>
+                                    ))
+                                }
+                            </select>
+                            <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                        </div>
+                        <Link
+                            href="/dashboard/components/accessory/create/accessory"
+                            className="flex items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                         >
-                            <option value="" disabled>
-                                Select an accessory
-                            </option>
-                            {
-                                Object.entries(accessories).map((item: any) => (
-                                    <option key={item[1]} value={item[0]}>{item[1]}</option>
-                                ))
-                            }
-                        </select>
-                        <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                            Add Accessories
+                            <AddOutlined className="pointer-events-none" />
+                        </Link>
                     </div>
                 </div>
 
