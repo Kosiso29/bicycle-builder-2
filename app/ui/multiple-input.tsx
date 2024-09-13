@@ -35,7 +35,7 @@ export default function MultipleInput({ title, name, buttonText, initialItems }:
                     <input
                         type="hidden"
                         name={name}
-                        value={JSON.stringify(items.length > 0 ? items : [inputValue])}
+                        value={JSON.stringify(items)}
                     />
                     <button
                         onClick={addItem}
