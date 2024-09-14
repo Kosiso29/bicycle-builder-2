@@ -461,8 +461,11 @@ export default function BikeBuilder({
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} />
             </div>
-            <div id="selection" className="flex flex-col gap-6 fixed right-0 top-0 h-screen w-[22rem] border-l-8 bg-gray-100 border-gray-400 p-5 pb-0 overflow-auto">
+            <div id="selection" className="flex flex-col gap-4 fixed right-0 top-0 h-screen w-[22rem] border-l-8 bg-gray-100 border-gray-400 p-5 pb-0 overflow-auto">
                 <div>
+                    <div className="mt-2 mb-3">
+                        <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
+                    </div>
                     {
                         showSummary ?
                             <>
@@ -483,9 +486,6 @@ export default function BikeBuilder({
                                 </div>
                             </>
                     }
-                    <div className="mt-2">
-                        <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
-                    </div>
                 </div>
                 <FrameSet parentProps={parentProps} handleReset={handleReset} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
