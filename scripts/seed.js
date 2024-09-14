@@ -394,27 +394,27 @@ async function alterForeignKeyColumns(client) {
 async function createManyToManyMappingTable(client) {
     try {
         const createTable = await client.sql`
-            DROP TABLE IF EXISTS models_presets;
+            DROP TABLE IF EXISTS colors_presets;
 
-            CREATE TABLE models_presets (
-                model_id UUID NOT NULL,
+            CREATE TABLE colors_presets (
+                color_id UUID NOT NULL,
                 preset_id UUID NOT NULL,
-                PRIMARY KEY (model_id, preset_id),
-                FOREIGN KEY (model_id) REFERENCES models(id) ON DELETE CASCADE,
+                PRIMARY KEY (color_id, preset_id),
+                FOREIGN KEY (color_id) REFERENCES colors(id) ON DELETE CASCADE,
                 FOREIGN KEY (preset_id) REFERENCES presets(id) ON DELETE CASCADE
             );
 
         `
 
-        const modelsPresets = await client.sql`SELECT * FROM models_presets;`;
+        const colorsPresets = await client.sql`SELECT * FROM colors_presets;`;
 
-        console.log('models_presets data', modelsPresets);
+        console.log('colors_presets data', colorsPresets);
 
         console.log('Create table data', createTable);
 
         return {
             createTable,
-            modelsPresets
+            colorsPresets
         };
     } catch (error) {
         console.error('Error creating tables', error);

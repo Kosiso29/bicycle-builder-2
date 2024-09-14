@@ -14,6 +14,8 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function BuildForm({ build_id }: { build_id?: string }) {
     const buildsAndModelsBuilds = useSelector((state: any) => state.componentsReducer.buildsAndModelsBuilds);
     const models = useSelector((state: any) => state.componentsReducer.models);
+    const colors = useSelector((state: any) => state.componentsReducer.colors);
+    const colorsPresets = useSelector((state: any) => state.componentsReducer.colorsPresets);
     const user = useSelector((state: any) => state.authReducer.user);
     const [loading, setLoading] = useState(false);
     const builds = buildsAndModelsBuilds?.filter((buildsAndModelsBuild: any) => buildsAndModelsBuild[0] === build_id)[0];
@@ -21,7 +23,20 @@ export default function BuildForm({ build_id }: { build_id?: string }) {
     const buildsModel = builds?.[2].reduce((acc: any, item: any) => {
         acc[item.category] = item.id;
         return acc;
-    }, {})
+    }, {});
+    const [frameSetValueId, setFrameSetValueId] = useState(buildsModel?.["Frame Set"] || "");
+
+    const getColorDefaultValue = (componentValueId: string) => {
+        let existingColorPreset = "";
+        colors.filter((color: any) => color.model_id === componentValueId).forEach((color: any) => {
+            colorsPresets.forEach((colorPreset: any) => {
+                if (color.id === colorPreset.color_id && build_id === colorPreset.preset_id) {
+                    existingColorPreset = color.id
+                }
+            })
+        });
+        return existingColorPreset;
+    }
 
     const handleFormUpdate = (formData: any) => {
         build_id && updateBuildsAndModelsBuilds(build_id, formData)
@@ -60,14 +75,26 @@ export default function BuildForm({ build_id }: { build_id?: string }) {
                 {/* build name */}
                 <TextField name='name' type='text' defaultValue={buildsName} label='Build name' placeholder='Build name' />
 
-                {/* Frame Set */}
-                <SelectField name='model[]' label='Frame Set' defaultValue={buildsModel?.["Frame Set"] || ""} placeholder='Select a Frame Set'>
-                    {
-                        models.filter((item: any) => item.category === "Frame Set" && item.is_primary).map((item: any) => (
-                            <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
-                        ))
-                    }
-                </SelectField>
+                <div className="flex gap-5">
+                    {/* Frame Set */}
+                    <SelectField name='model[]' label='Frame Set' value={frameSetValueId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFrameSetValueId(e.target.value)} placeholder='None' placeholderDisabled={false}>
+                        {
+                            models.filter((item: any) => item.category === "Frame Set" && item.is_primary).map((item: any) => (
+                                <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
+                            ))
+                        }
+                    </SelectField>
+
+                    {/* Frame Set Color */}
+                    <SelectField name='color[]' label='Frame Set Color' defaultValue={getColorDefaultValue(frameSetValueId)} placeholder='None' placeholderDisabled={false}>
+                        {
+                            colors.filter((item: any) => item.model_id === frameSetValueId).map((item: any) => (
+                                <option key={item.id} value={item.id}>{item.name}</option>
+                            ))
+                        }
+                    </SelectField>
+                </div>
+
 
                 <div className='flex gap-5'>
                     {/* Wheel Set */}

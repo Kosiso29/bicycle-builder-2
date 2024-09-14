@@ -16,7 +16,7 @@ const sideBarData = [
     { name: "CUSTOMERS", href: "/dashboard/customers", icon: GroupOutlined },
 ]
 
-export default function Sidebar({ models, categories, brands, presets, modelsPresets, colors, accessories, accessoryModels, buildsAndModelsBuilds }) {
+export default function Sidebar({ models, categories, brands, presets, modelsPresets, colorsPresets, colors, accessories, accessoryModels, buildsAndModelsBuilds }) {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(componentsActions.updateModels(models));
@@ -24,6 +24,7 @@ export default function Sidebar({ models, categories, brands, presets, modelsPre
         dispatch(componentsActions.updateBrands(brands));
         dispatch(componentsActions.updatePresets(presets));
         dispatch(componentsActions.updateModelsPresets(modelsPresets));
+        dispatch(componentsActions.updateColorsPresets(colorsPresets));
         dispatch(componentsActions.updateColors(colors));
         dispatch(componentsActions.updateAccessories(accessories));
         dispatch(componentsActions.updateAccessoryModels(accessoryModels));

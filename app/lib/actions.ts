@@ -97,6 +97,7 @@ export async function createBuildsAndModelsBuilds(formData: FormData) {
 
     const { name } = formDataObject;
     const model_ids: any = formData.getAll('model[]');
+    const color_ids: any = formData.getAll('color[]');
 
     try {
         await sql`
@@ -108,10 +109,17 @@ export async function createBuildsAndModelsBuilds(formData: FormData) {
             SELECT * FROM presets WHERE name = ${name};
         `;
 
+        const build_id = selectedBuild.rows[0].id;
+
         for (const model_id of model_ids) {
-            const build_id = selectedBuild.rows[0].id;
             await sql`
                 INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${build_id}::uuid);
+            `
+        }
+
+        for (const color_id of color_ids) {
+            await sql`
+                INSERT INTO colors_presets (color_id, preset_id) VALUES (${color_id}::uuid, ${build_id}::uuid);
             `
         }
         
@@ -301,6 +309,7 @@ export async function updateBuildsAndModelsBuilds(id: string, formData: any) {
 
     const { name } = formDataObject;
     const model_ids: any = formData.getAll('model[]');
+    const color_ids: any = formData.getAll('color[]');
 
     try {
         await sql`
@@ -317,6 +326,17 @@ export async function updateBuildsAndModelsBuilds(id: string, formData: any) {
         for (const model_id of model_ids) {
             await sql`
                 INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${id}::uuid);
+            `
+        }
+
+        // Delete existing presets mapping for the current color so that new ones can be used to overwrite them (this is only required in colors update)
+        await sql`
+            DELETE FROM colors_presets WHERE preset_id = ${id};
+        `
+
+        for (const color_id of color_ids) {
+            await sql`
+                INSERT INTO colors_presets (color_id, preset_id) VALUES (${color_id}::uuid, ${id}::uuid);
             `
         }
 

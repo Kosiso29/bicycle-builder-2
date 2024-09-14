@@ -140,6 +140,29 @@ export async function fetchModelsPresets() {
     }
 }
 
+export async function fetchColorsPresets() {
+    noStore();
+    try {
+        const data = await sql`
+            SELECT 
+                c.id as color_id, 
+                c.name as color_name, 
+                p.id as preset_id, 
+                p.name as preset_name
+            FROM colors_presets cp
+            JOIN colors c ON cp.color_id = c.id
+            JOIN presets p ON cp.preset_id = p.id;`;
+
+        const colorsPresets = data.rows.map((colorPreset) => ({
+            ...colorPreset
+        }));
+        return colorsPresets;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the colors_presets.');
+    }
+}
+
 export async function fetchCategories() {
     noStore();
     try {
@@ -201,6 +224,7 @@ export async function fetchColors() {
         SELECT
             m.name AS model,
             c.model_id,
+            c.id,
             c.name,
             c.value,
             c.image_url,
