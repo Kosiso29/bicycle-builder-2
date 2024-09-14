@@ -180,7 +180,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             })?.[0];
             if (linkedBrandData) {
                 setBrand(linkedBrandData.brand);
-                const models = allBrandsData.filter(itemBrand => itemBrand.brand === linkedBrandData.brand && itemBrand.is_primary);
+                const models = allBrandsData.filter(itemBrand => itemBrand.brand === linkedBrandData.brand);
                 setAllModels(models);
                 const selectedIndex = models.findIndex(item => item.id === canvasDrawImageProps.frameSet[linkedModel]);
                 setModel(linkedBrandData.model);
