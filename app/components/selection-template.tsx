@@ -220,7 +220,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }, [model, imageLoaded, image2Loaded, multipleImagesLoaded]);
 
     useEffect(() => {
-        const brands = databaseModels.filter(item => item.category === label);
+        const brands = databaseModels.filter(item => item.category === label && item.is_primary);
         setAllBrandsData(brands);
         const reducedBrands = [];
         brands.forEach(brandItem => {

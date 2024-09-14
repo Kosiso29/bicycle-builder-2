@@ -169,7 +169,7 @@ export default function Table({ models, preset }) {
                                     </td>
                                     <td className="relative">
                                         <div className="relative my-[1px] w-auto h-12">
-                                            <Image src={model.src} sizes="100%" fill style={{ objectFit: "contain" }} alt={model.model} />
+                                            {model.src ? <Image src={model.src} sizes="100%" fill style={{ objectFit: "contain" }} alt={model.model} /> : <div className="flex justify-center items-center h-full">---</div>}
                                         </div>
                                     </td>
                                     <td className="px-3 py-3">

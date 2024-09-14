@@ -225,7 +225,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                             <TextField name='image_url' type='text' defaultValue={model?.image_url} placeholder='Model Color Image URL' fullWidth />
                             <div className='flex w-full gap-3'>
                                 {/* Price */}
-                                <TextField name='price' step={0.01} min={0.0} defaultValue={model?.price} placeholder='Model Color Price' fullWidth />
+                                <TextField name='price' step={0.01} min={0.0} defaultValue={model?.price ?? 0.00} placeholder='Model Color Price' fullWidth />
                                 {
                                     colorItems.length === 0 &&
                                     <div className='flex gap-2 text-blue-600 items-center mb-4 mt-2'>
