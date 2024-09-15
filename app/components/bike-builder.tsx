@@ -33,6 +33,7 @@ export default function BikeBuilder({
     const [rerender, setRerender] = useState(false);
     const [canvasContext, setCanvasContext] = useState(null);
     const [totalPrice, setTotalPrice] = useState(null);
+    const [linkedComponentDimensions, setLinkedComopnentDimensions] = useState({ hasHandleBar: false }); // this does not affect canvasDrawImageProps
     const [tooltips, setTooltips] = useState({
         key_metrics: "---",
         aerodynamics: "---",
@@ -73,7 +74,8 @@ export default function BikeBuilder({
         colors,
         accessoryModels,
         addonAccessories,
-        setAddonAccessories
+        setAddonAccessories,
+        setLinkedComopnentDimensions
     }
 
     const canvasNumberData = [
@@ -491,7 +493,7 @@ export default function BikeBuilder({
                 <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
                 <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3 && (handleBarStemConditions || frameSetDimensions.hasStem)} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3 && (handleBarStemConditions || frameSetDimensions.hasStem) && !linkedComponentDimensions.hasHandleBar} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <GroupSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
                 <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 {

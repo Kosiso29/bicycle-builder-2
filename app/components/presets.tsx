@@ -92,7 +92,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                 if (canvasProp === 'frameSet') {
                     const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
                         groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY,
-                        hasStem, hasHandleBar, key_metrics, aerodynamics, weight, comfort, stiffness, overall } = item;
+                        hasStem, hasHandleBar } = item;
                     offsets = {
                         stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
                         groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY

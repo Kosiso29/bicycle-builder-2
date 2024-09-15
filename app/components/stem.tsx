@@ -9,13 +9,12 @@ const STEM_PROP = 'stem';
 export default function Stem({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0")
     const { setSelectionLevelProps, setStemDimensions } = parentProps;
-    const updateDrawImageProps = (extraDrawImageProps, { allModels }) => {
+    const updateDrawImageProps = (extraDrawImageProps, { modelData }) => {
         const x = frameSetDimensions.stemX ? frameSetDimensions.stemX : canvasX;
         const y = frameSetDimensions.stemY ? frameSetDimensions.stemY : canvasY;
 
         const image = document.getElementById('preview');
-        const stemModelData = allModels.filter(item => item.model === extraDrawImageProps.model && item.brand === extraDrawImageProps.brand && item.category === 'Stem')[0];
-        const { hasHandleBar, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY } = stemModelData;
+        const { hasHandleBar, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY } = modelData;
 
         const offsets = { groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY };
 

@@ -16,7 +16,7 @@ import SizeChart from "./size_chart";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
-        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories } = parentProps;
+        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -87,17 +87,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setSelectedIndex(index);
     }
 
-    const handleModelRemove = (index) => {
-        setModel("");
-        setModelData(null);
-        setSelectedIndex(null);
-        imageRef.current?.setAttribute("src", "/Cadex-Saddle.png");
-        if (/Wheel Set/i.test(label)) {
-            setTooltips(prevState => ({ ...prevState, aerodynamics: getToolTipValue(null, prevState.aerodynamicsFrame, prevState.aerodynamics), weight: getToolTipValue(null, prevState.weightFrame, prevState.weight), overall: getToolTipValue(null, prevState.overallFrame, prevState.overall), aerodynamicsWheel: null, weightWheel: null, overallWheel: null }));
-        }
-        if (/Wheel Set|Group Set/i.test(label)) {
-            imageRef2.current?.setAttribute("src", "/Cadex-Saddle.png");
-        };
+    const resetCanvasComponents = () => {
         setCanvasDrawImageProps(prevState => {
             selectionLevelProps.forEach(selectionLevelProp => {
                 // This is for the cockpit of stem and handleBar selectionLevelProps
@@ -119,6 +109,21 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         });
 
         positionCanvasImages(canvasDrawImageProps[identifier], identifier, canvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions);
+    }
+
+    const handleModelRemove = (index) => {
+        setModel("");
+        setModelData(null);
+        setSelectedIndex(null);
+        imageRef.current?.setAttribute("src", "/Cadex-Saddle.png");
+        if (/Wheel Set/i.test(label)) {
+            setTooltips(prevState => ({ ...prevState, aerodynamics: getToolTipValue(null, prevState.aerodynamicsFrame, prevState.aerodynamics), weight: getToolTipValue(null, prevState.weightFrame, prevState.weight), overall: getToolTipValue(null, prevState.overallFrame, prevState.overall), aerodynamicsWheel: null, weightWheel: null, overallWheel: null }));
+        }
+        if (/Wheel Set|Group Set/i.test(label)) {
+            imageRef2.current?.setAttribute("src", "/Cadex-Saddle.png");
+        };
+
+        resetCanvasComponents();
 
         if (selectionLevelProps.includes('frameSet')) {
             handleReset();
@@ -172,15 +177,39 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     const checkSelectedIndex = (index) => selectedIndex === index && modelData?.brand === brand;
 
-    const getLinkedBrandData = (brands, linkedModel) => {
+    const updateBrandsData = (brands) => {
+        setAllBrandsData(brands);
+        const reducedBrands = [];
+        brands.forEach(brandItem => {
+            if (!reducedBrands.includes(brandItem.brand)) {
+                reducedBrands.push(brandItem.brand);
+            }
+        });
+        setUniqueBrands(reducedBrands);
+    }
+
+    const resetSelection = () => {
+        setBrand("");
+        setAllModels([]);
+        setModel("");
+        setPrice(0.00);
+        setModelData(null);
+        setSelectedIndex(null);
+        setDisableSelections(false);
+    }
+
+    // Linked components are rendered such that they don't interfer with the canvasDrawImageProps data since they don't have images
+    const getLinkedBrandData = (linkedModel) => {
+        const brandsWithLinkedComponents = databaseModels.filter(item => item.category === label && item.is_primary);
         const identifiers = ["stem", "handleBar"];
         if (identifiers.includes(identifier)) {
-            const linkedBrandData = brands.filter(item => {
+            const linkedBrandData = brandsWithLinkedComponents.filter(item => {
                 return item.id === canvasDrawImageProps.frameSet[linkedModel]
             })?.[0];
             if (linkedBrandData) {
+                updateBrandsData(brandsWithLinkedComponents)
                 setBrand(linkedBrandData.brand);
-                const models = allBrandsData.filter(itemBrand => itemBrand.brand === linkedBrandData.brand);
+                const models = brandsWithLinkedComponents.filter(itemBrand => itemBrand.brand === linkedBrandData.brand);
                 setAllModels(models);
                 const selectedIndex = models.findIndex(item => item.id === canvasDrawImageProps.frameSet[linkedModel]);
                 setModel(linkedBrandData.model);
@@ -188,6 +217,14 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 setModelData(linkedBrandData);
                 setSelectedIndex(selectedIndex);
                 setDisableSelections(true);
+                if (linkedBrandData.hasHandleBar && identifier === "stem") {
+                    setLinkedComopnentDimensions({ hasHandleBar: true });
+                }
+            } else if (disableSelections) {
+                resetSelection();
+                if (identifier === "stem") {
+                    setLinkedComopnentDimensions({ hasHandleBar: false });
+                }
             }
         }
     }
@@ -207,7 +244,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }, [selectionPresetProps[identifier]?.model]);
 
     useEffect(() => {
-        if ((model && imageLoaded && image2Loaded)) {
+        // check for modelData.src so that linked components won't be added to canvasDrawImageProps
+        if ((model && imageLoaded && image2Loaded && modelData.src)) {
             if (multipleImages.length > 0) {
                 if (multipleImagesLoaded) {
                     setMultipleImagesLoaded(false);
@@ -220,18 +258,17 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }, [model, imageLoaded, image2Loaded, multipleImagesLoaded]);
 
     useEffect(() => {
-        const brands = databaseModels.filter(item => item.category === label && item.is_primary);
-        setAllBrandsData(brands);
-        const reducedBrands = [];
-        brands.forEach(brandItem => {
-            if (!reducedBrands.includes(brandItem.brand)) {
-                reducedBrands.push(brandItem.brand);
-            }
-        });
-        setUniqueBrands(reducedBrands);
-        getLinkedBrandData(brands, "linkedStem");
-        getLinkedBrandData(brands, "linkedHandleBar");
+        const brandsWithoutLinkedComponents = databaseModels.filter(item => item.category === label && item.is_primary && item.src);
+        updateBrandsData(brandsWithoutLinkedComponents);
+        getLinkedBrandData("linkedStem");
+        getLinkedBrandData("linkedHandleBar");
     }, [databaseModels, show]);
+    
+    useEffect(() => {
+        if (disableSelections) {
+            resetCanvasComponents();
+        }
+    }, [disableSelections, show])
 
     useEffect(() => {
         const allTubeData = accessoryModels.filter(item => item.accessory === "Tube")
