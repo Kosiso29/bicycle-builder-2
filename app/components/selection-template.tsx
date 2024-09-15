@@ -230,6 +230,19 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }
 
     useEffect(() => {
+        const brandsWithoutLinkedComponents = databaseModels.filter(item => item.category === label && item.is_primary && item.src);
+        updateBrandsData(brandsWithoutLinkedComponents);
+        getLinkedBrandData("linkedStem");
+        getLinkedBrandData("linkedHandleBar");
+    }, [databaseModels, show]);
+    
+    useEffect(() => {
+        if (disableSelections) {
+            resetCanvasComponents();
+        }
+    }, [disableSelections, show])
+
+    useEffect(() => {
         if (selectionPresetProps[identifier]?.model) {
             setBrand(selectionPresetProps[identifier].brand);
             const models = allBrandsData.filter(itemBrand => itemBrand.brand === selectionPresetProps[identifier].brand && itemBrand.is_primary);
@@ -256,19 +269,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
         }
     }, [model, imageLoaded, image2Loaded, multipleImagesLoaded]);
-
-    useEffect(() => {
-        const brandsWithoutLinkedComponents = databaseModels.filter(item => item.category === label && item.is_primary && item.src);
-        updateBrandsData(brandsWithoutLinkedComponents);
-        getLinkedBrandData("linkedStem");
-        getLinkedBrandData("linkedHandleBar");
-    }, [databaseModels, show]);
-    
-    useEffect(() => {
-        if (disableSelections) {
-            resetCanvasComponents();
-        }
-    }, [disableSelections, show])
 
     useEffect(() => {
         const allTubeData = accessoryModels.filter(item => item.accessory === "Tube")

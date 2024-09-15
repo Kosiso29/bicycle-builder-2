@@ -20,6 +20,22 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
             if (filteredPreset.category === "Back Wheel Set") {
                 return;
             }
+            if (filteredPreset.category === "Frame Set") {
+                if (filteredPreset.linked_stem) {
+                    const linkedStem = models.filter((model: any) => model.id === filteredPreset.linked_stem)[0]
+                    setSelectionPresetProps((prevState: any) => ({
+                        ...prevState,
+                        stem: { brand: linkedStem.brand, model: linkedStem.model }
+                    }));
+                }
+                if (filteredPreset.linked_handle_bar) {
+                    const linkedHandleBar = models.filter((model: any) => model.id === filteredPreset.linked_handle_bar)[0]
+                    setSelectionPresetProps((prevState: any) => ({
+                        ...prevState,
+                        handleBar: { brand: linkedHandleBar.brand, model: linkedHandleBar.model }
+                    }));
+                }
+            }
             if (filteredPreset.category === "Front Wheel Set") {
                 const backWheelSet = models.filter((item: any) => item.model === filteredPreset.model && item.brand === filteredPreset.brand && item.category === 'Back Wheel Set')[0]
                 uniqueImagePresets.push(backWheelSet);
@@ -63,6 +79,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
     }
 
     const getPresetComponents = (preset: string) => {
+        setSelectionLevel(1); // set selection level away from stem/handleBar selections so that linkedStem/linkedHandleBar would be handled properly
         const filteredPresets = getFilteredPresets(preset);
         let loadedCountUnique = 0, newFrameSetDimensions = frameSetDimensions;
         const { uniqueImagePresets, multipleImagePresets } = populateMultipleImages(filteredPresets);
@@ -87,16 +104,17 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                 const { actualWidth, brand, model, price } = item;
                 const width = (newFrameSetDimensions?.width * actualWidth) / newFrameSetDimensions?.actualWidth;
                 const height = image?.height * (width / image?.width);
-                let offsets = {};
+                let offsets = {}, linkedModels = {};
 
                 if (canvasProp === 'frameSet') {
-                    const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
+                    const { linked_stem, linked_handle_bar, stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
                         groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY,
                         hasStem, hasHandleBar } = item;
                     offsets = {
                         stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
                         groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY
                     };
+                    linkedModels = { linkedStem: linked_stem, linkedHandleBar: linked_handle_bar }
 
                     newFrameSetDimensions = { width, height, actualWidth, ...offsets, hasStem, hasHandleBar }
                     
@@ -110,7 +128,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
                 setCanvasDrawImageProps((prevState: any) => ({
                     ...prevState,
-                    [canvasProp]: { ...prevState[canvasProp], ...offsets, image, image2: canvasProp === 'tire' ? image : undefined, width, height, width2: width, height2: height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                    [canvasProp]: { ...prevState[canvasProp], ...offsets, ...linkedModels, image, image2: canvasProp === 'tire' ? image : undefined, width, height, width2: width, height2: height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
 
                 updateTooltips(item, canvasProp, setTooltips);
