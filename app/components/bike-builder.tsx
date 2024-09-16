@@ -148,11 +148,11 @@ export default function BikeBuilder({
                 }
 
                 if (!doNotRenderCanvasNumbers) {
-                    const canvasDrawImagePropsArray = ['frameSet', 'groupSet_drivetrain', 'frontWheelSet', 'stem', 'saddle', 'tire'];
+                    const canvasDrawImagePropsArray = ['frameSet', 'frontWheelSet', 'stem', 'groupSet_drivetrain', 'saddle'];
 
                     canvasContext.font = "1.5rem Arial"
                     canvasNumberData.forEach((canvasNumber, index) => {
-                        if (canvasDrawImageProps[canvasDrawImagePropsArray[index]]?.brand) {
+                        if (canvasDrawImageProps[canvasDrawImagePropsArray[index]]?.brand || (index + 1 === 3 && (canvasDrawImageProps.frameSet.linkedStem || canvasDrawImageProps.frameSet.linkedHandleBar))) {
                             // canvasContext.beginPath();
                             // canvasContext.arc(canvasNumber.x, canvasNumber.y, 20, 0, 2 * Math.PI, false);
                             canvasContext.fillStyle = 'blue';
@@ -206,9 +206,6 @@ export default function BikeBuilder({
 
     const handleCanvasClick = (e) => {
         handleCanvasEvents(e, (index) => {
-            if (Number(index) + 1 === 3 && (frameSetDimensions.hasStem)) {
-                return;
-            }
             updateSelectionLevel(Number(index) + 1);
         })
     }
@@ -234,11 +231,7 @@ export default function BikeBuilder({
     const handleSelectionLevel = (e) => {
         let newSelectionLevel = selectionLevel;
         if (/Prev/i.test(e.target.textContent)) {
-            if (selectionLevel > 1) {
-                newSelectionLevel--;
-            } else {
-                toast.info("You're at the beginning");
-            }
+            newSelectionLevel--;
         }
 
         if (/Next/i.test(e.target.textContent)) {
