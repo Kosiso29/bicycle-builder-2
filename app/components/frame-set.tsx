@@ -44,7 +44,7 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
             setStemDimensions(prevState => ({ ...prevState, hasHandleBar: true }))
         }
 
-        return { frameSet: { image, x, y, width, height, id, linkedStem: linked_stem, linkedHandleBar: linked_handle_bar, ...extraDrawImageProps, ...offsets, hasStem, hasHandleBar } };
+        return { frameSet: { image, x, y, width, height, id, actualWidth, linkedStem: linked_stem, linkedHandleBar: linked_handle_bar, ...extraDrawImageProps, ...offsets, hasStem, hasHandleBar } };
     }
 
     useEffect(() => {

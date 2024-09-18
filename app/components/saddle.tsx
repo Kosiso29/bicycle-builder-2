@@ -21,7 +21,7 @@ export default function Saddle({ parentProps, show, canvasContext, canvasX, canv
         const x = frameSetDimensions.saddleX ? frameSetDimensions.saddleX : canvasX;
         const y = frameSetDimensions.saddleY ? frameSetDimensions.saddleY - height : canvasY - height;
         
-        return { saddle: { image, x, y, width, height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps } };
+        return { saddle: { image, x, y, width, height, actualWidth, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps } };
     }
 
     useEffect(() => {

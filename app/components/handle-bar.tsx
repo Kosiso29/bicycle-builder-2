@@ -33,7 +33,7 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = previewImageHeight * (width / previewImageWidth);
 
-        return { handleBar: { image, x, y, width, height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets } };
+        return { handleBar: { image, x, y, width, height, actualWidth, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets } };
     }
 
     useEffect(() => {

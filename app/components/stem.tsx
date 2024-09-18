@@ -26,7 +26,7 @@ export default function Stem({ parentProps, show, canvasContext, canvasX, canvas
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = previewImageHeight * (width / previewImageWidth);
 
-        return { stem: { image, x, y, width, height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets, hasHandleBar } };
+        return { stem: { image, x, y, width, height, actualWidth, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets, hasHandleBar } };
     }
 
     useEffect(() => {

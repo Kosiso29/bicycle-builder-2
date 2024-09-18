@@ -30,8 +30,8 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
         const y2 = frameSetDimensions.backWheelSetY ? frameSetDimensions.backWheelSetY : 265;
 
         return {
-            frontWheelSet: { image, x, y, width, height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', ...extraDrawImageProps },
-            backWheelSet: { image: image2, x: x2, y: y2, width, height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', brand: backWheetSet.brand, model: backWheetSet.model, price: backWheetSet.price }
+            frontWheelSet: { image, x, y, width, height, actualWidth, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', ...extraDrawImageProps },
+            backWheelSet: { image: image2, x: x2, y: y2, width, height, actualWidth, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', brand: backWheetSet.brand, model: backWheetSet.model, price: backWheetSet.price }
         }
     }
     

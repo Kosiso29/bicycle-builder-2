@@ -24,7 +24,7 @@ export default function Tire({ parentProps, show, canvasContext, canvasX, canvas
         const width = (frameSetDimensions?.width * actualWidth) / frameSetDimensions?.actualWidth;
         const height = previewImageHeight * (width / previewImageWidth);
 
-        return { tire: { image, x, y, width, height, image2: image, x2, y2, width2: width, height2: height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', ...extraDrawImageProps } };
+        return { tire: { image, x, y, width, height, actualWidth, image2: image, x2, y2, width2: width, height2: height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', ...extraDrawImageProps } };
     }
 
     useEffect(() => {
