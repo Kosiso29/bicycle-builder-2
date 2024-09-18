@@ -32,3 +32,13 @@ button.MuiButton-containedPrimary {
 * {
     box-sizing: border-box;
 }
+
+.wrapper {
+    margin-left: 5rem;
+    margin-right: 5rem;
+}
+
+.wrapper-padding {
+    padding-left: 5rem;
+    padding-right: 5rem;
+}

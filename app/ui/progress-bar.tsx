@@ -3,11 +3,11 @@ import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgres
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-export default function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+export default function ProgressBar(props: LinearProgressProps & { value: number }) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: 70 }}>
-                <LinearProgress variant="determinate" {...props} />
+                <LinearProgress variant="determinate" color='inherit' {...props} />
             </Box>
             <Box sx={{ minWidth: 35 }}>
                 <Typography
