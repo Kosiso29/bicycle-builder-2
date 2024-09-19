@@ -132,7 +132,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
 
                 setCanvasDrawImageProps((prevState: any) => ({
                     ...prevState,
-                    [canvasProp]: { ...prevState[canvasProp], ...offsets, ...linkedModels, image, image2: canvasProp === 'tire' ? image : undefined, width, height, previewImageWidth, previewImageHeight, width2: width, height2: height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                    [canvasProp]: { ...prevState[canvasProp], ...offsets, ...linkedModels, image, image2: canvasProp === 'tire' ? image : undefined, width, height, actualWidth, previewImageWidth, previewImageHeight, width2: width, height2: height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
 
                 updateTooltips(item, canvasProp, setTooltips);
@@ -200,7 +200,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
                 if (loadedCountMultiple === multipleImagePresets.length) {
                     setCanvasDrawImageProps((prevState: any) => ({
                         ...prevState,
-                        [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, multipleImages, width, height, previewImageWidth, previewImageHeight, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                        [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, multipleImages, width, height, actualWidth, previewImageWidth, previewImageHeight, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                     }));
 
                     setSelectionPresetProps((prevState: any) => ({
