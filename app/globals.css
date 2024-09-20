@@ -2,6 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@-webkit-keyframes slide-in-left {
+    0% {
+        -webkit-transform: translateX(-1000px);
+        transform: translateX(-1000px);
+        opacity: 0
+    }
+
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+        opacity: 1
+    }
+}
+
+@keyframes slide-in-left {
+    0% {
+        -webkit-transform: translateX(-1000px);
+        transform: translateX(-1000px);
+        opacity: 0
+    }
+
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+        opacity: 1
+    }
+}
+
 html {
     /* For Firefox */
     scrollbar-width: thin;
@@ -46,11 +74,17 @@ button.MuiButton-containedPrimary {
 /* For WebKit browsers (Chrome, Safari) */
 .scrollbar-always-visible::-webkit-scrollbar {
     -webkit-appearance: none;
-    width: 8px; /* Adjust width of the scrollbar */
+    width: 8px;
+    /* Adjust width of the scrollbar */
 }
 
 .scrollbar-always-visible::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3); /* Adjust the color of the scrollbar thumb */
-  border-radius: 10px; /* Optional: rounded scrollbar */
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Adjust the color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Optional: rounded scrollbar */
 }
 
+.slide-in-animation {
+    animation: slide-in-left 500ms ease-out;
+}

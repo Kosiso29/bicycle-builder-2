@@ -20,7 +20,7 @@ export default function Summary({ canvasDrawImageProps, canvasImage, showSummary
                     <Button variant="text" onClick={() => setShowSummary(false)}> <ArrowBackIos /> Back</Button>
                 </div>
                 <h1 className='text-3xl leading-10 font-extrabold'>Reviews and <br /> Checkout</h1>
-                <div className="flex flex-grow items-center">
+                <div className="flex flex-grow items-center slide-in-animation">
                     <Image src={canvasImage} style={{ width: "100%", height: "auto" }} width={0} height={0} alt='' />
                 </div>
             </div>
