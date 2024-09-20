@@ -54,13 +54,16 @@ export default function Builder({ models, presets, modelsPresets, colors, access
                 addonAccessories={addonAccessories}
                 setAddonAccessories={setAddonAccessories}
             />
-            {/* <Summary
+            <Summary
                 canvasDrawImageProps={canvasDrawImageProps}
                 canvasImage={canvasImage}
                 showSummary={showSummary}
                 setShowSummary={setShowSummary}
                 frameSetDimensions={frameSetDimensions}
-            /> */}
+                addonAccessories={addonAccessories}
+                setAddonAccessories={setAddonAccessories}
+                accessoryModels={accessoryModels}
+            />
             <ToastContainer
                 autoClose={3500}
                 position="bottom-left"

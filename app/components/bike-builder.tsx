@@ -439,7 +439,7 @@ export default function BikeBuilder({
     }, [rerender]);
 
     return (
-        <div>
+        <div className={`${showSummary && "hidden"}`}>
             <div className="flex flex-col mr-[22rem] h-screen bg-blue-100 w-[calc(100% - 22rem)] overflow-auto">
                 <div className="flex items-stretch">
                     <div className="flex flex-col justify-between bg-gray-100 w-40 border border-black py-5 px-2">
@@ -476,7 +476,7 @@ export default function BikeBuilder({
                                     {
                                         selectionLevel < 5 ?
                                             <Button size="small" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSelectionLevel}>Next</Button> :
-                                            <Button size="small" variant="contained" onClick={() => { setSelectionLevel(prevState => prevState + 1); setShowSummary(true); }}>Summary</Button>
+                                            <Button size="small" variant="contained" onClick={handleSummary}>Summary</Button>
                                     }
                                 </div>
                             </>
@@ -489,9 +489,9 @@ export default function BikeBuilder({
                 <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3 && (handleBarStemConditions || frameSetDimensions.hasStem) && !linkedComponentDimensions.hasHandleBar} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 <GroupSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
                 <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                {
+                {/* {
                     showSummary ? <AddonSummary parentProps={parentProps} /> : null
-                }
+                } */}
                 <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-3 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
                     <div className='flex justify-between items-center'>
                         <h1 className={`font-bold text-xl`}>Total:</h1>

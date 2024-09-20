@@ -10,7 +10,7 @@ export default function HeroSection() {
                 <span className='text-8xl font-extrabold'>
                     Dream Bike
                 </span>
-                <p className='text-gray-300'>Customize, personalize, and visualize your perfect ride with our state-of-the-art bike configurator.</p>
+                <p className='text-gray-300'>Customize, personalize, and visualize your perfect ride with our <span className='whitespace-nowrap'>state-of-the-art</span> bike configurator.</p>
                 <div className='mt-10'>
                     <CTA href='/build'>
                         START BUILDING YOUR BIKE

@@ -17,22 +17,26 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
             }
         });
         setAddonAccessories(newAddonAccessories);
-        setRerender((prevState: any) => !prevState);
+        if (setRerender) {
+            setRerender((prevState: any) => !prevState);
+        }
     };
 
     if (showAddons) {
         return (
             <div className="flex flex-col gap-8">
                 <h1 className="text-xl font-bold">Addons</h1>
-                {
-                    accessoryModels.filter((obj: any, index: number, self: any) =>
-                        index === self.findIndex((t: any) => (
-                            t.accessory === obj.accessory
-                        )) && obj.accessory !== "Tube"
-                    ).map((item: any) => (
-                        <Addon key={item.accessory} label={item.accessory} parentProps={parentProps} addons={addons} setAddons={setAddons} />
-                    ))
-                }
+                <div className='flex flex-col gap-8 max-h-[50vh] p-4 overflow-auto scrollbar-always-visible'>
+                    {
+                        accessoryModels.filter((obj: any, index: number, self: any) =>
+                            index === self.findIndex((t: any) => (
+                                t.accessory === obj.accessory
+                            )) && obj.accessory !== "Tube"
+                        ).map((item: any) => (
+                            <Addon key={item.accessory} label={item.accessory} parentProps={parentProps} addons={addons} setAddons={setAddons} />
+                        ))
+                    }
+                </div>
                 <Button fullWidth variant="contained" onClick={handleAddonComplete}>Done</Button>
             </div>
         )
@@ -40,8 +44,10 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
 
     return (
         <div>
-            <Button className="mb-8" fullWidth variant="contained" onClick={() => setShowAddons(true)}>Get Addons →</Button>
-            <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} addonAccessories={addonAccessories} small />
+            <div className='flex flex-col gap-8 max-h-[65vh] p-4 overflow-auto scrollbar-always-visible'>
+                <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} addonAccessories={addonAccessories} small />
+            </div>
+            <Button className="mt-8" fullWidth variant="contained" onClick={() => setShowAddons(true)}>Get Addons →</Button>
         </div>
     )
 }
