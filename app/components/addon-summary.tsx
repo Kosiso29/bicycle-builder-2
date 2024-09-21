@@ -26,7 +26,7 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
         return (
             <div className="flex flex-col gap-8">
                 <h1 className="text-xl font-bold">Addons</h1>
-                <div className='flex flex-col gap-8 max-h-[50vh] p-4 overflow-auto scrollbar-always-visible'>
+                <div className='flex flex-col gap-8'>
                     {
                         accessoryModels.filter((obj: any, index: number, self: any) =>
                             index === self.findIndex((t: any) => (
@@ -44,7 +44,7 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
 
     return (
         <div>
-            <div className='flex flex-col gap-8 max-h-[65vh] p-4 overflow-auto scrollbar-always-visible'>
+            <div className='flex flex-col gap-8'>
                 <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} addonAccessories={addonAccessories} small />
             </div>
             <Button className="mt-8" fullWidth variant="contained" onClick={() => setShowAddons(true)}>Get Addons →</Button>
