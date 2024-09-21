@@ -25,14 +25,13 @@ import AddonSummary from "./addon-summary";
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
     frameSetDimensions, setFrameSetDimensions, models, presets, modelsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
-    handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories
+    handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories, showBilling, totalPrice, setTotalPrice
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
     const [selectionLevelProps, setSelectionLevelProps] = useState([]);
     const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
     const [rerender, setRerender] = useState(false);
     const [canvasContext, setCanvasContext] = useState(null);
-    const [totalPrice, setTotalPrice] = useState(null);
     const [linkedComponentDimensions, setLinkedComopnentDimensions] = useState({ hasHandleBar: false }); // this does not affect canvasDrawImageProps
     const [tooltips, setTooltips] = useState({
         key_metrics: "---",
@@ -439,7 +438,7 @@ export default function BikeBuilder({
     }, [rerender]);
 
     return (
-        <div className={`${showSummary && "hidden"}`}>
+        <div className={`${showSummary || showBilling ? "hidden" : ""}`}>
             <div className="flex flex-col mr-[22rem] h-screen bg-blue-100 w-[calc(100% - 22rem)] overflow-auto">
                 <div className="flex items-stretch">
                     <div className="flex flex-col justify-between bg-gray-100 w-40 border border-black py-5 px-2">

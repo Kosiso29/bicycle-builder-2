@@ -6,10 +6,11 @@ import { ArrowBackIos } from "@mui/icons-material";
 import SummaryList from "@/app/components/summary-list";
 import AddonSummary from './addon-summary';
 
-export default function Summary({ canvasDrawImageProps, canvasImage, showSummary, setShowSummary, frameSetDimensions, addonAccessories, setAddonAccessories, accessoryModels }) {
+export default function Summary({ canvasDrawImageProps, canvasImage, showSummary, setShowSummary, frameSetDimensions, addonAccessories, setAddonAccessories, accessoryModels, showBilling, setShowBilling }) {
+    // pass in props as parentProps for AddonSummary
     const parentProps = { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories }
 
-    if (!showSummary) {
+    if (!showSummary || showBilling) {
         return null;
     }
 
@@ -30,7 +31,7 @@ export default function Summary({ canvasDrawImageProps, canvasImage, showSummary
                     {/* <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} addonAccessories={addonAccessories} small /> */}
                     <div className="flex justify-end mt-5">
                         {/* <Button variant="text">Add to Favourites</Button> */}
-                        <Button variant="contained">Proceed to Payment</Button>
+                        <Button variant="contained" onClick={() => setShowBilling(true)}>Proceed to Payment</Button>
                     </div>
                 </div>
             </div>
