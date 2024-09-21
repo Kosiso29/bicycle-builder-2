@@ -2,23 +2,35 @@ import ShippingForm from "@/app/components/shipping-form";
 import { ArrowBackIos } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import Image from "next/image";
+import PaymentOptions from "@/app/components/payment-options";
+import { useState } from "react";
 
-export default function BillingAddress({ showBilling, setShowBilling, canvasImage, totalPrice, setTotalPrice }: { showBilling: any, setShowBilling: any, canvasImage: string, totalPrice: any, setTotalPrice: any }) {
+export default function Payment({ showBilling, setShowBilling, canvasImage, totalPrice, setTotalPrice }: { showBilling: any, setShowBilling: any, canvasImage: string, totalPrice: any, setTotalPrice: any }) {
+    const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+
+    const handlePaymentClick = () => {
+        if (!showPaymentOptions) {
+            setShowPaymentOptions(true);
+        }
+    }
+
     if (!showBilling) {
         return null;
     }
 
     return (
-        <div className="bg-[#F0EFEF] pt-4 pb-20">
+        <div className="bg-[#F0EFEF] min-h-screen pt-4 pb-20">
             <div>
                 <div className='mb-4 pl-10'>
                     <Button variant="text" onClick={() => setShowBilling(false)}> <ArrowBackIos /> Back</Button>
                 </div>
-                <h1 className='text-2xl font-bold pl-32 mb-5'>Shipping</h1>
+                <h1 className='text-2xl font-bold pl-32 mb-5'>{ showPaymentOptions ? "Payment" : "Shipping" }</h1>
             </div>
             <div className='flex'>
                 <div className='basis-[50%] max-w-[50%] pl-32'>
-                    <ShippingForm />
+                    {
+                        showPaymentOptions ? <PaymentOptions /> : <ShippingForm setShowPaymentOptions={setShowPaymentOptions} />
+                    }
                 </div>
                 <div className='basis-[50%] flex justify-center'>
                     <div className='flex flex-col gap-6'>
@@ -40,9 +52,12 @@ export default function BillingAddress({ showBilling, setShowBilling, canvasImag
                                 </p>
                             </div>
                         </div>
-                        <div className="flex justify-center mt-5">
-                            <Button variant="contained">Proceed to Payment</Button>
-                        </div>
+                        {
+                            !showPaymentOptions &&
+                            <div className="flex justify-center mt-5">
+                                <Button variant="contained" onClick={handlePaymentClick}>Proceed to Payment</Button>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

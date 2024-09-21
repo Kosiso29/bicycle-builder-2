@@ -4,7 +4,7 @@ import BikeBuilder from "./bike-builder";
 import Summary from "./summary";
 import { ToastContainer } from 'react-toastify';
 import { useState } from "react";
-import BillingAddress from "./billing-address";
+import Payment from "@/app/components/payment";
 import 'react-toastify/dist/ReactToastify.css';
 
 // Types
@@ -72,7 +72,7 @@ export default function Builder({ models, presets, modelsPresets, colors, access
                 showBilling={showBilling}
                 setShowBilling={setShowBilling}
             />
-            <BillingAddress
+            <Payment
                 showBilling={showBilling}
                 setShowBilling={setShowBilling}
                 canvasImage={canvasImage}

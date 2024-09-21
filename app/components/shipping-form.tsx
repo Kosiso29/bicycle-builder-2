@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField, Radio, Button } from "@mui/material";
 
-export default function ShippingForm() {
+export default function ShippingForm({ setShowPaymentOptions }: { setShowPaymentOptions: any }) {
     return (
         <div>
             <h2 className='text-lg font-semibold mb-5'>Shipping Address</h2>
@@ -53,7 +53,7 @@ export default function ShippingForm() {
                     <Radio id='delivery' checked />
                     <label htmlFor="delivery" className='cursor-pointer'>Standard Delivery $58</label>
                 </div>
-                <Button variant="contained" type='submit'>Proceed to Payment</Button>
+                <Button variant="contained" onClick={() => setShowPaymentOptions(true)}>Proceed to Payment</Button>
             </form>
 
         </div>
