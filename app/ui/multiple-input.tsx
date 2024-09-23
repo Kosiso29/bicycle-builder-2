@@ -39,7 +39,7 @@ export default function MultipleInput({ title, name, buttonText, initialItems }:
                     />
                     <button
                         onClick={addItem}
-                        className="px-4 py-2 bg-blue-600 text-white text-sm rounded-r hover:bg-blue-600 focus:outline-none"
+                        className="px-4 py-2 bg-primary text-white text-sm rounded-r hover:bg-primary-hover focus:outline-none"
                     >
                         {buttonText}
                     </button>

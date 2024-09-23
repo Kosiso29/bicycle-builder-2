@@ -138,7 +138,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                 name="is_primary"
                                 type="checkbox"
                                 defaultChecked={model?.is_primary ?? true}
-                                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 accent-primary"
                                 aria-describedby={`is_primary-error`}
                             />
                         </div>
@@ -192,7 +192,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                         </div>
                         <Link
                             href="/dashboard/components/create/brands"
-                            className="flex items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                            className="flex items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                         >
                             Add Brands
                             <AddOutlined className="pointer-events-none" />
@@ -228,7 +228,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                 <TextField name='price' step={0.01} min={0.0} defaultValue={model?.price ?? 0.00} placeholder='Model Color Price' fullWidth />
                                 {
                                     colorItems.length === 0 &&
-                                    <div className='flex gap-2 text-blue-600 items-center mb-4 mt-2'>
+                                    <div className='flex gap-2 text-primary items-center mb-4 mt-2'>
                                         <AddOutlined className='cursor-pointer' fontSize='large' onClick={addModelColors} />
                                     </div>
                                 }
@@ -248,7 +248,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                         <TextField name='model_color_price' value={colorItem.price} onChange={(e: any) => { handleModelColorTextChange(e, index, "price") }} step={0.01} min={0.0} placeholder='Model Color Price' fullWidth />
                                         {
                                             index === (colorItems.length - 1) &&
-                                            <div className='flex gap-2 text-blue-600 items-center mb-4 mt-2'>
+                                            <div className='flex gap-2 text-primary items-center mb-4 mt-2'>
                                                 <AddOutlined className='cursor-pointer' fontSize='large' onClick={addModelColors} />
                                                 <RemoveOutlined className='cursor-pointer' fontSize='large' onClick={removeModelColors} />
                                             </div>
@@ -338,7 +338,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                                         value={model_id + "_" + item[0]}
                                                         disabled={categories[categoryId] === 'Group Set - Drivetrain' ? false : checkExistingModelPreset(item[0])}
                                                         defaultChecked={getPresetCheckState(item[0])}
-                                                        className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                                        className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 accent-primary"
                                                         aria-describedby={`${"preset_" + item[1]}-error`}
                                                     />
                                                 </div>
@@ -347,7 +347,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                     </div>
                                     <Link
                                         href="/dashboard/components/create/builds"
-                                        className="flex items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 p-2"
+                                        className="flex items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary p-2"
                                     >
                                         Add Builds
                                         <AddOutlined className="pointer-events-none" />
@@ -443,7 +443,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                                             name="has_stem"
                                                             type="checkbox"
                                                             defaultChecked={model?.has_stem}
-                                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                                            className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 accent-primary"
                                                             aria-describedby="has_stem-error"
                                                         />
                                                     </div> : null
@@ -462,7 +462,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                                     name="has_handle_bar"
                                                     type="checkbox"
                                                     defaultChecked={model?.has_handle_bar}
-                                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                                                    className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 accent-primary"
                                                     aria-describedby="has_handle_bar-error"
                                                 />
                                             </div>
@@ -557,7 +557,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                     Cancel
                 </Link>
                 <button
-                    className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={() => setLoading(true)}
                     disabled={user.permission > 1}
                 >

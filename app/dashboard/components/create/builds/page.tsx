@@ -60,7 +60,7 @@ const MultiItemTextField = () => {
                                 />
                                 <button
                                     onClick={addItem}
-                                    className="px-4 py-2 bg-blue-600 text-white text-sm rounded-r hover:bg-blue-600 focus:outline-none"
+                                    className="px-4 py-2 bg-primary text-white text-sm rounded-r hover:bg-primary-hover focus:outline-none"
                                 >
                                     Add&nbsp;Build
                                 </button>
@@ -88,7 +88,7 @@ const MultiItemTextField = () => {
                             Cancel
                         </Link>
                         <button
-                            className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={() => setLoading(true)}
                             disabled={user.permission > 1}
                         >

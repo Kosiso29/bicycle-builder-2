@@ -25,7 +25,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
             }} className='hidden sm:block w-[var(--sidebar-width)] fixed z-10 h-screen max-h-screen bg-primary'>
                 <Sidebar models={models} categories={categories} brands={brands} presets={presets} modelsPresets={modelsPresets} colorsPresets={colorsPresets} colors={colors} accessories={accessories} accessoryModels={accessoryModels} buildsAndModelsBuilds={buildsAndModelsBuilds} />
             </form>
-            <div className="max-w-full sm:ml-[var(--sidebar-width)] sm:w-[calc(100%-var(--sidebar-width))] px-5 pb-10 sm:pb-10 sm:px-10 bg-blue-100 min-h-screen">
+            <div className="max-w-full sm:ml-[var(--sidebar-width)] sm:w-[calc(100%-var(--sidebar-width))] px-5 pb-10 sm:pb-10 sm:px-10 bg-back-color min-h-screen">
                 <Topbar users={users} />
                 {children}
             </div>
