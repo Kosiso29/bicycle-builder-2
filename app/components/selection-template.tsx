@@ -324,7 +324,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                     key={label + item.model + index}
                                     disablePadding
                                     sx={{
-                                        backgroundColor: checkSelectedIndex(index) ? "rgb(25, 118, 210)" : "initial",
+                                        backgroundColor: checkSelectedIndex(index) ? "#1A1A1A" : "initial",
                                         color: checkSelectedIndex(index) ? "white" : "initial",
                                         transition: ".2s ease-in",
                                         "&.MuiListItem-root": disableSelections && { cursor: "not-allowed" }
@@ -411,7 +411,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                             key={label + item.model + index}
                                             disablePadding
                                             sx={{
-                                                backgroundColor: tyreTube.selectedIndex === index ? "rgb(25, 118, 210)" : "initial",
+                                                backgroundColor: tyreTube.selectedIndex === index ? "#1A1A1A" : "initial",
                                                 color: tyreTube.selectedIndex === index ? "white" : "initial",
                                                 transition: ".2s ease-in"
                                             }}>

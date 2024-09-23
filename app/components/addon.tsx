@@ -50,7 +50,7 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                                     key={label + item.model + index}
                                     disablePadding
                                     sx={{
-                                        backgroundColor: addons[label]?.selectedIndex === index ? "rgb(25, 118, 210)" : "initial",
+                                        backgroundColor: addons[label]?.selectedIndex === index ? "#1A1A1A" : "initial",
                                         color: addons[label]?.selectedIndex === index ? "white" : "initial",
                                         transition: ".2s ease-in"
                                     }}>
