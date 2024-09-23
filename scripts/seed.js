@@ -313,17 +313,13 @@ async function seedModels(client) {
 async function addColumns(client) {
     try {
         const addColumn = await client.sql`
-        ALTER TABLE models
-        ADD COLUMN linked_handle_bar UUID,
-        ADD CONSTRAINT fk_linked_handle_bar
-            FOREIGN KEY (linked_handle_bar) 
-            REFERENCES models(id) 
-            ON DELETE SET NULL;
+        ALTER TABLE presets
+        ADD COLUMN IF NOT EXISTS image_url VARCHAR(255);
     `
 
-        const modelsTable = await client.sql`SELECT * FROM models;`;
+        const modelsTable = await client.sql`SELECT * FROM presets;`;
 
-        console.log(`Created columns in models`, modelsTable.rows);
+        console.log(`Created columns in presets`, modelsTable.rows);
 
         return {
             addColumn,
