@@ -23,7 +23,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
     }, [openFullTooltips])
 
     return (
-        <div ref={tooltipsRef} className="bg-gray-100 border border-black p-3 pb-5 flex-grow">
+        <div ref={tooltipsRef} className="p-3 pb-5 flex-grow">
             <div className="flex justify-between relative">
                 <div className="max-w-[65%]">
                     <p>{tooltips.model && tooltips.model + " -"}</p>

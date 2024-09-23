@@ -18,7 +18,8 @@ const config: Config = {
         'primary': '#1A1A1A',
         'primary-hover': '#333333',
         'primary-active': '#444444',
-        'secondary': '#FFFFFF'
+        'secondary': '#FFFFFF',
+        'back-color': '#C4C4C480'
       }
       },
       screens: {

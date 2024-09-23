@@ -438,10 +438,10 @@ export default function BikeBuilder({
     }, [rerender]);
 
     return (
-        <div className={`${showSummary || showBilling ? "hidden" : ""}`}>
-            <div className="flex flex-col mr-[22rem] h-screen bg-blue-100 w-[calc(100% - 22rem)] overflow-auto">
+        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color`}>
+            <div className="flex flex-col mr-[22rem] 2xl:mr-[27rem] h-screen w-[calc(100% - 22rem)] overflow-auto">
                 <div className="flex items-stretch">
-                    <div className="flex flex-col justify-between bg-gray-100 w-40 border border-black py-5 px-2">
+                    <div className="flex flex-col justify-between w-40 border py-5 px-2">
                         <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} presets={presets} modelsPresets={modelsPresets} />
                         <div className="flex justify-center">
                             <Link href="/" className="block mt-5">
@@ -455,7 +455,7 @@ export default function BikeBuilder({
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} />
             </div>
-            <div id="selection" className="flex flex-col gap-4 fixed right-0 top-0 h-screen w-[22rem] border-l-8 bg-gray-100 border-gray-400 p-5 pb-0 overflow-auto">
+            <div id="selection" className="flex flex-col gap-4 fixed right-0 top-0 h-[calc(100vh-6vw)] w-[20rem] 2xl:w-[25rem] bg-[#F2F2F2] p-5 pb-0 overflow-auto mt-[2rem] mr-[2rem] mb-[2rem]">
                 <div>
                     <div className="mt-2 mb-3">
                         <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
