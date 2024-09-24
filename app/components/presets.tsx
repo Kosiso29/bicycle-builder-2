@@ -231,13 +231,13 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
             <div className="flex flex-col flex-grow gap-5 max-h-[90%] overflow-y-auto px-3 pt-3">
                 {
                     builds.filter((build: any) => build.name !== "None").map((build: any, index: number) => (
-                        <button key={build.id} className="relative hover:bg-back-color focus-visible:outline-primary p-3 border border-back-color" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.name) }}>
+                        <button key={build.id} className="relative hover:bg-back-color focus-visible:outline-primary py-1 border border-back-color" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.name) }}>
                             <div className="absolute -right-[10px] -top-[10px] w-[20px] h-[20px]">
                                 <NextImage src="/Yellow-Star.png" width={20} height={20} alt='' />
                             </div>
                             {/* <p className="mb-2 text-center text-sm">{build.name}</p> */}
                             <div className="flex justify-center text-transparent w-full">
-                                <NextImage src={build.image_url} style={{ width: "auto", maxWidth: "100%", height: "3rem" }} width={40} height={40} alt='' />
+                                <NextImage src={build.image_url} style={{ width: "auto", maxWidth: "100%", height: "4rem" }} width={40} height={40} alt='' />
                             </div>
                             {loading === index ? <div className='absolute inset-0 flex justify-center items-center bg-[#00000080]'><Loading small /></div> : null}
                         </button>
