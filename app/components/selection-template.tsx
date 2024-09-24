@@ -235,7 +235,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         getLinkedBrandData("linkedStem");
         getLinkedBrandData("linkedHandleBar");
     }, [databaseModels, show]);
-    
+
     useEffect(() => {
         if (disableSelections) {
             resetCanvasComponents();
@@ -307,7 +307,39 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     ))
                 }
             </TextField>
-            {
+            <div className="flex justify-end">
+                <SizeChart size_chart_url={modelData?.size_chart_url} />
+            </div>
+            <div className="flex justify-between gap-[10%] flex-wrap">
+                {
+                    allModels.length > 0 ?
+                        allModels.map((item, index) => (
+                            <button
+                                style={{
+                                    border: checkSelectedIndex(index) ? "2px solid #1A1A1A" : "",
+                                    transition: ".2s ease-in",
+                                }}
+                                disabled={disableSelections}
+                                className="flex flex-col justify-between text-sm gap-2 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color"
+                                onClick={() => {
+                                    if (!checkSelectedIndex(index) && !disableSelections) {
+                                        setSelectedFeatures({});
+                                        handleModelChange(index, item);
+                                        setInitialModelData(item);
+                                    } else {
+                                        handleModelRemove(index);
+                                    }
+                                }}
+                            >
+                                <NextImage src={item.src} style={{ width: "100%", maxWidth: "100%", height: "auto" }} width={40} height={40} alt='' />
+                                <span className="text-left font-bold">{ item.model }</span>
+                                <span>${CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}</span>
+                            </button>
+                        ))
+                        : null
+                }
+            </div>
+            {/* {
                 allModels.length > 0 ?
                     <List
                         sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}
@@ -354,13 +386,12 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                         }
                     </List>
                     : null
-            }
+            } */}
             <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
             {
                 brand === modelData?.brand &&
                 <div>
-                    <SizeChart size_chart_url={modelData?.size_chart_url} />    
                     <div className="mt-4">
                         <SizeSelector
                             values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)}
