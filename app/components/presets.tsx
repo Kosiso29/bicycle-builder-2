@@ -239,7 +239,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
                             <div className="flex justify-center text-transparent w-full">
                                 <NextImage src={build.image_url} style={{ width: "auto", maxWidth: "100%", height: "4rem" }} width={40} height={40} alt='' />
                             </div>
-                            {loading === index ? <div className='absolute inset-0 flex justify-center items-center bg-[#00000080]'><Loading small /></div> : null}
+                            {loading === index ? <div className='absolute inset-0 flex justify-center items-center bg-[#00000040]'><Loading small /></div> : null}
                         </button>
                     ))
                 }
