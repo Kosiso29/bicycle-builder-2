@@ -95,14 +95,14 @@ export async function createBuildsAndModelsBuilds(formData: FormData) {
         formDataObject[key] = value;
     });
 
-    const { name } = formDataObject;
+    const { name, image_url } = formDataObject;
     const model_ids: any = formData.getAll('model[]');
     const color_ids: any = formData.getAll('color[]');
 
     try {
         await sql`
-            INSERT INTO presets (name)
-            VALUES (${name})
+            INSERT INTO presets (name, image_url)
+            VALUES (${name}, ${image_url})
         `;
 
         const selectedBuild: any = await sql`
@@ -112,15 +112,19 @@ export async function createBuildsAndModelsBuilds(formData: FormData) {
         const build_id = selectedBuild.rows[0].id;
 
         for (const model_id of model_ids) {
-            await sql`
-                INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${build_id}::uuid);
-            `
+            if (model_id) {
+                await sql`
+                    INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${build_id}::uuid);
+                `
+            }
         }
 
         for (const color_id of color_ids) {
-            await sql`
-                INSERT INTO colors_presets (color_id, preset_id) VALUES (${color_id}::uuid, ${build_id}::uuid);
-            `
+            if (color_id) {
+                await sql`
+                    INSERT INTO colors_presets (color_id, preset_id) VALUES (${color_id}::uuid, ${build_id}::uuid);
+                `
+            }
         }
         
     } catch (error) {
@@ -307,14 +311,14 @@ export async function updateBuildsAndModelsBuilds(id: string, formData: any) {
         formDataObject[key] = value;
     });
 
-    const { name } = formDataObject;
+    const { name, image_url } = formDataObject;
     const model_ids: any = formData.getAll('model[]');
     const color_ids: any = formData.getAll('color[]');
 
     try {
         await sql`
             UPDATE presets
-            SET name = ${name}
+            SET name = ${name}, image_url = ${image_url}
             WHERE id = ${id};
         `;
 
@@ -324,9 +328,11 @@ export async function updateBuildsAndModelsBuilds(id: string, formData: any) {
         `
 
         for (const model_id of model_ids) {
-            await sql`
-                INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${id}::uuid);
-            `
+            if (model_id) {
+                await sql`
+                    INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${id}::uuid);
+                `
+            }
         }
 
         // Delete existing presets mapping for the current color so that new ones can be used to overwrite them (this is only required in colors update)
@@ -335,9 +341,11 @@ export async function updateBuildsAndModelsBuilds(id: string, formData: any) {
         `
 
         for (const color_id of color_ids) {
-            await sql`
-                INSERT INTO colors_presets (color_id, preset_id) VALUES (${color_id}::uuid, ${id}::uuid);
-            `
+            if (color_id) {
+                await sql`
+                    INSERT INTO colors_presets (color_id, preset_id) VALUES (${color_id}::uuid, ${id}::uuid);
+                `
+            }
         }
 
         revalidatePath('/dashboard/components');

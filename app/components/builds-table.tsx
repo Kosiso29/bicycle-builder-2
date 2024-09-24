@@ -79,6 +79,9 @@ export default function AccessoriesTable({ builds }) {
                                 <th scope="col" className="px-3 py-5 font-medium">
                                     Saddle
                                 </th>
+                                <th scope="col" className="px-3 py-5 font-medium">
+                                    Image
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="bg-white max-w-full">
@@ -87,7 +90,7 @@ export default function AccessoriesTable({ builds }) {
                                     key={build[0].id}
                                     className="w-full max-w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                                 >
-                                    <td className="whitespace-nowrap px-3 py-3">
+                                    <td className="px-3 py-3">
                                         {build[0].name}
                                     </td>
                                     <td className="px-3 py-3">
@@ -137,6 +140,11 @@ export default function AccessoriesTable({ builds }) {
                                             };
                                             return acc;
                                         }, "") || "---"}
+                                    </td>
+                                    <td className="px-3 py-3">
+                                        <div className="relative my-[1px] w-auto h-12">
+                                            {build[0].image_url ? <Image src={build[0].image_url} sizes="100%" fill style={{ objectFit: "contain" }} alt={build[0].name} /> : <div className="flex items-center h-full">---</div>}
+                                        </div>
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
                                         <div className="flex justify-center gap-3">

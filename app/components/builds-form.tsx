@@ -20,6 +20,7 @@ export default function BuildForm({ build_id }: { build_id?: string }) {
     const [loading, setLoading] = useState(false);
     const builds = buildsAndModelsBuilds?.filter((buildsAndModelsBuild: any) => buildsAndModelsBuild[0].id === build_id)[0];
     const buildsName = builds?.[0].name
+    const buildsImage = builds?.[0].image_url
     const buildsModel = builds?.[1].reduce((acc: any, item: any) => {
         acc[item.category] = item.id;
         return acc;
@@ -72,8 +73,13 @@ export default function BuildForm({ build_id }: { build_id?: string }) {
         <form aria-describedby="form-error" action={handleFormSubmission}>
             <div className="rounded-md bg-gray-100 p-4 md:p-6">
 
-                {/* build name */}
-                <TextField name='name' type='text' defaultValue={buildsName} label='Build name' placeholder='Build name' />
+                <div className="flex gap-5">
+                    {/* build name */}
+                    <TextField fullWidth name='name' type='text' defaultValue={buildsName} label='Build name' placeholder='Build name' />
+
+                    {/* build name */}
+                    <TextField fullWidth name='image_url' type='text' defaultValue={buildsImage} label='Build image' placeholder='Build image' />
+                </div>
 
                 <div className="flex gap-5">
                     {/* Frame Set */}

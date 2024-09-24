@@ -225,8 +225,6 @@ export async function fetchBuilds() {
 
         const presets = data.rows;
 
-        console.log('builds rows', presets)
-
         return presets;
     } catch (error) {
         console.error('Database Error:', error);
