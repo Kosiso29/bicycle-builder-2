@@ -24,7 +24,7 @@ import AddonSummary from "./addon-summary";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
-    frameSetDimensions, setFrameSetDimensions, models, presets, modelsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
+    frameSetDimensions, setFrameSetDimensions, models, builds, modelsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
     handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories, showBilling, totalPrice, setTotalPrice
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
@@ -438,10 +438,10 @@ export default function BikeBuilder({
         <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color fade-in-animation`}>
             <div className="flex flex-col mr-[22rem] 2xl:mr-[25rem] h-screen w-[calc(100% - 22rem)] overflow-auto">
                 <div className="flex items-stretch">
-                    <div className="flex flex-col justify-between w-40 border py-5 px-2">
-                        <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} presets={presets} modelsPresets={modelsPresets} />
+                    <div className="flex flex-col w-40 border py-5 px-2">
+                        <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} builds={builds} modelsPresets={modelsPresets} />
                         <div className="flex justify-center">
-                            <Link href="/" className="block mt-5">
+                            <Link href="/" className="block mt-2">
                                 <Button size="small" variant="outlined">Exit Builder</Button>
                             </Link>
                         </div>

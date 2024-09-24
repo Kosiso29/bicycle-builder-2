@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@mui/material";
 import Loading from "@/app/components/loading";
+import NextImage from "next/image";
 import { useEffect, useState } from "react";
 import { positionCanvasImages } from "../utils/position-canvas-images";
 import { updateTooltips } from "../utils/update-tooltips";
 
-export default function Presets({ parentProps, setFrameSetDimensions, presets, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, presets: any, modelsPresets: any }) {
+export default function Presets({ parentProps, setFrameSetDimensions, builds, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, builds: any, modelsPresets: any }) {
     const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips } = parentProps;
     const [loading, setLoading] = useState(0.5);
     const [multipleImages, setMultipleImages] = useState([]);
@@ -225,19 +226,24 @@ export default function Presets({ parentProps, setFrameSetDimensions, presets, m
     }, [uniqueImagePresetsProps])
 
     return (
-        <div className="flex flex-col gap-5">
-            <h1 className="font-bold text-2xl text-center">Builds</h1>
-            {
-                Object.values(presets).filter((item: any) => item !== "None").map((item: any, index: number) => (
-                    <div key={item}>
-                        <p className="mb-2 text-center">{item}</p>
-                        <div className="flex justify-center items-center">
-                            <Button size="small" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(item)} variant="contained" onClick={() => { setLoading(index); getPresetComponents(item) }}>Apply Build</Button>
-                        </div>
-                        {loading === index ? <div className='self-center mt-2'><Loading small /></div> : null}
-                    </div>
-                ))
-            }
+        <div className="flex flex-col flex-grow gap-2">
+            <h1 className="font-bold text-2xl text-center">Bike Ideas</h1>
+            <div className="flex flex-col flex-grow gap-5 max-h-[90%] overflow-y-auto px-3 pt-3">
+                {
+                    builds.filter((build: any) => build.name !== "None").map((build: any, index: number) => (
+                        <button key={build.id} className="relative hover:bg-back-color p-3 border border-back-color" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.name) }}>
+                            <div className="absolute -right-[10px] -top-[10px] w-[20px] h-[20px]">
+                                <NextImage src="/Yellow-Star.png" width={20} height={20} alt='' />
+                            </div>
+                            {/* <p className="mb-2 text-center text-sm">{build.name}</p> */}
+                            <div className="flex justify-center text-transparent w-full">
+                                <NextImage src={build.image_url} style={{ width: "auto", maxWidth: "100%", height: "3rem" }} width={40} height={40} alt='' />
+                            </div>
+                            {loading === index ? <div className='absolute inset-0 flex justify-center items-center bg-[#00000080]'><Loading small /></div> : null}
+                        </button>
+                    ))
+                }
+            </div>
         </div>
     )
 }
