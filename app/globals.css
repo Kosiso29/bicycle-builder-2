@@ -30,6 +30,26 @@
     }
 }
 
+@-webkit-keyframes fade-in {
+    0% {
+        opacity: 0
+    }
+
+    100% {
+        opacity: 1
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0
+    }
+
+    100% {
+        opacity: 1
+    }
+}
+
 html {
     /* For Firefox */
     scrollbar-width: thin;
@@ -87,4 +107,8 @@ button.MuiButton-containedPrimary {
 
 .slide-in-animation {
     animation: slide-in-left 500ms ease-out;
+}
+
+.fade-in-animation {
+    animation: fade-in 500ms ease-out;
 }

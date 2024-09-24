@@ -435,7 +435,7 @@ export default function BikeBuilder({
     }, [rerender]);
 
     return (
-        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color`}>
+        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color fade-in-animation`}>
             <div className="flex flex-col mr-[22rem] 2xl:mr-[25rem] h-screen w-[calc(100% - 22rem)] overflow-auto">
                 <div className="flex items-stretch">
                     <div className="flex flex-col justify-between w-40 border py-5 px-2">
