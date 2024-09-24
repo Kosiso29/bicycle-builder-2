@@ -10,7 +10,9 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
         setAddons((prevState: any) => ({
             ...prevState, [label]: { ...prevState[label], selectedIndex: null }
         }));
-        setRerender((prevState: any) => !prevState);
+        if (setRerender) {
+            setRerender((prevState: any) => !prevState);
+        }
     }
 
     useEffect(() => {
@@ -33,7 +35,33 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                     ))
                 }
             </TextField>
-            {
+                <div className="flex justify-between gap-2 flex-wrap">
+                    {
+                        addons[label]?.models?.length > 0 ?
+                            addons[label]?.models.map((item: any, index: number) => (
+                                <button
+                                    style={{
+                                        border: addons[label]?.selectedIndex === index ? "2px solid #1A1A1A" : "",
+                                        transition: ".2s ease-in",
+                                    }}
+                                    className="flex flex-col justify-between text-sm gap-2 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color"
+                                    onClick={() => {
+                                        if (addons[label]?.selectedIndex !== index) {
+                                            setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: index, model: item.model, price: item.price } }));
+                                        } else {
+                                            handleAddonRemove();
+                                        }
+                                    }}
+                                >
+                                    {/* {item.src && <NextImage src={item.src} style={{ width: "100%", maxWidth: "100%", height: "auto" }} width={40} height={40} alt='' />} */}
+                                    <span className="text-left font-bold">{ item.model }</span>
+                                    <span>${CurrencyFormatter(item.price)}</span>
+                                </button>
+                            ))
+                            : null
+                    }
+                </div>
+            {/* {
                 addons[label]?.models?.length > 0 ?
                     <List
                         sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}
@@ -73,7 +101,7 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                         }
                     </List>
                     : null
-            }
+            } */}
         </div>
     )
 }

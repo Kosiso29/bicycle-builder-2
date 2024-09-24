@@ -425,7 +425,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                             ))
                         }
                     </TextField>
-                    <div className="flex justify-between gap-[10%] flex-wrap">
+                    <div className="flex justify-between gap-2 flex-wrap">
                         {
                             tyreTube.tubeModels?.length > 0 ?
                                 tyreTube.tubeModels.map((item, index) => (
@@ -434,7 +434,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                             border: tyreTube.selectedIndex === index ? "2px solid #1A1A1A" : "",
                                             transition: ".2s ease-in",
                                         }}
-                                        disabled={disableSelections}
                                         className="flex flex-col justify-between text-sm gap-2 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color"
                                         onClick={() => {
                                             if (tyreTube.selectedIndex !== index) {
