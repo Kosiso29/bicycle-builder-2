@@ -310,7 +310,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             <div className="flex justify-end">
                 <SizeChart size_chart_url={modelData?.size_chart_url} />
             </div>
-            <div className="flex justify-between gap-[10%] flex-wrap">
+            <div className="flex justify-between gap-2 flex-wrap">
                 {
                     allModels.length > 0 ?
                         allModels.map((item, index) => (
@@ -416,7 +416,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
             {
                 identifier === "tire" && modelData &&
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 pb-10">
                     <TextField select size="small" value={tyreTube.tubeBrand} onChange={(e) => { setTyreTube(prevState => ({ ...prevState, tube: e.target.value === "Tubeless" ? "Tubeless" : "Tube", tubeBrand: e.target.value, tubeModels: e.target.value === "Tubeless" ? null : prevState.allTubeData.filter(item => item.brand === e.target.value), selectedIndex: null })) }} label="Tube/Tubeless">
                         <MenuItem value={"Tubeless"}>Tubeless</MenuItem>
                         {
@@ -425,7 +425,40 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                             ))
                         }
                     </TextField>
-                    {
+                    <div className="flex justify-between gap-[10%] flex-wrap">
+                        {
+                            tyreTube.tubeModels?.length > 0 ?
+                                tyreTube.tubeModels.map((item, index) => (
+                                    <button
+                                        style={{
+                                            border: tyreTube.selectedIndex === index ? "2px solid #1A1A1A" : "",
+                                            transition: ".2s ease-in",
+                                        }}
+                                        disabled={disableSelections}
+                                        className="flex flex-col justify-between text-sm gap-2 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color"
+                                        onClick={() => {
+                                            if (tyreTube.selectedIndex !== index) {
+                                                setTyreTube(prevState => ({ ...prevState, selectedIndex: index }));
+                                                setAddonAccessories(prevState => ({ ...prevState, ["Tube"]: { brand: item.brand, model: item.model, price: item.price } }))
+                                            } else {
+                                                setTyreTube(prevState => ({ ...prevState, selectedIndex: tyreTube.tubeModels.length }));
+                                                setAddonAccessories(prevState => {
+                                                    const { Tube, ...restProps } = prevState;
+                                                    return { ...restProps };
+                                                })
+                                                setRerender(prevState => !prevState);
+                                            }
+                                        }}
+                                    >
+                                        {item.src && <NextImage src={item.src} style={{ width: "100%", maxWidth: "100%", height: "auto" }} width={40} height={40} alt='' />}
+                                        <span className="text-left font-bold">{ item.model }</span>
+                                        <span>${CurrencyFormatter(item.price)}</span>
+                                    </button>
+                                ))
+                                : null
+                        }
+                    </div>
+                    {/* {
                         tyreTube.tubeModels?.length > 0 ?
                             <List
                                 sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}
@@ -476,7 +509,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                 }
                             </List>
                             : null
-                    }
+                    } */}
                 </div>
             }
         </div>
