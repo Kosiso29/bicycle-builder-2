@@ -9,6 +9,7 @@ export const componentsSlice = createSlice({
         categories: [],
         brands: [],
         presets: [],
+        builds: [],
         modelsPresets: [],
         colorsPresets: [],
         colors: [],
@@ -39,6 +40,12 @@ export const componentsSlice = createSlice({
             const presets = actions.payload;
             if (presets) {
                 state.presets = presets;
+            }
+        },
+        updateBuilds(state, actions) {
+            const builds = actions.payload;
+            if (builds) {
+                state.builds = builds;
             }
         },
         updateModelsPresets(state, actions) {

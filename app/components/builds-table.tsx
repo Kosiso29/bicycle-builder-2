@@ -84,14 +84,14 @@ export default function AccessoriesTable({ builds }) {
                         <tbody className="bg-white max-w-full">
                             {builds?.length > 0 && builds?.map((build) => (
                                 <tr
-                                    key={build[0]}
+                                    key={build[0].id}
                                     className="w-full max-w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                                 >
                                     <td className="whitespace-nowrap px-3 py-3">
-                                        {build[1]}
+                                        {build[0].name}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[2].reduce((acc, item) => {
+                                        {build[1].reduce((acc, item) => {
                                             if (item.category === "Frame Set") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -99,7 +99,7 @@ export default function AccessoriesTable({ builds }) {
                                         }, "") || "---"}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[2].reduce((acc, item) => {
+                                        {build[1].reduce((acc, item) => {
                                             if (item.category === "Front Wheel Set") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -107,7 +107,7 @@ export default function AccessoriesTable({ builds }) {
                                         }, "") || "---"}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[2].reduce((acc, item) => {
+                                        {build[1].reduce((acc, item) => {
                                             if (item.category === "Stem") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -115,7 +115,7 @@ export default function AccessoriesTable({ builds }) {
                                         }, "") || "---"}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[2].reduce((acc, item) => {
+                                        {build[1].reduce((acc, item) => {
                                             if (item.category === "Handle Bar") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -123,7 +123,7 @@ export default function AccessoriesTable({ builds }) {
                                         }, "") || "---"}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[2].reduce((acc, item) => {
+                                        {build[1].reduce((acc, item) => {
                                             if (item.category === "Group Set - Drivetrain") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -131,7 +131,7 @@ export default function AccessoriesTable({ builds }) {
                                         }, "") || "---"}
                                     </td>
                                     <td className="px-3 py-3">
-                                        {build[2].reduce((acc, item) => {
+                                        {build[1].reduce((acc, item) => {
                                             if (item.category === "Saddle") {
                                                 return item.brand + " - " + item.model;
                                             };
@@ -141,18 +141,18 @@ export default function AccessoriesTable({ builds }) {
                                     <td className="whitespace-nowrap px-3 py-3">
                                         <div className="flex justify-center gap-3">
                                             <Link
-                                                href={`/dashboard/components/builds/${build[0]}/edit`}
+                                                href={`/dashboard/components/builds/${build[0].id}/edit`}
                                                 className="rounded-md border p-2 hover:bg-gray-100"
                                             >
                                                 <EditOutlined className="w-5" />
                                             </Link>
                                             <button
                                                 className="rounded-md border p-2 hover:bg-gray-100 cursor-pointer disabled:opacity-50 disabled:bg-transparent disabled:cursor-not-allowed"
-                                                onClick={() => handleDelete(build[0])}
+                                                onClick={() => handleDelete(build[0].id)}
                                                 disabled={user.permission > 1}
                                             >
                                                 {
-                                                    loadingForDelete && (build[0] === deleteId) ? <div className="self-center justify-self-end"><Loading small /></div> : <DeleteOutline className="w-5" />
+                                                    loadingForDelete && (build[0].id === deleteId) ? <div className="self-center justify-self-end"><Loading small /></div> : <DeleteOutline className="w-5" />
                                                 }
                                             </button>
                                         </div>

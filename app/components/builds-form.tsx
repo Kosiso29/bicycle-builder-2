@@ -18,9 +18,9 @@ export default function BuildForm({ build_id }: { build_id?: string }) {
     const colorsPresets = useSelector((state: any) => state.componentsReducer.colorsPresets);
     const user = useSelector((state: any) => state.authReducer.user);
     const [loading, setLoading] = useState(false);
-    const builds = buildsAndModelsBuilds?.filter((buildsAndModelsBuild: any) => buildsAndModelsBuild[0] === build_id)[0];
-    const buildsName = builds?.[1]
-    const buildsModel = builds?.[2].reduce((acc: any, item: any) => {
+    const builds = buildsAndModelsBuilds?.filter((buildsAndModelsBuild: any) => buildsAndModelsBuild[0].id === build_id)[0];
+    const buildsName = builds?.[0].name
+    const buildsModel = builds?.[1].reduce((acc: any, item: any) => {
         acc[item.category] = item.id;
         return acc;
     }, {});

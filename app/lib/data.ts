@@ -217,6 +217,23 @@ export async function fetchPresets() {
     }
 }
 
+export async function fetchBuilds() {
+    noStore();
+    try {
+        const data = await sql`
+        SELECT * FROM presets;`;
+
+        const presets = data.rows;
+
+        console.log('builds rows', presets)
+
+        return presets;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the presets.');
+    }
+}
+
 export async function fetchColors() {
     noStore();
     try {
@@ -295,9 +312,9 @@ export async function fetchUsers() {
 
 export async function fetchBuildsAndModelsBuilds(builds: any, modelsPresets: any, models: any) {
     try {
-        return Object.entries(builds).filter((build: any) => build[1] !== "None").map((build: any) => {
-            const filteredModelsPresets = modelsPresets.filter((modelPreset: any) => modelPreset.preset_id === build[0]);
-            return [ build[0], build[1], filteredModelsPresets.map((filteredModelsPreset: any) => {
+        return builds.filter((build: any) => build.name !== "None").map((build: any) => {
+            const filteredModelsPresets = modelsPresets.filter((modelPreset: any) => modelPreset.preset_id === build.id);
+            return [ build, filteredModelsPresets.map((filteredModelsPreset: any) => {
                     const filteredModel = models.filter((model: any) => model.id === filteredModelsPreset.model_id);
                     return { brand: filteredModel[0].brand, model: filteredModel[0].model, category: filteredModel[0].category, id: filteredModel[0].id }
                 })
