@@ -231,7 +231,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
             <div className="flex flex-col flex-grow gap-5 max-h-[90%] overflow-y-auto px-3 pt-3">
                 {
                     builds.filter((build: any) => build.name !== "None").map((build: any, index: number) => (
-                        <button key={build.id} className="relative hover:bg-back-color p-3 border border-back-color" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.name) }}>
+                        <button key={build.id} className="relative hover:bg-back-color focus-visible:outline-primary p-3 border border-back-color" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.name) }}>
                             <div className="absolute -right-[10px] -top-[10px] w-[20px] h-[20px]">
                                 <NextImage src="/Yellow-Star.png" width={20} height={20} alt='' />
                             </div>
