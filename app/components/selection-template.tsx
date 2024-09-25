@@ -328,7 +328,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         handleModelRemove(index);
                                     }
                                 }}
-                                src={item.src}
+                                src={item.previewSrc || item.src}
                                 model={item.model}
                                 price={CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}
                             />
@@ -442,7 +442,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                                 setRerender(prevState => !prevState);
                                             }
                                         }}
-                                        src={item.src}
+                                        src={item.previewSrc || item.src}
                                         model={item.model}
                                         price={CurrencyFormatter(item.price)}
                                     />

@@ -50,7 +50,7 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                                             handleAddonRemove();
                                         }
                                     }}
-                                    src={item.src}
+                                    src={item.previewSrc || item.src}
                                     model={item.model}
                                     price={CurrencyFormatter(item.price)}
                                 />
