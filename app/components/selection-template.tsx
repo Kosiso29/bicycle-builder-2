@@ -13,6 +13,7 @@ import { positionCanvasImages } from "@/app/utils/position-canvas-images";
 import { updateTooltips } from "@/app/utils/update-tooltips";
 import SizeSelector from "@/app/ui/toggle-button";
 import SizeChart from "./size_chart";
+import ModelButton from "@/app/ui/model-button";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
@@ -314,13 +315,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 {
                     allModels.length > 0 ?
                         allModels.map((item, index) => (
-                            <button
-                                style={{
-                                    border: checkSelectedIndex(index) ? "2px solid #1A1A1A" : "",
-                                    transition: ".2s ease-in",
-                                }}
+                            <ModelButton
+                                key={item.model + index}
+                                selected={checkSelectedIndex(index)}
                                 disabled={disableSelections}
-                                className="flex flex-col justify-between text-sm gap-2 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color"
                                 onClick={() => {
                                     if (!checkSelectedIndex(index) && !disableSelections) {
                                         setSelectedFeatures({});
@@ -330,11 +328,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         handleModelRemove(index);
                                     }
                                 }}
-                            >
-                                <NextImage src={item.src} style={{ width: "100%", maxWidth: "100%", height: "auto" }} width={40} height={40} alt='' />
-                                <span className="text-left font-bold">{ item.model }</span>
-                                <span>${CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}</span>
-                            </button>
+                                src={item.src}
+                                model={item.model}
+                                price={CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}
+                            />
                         ))
                         : null
                 }
@@ -430,6 +427,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                             tyreTube.tubeModels?.length > 0 ?
                                 tyreTube.tubeModels.map((item, index) => (
                                     <button
+                                        key={item.model + index}
                                         style={{
                                             border: tyreTube.selectedIndex === index ? "2px solid #1A1A1A" : "",
                                             transition: ".2s ease-in",

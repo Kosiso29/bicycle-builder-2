@@ -40,6 +40,7 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                         addons[label]?.models?.length > 0 ?
                             addons[label]?.models.map((item: any, index: number) => (
                                 <button
+                                    key={item.model + index}
                                     style={{
                                         border: addons[label]?.selectedIndex === index ? "2px solid #1A1A1A" : "",
                                         transition: ".2s ease-in",
