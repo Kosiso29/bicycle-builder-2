@@ -313,13 +313,13 @@ async function seedModels(client) {
 async function addColumns(client) {
     try {
         const addColumn = await client.sql`
-        ALTER TABLE presets
-        ADD COLUMN IF NOT EXISTS image_url VARCHAR(255);
+        ALTER TABLE accessory_models
+        ADD COLUMN IF NOT EXISTS preview_image_url VARCHAR(255);
     `
 
-        const modelsTable = await client.sql`SELECT * FROM presets;`;
+        const modelsTable = await client.sql`SELECT * FROM accessory_models;`;
 
-        console.log(`Created columns in presets`, modelsTable.rows);
+        console.log(`Created columns in models`, modelsTable.rows);
 
         return {
             addColumn,

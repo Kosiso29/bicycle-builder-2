@@ -200,8 +200,12 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                     </div>
                 </div>
 
-                {/* Model */}
-                <TextField name='model' type='text' defaultValue={model?.name} label='Model' placeholder='Model name' />
+                <div className='flex gap-5'>
+                    {/* Model */}
+                    <TextField name='model' type='text' defaultValue={model?.name} label='Model' placeholder='Model name' fullWidth />
+                    {/* Preview Image URL */}
+                    <TextField name='preview_image_url' type='text' defaultValue={model?.preview_image_url} label='Preview Image URL' fullWidth />
+                </div>
 
                 <div className='flex gap-5'>
                     {/* Actual width */}

@@ -15,6 +15,7 @@ export async function fetchModels(): Promise<Models> {
             c2.name AS "canvasLayerLevel",
             m.id,
             m.image_url AS src,
+            m.preview_image_url AS "previewSrc",
             m.actual_width AS "actualWidth",
             m.has_stem AS "hasStem",
             m.has_handle_bar AS "hasHandleBar",

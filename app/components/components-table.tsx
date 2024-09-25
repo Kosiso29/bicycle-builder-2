@@ -147,6 +147,9 @@ export default function Table({ models, preset }) {
                                 <th scope="col" className="px-3 py-5 font-medium">
                                     <span className="inline-flex justify-center w-full">Price</span>
                                 </th>
+                                <th scope="col" className="px-3 py-5 font-medium">
+                                    <span className="inline-flex justify-center w-full">Preview image</span>
+                                </th>
                                 <th scope="col" className="relative px-3 py-5 font-medium">
                                     <span className="sr-only">Edit</span>
                                 </th>
@@ -177,6 +180,11 @@ export default function Table({ models, preset }) {
                                     </td>
                                     <td className="px-3 py-3">
                                         <span className="inline-flex justify-center w-full">{model.price}</span>
+                                    </td>
+                                    <td className="relative">
+                                        <div className="relative my-[1px] w-auto max-w-20 h-12">
+                                            {model.previewSrc ? <Image src={model.previewSrc} sizes="100%" fill style={{ objectFit: "contain" }} alt={model.model} /> : <div className="flex justify-center items-center h-full">---</div>}
+                                        </div>
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
                                         <div className="flex justify-center gap-3">
