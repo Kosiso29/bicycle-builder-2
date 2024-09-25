@@ -9,7 +9,7 @@ export default function ModelButton({ src, model, price, selected, style, disabl
             className="flex flex-col justify-between text-sm gap-2 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color"
             onClick={onClick}
         >
-            <NextImage src={src} style={{ width: "100%", maxWidth: "100%", height: "auto" }} width={40} height={40} alt='' />
+            <NextImage src={src} style={{ width: "100%", maxWidth: "100%", height: "auto" }} width={100} height={100} alt='' />
             <span className="text-left font-bold">{ model }</span>
             <span>${price}</span>
         </button>
