@@ -68,6 +68,9 @@ export default function AccessoriesTable({ models }) {
                                     Model name
                                 </th>
                                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                                    <span className="inline-flex justify-center w-full">Preview image</span>
+                                </th>
+                                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
                                     Price
                                 </th>
                                 <th scope="col" className="relative px-3 py-5 font-medium">
@@ -89,6 +92,11 @@ export default function AccessoriesTable({ models }) {
                                     </td>
                                     <td className="py-3 pl-6 pr-3 max-w-48">
                                         {model.model}
+                                    </td>
+                                    <td className="relative">
+                                        <div className="flex justify-center items-center relative my-[1px] w-auto h-12">
+                                            {model.previewSrc ? <Image src={model.previewSrc} sizes="100%" fill style={{ display: "block", justifySelf: "center", objectFit: "contain", maxWidth: "5rem" }} alt={model.model} /> : <div className="flex justify-center items-center h-full">---</div>}
+                                        </div>
                                     </td>
                                     <td className="py-3 pl-6 pr-3 max-w-48">
                                         {model.price ?? "0.00"}

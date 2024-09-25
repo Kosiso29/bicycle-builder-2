@@ -79,6 +79,7 @@ export async function fetchAccessoryModels(): Promise<Models> {
             a.name AS accessory,
             b.name AS brand,
             am.name AS model,
+            am.preview_image_url AS "previewSrc",
             am.id,
             am.price
         FROM
