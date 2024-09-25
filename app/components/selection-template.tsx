@@ -426,13 +426,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                         {
                             tyreTube.tubeModels?.length > 0 ?
                                 tyreTube.tubeModels.map((item, index) => (
-                                    <button
+                                    <ModelButton
                                         key={item.model + index}
-                                        style={{
-                                            border: tyreTube.selectedIndex === index ? "2px solid #1A1A1A" : "",
-                                            transition: ".2s ease-in",
-                                        }}
-                                        className="flex flex-col justify-between text-sm gap-2 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color"
+                                        selected={tyreTube.selectedIndex === index}
                                         onClick={() => {
                                             if (tyreTube.selectedIndex !== index) {
                                                 setTyreTube(prevState => ({ ...prevState, selectedIndex: index }));
@@ -446,11 +442,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                                 setRerender(prevState => !prevState);
                                             }
                                         }}
-                                    >
-                                        {item.src && <NextImage src={item.src} style={{ width: "100%", maxWidth: "100%", height: "auto" }} width={40} height={40} alt='' />}
-                                        <span className="text-left font-bold">{ item.model }</span>
-                                        <span>${CurrencyFormatter(item.price)}</span>
-                                    </button>
+                                        src={item.src}
+                                        model={item.model}
+                                        price={CurrencyFormatter(item.price)}
+                                    />
                                 ))
                                 : null
                         }

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
 import { CloseOutlined } from "@mui/icons-material";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
+import ModelButton from "@/app/ui/model-button";
 
 export default function Addon({ label, parentProps, addons, setAddons }: { label: string, parentProps: any, addons: any, setAddons: any }) {
     const { setRerender, accessoryModels } = parentProps;
@@ -39,13 +40,9 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                     {
                         addons[label]?.models?.length > 0 ?
                             addons[label]?.models.map((item: any, index: number) => (
-                                <button
+                                <ModelButton
                                     key={item.model + index}
-                                    style={{
-                                        border: addons[label]?.selectedIndex === index ? "2px solid #1A1A1A" : "",
-                                        transition: ".2s ease-in",
-                                    }}
-                                    className="flex flex-col justify-between text-sm gap-2 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color"
+                                    selected={addons[label]?.selectedIndex === index}
                                     onClick={() => {
                                         if (addons[label]?.selectedIndex !== index) {
                                             setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: index, model: item.model, price: item.price } }));
@@ -53,11 +50,10 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                                             handleAddonRemove();
                                         }
                                     }}
-                                >
-                                    {/* {item.src && <NextImage src={item.src} style={{ width: "100%", maxWidth: "100%", height: "auto" }} width={40} height={40} alt='' />} */}
-                                    <span className="text-left font-bold">{ item.model }</span>
-                                    <span>${CurrencyFormatter(item.price)}</span>
-                                </button>
+                                    src={item.src}
+                                    model={item.model}
+                                    price={CurrencyFormatter(item.price)}
+                                />
                             ))
                             : null
                     }
