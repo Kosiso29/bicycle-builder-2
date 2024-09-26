@@ -11,7 +11,7 @@ export default function ModelButton({ src, model, price, selected, style, disabl
             onClick={onClick}
         >
             {/* <InfoOutlined fontSize="small" className="absolute right-1 top-1 text-[#545454]" /> */}
-            {src && <NextImage src={src} style={{ width: "80%", maxWidth: "80%", height: "auto" }} width={100} height={100} alt='' />}
+            {src && <NextImage src={src} style={{ width: "80%", maxWidth: "80%", height: "auto" }} width={70} height={70} alt='' />}
             <span className="text-left font-bold">{ model }</span>
             <span>${price}</span>
         </button>
