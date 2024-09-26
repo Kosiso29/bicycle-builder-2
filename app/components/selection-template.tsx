@@ -14,6 +14,7 @@ import { updateTooltips } from "@/app/utils/update-tooltips";
 import SizeSelector from "@/app/ui/toggle-button";
 import SizeChart from "./size_chart";
 import ModelButton from "@/app/ui/model-button";
+import KeyMetrics from "@/app/components/key-metrics";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
@@ -36,6 +37,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [selectedFeatures, setSelectedFeatures] = useState({});
     const [tyreTube, setTyreTube] = useState({});
     const [disableSelections, setDisableSelections] = useState(false);
+    const [modelInfo, setModelInfo] = useState(null);
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
@@ -331,6 +333,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                 src={item.previewSrc || item.src}
                                 model={item.model}
                                 price={CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}
+                                modelInfo={item.key_metrics}
+                                setModelInfo={setModelInfo}
                             />
                         ))
                         : null
@@ -504,6 +508,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     } */}
                 </div>
             }
+            {modelInfo && <KeyMetrics modelInfo={modelInfo} setModalInfo={setModelInfo} /> }
         </div>
     )
 }
