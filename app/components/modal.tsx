@@ -14,7 +14,7 @@ export default function Modal({ src, setShowModal }: { src: string, setShowModal
                 <Image className='!block !static !min-h-[50vh] !w-auto !h-full !max-h-[80vh] !max-w-[80vw]' src={src} fill style={{ objectFit: "cover" }} alt="size chart" onLoad={() => setImageLoaded(true)} />
             </div>
             <div className="absolute right-28 top-7 text-white">
-                <CloseOutlined onClick={() => setShowModal(false)} className="cursor-pointer text-5xl hover:text-blue-300 active:text-primary" />
+                <CloseOutlined onClick={() => setShowModal(false)} className="cursor-pointer text-5xl hover:text-back-color active:text-primary" />
             </div>
         </div>
     )
