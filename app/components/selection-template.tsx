@@ -333,7 +333,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                 src={item.previewSrc || item.src}
                                 model={item.model}
                                 price={CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}
-                                modelInfo={item.key_metrics}
+                                modelInfo={item}
                                 setModelInfo={setModelInfo}
                             />
                         ))
@@ -508,7 +508,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     } */}
                 </div>
             }
-            {modelInfo && <KeyMetrics modelInfo={modelInfo} setModalInfo={setModelInfo} /> }
+            {modelInfo && <KeyMetrics model="" modelInfo={modelInfo} setModalInfo={setModelInfo} /> }
         </div>
     )
 }

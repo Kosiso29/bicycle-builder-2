@@ -5,13 +5,11 @@ import { InfoOutlined } from "@mui/icons-material";
 export default function ModelButton({ src, model, price, selected, style, disabled, onClick, modelInfo, setModelInfo }: { src: string, model: string, price: number | string, selected: boolean, style?: CSSProperties, disabled?: boolean, onClick: React.MouseEventHandler<HTMLButtonElement>, modelInfo?: any, setModelInfo?: any }) {
     const handleModelButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        console.log('Model button was clicked')
         onClick(e);
     }
 
     const handleInfoClick = (e: any) => {
         e.stopPropagation();
-        console.log('Info was clicked');
         setModelInfo(modelInfo);
     }
 
