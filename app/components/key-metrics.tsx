@@ -26,7 +26,7 @@ export default function KeyMetrics({ modelInfo, setModalInfo }: { modelInfo: { m
                 <h1 className="text-xl font-bold mb-2">{ modelInfo.model }</h1>
                 <p className="whitespace-pre-wrap">{modelInfo.key_metrics}</p>
             </div>
-            <CancelOutlined onClick={() => setModalInfo(null)} className="absolute top-5 right-5 cursor-pointer text-primary hover:opacity-50 active:text-primary-active" />
+            <CancelOutlined onClick={() => setModalInfo(null)} className="absolute top-5 right-3 cursor-pointer text-primary hover:opacity-50 active:text-primary-active" />
         </div>
     )
 }

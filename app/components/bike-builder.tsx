@@ -450,7 +450,7 @@ export default function BikeBuilder({
                         <canvas id="canvas" className="scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
                     </div>
                 </div>
-                <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} />
+                <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} totalPrice={totalPrice} />
             </div>
             <div id="selection" className="flex flex-col gap-4 fixed right-0 top-0 h-[calc(100vh-6vw)] w-[20rem] 2xl:w-[23rem] bg-[#F2F2F2] p-5 pb-0 overflow-auto mt-[2rem] mr-[2rem] mb-[2rem]">
                 <div>
@@ -489,9 +489,7 @@ export default function BikeBuilder({
                     showSummary ? <AddonSummary parentProps={parentProps} /> : null
                 } */}
                 <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-3 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
-                    <div className='flex justify-between items-center'>
-                        <h1 className={`font-bold text-xl`}>Total:</h1>
-                        <p className={`text-primary text-md font-bold`}>{totalPrice !== null ? '$ ' + CurrencyFormatter(totalPrice) : "---"}</p>
+                    <div className='flex justify-end items-center'>
                         <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
                     </div>
                 </div>

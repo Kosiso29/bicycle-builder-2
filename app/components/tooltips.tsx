@@ -2,8 +2,9 @@ import { ArrowDownwardOutlined, ArrowUpwardOutlined, EditOutlined } from "@mui/i
 import { useEffect, useRef, useState } from "react";
 import ProgressBar from "@/app/ui/progress-bar";
 import { Button, TextField } from "@mui/material";
+import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
-export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips: any, canvasDrawImageProps: any }) {
+export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }: { tooltips: any, canvasDrawImageProps: any, totalPrice: number }) {
     const [openFullTooltips, setOpenFullToolTips] = useState(false);
     const [buildName, setBuildName] = useState("Unnamed build");
     const [showBuildNameTextField, setShowBuildNameTextField] = useState(false);
@@ -34,17 +35,23 @@ export default function Tooltips({ tooltips, canvasDrawImageProps }: { tooltips:
     return (
         <div ref={tooltipsRef} className="py-3 pl-40 pr-5 pb-5 flex-grow">
             <div className="flex justify-between relative">
-                <div className="flex gap-5 items-center max-w-[65%]">
-                    {
-                        showBuildNameTextField ?
-                        <TextField size="small" className="text-2xl font-extrabold" value={buildName} onChange={(e) => setBuildName(e.target.value)} onKeyDown={handleTextFieldKeyDown} /> :
-                        <h1 className="flex items-center gap-2 text-2xl font-extrabold">{ buildName }</h1>
-                    }
-                    {
-                        showBuildNameTextField ?
-                            <Button variant="contained" onClick={() => setShowBuildNameTextField(false)}>Set</Button> :
-                            <EditOutlined className="cursor-pointer" fontSize="small" onClick={() => setShowBuildNameTextField(true)} />
-                    }
+                <div className="flex flex-col justify-between h-full max-w-[65%]">
+                    <div className="flex gap-5 items-center">
+                        {
+                            showBuildNameTextField ?
+                            <TextField size="small" className="text-2xl font-extrabold" value={buildName} onChange={(e) => setBuildName(e.target.value)} onKeyDown={handleTextFieldKeyDown} /> :
+                            <h1 className="flex items-center gap-2 text-2xl font-extrabold">{ buildName }</h1>
+                        }
+                        {
+                            showBuildNameTextField ?
+                                <Button variant="contained" onClick={() => setShowBuildNameTextField(false)}>Set</Button> :
+                                <EditOutlined className="cursor-pointer" fontSize="small" onClick={() => setShowBuildNameTextField(true)} />
+                        }
+                    </div>
+                    <div className='flex gap-2 items-center mt-5'>
+                        <h1 className={`font-bold text-xl`}>Total:</h1>
+                        <p className={`text-primary text-md font-bold`}>{totalPrice !== null ? '$' + CurrencyFormatter(totalPrice) : "---"}</p>
+                    </div>
                     {/* <p>{tooltips.model && tooltips.model + " -"}</p> */}
                     {/* <p className="whitespace-pre-wrap">{openFullTooltips ? tooltips.key_metrics || "---" : tooltips.key_metrics?.split("\n")?.[0] || "---"}</p> */}
                 </div>
