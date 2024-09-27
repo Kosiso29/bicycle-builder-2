@@ -59,6 +59,7 @@ export default function BikeBuilder({
         setStemDimensions,
         setTooltips,
         frameSetDimensions,
+        setFrameSetDimensions,
         canvasDrawImageProps,
         setCanvasSelectionLevelState,
         selectionPresetProps,

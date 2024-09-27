@@ -54,7 +54,7 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
     }, [setSelectionLevelProps, show])
 
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label="Frame Set" displayLabel="Frame" setActualWidth={setActualWidth} identifier={FRAMESET_PROP} handleReset={handleReset} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label="Frame Set" displayLabel="Frame" setActualWidth={setActualWidth} identifier={FRAMESET_PROP} handleReset={handleReset} recaliberateComponents={recaliberateComponents} />
     )
 }
 
