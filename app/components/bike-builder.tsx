@@ -5,7 +5,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
-import { RotateLeft as RotateLeftIcon } from '@mui/icons-material';
+import { RotateLeft as RotateLeftIcon, ThreeSixtyOutlined } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import Link from "next/link";
 import SelectionTabs from "./selection-tabs";
@@ -253,6 +253,7 @@ export default function BikeBuilder({
         setStemDimensions({ hasHandleBar: true });
         setResetComponent(prevState => prevState + 1);
         setShowSummary(false);
+        setTotalPrice(null);
     }
 
     const filterComponentData = (filteredModelPlaceholders, componentKey) => {
@@ -452,7 +453,7 @@ export default function BikeBuilder({
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} totalPrice={totalPrice} />
             </div>
-            <div id="selection" className="flex flex-col gap-4 fixed right-0 top-0 h-[calc(100vh-6vw)] w-[20rem] 2xl:w-[23rem] bg-[#F2F2F2] p-5 pb-0 overflow-auto mt-[2rem] mr-[2rem] mb-[2rem]">
+            <div id="selection" className="flex flex-col gap-4 fixed right-0 top-0 h-[calc(100vh-9vw)] w-[20rem] 2xl:w-[23rem] bg-[#F2F2F2] p-5 pb-0 overflow-auto mt-[2rem] mr-[2rem] mb-[2rem]">
                 <div>
                     <div className="mt-2 mb-3">
                         <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
@@ -488,11 +489,15 @@ export default function BikeBuilder({
                 {/* {
                     showSummary ? <AddonSummary parentProps={parentProps} /> : null
                 } */}
-                <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-3 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
+                {/* <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-3 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
                     <div className='flex justify-end items-center'>
                         <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
                     </div>
-                </div>
+                </div> */}
+            </div>
+            <div className="fixed top-[calc(100vh-9vw+4rem)] right-0 flex justify-between items-center gap-5 w-[20rem] mr-[2rem]">
+                <Button fullWidth size="small" className="flex gap-2 items-center basis-1/3" variant="text" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleReset}>Reset <ThreeSixtyOutlined /></Button>
+                <Button fullWidth size="small" className="basis-3/5" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSummary}>Checkout</Button>
             </div>
         </div>
 
