@@ -16,9 +16,9 @@ import SizeChart from "./size_chart";
 import ModelButton from "@/app/ui/model-button";
 import KeyMetrics from "@/app/components/key-metrics";
 
-export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset, recaliberateComponents }) {
-    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps,
-        canvasDrawImageProps, frameSetDimensions, stemDimensions, setFrameSetDimensions, setStemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions } = parentProps;
+export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset, updateFrameSetData }) {
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
+        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -129,31 +129,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         resetCanvasComponents();
 
         if (selectionLevelProps.includes('frameSet')) {
-        
-            const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
-                groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY,
-                hasStem, hasHandleBar, actualWidth, width, height } = initialCanvasDrawImageProps.frameSet;
-    
-            const offsets = {
-                stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
-                groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY
-            };
-
-            setFrameSetDimensions({ width, height, actualWidth, ...offsets, hasStem, hasHandleBar });
-    
-            recaliberateComponents(setCanvasDrawImageProps, actualWidth);
-    
-            recaliberateComponents(setInitialCanvasDrawImageProps, actualWidth);
-    
-            if (hasStem && !hasHandleBar) {
-                setStemDimensions(prevState => ({ ...prevState, hasHandleBar: false }))
-            }
-    
-            // set hasHandleBar to true for the placeholder stem which has handleBar
-            if (!hasStem && !canvasDrawImageProps.stem.model) {
-                setStemDimensions(prevState => ({ ...prevState, hasHandleBar: true }))
-            }
-            // handleReset();
+            updateFrameSetData(initialCanvasDrawImageProps.frameSet);
         }
         setRerender(prevState => !prevState);
     }

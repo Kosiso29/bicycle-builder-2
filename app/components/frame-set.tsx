@@ -29,6 +29,29 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
         };
         changeObjectValuesToNumber(offsets);
 
+        const frameSetData = { frameSet: { image, x, y, width, height, id, actualWidth, linkedStem: linked_stem, linkedHandleBar: linked_handle_bar, ...extraDrawImageProps, ...offsets, hasStem, hasHandleBar } };
+
+        updateFrameSetData(frameSetData.frameSet);
+
+        return frameSetData;
+    }
+
+    useEffect(() => {
+        if (show) {
+            setSelectionLevelProps([FRAMESET_PROP])
+        }
+    }, [setSelectionLevelProps, show])
+
+    function updateFrameSetData(frameSetData) {
+        const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
+            groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY,
+            hasStem, hasHandleBar, actualWidth, width, height } = frameSetData;
+
+        const offsets = {
+            stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
+            groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY
+        };
+
         setFrameSetDimensions({ width, height, actualWidth, ...offsets, hasStem, hasHandleBar });
 
         recaliberateComponents(setCanvasDrawImageProps, actualWidth);
@@ -43,18 +66,10 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
         if (!hasStem && !canvasDrawImageProps.stem.model) {
             setStemDimensions(prevState => ({ ...prevState, hasHandleBar: true }))
         }
-
-        return { frameSet: { image, x, y, width, height, id, actualWidth, linkedStem: linked_stem, linkedHandleBar: linked_handle_bar, ...extraDrawImageProps, ...offsets, hasStem, hasHandleBar } };
     }
 
-    useEffect(() => {
-        if (show) {
-            setSelectionLevelProps([FRAMESET_PROP])
-        }
-    }, [setSelectionLevelProps, show])
-
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label="Frame Set" displayLabel="Frame" setActualWidth={setActualWidth} identifier={FRAMESET_PROP} handleReset={handleReset} recaliberateComponents={recaliberateComponents} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label="Frame Set" displayLabel="Frame" setActualWidth={setActualWidth} identifier={FRAMESET_PROP} handleReset={handleReset} updateFrameSetData={updateFrameSetData} />
     )
 }
 
