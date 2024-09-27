@@ -154,7 +154,6 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
                         setRerender((prevState: any) => !prevState);
                         setLoading(0.5);
                         setCanvasSelectionLevelState(6);
-                        setSelectionLevel(5);
                     }
                 }
             };
@@ -211,7 +210,6 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
                     setRerender((prevState: any) => !prevState);
                     setLoading(0.5);
                     setCanvasSelectionLevelState(6);
-                    setSelectionLevel(5);
                 }
             };
 
