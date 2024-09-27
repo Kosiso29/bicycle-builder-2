@@ -473,7 +473,7 @@ export default function BikeBuilder({
                                     {
                                         selectionLevel < 5 ?
                                             <Button size="small" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSelectionLevel}>Next</Button> :
-                                            <Button size="small" variant="contained" onClick={handleSummary}>Summary</Button>
+                                            <Button size="small" variant="contained" onClick={handleSummary}>Checkout</Button>
                                     }
                                 </div>
                             </>
