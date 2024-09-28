@@ -1,8 +1,8 @@
 import NextImage from "next/image";
-import { CSSProperties } from "react";
+import React, { CSSProperties } from "react";
 import { InfoOutlined } from "@mui/icons-material";
 
-export default function ModelButton({ src, model, price, selected, style, disabled, onClick, modelInfo, setModelInfo }: { src: string, model: string, price: number | string, selected: boolean, style?: CSSProperties, disabled?: boolean, onClick: React.MouseEventHandler<HTMLButtonElement>, modelInfo?: any, setModelInfo?: any }) {
+export default function ModelButton({ src, model, price, selected, style, disabled, onClick, modelInfo, setModelInfo, children }: { src: string, model: string, price: number | string, selected: boolean, style?: CSSProperties, disabled?: boolean, onClick: React.MouseEventHandler<HTMLButtonElement>, modelInfo?: any, setModelInfo?: any, children?: React.ReactNode }) {    
     const handleModelButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         onClick(e);
@@ -22,6 +22,7 @@ export default function ModelButton({ src, model, price, selected, style, disabl
         >
             {setModelInfo && <InfoOutlined fontSize="small" className="absolute right-1 top-1 text-[#545454] hover:text-primary hover:scale-110" onClick={handleInfoClick} />}
             {src && <NextImage src={src} style={{ width: "80%", maxWidth: "80%", height: "auto" }} width={70} height={70} alt='' />}
+            {children}
             <span className="text-left font-bold">{ model }</span>
             <span>${price}</span>
         </button>

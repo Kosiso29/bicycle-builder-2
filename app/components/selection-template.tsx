@@ -11,7 +11,8 @@ import Loading from "@/app/components/loading";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import { positionCanvasImages } from "@/app/utils/position-canvas-images";
 import { updateTooltips } from "@/app/utils/update-tooltips";
-import SizeSelector from "@/app/ui/toggle-button";
+import ToggleSelector from "@/app/ui/toggle-button";
+import ColorSelector from "@/app/ui/color-selector";
 import SizeChart from "./size_chart";
 import ModelButton from "@/app/ui/model-button";
 import KeyMetrics from "@/app/components/key-metrics";
@@ -335,7 +336,24 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                 price={CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}
                                 modelInfo={item}
                                 setModelInfo={setModelInfo}
-                            />
+                            >
+                                <ColorSelector
+                                    values={[item.color_value, ...colors?.filter(color => color?.model_id === item?.id).map(color => color.value)]}
+                                    type="colors"
+                                    label={label}
+                                    model={model}
+                                    colors={colors}
+                                    modelData={modelData}
+                                    initialModelData={initialModelData}
+                                    handleModelChange={handleModelChange}
+                                    selectedIndex={selectedIndex}
+                                    databaseModels={databaseModels}
+                                    selectedFeatures={selectedFeatures}
+                                    setSelectedFeatures={setSelectedFeatures}
+                                    setPrice={setPrice}
+                                    isModelSelected={checkSelectedIndex(index)}
+                                />
+                            </ModelButton>
                         ))
                         : null
                 }
@@ -394,24 +412,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 brand === modelData?.brand &&
                 <div>
                     <div className="mt-4">
-                        <SizeSelector
-                            values={colors?.filter(color => color?.model_id === modelData?.id).map(color => color.value)}
-                            type="colors"
-                            label={label}
-                            model={model}
-                            colors={colors}
-                            modelData={modelData}
-                            initialModelData={initialModelData}
-                            handleModelChange={handleModelChange}
-                            selectedIndex={selectedIndex}
-                            databaseModels={databaseModels}
-                            selectedFeatures={selectedFeatures}
-                            setSelectedFeatures={setSelectedFeatures}
-                            setPrice={setPrice}
-                        />
-                        <SizeSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                        <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                        <SizeSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                        <ToggleSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                        <ToggleSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                        <ToggleSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
                     </div>
                 </div>
             }
