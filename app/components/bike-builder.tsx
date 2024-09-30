@@ -437,16 +437,14 @@ export default function BikeBuilder({
     }, [rerender]);
 
     return (
-        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color fade-in-animation`}>
+        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color fade-in-animation pl-6`}>
             <div className="flex flex-col mr-[22rem] 2xl:mr-[25rem] h-screen w-[calc(100% - 22rem)] overflow-auto">
                 <div className="flex items-stretch">
-                    <div className="flex flex-col w-40 border py-5 px-2">
+                    <div className="flex flex-col border py-5 px-2">
                         <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} builds={builds} modelsPresets={modelsPresets} />
-                        <div className="flex justify-center">
-                            <Link href="/" className="block mt-2">
-                                <Button size="small" variant="outlined">Exit Builder</Button>
-                            </Link>
-                        </div>
+                        {/* <Link href="/" className="block mt-2">
+                            <Button size="small" variant="outlined">Exit Builder</Button>
+                        </Link> */}
                     </div>
                     <div className="h-[calc(100vh-9rem)] min-h-[560px] max-h-[620px] w-[calc(((100vh-9rem)*900)/620)] min-w-[810px] max-w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
                         <canvas id="canvas" className="scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
