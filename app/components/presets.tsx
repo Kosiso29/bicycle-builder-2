@@ -7,7 +7,7 @@ import { positionCanvasImages } from "../utils/position-canvas-images";
 import { updateTooltips } from "../utils/update-tooltips";
 
 export default function Presets({ parentProps, setFrameSetDimensions, builds, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, builds: any, modelsPresets: any }) {
-    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips } = parentProps;
+    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips, initialCanvasDrawImageProps } = parentProps;
     const [loading, setLoading] = useState(0.5);
     const [multipleImages, setMultipleImages] = useState([]);
     const [uniqueImagePresetsProps, setUniqueImagePresetsProps]: any = useState(null);
@@ -124,6 +124,13 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
                     newFrameSetDimensions = { width, height, actualWidth, ...offsets, hasStem, hasHandleBar }
                     
                     setFrameSetDimensions(newFrameSetDimensions);
+
+                    if (hasStem) {
+                        setCanvasDrawImageProps((prevState: any) => ({
+                            ...prevState,
+                            stem: { ...initialCanvasDrawImageProps.stem, x: prevState.stem?.x, y: prevState.stem?.y, x2: prevState.stem?.x2, y2: prevState.stem?.y2 }
+                        }))
+                    }
                 }
 
                 if (canvasProp === 'stem') {

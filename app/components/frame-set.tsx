@@ -9,7 +9,7 @@ const FRAMESET_PROP = 'frameSet';
 
 export default function FrameSet({ parentProps, show, handleReset, setFrameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0");
-    const { setSelectionLevelProps, setTooltips, setStemDimensions, canvasDrawImageProps, setCanvasDrawImageProps, setInitialCanvasDrawImageProps } = parentProps;
+    const { setSelectionLevelProps, setTooltips, setStemDimensions, canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps } = parentProps;
     
     const updateDrawImageProps = (extraDrawImageProps, { modelData }) => {
         const x = 200;
@@ -57,6 +57,13 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
         recaliberateComponents(setCanvasDrawImageProps, actualWidth);
 
         recaliberateComponents(setInitialCanvasDrawImageProps, actualWidth);
+
+        if (hasStem) {
+            setCanvasDrawImageProps((prevState: any) => ({
+                ...prevState,
+                stem: { ...initialCanvasDrawImageProps.stem, x: prevState.stem?.x, y: prevState.stem?.y, x2: prevState.stem?.x2, y2: prevState.stem?.y2 }
+            }))
+        }
 
         if (hasStem && !hasHandleBar) {
             setStemDimensions(prevState => ({ ...prevState, hasHandleBar: false }))

@@ -37,8 +37,8 @@ export default function SizeSelector(
     }
 
     return (
-        <div className="mt-2">
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: "0.2rem", height: "2rem" }}>
+        <div>
+            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: "0.2rem", minHeight: "2rem" }}>
                 {/* <button
                     // variant='outlined'
                     style={{ color: modelData?.color_value, border: selectedFeatures?.[type] === modelData?.color_value ? "2px solid #1A1A1A" : "" }}

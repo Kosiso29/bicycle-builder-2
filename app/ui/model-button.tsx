@@ -17,7 +17,7 @@ export default function ModelButton({ src, model, price, selected, style, disabl
         <button
             style={{ transition: ".2s ease-in", border: selected ? "2px solid #1A1A1A" : "", ...style }}
             disabled={disabled}
-            className="relative flex flex-col justify-between text-sm gap-2 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color focus-visible:outline-primary"
+            className="relative flex flex-col justify-between text-sm gap-1 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color focus-visible:outline-primary"
             onClick={handleModelButtonClick}
         >
             {setModelInfo && <InfoOutlined fontSize="small" className="absolute right-1 top-1 text-[#545454] hover:text-primary hover:scale-110" onClick={handleInfoClick} />}
