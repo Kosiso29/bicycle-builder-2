@@ -458,7 +458,7 @@ export default function BikeBuilder({
             </div>
             <div id="selection" className="flex flex-col gap-4 fixed right-0 top-0 h-[calc(100vh-9rem)] w-[20rem] 2xl:w-[23rem] bg-[#F2F2F2] p-5 pb-0 overflow-auto mt-[4rem] mr-[2rem] mb-[2rem]">
                 <div>
-                    <div className="mt-2 mb-3">
+                    <div className="mb-3">
                         <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
                     </div>
                     {

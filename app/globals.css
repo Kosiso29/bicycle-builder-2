@@ -50,19 +50,31 @@
     }
 }
 
+
+*::-webkit-scrollbar {
+    width: 4px;
+    /* Width of the scrollbar */
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    /* Track color */
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: black;
+    /* Thumb color */
+    border-radius: 4px;
+    /* Rounded edges */
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    /* To add space around the thumb */
+}
+
+
 html {
     /* For Firefox */
+    overflow-y: scroll;
     scrollbar-width: thin;
-}
-
-/* Chrome, Edge, and Safari */
-html::-webkit-scrollbar {
-    width: 4px;
-}
-
-html::-webkit-scrollbar-thumb {
-    /* Roundness of the thumb */
-    border-radius: 2px;
 }
 
 body {
@@ -89,20 +101,6 @@ button.MuiButton-containedPrimary {
 .wrapper-padding {
     padding-left: 5rem;
     padding-right: 5rem;
-}
-
-/* For WebKit browsers (Chrome, Safari) */
-.scrollbar-always-visible::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 8px;
-    /* Adjust width of the scrollbar */
-}
-
-.scrollbar-always-visible::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3);
-    /* Adjust the color of the scrollbar thumb */
-    border-radius: 10px;
-    /* Optional: rounded scrollbar */
 }
 
 .slide-in-animation {
