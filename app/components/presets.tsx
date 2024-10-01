@@ -231,12 +231,12 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
     }, [uniqueImagePresetsProps])
 
     return (
-        <div className="flex flex-col w-28 flex-grow gap-2">
+        <div className="flex flex-col w-28 flex-grow max-h-full overflow-hidden gap-2">
             <h1 className="font-bold text-2xl">Bike Ideas</h1>
-            <div className="flex flex-col flex-grow w-24 gap-5 overflow-y-auto pr-3 pt-3">
+            <div className="flex flex-col flex-grow w-[6.5rem] max-h-[80%] gap-5 overflow-y-auto pr-3 pt-3">
                 {
                     builds.filter((build: any) => build.name !== "None").map((build: any, index: number) => (
-                        <button key={build.id} className="group relative hover:bg-back-color focus-visible:outline-primary border border-back-color transition-all" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.name) }}>
+                        <button key={build.id} className="group relative hover:bg-back-color focus-visible:outline-primary border border-back-color transition-all py-1" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.name) }}>
                             <div className="absolute -right-[10px] -top-[10px] w-[20px] h-[20px]">
                                 <NextImage src="/Yellow-Star.png" width={20} height={20} alt='' />
                             </div>

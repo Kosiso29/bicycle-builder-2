@@ -33,10 +33,10 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
     }, [openFullTooltips])
 
     return (
-        <div ref={tooltipsRef} className="flex-grow pb-3 pl-40 pr-5">
+        <div ref={tooltipsRef} className="flex-grow pb-3 pl-40 pr-5 max-h-24">
             <div className="flex justify-between relative">
                 <div className="flex flex-col justify-between h-full max-w-[65%]">
-                    <div className="flex gap-5 items-center">
+                    <div className="flex gap-5 items-center h-10">
                         {
                             showBuildNameTextField ?
                             <TextField size="small" className="text-2xl font-extrabold" value={buildName} onChange={(e) => setBuildName(e.target.value)} onKeyDown={handleTextFieldKeyDown} /> :
@@ -48,7 +48,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
                                 <EditOutlined className="cursor-pointer" fontSize="small" onClick={() => setShowBuildNameTextField(true)} />
                         }
                     </div>
-                    <div className='flex gap-2 items-center mt-5'>
+                    <div className='flex gap-2 items-center mt-3'>
                         <h1 className={`font-bold text-xl`}>Total:</h1>
                         <p className={`text-primary text-md font-bold`}>{totalPrice !== null ? '$' + CurrencyFormatter(totalPrice) : "$0"}</p>
                     </div>
