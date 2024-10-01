@@ -10,8 +10,6 @@ export default function SizeSelector(
     const [filteredColors, setFilteredColors] = useState<any>([]);
     const defaultValue = values?.[0];
 
-    console.log('colors', values)
-
     const handleSizeChange = (value: string) => {
         if (modelData) {
             setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: value }));

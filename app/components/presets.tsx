@@ -11,6 +11,8 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
     const [loading, setLoading] = useState(0.5);
     const [multipleImages, setMultipleImages] = useState([]);
     const [uniqueImagePresetsProps, setUniqueImagePresetsProps]: any = useState(null);
+
+    const frameBuildIds = modelsPresets.filter((modelPreset: any) => modelPreset.model_id === canvasDrawImageProps.frameSet.id).map((modelPreset: any) => modelPreset.preset_id);
     
     const populateMultipleImages = (filteredPresets: any) => {
         setMultipleImages([]);
@@ -109,10 +111,10 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
 
                 const width = (newFrameSetDimensions?.width * actualWidth) / newFrameSetDimensions?.actualWidth;
                 const height = previewImageHeight * (width / previewImageWidth);
-                let offsets = {}, linkedModels = {};
+                let offsets = {}, linkedModels = {}, frameSetId = null;
 
                 if (canvasProp === 'frameSet') {
-                    const { linked_stem, linked_handle_bar, stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
+                    const { id, linked_stem, linked_handle_bar, stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
                         groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY,
                         hasStem, hasHandleBar } = item;
                     offsets = {
@@ -122,6 +124,8 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
                     linkedModels = { linkedStem: linked_stem, linkedHandleBar: linked_handle_bar }
 
                     newFrameSetDimensions = { width, height, actualWidth, ...offsets, hasStem, hasHandleBar }
+
+                    frameSetId = id;
                     
                     setFrameSetDimensions(newFrameSetDimensions);
 
@@ -140,7 +144,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
 
                 setCanvasDrawImageProps((prevState: any) => ({
                     ...prevState,
-                    [canvasProp]: { ...prevState[canvasProp], ...offsets, ...linkedModels, image, image2: canvasProp === 'tire' ? image : undefined, width, height, actualWidth, previewImageWidth, previewImageHeight, width2: width, height2: height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                    [canvasProp]: { ...prevState[canvasProp], ...offsets, ...linkedModels, id: frameSetId, image, image2: canvasProp === 'tire' ? image : undefined, width, height, actualWidth, previewImageWidth, previewImageHeight, width2: width, height2: height, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                 }));
 
                 updateTooltips(item, canvasProp, setTooltips);
@@ -235,7 +239,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
             <h1 className="font-bold text-2xl">Bike Ideas</h1>
             <div className="flex flex-col flex-grow w-[6.5rem] max-h-[80%] gap-5 overflow-y-auto pr-3 pt-3">
                 {
-                    builds.filter((build: any) => build.name !== "None").map((build: any, index: number) => (
+                    canvasDrawImageProps.frameSet.id ? builds.filter((build: any) => build.name !== "None" && frameBuildIds.includes(build.id)).map((build: any, index: number) => (
                         <button key={build.id} className="group relative hover:bg-back-color focus-visible:outline-primary border border-back-color transition-all py-1" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.name) }}>
                             <div className="absolute -right-[10px] -top-[10px] w-[20px] h-[20px]">
                                 <NextImage src="/Yellow-Star.png" width={20} height={20} alt='' />
@@ -246,7 +250,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
                             </div>
                             {loading === index ? <div className='absolute inset-0 flex justify-center items-center bg-[#00000040]'><Loading small /></div> : null}
                         </button>
-                    ))
+                    )) : <p>Select a frame to see bike ideas *</p>
                 }
             </div>
         </div>
