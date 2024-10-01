@@ -22,6 +22,7 @@ import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import { positionCanvasImages } from "@/app/utils/position-canvas-images";
 import AddonSummary from "./addon-summary";
 import Header from "@/app/components/header";
+import CanvasIcons from "@/app/components/canvas-icons";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
@@ -450,8 +451,9 @@ export default function BikeBuilder({
                             <Button size="small" variant="outlined">Exit Builder</Button>
                         </Link> */}
                     </div>
-                    <div className="h-[calc(100vh-9rem)] min-h-[560px] max-h-[620px] w-[calc(((100vh-9rem)*900)/620)] min-w-[810px] max-w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
+                    <div className="relative h-[calc(100vh-9rem)] min-h-[560px] max-h-[620px] w-[calc(((100vh-9rem)*900)/620)] min-w-[810px] max-w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
                         <canvas id="canvas" className="scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
+                        <CanvasIcons />
                     </div>
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} totalPrice={totalPrice} />
