@@ -233,7 +233,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
     return (
         <div className="flex flex-col w-28 flex-grow gap-2">
             <h1 className="font-bold text-2xl">Bike Ideas</h1>
-            <div className="flex flex-col flex-grow w-24 gap-5 max-h-[90%] overflow-y-auto pr-3 pt-3">
+            <div className="flex flex-col flex-grow w-24 gap-5 overflow-y-auto pr-3 pt-3">
                 {
                     builds.filter((build: any) => build.name !== "None").map((build: any, index: number) => (
                         <button key={build.id} className="group relative hover:bg-back-color focus-visible:outline-primary border border-back-color transition-all" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.name) }}>

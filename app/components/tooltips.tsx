@@ -33,7 +33,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
     }, [openFullTooltips])
 
     return (
-        <div ref={tooltipsRef} className="py-3 pl-40 pr-5 pb-5 flex-grow">
+        <div ref={tooltipsRef} className="flex-grow pb-3 pl-40 pr-5">
             <div className="flex justify-between relative">
                 <div className="flex flex-col justify-between h-full max-w-[65%]">
                     <div className="flex gap-5 items-center">

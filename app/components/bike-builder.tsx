@@ -21,6 +21,7 @@ import Tooltips from "./tooltips";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import { positionCanvasImages } from "@/app/utils/position-canvas-images";
 import AddonSummary from "./addon-summary";
+import Header from "@/app/components/header";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
@@ -437,9 +438,12 @@ export default function BikeBuilder({
     }, [rerender]);
 
     return (
-        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color fade-in-animation pl-6`}>
-            <div className="flex flex-col mr-[22rem] 2xl:mr-[25rem] h-screen w-[calc(100% - 22rem)] overflow-auto">
-                <div className="flex items-stretch">
+        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color h-screen fade-in-animation pl-6 pt-[4rem]`}>
+            <div className="text-black">
+                <Header padding="10rem" />
+            </div>
+            <div className="flex flex-col justify-evenly mr-[22rem] 2xl:mr-[25rem] h-full w-[calc(100% - 22rem)] overflow-auto">
+                <div className="flex items-center">
                     <div className="flex flex-col border py-5 px-2">
                         <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} builds={builds} modelsPresets={modelsPresets} />
                         {/* <Link href="/" className="block mt-2">
@@ -452,7 +456,7 @@ export default function BikeBuilder({
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} totalPrice={totalPrice} />
             </div>
-            <div id="selection" className="flex flex-col gap-4 fixed right-0 top-0 h-[calc(100vh-9vw)] w-[20rem] 2xl:w-[23rem] bg-[#F2F2F2] p-5 pb-0 overflow-auto mt-[2rem] mr-[2rem] mb-[2rem]">
+            <div id="selection" className="flex flex-col gap-4 fixed right-0 top-0 h-[calc(100vh-9rem)] w-[20rem] 2xl:w-[23rem] bg-[#F2F2F2] p-5 pb-0 overflow-auto mt-[4rem] mr-[2rem] mb-[2rem]">
                 <div>
                     <div className="mt-2 mb-3">
                         <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
@@ -494,7 +498,7 @@ export default function BikeBuilder({
                     </div>
                 </div> */}
             </div>
-            <div className="fixed top-[calc(100vh-9vw+4rem)] right-0 flex justify-between items-center gap-5 w-[20rem] 2xl:w-[23rem] mr-[2rem]">
+            <div className="fixed top-[calc(100vh-9rem+6rem)] right-0 flex justify-between items-center gap-5 w-[20rem] 2xl:w-[23rem] mr-[2rem]">
                 <Button fullWidth size="small" className="flex gap-2 items-center basis-1/3" variant="text" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleReset}>Reset <ThreeSixtyOutlined /></Button>
                 <Button fullWidth size="small" className="basis-[55%]" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSummary}>Checkout</Button>
             </div>

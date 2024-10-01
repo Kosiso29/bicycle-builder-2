@@ -11,7 +11,7 @@ export default function HeaderLink({ href, children }: { href: string, children:
         <Link
             href={href}
             className={clsx(
-                "text-white rounded-md bg-transparent flex flex-col justify-between items-center gap-3 p-3",
+                "rounded-md bg-transparent flex flex-col justify-between items-center gap-3 p-3",
                 {
                     "bg-primary-active": pathname === href || (href === "/dashboard/components" && pathname.includes(href))
                 }
