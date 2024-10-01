@@ -111,7 +111,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
 
                 const width = (newFrameSetDimensions?.width * actualWidth) / newFrameSetDimensions?.actualWidth;
                 const height = previewImageHeight * (width / previewImageWidth);
-                let offsets = {}, linkedModels = {}, frameSetId = null;
+                let offsets = {}, linkedModels = {}, frameSetId: any = null;
 
                 if (canvasProp === 'frameSet') {
                     const { id, linked_stem, linked_handle_bar, stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
