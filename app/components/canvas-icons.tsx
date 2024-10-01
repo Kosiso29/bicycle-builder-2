@@ -1,3 +1,5 @@
+'use client'
+
 import { Star, StarOutline, ShareOutlined } from "@mui/icons-material";
 import { useState } from "react";
 
