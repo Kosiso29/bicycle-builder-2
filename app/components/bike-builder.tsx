@@ -53,6 +53,8 @@ export default function BikeBuilder({
         tire: {},
     });
 
+    const CANVAS_SCALE = 0.75
+
     const parentProps = {
         setRerender,
         setCanvasDrawImageProps,
@@ -197,7 +199,7 @@ export default function BikeBuilder({
         const height = 30;
 
         for (const [index, item] of Object.entries(canvasNumberData)) {
-            if (x >= (item.x * 0.9) && x <= (item.x * 0.9) + width && y >= ((item.y - 25) * 0.9) && y <= ((item.y - 25) * 0.9) + height) {
+            if (x >= (item.x * CANVAS_SCALE) && x <= (item.x * CANVAS_SCALE) + width && y >= ((item.y - 25) * CANVAS_SCALE) && y <= ((item.y - 25) * CANVAS_SCALE) + height) {
                 callback(index);
                 break;
             }
@@ -453,7 +455,7 @@ export default function BikeBuilder({
                         </Link> */}
                     </div>
                     <div className="relative h-[calc(100vh-9rem)] min-h-[560px] max-h-[620px] w-[calc(((100vh-9rem)*900)/620)] min-w-[810px] max-w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
-                        <canvas id="canvas" className="scale-90" onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
+                        <canvas id="canvas" style={{ transform: `scale(${CANVAS_SCALE})` }} onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
                         <CanvasIcons />
                     </div>
                 </div>

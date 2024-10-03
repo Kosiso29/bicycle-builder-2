@@ -11,7 +11,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
     const tooltipsRef = useRef<HTMLDivElement>(null);
 
     const renderProgressBar = (tooltip: number | string) => {
-        return tooltip === "---" ? " " + tooltip : <ProgressBar value={Number(tooltip) * 20} />
+        return tooltip === "---" ? <ProgressBar value={0} /> : <ProgressBar value={Number(tooltip) * 20} />
     }
 
     const handleArrowClick = () => {
@@ -65,15 +65,15 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
                 <div className="text-right [&>p]:h-6">
                     <div className="flex justify-end gap-3">
                         <p>Aerodynamics</p>
-                        {tooltips.aerodynamics ? renderProgressBar(tooltips.aerodynamics) : "---"}
+                        {renderProgressBar(tooltips.aerodynamics ??  0.0)}
                     </div>
                     <div className="flex justify-end gap-3">
                         <p>Lightweight</p>
-                        {tooltips.weight ? renderProgressBar(tooltips.weight) : "---"}
+                        {renderProgressBar(tooltips.weight ?? 0.0)}
                     </div>
                     <div className="flex justify-end gap-3">
                         <p>Overall</p>
-                        {tooltips.overall ? renderProgressBar(tooltips.overall) : "---"}
+                        {renderProgressBar(tooltips.overall ?? 0.0)}
                     </div>
                 </div>
             </div>
