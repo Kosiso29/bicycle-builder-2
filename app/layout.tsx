@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Open_Sans, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./store/provider";
 import MUITheme from "@/app/components/mui-theme";
 
-const inter = Inter({ subsets: ["latin"] });
+const openSans = Open_Sans({ subsets: ["latin"] });
+const sourceSans3 = Source_Sans_3({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "Cyke",
@@ -25,7 +26,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body className={sourceSans3.className}>
                 <Providers>
                     <MUITheme>
                         {children}
