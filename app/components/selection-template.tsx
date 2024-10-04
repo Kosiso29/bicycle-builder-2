@@ -120,6 +120,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setModelData(null);
         setSelectedIndex(null);
         imageRef.current?.setAttribute("src", "/Cadex-Saddle.png");
+        if (/Frame Set/i.test(label)) {
+            setTooltips(prevState => ({ ...prevState, aerodynamics: getToolTipValue(prevState.aerodynamicsWheel, null, prevState.aerodynamics), weight: getToolTipValue(prevState.weightWheel, null, prevState.weight), overall: getToolTipValue(prevState.overallWheel, null, prevState.overall), aerodynamicsFrame: null, weightFrame: null, overallFrame: null }));
+        }
         if (/Wheel Set/i.test(label)) {
             setTooltips(prevState => ({ ...prevState, aerodynamics: getToolTipValue(null, prevState.aerodynamicsFrame, prevState.aerodynamics), weight: getToolTipValue(null, prevState.weightFrame, prevState.weight), overall: getToolTipValue(null, prevState.overallFrame, prevState.overall), aerodynamicsWheel: null, weightWheel: null, overallWheel: null }));
         }
@@ -161,6 +164,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
         if (frameValue) return frameValue;
 
+        if (!wheelValue && !frameValue) return 0.0;
+
         return originalValue
     }
 
@@ -173,6 +178,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     function reloadImage(imageElement, modelData) {
         if (imageElement?.getAttribute("src") === modelData?.src) {
+            // Force a reload of the image if new image to be loaded is the same as the old one
             imageElement?.setAttribute("src", modelData?.src + '?random=' + Math.random());
         } else {
             imageElement?.setAttribute("src", modelData?.src);
