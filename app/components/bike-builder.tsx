@@ -386,6 +386,25 @@ export default function BikeBuilder({
         setShowSummary(true);
     }
 
+    const calculateTotalPrice = () => {
+        const componentsPrice = Object.keys(canvasDrawImageProps).reduce((acc, key) => {
+            if (key !== "backWheelSet" && key !== "groupSet_shifter") {
+                acc.push(canvasDrawImageProps[key]);
+            }
+            return acc;
+        }, []).reduce((acc, item) => {
+            if (item.price) {
+                acc = (parseFloat(acc) + parseFloat(item.price)).toFixed(2);
+            }
+            return acc;
+        }, 0);
+        const accessoriesPrice = Object.values(addonAccessories).reduce((acc, value) => {
+            acc = (parseFloat(acc) + parseFloat(value.price)).toFixed(2);
+            return acc;
+        }, 0);
+        setTotalPrice(parseFloat(componentsPrice) + parseFloat(accessoriesPrice));
+    }
+
     const handleBarStemConditions = !stemDimensions.hasHandleBar && (canvasDrawImageProps.stem.image && canvasDrawImageProps.stem.model) && !frameSetDimensions.hasHandleBar;
 
     useEffect(() => {
@@ -421,24 +440,9 @@ export default function BikeBuilder({
                 setImage(false, true);
             } else {
                 setImage();
-                const componentsPrice = Object.keys(canvasDrawImageProps).reduce((acc, key) => {
-                    if (key !== "backWheelSet" && key !== "groupSet_shifter") {
-                        acc.push(canvasDrawImageProps[key]);
-                    }
-                    return acc;
-                }, []).reduce((acc, item) => {
-                    if (item.price) {
-                        acc = (parseFloat(acc) + parseFloat(item.price)).toFixed(2);
-                    }
-                    return acc;
-                }, 0);
-                const accessoriesPrice = Object.values(addonAccessories).reduce((acc, value) => {
-                    acc = (parseFloat(acc) + parseFloat(value.price)).toFixed(2);
-                    return acc;
-                }, 0);
-                setTotalPrice(parseFloat(componentsPrice) + parseFloat(accessoriesPrice));
             }
         }
+        calculateTotalPrice();
     }, [rerender]);
 
     return (
