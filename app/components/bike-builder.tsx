@@ -3,7 +3,7 @@
 
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "@mui/material";
 import { RotateLeft as RotateLeftIcon, ThreeSixtyOutlined } from '@mui/icons-material';
 import { toast } from 'react-toastify';
@@ -52,6 +52,8 @@ export default function BikeBuilder({
         saddle: {},
         tire: {},
     });
+
+    const componentRefs = useRef([]);
 
     const CANVAS_SCALE = 0.75
 
@@ -109,10 +111,10 @@ export default function BikeBuilder({
         const placeholdersInCanvasDrawImageProps = {};
 
         const newCanvasDrawImageProps = {};
-        
+
         canvasDrawImagePropsOrderArray.forEach(key => {
             if (canvasDrawImageProps.hasOwnProperty(key)) {
-              newCanvasDrawImageProps[key] = canvasDrawImageProps[key];
+                newCanvasDrawImageProps[key] = canvasDrawImageProps[key];
             }
         })
 
@@ -302,7 +304,7 @@ export default function BikeBuilder({
             componentData.previewImageWidth = previewImageWidth;
             componentData.previewImageHeight = previewImageHeight;
             componentData.actualWidth = actualWidth;
-            
+
             if (componentKey === 'tire') {
                 componentData.width2 = width;
                 componentData.height2 = height;
@@ -311,7 +313,7 @@ export default function BikeBuilder({
                 componentData.groupSet_shifterX = filteredComponentData[0].groupSet_shifterX;
                 componentData.groupSet_shifterY = filteredComponentData[0].groupSet_shifterY;
             }
-            
+
             positionCanvasImages(filteredComponentData[0], componentKey, canvasPlaceholderImages, setCanvasDrawImageProps, frameSetDimensions, stemDimensions)
         }
 
@@ -356,7 +358,7 @@ export default function BikeBuilder({
             image.crossOrigin = "anonymous";
             image.onload = function () {
                 updateCanvasPlaceholderImageDimensions(filteredModelPlaceholders, image, entries[0], entries[1], frameSetActualWidth);
-                const returnPrevState = (prevState) => ({ ...prevState, [entries[0]]: { ...entries[1], ...prevState[entries[0]], width: entries[1].width, height: entries[1].height, image, image2: entries[0] === 'tire' ? image : null, width2: entries[0] === 'tire' ? entries[1].width2 : null, height2: entries[0] === 'tire' ? entries[1].height2 : null } }) 
+                const returnPrevState = (prevState) => ({ ...prevState, [entries[0]]: { ...entries[1], ...prevState[entries[0]], width: entries[1].width, height: entries[1].height, image, image2: entries[0] === 'tire' ? image : null, width2: entries[0] === 'tire' ? entries[1].width2 : null, height2: entries[0] === 'tire' ? entries[1].height2 : null } })
                 setCanvasDrawImageProps(prevState => returnPrevState(prevState))
 
                 loadedCount++;
@@ -445,6 +447,31 @@ export default function BikeBuilder({
         calculateTotalPrice();
     }, [rerender]);
 
+    // Observer to track when a section becomes visible
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const index = componentRefs.current.indexOf(entry.target);
+                        setSelectionLevel((index + 1));
+                    }
+                });
+            },
+            { threshold: 0.5 } // Trigger when 50% of the section is visible
+        );
+
+        componentRefs.current.forEach((ref) => {
+            if (ref) observer.observe(ref);
+        });
+
+        return () => {
+            componentRefs.current.forEach((ref) => {
+                if (ref) observer.unobserve(ref);
+            });
+        };
+    }, []);
+
     return (
         <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color h-screen max-h-screen fade-in-animation pl-6 pt-[4rem]`}>
             <div className="text-black">
@@ -465,9 +492,9 @@ export default function BikeBuilder({
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} totalPrice={totalPrice} />
             </div>
-            <div id="selection" className="flex flex-col gap-4 fixed right-0 top-0 h-[calc(100vh-9rem)] w-[20rem] 2xl:w-[23rem] bg-[#F2F2F2] p-5 pb-0 overflow-auto mt-[4rem] mr-[2rem] mb-[2rem]">
-                <BuildStart />
-                <div>
+            <div id="selection" className="flex flex-col fixed right-0 top-0 h-[calc(100vh-9rem)] w-[22rem] 2xl:w-[25rem] pt-5 pb-0 overflow-auto mt-[4rem] mb-[2rem] overflow-y-scroll snap-y snap-mandatory pr-[2rem]">
+                {/* <BuildStart /> */}
+                {/* <div>
                     <div className="mb-3">
                         <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
                     </div>
@@ -491,14 +518,24 @@ export default function BikeBuilder({
                                 </div>
                             </>
                     }
+                </div> */}
+                <div ref={(el) => (componentRefs.current[0] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
+                    <FrameSet parentProps={parentProps} handleReset={handleReset} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
-                <FrameSet parentProps={parentProps} handleReset={handleReset} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
-                <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3 && (handleBarStemConditions || frameSetDimensions.hasStem) && !linkedComponentDimensions.hasHandleBar} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                <GroupSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
-                <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                <div ref={(el) => (componentRefs.current[1] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
+                    <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
+                    <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                </div>
+                <div ref={(el) => (componentRefs.current[2] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
+                    <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                    <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3 && (handleBarStemConditions || frameSetDimensions.hasStem) && !linkedComponentDimensions.hasHandleBar} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                </div>
+                <div ref={(el) => (componentRefs.current[3] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
+                    <GroupSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
+                </div>
+                <div ref={(el) => (componentRefs.current[4] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
+                    <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                </div>
                 {/* {
                     showSummary ? <AddonSummary parentProps={parentProps} /> : null
                 } */}

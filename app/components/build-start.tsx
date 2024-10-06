@@ -16,7 +16,7 @@ export default function BuildStart() {
     }
 
     return (
-        <div className="absolute inset-0 bg-white z-50 flex items-center p-10">
+        <div className="absolute inset-0 bg-white z-50 flex h-full items-center p-10 mr-[2rem]">
             <div>
                 <h1 className="text-3xl font-extrabold mb-4">Hello there,</h1>
                 <p className="mb-10">Ready to Customize your <br /> bike?</p>
