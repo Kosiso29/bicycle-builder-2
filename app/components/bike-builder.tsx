@@ -162,13 +162,13 @@ export default function BikeBuilder({
                         if (canvasDrawImageProps[canvasDrawImagePropsArray[index]]?.brand || (index + 1 === 3 && (canvasDrawImageProps.frameSet.linkedStem || canvasDrawImageProps.frameSet.linkedHandleBar))) {
                             // canvasContext.beginPath();
                             // canvasContext.arc(canvasNumber.x, canvasNumber.y, 20, 0, 2 * Math.PI, false);
-                            canvasContext.fillStyle = 'blue';
+                            canvasContext.fillStyle = '#1A1A1A';
                             // canvasContext.fill();
                             // canvasContext.fillStyle = "white";
                             // canvasContext.textAlign = "center";
                             // canvasContext.textBaseline = "middle";
                         } else {
-                            canvasContext.fillStyle = "black";
+                            canvasContext.fillStyle = "#888888";
                         }
                         canvasContext.fillText(canvasNumber.text, canvasNumber.x, canvasNumber.y);
                     });
