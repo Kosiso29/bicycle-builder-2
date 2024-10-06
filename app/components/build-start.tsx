@@ -1,18 +1,14 @@
 'use client'
 
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { builderActions } from "@/app/store/builder";
 
 export default function BuildStart() {
-    const [buildStartClicked, setBuildStartClicked] = useState(false);
+    const dispatch = useDispatch();
 
     const handleBuildStart = () => {
-        setBuildStartClicked(true);
-        localStorage.removeItem("firstBuildPageOpening");
-    }
-
-    if (localStorage?.getItem("firstBuildPageOpening") !== "yes" || buildStartClicked) {
-        return null;
+        dispatch(builderActions.updatebuildStart(false));
     }
 
     return (

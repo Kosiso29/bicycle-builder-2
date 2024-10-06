@@ -24,6 +24,7 @@ import AddonSummary from "./addon-summary";
 import Header from "@/app/components/header";
 import CanvasIcons from "@/app/components/canvas-icons";
 import BuildStart from "./build-start";
+import { useSelector } from "react-redux";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
@@ -52,6 +53,8 @@ export default function BikeBuilder({
         saddle: {},
         tire: {},
     });
+
+    const newBuildStart = useSelector((state) => state.builderReducer.buildStart);
 
     const componentRefs = useRef([]);
 
@@ -492,33 +495,35 @@ export default function BikeBuilder({
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} totalPrice={totalPrice} />
             </div>
-            <div id="selection" className="flex flex-col fixed right-0 top-0 h-[calc(100vh-9rem)] w-[22rem] 2xl:w-[25rem] pt-5 pb-0 overflow-auto mt-[4rem] mb-[2rem] overflow-y-scroll snap-y snap-mandatory pr-[2rem]">
-                {/* <BuildStart /> */}
+            <div id="selection" className={`flex flex-col fixed right-0 top-0 h-[calc(100vh-9rem)] w-[22rem] 2xl:w-[25rem] pt-5 pb-0 overflow-auto mt-[4rem] mb-[2rem] ${newBuildStart ? "overflow-hidden" : "overflow-y-scroll snap-y snap-mandatory"} pr-[2rem]`}>
                 {/* <div>
                     <div className="mb-3">
-                        <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
+                    <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
                     </div>
                     {
                         showSummary ?
-                            <>
-                                <div className="flex justify-between pb-3">
-                                    <Button size="small" variant="outlined" onClick={() => { setShowSummary(false); setSelectionLevel(prevState => prevState - 1) }}>Back</Button>
-                                    <Button size="small" variant="contained">Proceed</Button>
-                                </div>
-                                <Button size="small" fullWidth variant="outlined">Add to Favourites</Button>
-                            </> :
-                            <>
-                                <div className="flex justify-between py-2">
-                                    <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={selectionLevel === 1} onClick={handleSelectionLevel}>Prev</Button>
-                                    {
-                                        selectionLevel < 5 ?
-                                            <Button size="small" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSelectionLevel}>Next</Button> :
-                                            <Button size="small" variant="contained" onClick={handleSummary}>Checkout</Button>
-                                    }
-                                </div>
+                        <>
+                        <div className="flex justify-between pb-3">
+                        <Button size="small" variant="outlined" onClick={() => { setShowSummary(false); setSelectionLevel(prevState => prevState - 1) }}>Back</Button>
+                        <Button size="small" variant="contained">Proceed</Button>
+                        </div>
+                        <Button size="small" fullWidth variant="outlined">Add to Favourites</Button>
+                        </> :
+                        <>
+                        <div className="flex justify-between py-2">
+                        <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={selectionLevel === 1} onClick={handleSelectionLevel}>Prev</Button>
+                        {
+                            selectionLevel < 5 ?
+                            <Button size="small" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSelectionLevel}>Next</Button> :
+                            <Button size="small" variant="contained" onClick={handleSummary}>Checkout</Button>
+                            }
+                            </div>
                             </>
-                    }
-                </div> */}
+                            }
+                            </div> */}
+                {
+                    newBuildStart && <BuildStart />
+                }
                 <div ref={(el) => (componentRefs.current[0] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
                     <FrameSet parentProps={parentProps} handleReset={handleReset} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>

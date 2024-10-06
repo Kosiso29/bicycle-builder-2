@@ -3,12 +3,15 @@
 import React, { useState } from 'react';
 import Link from "next/link";
 import Loading from "@/app/components/loading";
+import { useDispatch } from "react-redux";
+import { builderActions } from "@/app/store/builder";
 
 export default function CallToAction({ href, type, children }: { href: string, type?: any, children: React.ReactNode }) {
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
     const handleClick = () => {
         setLoading(true);
-        localStorage.setItem("firstBuildPageOpening", "yes");
+        dispatch(builderActions.updatebuildStart(true));
     }
     
     return (
