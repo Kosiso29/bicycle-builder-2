@@ -11,7 +11,8 @@ import Loading from "@/app/components/loading";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import { positionCanvasImages } from "@/app/utils/position-canvas-images";
 import { updateTooltips } from "@/app/utils/update-tooltips";
-import ToggleSelector from "@/app/ui/toggle-button";
+import SizeSelector from "@/app/ui/size-selector";
+import FeatureSelector from "@/app/ui/feature-selector";
 import ColorSelector from "@/app/ui/color-selector";
 import SizeChart from "./size_chart";
 import ModelButton from "@/app/ui/model-button";
@@ -364,63 +365,15 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                         : null
                 }
             </div>
-            {/* {
-                allModels.length > 0 ?
-                    <List
-                        sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}
-                        subheader={
-                            <ListSubheader id="nested-list-subheader" sx={{ backgroundColor: "rgb(156 163 175)", color: "white", lineHeight: "2.5rem" }}>
-                                Models
-                            </ListSubheader>
-                        }
-                        dense
-                    >
-                        {
-                            allModels.map((item, index) => (
-                                <ListItem
-                                    key={label + item.model + index}
-                                    disablePadding
-                                    sx={{
-                                        backgroundColor: checkSelectedIndex(index) ? "#1A1A1A" : "initial",
-                                        color: checkSelectedIndex(index) ? "white" : "initial",
-                                        transition: ".2s ease-in",
-                                        "&.MuiListItem-root": disableSelections && { cursor: "not-allowed" }
-                                    }}>
-                                    <ListItemButton
-                                        divider={index !== (allModels.length - 1) ? true : false}
-                                        selected={checkSelectedIndex(index)}
-                                        data-value={item.src}
-                                        data-actual-width={item.actualWidth || "0"}
-                                        disabled={disableSelections}
-                                        sx={{ "&.Mui-disabled": { cursor: "not-allowed" } }}
-                                        onClick={() => {
-                                            if (!checkSelectedIndex(index) && !disableSelections) {
-                                                setSelectedFeatures({});
-                                                handleModelChange(index, item);
-                                                setInitialModelData(item);
-                                            }
-                                        }}>
-                                        <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
-                                        <div className="flex items-center gap-2">
-                                            <ListItemText className={`flex justify-end ${checkSelectedIndex(index) ? "text-white whitespace-nowrap" : "text-primary"}`} primary={<>$&nbsp;{CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}</>} style={{ lineHeight: 1, fontSize: ".2rem" }} />
-                                            <ListItemText className={`flex justify-end hover:text-red-500 ${checkSelectedIndex(index) ? "text-white" : selectedIndex !== index && modelData?.brand === brand ? "invisible" : "hidden"}`} onClick={() => { handleModelRemove(index) }} primary={<CloseOutlined fontSize="small" />} />
-                                        </div>
-                                    </ListItemButton>
-                                </ListItem>
-                            ))
-                        }
-                    </List>
-                    : null
-            } */}
             <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
             <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
             {
                 brand === modelData?.brand &&
                 <div>
                     <div className="mt-4">
-                        <ToggleSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                        <ToggleSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                        <ToggleSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                        <FeatureSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                        <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                        <FeatureSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
                     </div>
                 </div>
             }
@@ -463,58 +416,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                 : null
                         }
                     </div>
-                    {/* {
-                        tyreTube.tubeModels?.length > 0 ?
-                            <List
-                                sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}
-                                subheader={
-                                    <ListSubheader sx={{ backgroundColor: "rgb(156 163 175)", color: "white", lineHeight: "2.5rem" }}>
-                                        Models
-                                    </ListSubheader>
-                                }
-                                dense
-                            >
-                                {
-                                    tyreTube.tubeModels.map((item, index) => (
-                                        <ListItem
-                                            key={label + item.model + index}
-                                            disablePadding
-                                            sx={{
-                                                backgroundColor: tyreTube.selectedIndex === index ? "#1A1A1A" : "initial",
-                                                color: tyreTube.selectedIndex === index ? "white" : "initial",
-                                                transition: ".2s ease-in"
-                                            }}>
-                                            <ListItemButton
-                                                divider={index !== (tyreTube.tubeModels.length - 1) ? true : false}
-                                                selected={tyreTube.selectedIndex === index}
-                                                onClick={() => {
-                                                    if (tyreTube.selectedIndex !== index) {
-                                                        setTyreTube(prevState => ({ ...prevState, selectedIndex: index }));
-                                                        setAddonAccessories(prevState => ({ ...prevState, ["Tube"]: { brand: item.brand, model: item.model, price: item.price } }))
-                                                    }
-                                                }}>
-                                                <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
-                                                <div className="flex items-center gap-2">
-                                                    <ListItemText className={`flex justify-end ${tyreTube.selectedIndex === index ? "text-white whitespace-nowrap" : "text-primary"}`} primary={<>$&nbsp;{CurrencyFormatter(item.price)}</>} style={{ lineHeight: 1, fontSize: ".2rem" }} />
-                                                    <ListItemText
-                                                        className={`flex justify-end ${tyreTube.selectedIndex === index ? "text-white" : tyreTube.selectedIndex === tyreTube.tubeModels.length ? "hidden" : "invisible"}`}
-                                                        onClick={() => {
-                                                            setTyreTube(prevState => ({ ...prevState, selectedIndex: tyreTube.tubeModels.length }));
-                                                            setAddonAccessories(prevState => {
-                                                                const { Tube, ...restProps } = prevState;
-                                                                return { ...restProps };
-                                                            })
-                                                            setRerender(prevState => !prevState);
-                                                        }}
-                                                        primary={<CloseOutlined fontSize="small" />} />
-                                                </div>
-                                            </ListItemButton>
-                                        </ListItem>
-                                    ))
-                                }
-                            </List>
-                            : null
-                    } */}
                 </div>
             }
             {modelInfo && <KeyMetrics model="" modelInfo={modelInfo} setModalInfo={setModelInfo} /> }
