@@ -11,7 +11,7 @@ const mapToLabel: any = (label: string) => {
         'sizes': {
             [label]: `${label} Size`,
             'Group Set - Drivetrain': 'Crankset Size',
-            
+
         },
         'ratios': {
             'Group Set - Drivetrain': 'Cassette Ratio'
@@ -43,11 +43,21 @@ export default function FeatureSelector(
     }
 
     return (
-        <div className="mb-4">
-            <TextField fullWidth select size="small" value={feature} onChange={handleFeatureChange} label={mapToLabel(label)[type][label].replace(/Front|\sSet/ig, "")}>
+        <div className="mb-4 w-full">
+            <TextField
+                fullWidth
+                select
+                size="small"
+                value={feature}
+                onChange={handleFeatureChange}
+                label={mapToLabel(label)[type][label].replace(/Front|\sSet/ig, "")}
+                sx={{
+                    '& .MuiInputLabel-root': { fontSize: ".85rem" }, // Font size for label
+                }}
+            >
                 {
                     values?.map(value => (
-                        <MenuItem value={value} key={value}>{value}</MenuItem>
+                        <MenuItem value={value} key={value} sx={{ fontSize: ".85rem" }}>{value}</MenuItem>
                     ))
                 }
             </TextField>

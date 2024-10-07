@@ -373,8 +373,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 <div>
                     <div>
                         <FeatureSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
-                        {identifier === "groupSet_drivetrain" && <FeatureSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />}
-                        <FeatureSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                        <div className="flex gap-2 justify-between">
+                            {identifier === "groupSet_drivetrain" && <FeatureSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />}
+                            <FeatureSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                        </div>
                     </div>
                 </div>
             }
@@ -419,7 +421,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     </div>
                 </div>
             }
-            {modelInfo && <KeyMetrics model="" modelInfo={modelInfo} setModalInfo={setModelInfo} /> }
+            {modelInfo && <KeyMetrics model="" modelInfo={modelInfo} setModalInfo={setModelInfo} />}
         </div>
     )
 }
