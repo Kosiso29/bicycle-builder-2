@@ -318,7 +318,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     ))
                 }
             </TextField>
-            <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+            {identifier !== "groupSet_drivetrain" && <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />}
             <div className="flex justify-end">
                 <SizeChart size_chart_url={modelData?.size_chart_url} />
             </div>
@@ -373,6 +373,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 <div>
                     <div>
                         <FeatureSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
+                        {identifier === "groupSet_drivetrain" && <FeatureSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />}
                         <FeatureSelector values={modelData?.ratios} type="ratios" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
                     </div>
                 </div>

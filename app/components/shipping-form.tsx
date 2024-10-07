@@ -58,7 +58,7 @@ export default function ShippingForm({ setShowPaymentOptions, shippingInformatio
                 <h2 className='text-lg font-semibold mt-5'>Shipping Method</h2>
                 <div>
                     <Radio id='delivery' checked />
-                    <label htmlFor="delivery" className='cursor-pointer'>Standard Delivery $58</label>
+                    <label htmlFor="delivery" className='cursor-pointer'>Free Delivery</label>
                 </div>
                 <Button variant="contained" onClick={() => setShowPaymentOptions(true)}>Proceed to Payment</Button>
             </form>
