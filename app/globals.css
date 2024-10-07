@@ -52,6 +52,7 @@
 
 
 *::-webkit-scrollbar {
+    -webkit-appearance: none;
     width: 6px;
     /* Width of the scrollbar */
 }
