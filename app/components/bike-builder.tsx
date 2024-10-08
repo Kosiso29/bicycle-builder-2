@@ -137,6 +137,8 @@ export default function BikeBuilder({
     }
 
     function iterateCanvasDrawImageProps(newCanvasDrawImageProps, doNotRenderCanvasNumbers, placeholdersInCanvasDrawImageProps) {
+        const CanvasSelectorImage = new Image();
+        CanvasSelectorImage.src = "/CanvasSelector.png"
         Object.entries(newCanvasDrawImageProps).forEach((drawImageProps) => {
             if (drawImageProps[0] === "stem" && frameSetDimensions.hasStem) {
                 return
@@ -157,21 +159,25 @@ export default function BikeBuilder({
                 if (!doNotRenderCanvasNumbers) {
                     const canvasDrawImagePropsArray = ['frameSet', 'frontWheelSet', 'stem', 'groupSet_drivetrain', 'saddle'];
 
-                    canvasContext.font = "1.5rem Arial"
-                    canvasNumberData.forEach((canvasNumber, index) => {
-                        if (canvasDrawImageProps[canvasDrawImagePropsArray[index]]?.brand || (index + 1 === 3 && (canvasDrawImageProps.frameSet.linkedStem || canvasDrawImageProps.frameSet.linkedHandleBar))) {
-                            // canvasContext.beginPath();
-                            // canvasContext.arc(canvasNumber.x, canvasNumber.y, 20, 0, 2 * Math.PI, false);
-                            canvasContext.fillStyle = '#1A1A1A';
-                            // canvasContext.fill();
-                            // canvasContext.fillStyle = "white";
-                            // canvasContext.textAlign = "center";
-                            // canvasContext.textBaseline = "middle";
-                        } else {
-                            canvasContext.fillStyle = "#888888";
-                        }
-                        canvasContext.fillText(canvasNumber.text, canvasNumber.x, canvasNumber.y);
-                    });
+                    CanvasSelectorImage.onload = () => {
+                        // canvasContext.font = "1.5rem Arial"
+                        canvasNumberData.forEach((canvasNumber, index) => {
+                            // if (canvasDrawImageProps[canvasDrawImagePropsArray[index]]?.brand || (index + 1 === 3 && (canvasDrawImageProps.frameSet.linkedStem || canvasDrawImageProps.frameSet.linkedHandleBar))) {
+                            //     // canvasContext.beginPath();
+                            //     // canvasContext.arc(canvasNumber.x, canvasNumber.y, 20, 0, 2 * Math.PI, false);
+                            //     canvasContext.fillStyle = '#1A1A1A';
+                            //     // canvasContext.fill();
+                            //     // canvasContext.fillStyle = "white";
+                            //     // canvasContext.textAlign = "center";
+                            //     // canvasContext.textBaseline = "middle";
+                            // } else {
+                            //     canvasContext.fillStyle = "#888888";
+                            // }
+                            // canvasContext.fillText(canvasNumber.text, canvasNumber.x, canvasNumber.y);
+    
+                            canvasContext.drawImage(CanvasSelectorImage, canvasNumber.x, canvasNumber.y, 20, 20);
+                        });
+                    }
                 }
 
 
