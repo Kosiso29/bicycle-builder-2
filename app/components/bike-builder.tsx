@@ -214,6 +214,7 @@ export default function BikeBuilder({
     const handleCanvasClick = (e) => {
         handleCanvasEvents(e, (index) => {
             updateSelectionLevel(Number(index) + 1);
+            componentRefs.current[Number(index)].scrollIntoView({ behavior: 'smooth' });
         })
     }
 
