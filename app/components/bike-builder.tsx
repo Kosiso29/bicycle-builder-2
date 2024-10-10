@@ -45,6 +45,7 @@ export default function BikeBuilder({
         stiffness: "---",
         overall: "---"
     });
+    const [canvasSelectorImage, setCanvasSelectorImage] = useState(null);
     // selectionPresetProps sets the selection template with brand and model after preset selection is made
     const [selectionPresetProps, setSelectionPresetProps] = useState({
         frontWheelSet: {},
@@ -137,8 +138,6 @@ export default function BikeBuilder({
     }
 
     function iterateCanvasDrawImageProps(newCanvasDrawImageProps, doNotRenderCanvasNumbers, placeholdersInCanvasDrawImageProps) {
-        const CanvasSelectorImage = new Image();
-        CanvasSelectorImage.src = "/CanvasSelector.png"
         Object.entries(newCanvasDrawImageProps).forEach((drawImageProps) => {
             if (drawImageProps[0] === "stem" && frameSetDimensions.hasStem) {
                 return
@@ -159,7 +158,7 @@ export default function BikeBuilder({
                 if (!doNotRenderCanvasNumbers) {
                     const canvasDrawImagePropsArray = ['frameSet', 'frontWheelSet', 'stem', 'groupSet_drivetrain', 'saddle'];
 
-                    CanvasSelectorImage.onload = () => {
+                    if (canvasSelectorImage) {
                         // canvasContext.font = "1.5rem Arial"
                         canvasNumberData.forEach((canvasNumber, index) => {
                             // if (canvasDrawImageProps[canvasDrawImagePropsArray[index]]?.brand || (index + 1 === 3 && (canvasDrawImageProps.frameSet.linkedStem || canvasDrawImageProps.frameSet.linkedHandleBar))) {
@@ -175,7 +174,7 @@ export default function BikeBuilder({
                             // }
                             // canvasContext.fillText(canvasNumber.text, canvasNumber.x, canvasNumber.y);
     
-                            canvasContext.drawImage(CanvasSelectorImage, canvasNumber.x, canvasNumber.y, 20, 20);
+                            canvasContext.drawImage(canvasSelectorImage, canvasNumber.x, canvasNumber.y, 20, 20);
                         });
                     }
                 }
@@ -425,10 +424,10 @@ export default function BikeBuilder({
     }, []);
 
     useEffect(() => {
-        if (canvasContext) {
+        if (canvasContext && canvasSelectorImage) {
             renderCanvasPlaceholderImages();
         }
-    }, [canvasContext]);
+    }, [canvasContext, canvasSelectorImage]);
 
     useEffect(() => {
         if (selectionLevel < 6) {
@@ -456,6 +455,14 @@ export default function BikeBuilder({
         }
         calculateTotalPrice();
     }, [rerender]);
+
+    useEffect(() => {
+        const CanvasSelectorImage = new Image();
+        CanvasSelectorImage.src = "/CanvasSelector.png";
+        CanvasSelectorImage.onload = () => {
+            setCanvasSelectorImage(CanvasSelectorImage);
+        }
+    }, [])
 
     // Observer to track when a section becomes visible
     useEffect(() => {
