@@ -93,7 +93,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }
 
     const resetCanvasComponents = () => {
-        setCanvasDrawImageProps(prevState => {
+        const setCanvasDrawImagePropsFromSelectionLevelProps = (prevState) => {
             selectionLevelProps.forEach(selectionLevelProp => {
                 // This is for the cockpit of stem and handleBar selectionLevelProps
                 if ((selectionLevelProps.length > 1 && !selectionLevelProp.includes('Wheel') && !selectionLevelProp.includes('groupSet')) || identifier === "tire") {
@@ -110,10 +110,16 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     }
                 }
             })
-            return prevState;
+            return { ...prevState };
+        }
+
+        setCanvasDrawImageProps(prevState => {
+            return { ...setCanvasDrawImagePropsFromSelectionLevelProps(prevState) };
         });
 
-        positionCanvasImages(canvasDrawImageProps[identifier], identifier, canvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions);
+        const newCanvasDrawImageProps = setCanvasDrawImagePropsFromSelectionLevelProps(canvasDrawImageProps);
+
+        positionCanvasImages(newCanvasDrawImageProps[identifier], identifier, newCanvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions);
     }
 
     const handleModelRemove = (index) => {
