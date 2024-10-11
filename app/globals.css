@@ -75,6 +75,7 @@
 html {
     /* For Firefox */
     overflow-y: scroll;
+    overflow-x: hidden;
     scrollbar-width: thin;
 }
 

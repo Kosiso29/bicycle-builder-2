@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ProgressBar from '../ui/progress-bar';
 import Image from "next/image";
 import Slider from "react-slick";
@@ -25,6 +25,36 @@ export default function FeaturedBuildCarousel({ builds }: { builds: any }) {
 }
 
 export function SimpleSlider({ builds }: { builds: any }) {
+    const sliderRef = useRef<Slider | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [currentSlide, setCurrentSlide] = useState(0);
+
+    // Handle horizontal scroll event
+    const handleScroll = (event: any) => {
+        // Check if it's a horizontal scroll
+        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+            if (event.deltaX > 0) {
+                // Scroll right, move to the next slide
+                sliderRef.current?.slickNext();
+            } else if (event.deltaX < 0) {
+                // Scroll left, move to the previous slide
+                sliderRef.current?.slickPrev();
+            }
+        }
+    };
+
+    useEffect(() => {
+        const sliderElement = containerRef.current;
+
+        // Add event listener to the slider container
+        sliderElement?.addEventListener("wheel", handleScroll);
+
+        return () => {
+            // Clean up the event listener when the component unmounts
+            sliderElement?.removeEventListener("wheel", handleScroll);
+        };
+    }, []);
+
     var settings = {
         arrows: true,
         infinite: true,
@@ -35,15 +65,18 @@ export function SimpleSlider({ builds }: { builds: any }) {
         variableWidth: false,
         prevArrow: <CustomPrevArrow />,
         nextArrow: <CustomNextArrow />,
+        beforeChange: (oldIndex: any, newIndex: any) => setCurrentSlide(newIndex),
     };
     return (
-        <Slider {...settings}>
-            {
-                builds?.length > 0 && builds.filter((build: any) => build.name !== "None").map((build: any) => (
-                    <Card key={build.id} title={build.name} src={build.image_url} ratings={ratings} />
-                ))
-            }
-        </Slider>
+        <div ref={containerRef}>
+            <Slider ref={sliderRef} {...settings}>
+                {
+                    builds?.length > 0 && builds.filter((build: any) => build.name !== "None").map((build: any) => (
+                        <Card key={build.id} title={build.name} src={build.image_url} ratings={ratings} />
+                    ))
+                }
+            </Slider>
+        </div>
     );
 }
 
@@ -59,7 +92,7 @@ function Card({ title, src, ratings }: { title: string, src: string, ratings: an
                     {
                         ratings.map((rating: any) => (
                             <div key={rating.name} className="flex justify-between gap-3">
-                                <p>{ rating.name }</p>
+                                <p>{rating.name}</p>
                                 <ProgressBar value={Number(rating.value) * 20} />
                             </div>
                         ))
@@ -76,44 +109,44 @@ function Card({ title, src, ratings }: { title: string, src: string, ratings: an
 const CustomPrevArrow = (props: any) => {
     const { className, style, onClick, currentSlide, slideCount, ...restProps } = props;
     return (
-      <div
-        className={className}
-        style={{ ...style, display: 'block' }} // Customize your arrow's style
-        onClick={onClick}
-        {...restProps} // Spread other props
-      >
-        <svg
-          viewBox="0 0 180 310"
-          stroke="#000"
-          strokeWidth={30}
-          role="button"
-          aria-label="previous"
+        <div
+            className={className}
+            style={{ ...style, display: 'block' }} // Customize your arrow's style
+            onClick={onClick}
+            {...restProps} // Spread other props
         >
-          <path d="M170 10 L10 161 M10 150 L170 300"></path>
-        </svg>
-      </div>
+            <svg
+                viewBox="0 0 180 310"
+                stroke="#000"
+                strokeWidth={30}
+                role="button"
+                aria-label="previous"
+            >
+                <path d="M170 10 L10 161 M10 150 L170 300"></path>
+            </svg>
+        </div>
     );
-  };
-  
-  const CustomNextArrow = (props: any) => {
+};
+
+const CustomNextArrow = (props: any) => {
     const { className, style, onClick, currentSlide, slideCount, ...restProps } = props;
     return (
-      <div
-        className={className}
-        style={{ ...style, display: 'block' }} // Customize your arrow's style
-        onClick={onClick}
-        {...restProps} // Spread other props
-      >
-        <svg
-          viewBox="0 0 180 310"
-          stroke="#000"
-          strokeWidth={30}
-          role="button"
-          aria-label="next"
+        <div
+            className={className}
+            style={{ ...style, display: 'block' }} // Customize your arrow's style
+            onClick={onClick}
+            {...restProps} // Spread other props
         >
-          <path d="M10 10 L170 161 M170 150 L10 300"></path>
-        </svg>
-      </div>
+            <svg
+                viewBox="0 0 180 310"
+                stroke="#000"
+                strokeWidth={30}
+                role="button"
+                aria-label="next"
+            >
+                <path d="M10 10 L170 161 M170 150 L10 300"></path>
+            </svg>
+        </div>
     );
-  };
-  
+};
+
