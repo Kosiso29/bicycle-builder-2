@@ -83,12 +83,8 @@ export function SimpleSlider() {
         slidesToScroll: 1,
         centerPadding: '0px',
         variableWidth: false,
-        prevArrow: <svg viewBox="0 0 180 310" stroke='#000' strokeWidth={50} role="button" aria-label="previous">
-            <path d="M170 10 L10 161 M10 150 L170 300"></path>
-        </svg>,
-        nextArrow: <svg viewBox="0 0 180 310" stroke='#000' strokeWidth={50} role="button" aria-label="next">
-            <path d="M10 10 L170 161 M170 150 L10 300"></path>
-        </svg>,
+        prevArrow: <CustomPrevArrow />,
+        nextArrow: <CustomNextArrow />,
     };
     return (
         <Slider {...settings}>
@@ -100,3 +96,48 @@ export function SimpleSlider() {
         </Slider>
     );
 }
+
+const CustomPrevArrow = (props: any) => {
+    const { className, style, onClick, currentSlide, slideCount, ...restProps } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: 'block' }} // Customize your arrow's style
+        onClick={onClick}
+        {...restProps} // Spread other props
+      >
+        <svg
+          viewBox="0 0 180 310"
+          stroke="#000"
+          strokeWidth={30}
+          role="button"
+          aria-label="previous"
+        >
+          <path d="M170 10 L10 161 M10 150 L170 300"></path>
+        </svg>
+      </div>
+    );
+  };
+  
+  const CustomNextArrow = (props: any) => {
+    const { className, style, onClick, currentSlide, slideCount, ...restProps } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: 'block' }} // Customize your arrow's style
+        onClick={onClick}
+        {...restProps} // Spread other props
+      >
+        <svg
+          viewBox="0 0 180 310"
+          stroke="#000"
+          strokeWidth={30}
+          role="button"
+          aria-label="next"
+        >
+          <path d="M10 10 L170 161 M170 150 L10 300"></path>
+        </svg>
+      </div>
+    );
+  };
+  
