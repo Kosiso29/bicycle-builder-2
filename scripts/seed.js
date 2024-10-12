@@ -310,16 +310,176 @@ async function seedModels(client) {
     }
 }
 
+async function autoCalculateRatings(client) {
+    try {
+        const autoCalculateRatings = await client.sql`
+            WITH parameter_data AS (
+                SELECT b.id AS preset_id,
+                    -- Aerodynamics calculation
+                    ROUND((
+                        COALESCE((
+                            SELECT m.aerodynamics
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ), 0) +
+                        COALESCE((
+                            SELECT m.aerodynamics
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ), 0)
+                    ) / 
+                    (CASE
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) AND EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 2
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) OR EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 1
+                        ELSE 1
+                    END), 1) AS calculated_aerodynamics,
+
+                    -- Weight calculation
+                    ROUND((
+                        COALESCE((
+                            SELECT m.weight
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ), 0) +
+                        COALESCE((
+                            SELECT m.weight
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ), 0)
+                    ) /
+                    (CASE
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) AND EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 2
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) OR EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 1
+                        ELSE 1
+                    END), 1) AS calculated_weight,
+
+                    -- Overall calculation
+                    ROUND((
+                        COALESCE((
+                            SELECT m.overall
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ), 0) +
+                        COALESCE((
+                            SELECT m.overall
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ), 0)
+                    ) /
+                    (CASE
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) AND EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 2
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) OR EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 1
+                        ELSE 1
+                    END), 1) AS calculated_overall
+                FROM presets b
+            )
+            UPDATE presets
+            SET
+                aerodynamics = pd.calculated_aerodynamics::NUMERIC(2,1),
+                weight = pd.calculated_weight::NUMERIC(2,1),
+                overall = pd.calculated_overall::NUMERIC(2,1)
+            FROM parameter_data pd
+            WHERE presets.id = pd.preset_id;
+            `
+
+        const viewTable = await client.sql`SELECT * FROM presets;`;
+
+        console.log(`Created views for presets`, viewTable.rows);
+
+
+        return {
+            autoCalculateRatings,
+            viewTable
+        };
+    } catch (error) {
+        console.error('Error creating views', error);
+        throw error;
+    }
+}
+
 async function addColumns(client) {
     try {
         const addColumn = await client.sql`
-        ALTER TABLE accessory_models
-        ADD COLUMN IF NOT EXISTS preview_image_url VARCHAR(255);
-    `
+            ALTER TABLE presets
+            ADD COLUMN IF NOT EXISTS weight Numeric(2,1),
+            ADD COLUMN IF NOT EXISTS overall Numeric(2,1);
+        `
 
-        const modelsTable = await client.sql`SELECT * FROM accessory_models;`;
+        const modelsTable = await client.sql`SELECT * FROM presets;`;
 
-        console.log(`Created columns in models`, modelsTable.rows);
+        console.log(`Created columns in presets`, modelsTable.rows);
 
         return {
             addColumn,
@@ -458,6 +618,7 @@ async function main() {
     // await seedBrands(client);
     // await seedColors(client);
     // await seedModels(client);
+    // await autoCalculateRatings(client);
     // await addColumns(client);
     // await alterColumns(client);
     // await alterForeignKeyColumns(client);
