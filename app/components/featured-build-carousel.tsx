@@ -9,12 +9,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const ratings = [
-    { name: "Overall", value: 4.8 },
-    { name: "Aerodynamic", value: 5.0 },
-    { name: "Weight", value: 4.0 },
-]
-
 export default function FeaturedBuildCarousel({ builds }: { builds: any }) {
     return (
         <div className='py-20 wrapper-padding'>
@@ -72,7 +66,11 @@ export function SimpleSlider({ builds }: { builds: any }) {
             <Slider ref={sliderRef} {...settings}>
                 {
                     builds?.length > 0 && builds.filter((build: any) => build.name !== "None").map((build: any) => (
-                        <Card key={build.id} title={build.name} src={build.image_url} ratings={ratings} />
+                        <Card key={build.id} title={build.name} src={build.image_url} ratings={[
+                            { name: "Overall", value: build.overall || "0.0" },
+                            { name: "Aerodynamic", value: build.aerodynamics || "0.0" },
+                            { name: "Weight", value: build.weight || "0.0" },
+                        ]} />
                     ))
                 }
             </Slider>
