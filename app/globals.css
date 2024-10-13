@@ -71,6 +71,19 @@
     /* To add space around the thumb */
 }
 
+/* Override for scrollbar for textarea */
+textarea::-webkit-scrollbar {
+    width: auto; /* Revert to default scrollbar width */
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background-color: initial; /* Revert to default thumb color */
+    border: none; /* Remove border */
+}
+
+textarea::-webkit-scrollbar-track {
+    background: initial; /* Revert to default track color */
+}
 
 html {
     /* For Firefox */

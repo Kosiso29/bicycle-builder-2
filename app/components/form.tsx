@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { CheckOutlined, TimerOutlined, PersonOutline, AddOutlined, RemoveOutlined } from '@mui/icons-material';
 import { useSelector } from "react-redux";
-import { updateModel, createComponent } from "@/app/lib/actions";
+import { updateModel, createModel } from "@/app/lib/actions";
 import Loading from "./loading";
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -95,7 +95,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     }
 
     const handleFormCreation = (formData: any) => {
-        createComponent(formData)
+        createModel(formData)
             .then(() => {
                 setLoading(false);
                 toast.success("Component created!")

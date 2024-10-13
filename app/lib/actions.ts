@@ -9,7 +9,7 @@ import { AuthError } from 'next-auth';
 
 const checkForNull = (value: string) => value === "" ? null : value
 
-export async function createComponent(formData: FormData) {
+export async function createModel(formData: FormData) {
     const formDataObject: any = {};
 
     formData.forEach((value: any, key: any) => {
@@ -58,6 +58,8 @@ export async function createComponent(formData: FormData) {
                 INSERT INTO colors (model_id, name, value, image_url, price) VALUES (${model_id}::uuid, ${color_prop.name}, ${color_prop.value}, ${color_prop.image_url}, ${color_prop.price});
             `
         }
+
+        await autoCalculateRatings();
 
     } catch (error) {
         console.log('error', error)
@@ -275,6 +277,8 @@ export async function updateModel(id: string, formData: any) {
                 INSERT INTO colors (model_id, name, value, image_url, price) VALUES (${id}::uuid, ${color_prop.name}, ${color_prop.value}, ${color_prop.image_url}, ${color_prop.price});
             `
         }
+
+        await autoCalculateRatings();
 
         revalidatePath('/dashboard/components');
         revalidatePath(`/dashboard/components/${id}/edit`);
