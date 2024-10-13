@@ -126,7 +126,9 @@ export async function createBuildsAndModelsBuilds(formData: FormData) {
                 `
             }
         }
-        
+
+        await autoCalculateRatings();
+
     } catch (error) {
         console.log('error', error)
     }
@@ -232,8 +234,8 @@ export async function updateModel(id: string, formData: any) {
         back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
         groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
         lengths, sizes, ratios, size_chart_url, is_primary, color_name, color_value, color_props, linked_stem, linked_handle_bar, preview_image_url } = formDataObject;
-    
-    
+
+
 
     try {
         await sql`
@@ -266,7 +268,7 @@ export async function updateModel(id: string, formData: any) {
         await sql`
             DELETE FROM colors WHERE model_id = ${id};
         `
-        
+
         // recreate colors
         for (const color_prop of JSON.parse(color_props)) {
             await sql`
@@ -348,6 +350,8 @@ export async function updateBuildsAndModelsBuilds(id: string, formData: any) {
             }
         }
 
+        await autoCalculateRatings();
+
         revalidatePath('/dashboard/components');
         revalidatePath(`/dashboard/components/builds/${id}/edit`);
     } catch (error) {
@@ -355,22 +359,171 @@ export async function updateBuildsAndModelsBuilds(id: string, formData: any) {
     }
 }
 
- 
+
 export async function authenticate(
     prevState: string | undefined,
     formData: FormData,
-  ) {
+) {
     try {
-      await signIn('credentials', formData);
+        await signIn('credentials', formData);
     } catch (error) {
-      if (error instanceof AuthError) {
-        switch (error.type) {
-          case 'CredentialsSignin':
-            return 'Invalid credentials.';
-          default:
-            return 'Something went wrong.';
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid credentials.';
+                default:
+                    return 'Something went wrong.';
+            }
         }
-      }
-      throw error;
+        throw error;
     }
-  }
+}
+
+export async function autoCalculateRatings() {
+
+    try {
+        await sql`
+            WITH parameter_data AS (
+                SELECT b.id AS preset_id,
+                    -- Aerodynamics calculation
+                    ROUND((
+                        COALESCE((
+                            SELECT m.aerodynamics
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ), 0) +
+                        COALESCE((
+                            SELECT m.aerodynamics
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ), 0)
+                    ) / 
+                    (CASE
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) AND EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 2
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) OR EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 1
+                        ELSE 1
+                    END), 1) AS calculated_aerodynamics,
+
+                    -- Weight calculation
+                    ROUND((
+                        COALESCE((
+                            SELECT m.weight
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ), 0) +
+                        COALESCE((
+                            SELECT m.weight
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ), 0)
+                    ) /
+                    (CASE
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) AND EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 2
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) OR EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 1
+                        ELSE 1
+                    END), 1) AS calculated_weight,
+
+                    -- Overall calculation
+                    ROUND((
+                        COALESCE((
+                            SELECT m.overall
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ), 0) +
+                        COALESCE((
+                            SELECT m.overall
+                            FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ), 0)
+                    ) /
+                    (CASE
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) AND EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 2
+                        WHEN EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Front Wheel Set'
+                        ) OR EXISTS (
+                            SELECT 1 FROM models m
+                            JOIN models_presets mb ON m.id = mb.model_id
+                            JOIN categories c ON m.category_id = c.id
+                            WHERE mb.preset_id = b.id AND c.name = 'Frame Set'
+                        ) THEN 1
+                        ELSE 1
+                    END), 1) AS calculated_overall
+                FROM presets b
+            )
+            UPDATE presets
+            SET
+                aerodynamics = pd.calculated_aerodynamics::NUMERIC(2,1),
+                weight = pd.calculated_weight::NUMERIC(2,1),
+                overall = pd.calculated_overall::NUMERIC(2,1)
+            FROM parameter_data pd
+            WHERE presets.id = pd.preset_id;
+        `;
+    } catch (error) {
+        console.log('error', error)
+    }
+}
