@@ -2,6 +2,7 @@ import React from 'react';
 import HeaderLink from "@/app/components/header-link";
 import { PersonOutline, HelpOutline } from "@mui/icons-material";
 import Link from 'next/link';
+import NextImage from "next/image";
 
 const headerData = [
     { name: "Featured builds", href: "/build"},
@@ -23,6 +24,7 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                             return (
                                 <HeaderLink key={data.name} href={data.href}>
                                     {data.name}
+                                    {data.name.includes("Featured") && textColor === "white" && <NextImage className='absolute -right-[4px] top-[7px]' src="/Yellow-Star.png" width={18} height={18} alt='' />}
                                 </HeaderLink>
                             )
                         })
