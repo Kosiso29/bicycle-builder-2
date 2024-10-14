@@ -7,7 +7,7 @@ import { positionCanvasImages } from "../utils/position-canvas-images";
 import { updateTooltips } from "../utils/update-tooltips";
 
 export default function Presets({ parentProps, setFrameSetDimensions, builds, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, builds: any, modelsPresets: any }) {
-    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips, initialCanvasDrawImageProps } = parentProps;
+    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips, initialCanvasDrawImageProps, selectedFeatureBuild } = parentProps;
     const [loading, setLoading] = useState(0.5);
     const [multipleImages, setMultipleImages] = useState([]);
     const [uniqueImagePresetsProps, setUniqueImagePresetsProps]: any = useState(null);
@@ -63,13 +63,13 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
         return { uniqueImagePresets, multipleImagePresets }
     }
 
-    const getFilteredPresets = (preset: string) => { 
-        const filteredModelIds = modelsPresets.filter((item: any) => item.preset_name === preset).map((item: any) => item.model_id);
+    const getFilteredPresets = (presetId: string) => { 
+        const filteredModelIds = modelsPresets.filter((item: any) => item.preset_id === presetId).map((item: any) => item.model_id);
         return models.filter((item: any) => filteredModelIds.includes(item?.id));
     }
 
-    const checkForFrameSetInPreset = (preset: string) => {
-        const filteredPresets = getFilteredPresets(preset);
+    const checkForFrameSetInPreset = (presetId: string) => {
+        const filteredPresets = getFilteredPresets(presetId);
 
         for (const item of filteredPresets) {
             const canvasProp = item.category.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
@@ -81,9 +81,9 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
         return false;
     }
 
-    const getPresetComponents = (preset: string) => {
+    const getPresetComponents = (presetId: string) => {
         setSelectionLevel(1); // set selection level away from stem/handleBar selections so that linkedStem/linkedHandleBar would be handled properly
-        const filteredPresets = getFilteredPresets(preset);
+        const filteredPresets = getFilteredPresets(presetId);
         let loadedCountUnique = 0, newFrameSetDimensions = frameSetDimensions;
         const { uniqueImagePresets, multipleImagePresets } = populateMultipleImages(filteredPresets);
         setUniqueImagePresetsProps(null);
@@ -234,13 +234,19 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
         }
     }, [uniqueImagePresetsProps])
 
+    useEffect(() => {
+        if (selectedFeatureBuild) {
+            getPresetComponents(selectedFeatureBuild);
+        }
+    }, [selectedFeatureBuild])
+
     return (
         <div className="flex flex-col w-28 flex-grow max-h-full overflow-hidden gap-2">
             <h1 className="font-bold text-2xl">Bike <br /> Ideas</h1>
             <div className="flex flex-col flex-grow w-[6.5rem] max-h-[80%] gap-5 overflow-y-auto pr-3 pt-3">
                 {
                     canvasDrawImageProps.frameSet.id ? builds.filter((build: any) => build.name !== "None" && frameBuildIds.includes(build.id)).map((build: any, index: number) => (
-                        <button key={build.id} className="group relative hover:bg-back-color focus-visible:outline-primary border border-back-color transition-all py-1" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.name) }}>
+                        <button key={build.id} className="group relative hover:bg-back-color focus-visible:outline-primary border border-back-color transition-all py-1" disabled={(!canvasDrawImageProps.frameSet.image || !canvasDrawImageProps.frameSet.brand) && !checkForFrameSetInPreset(build.name)} onClick={() => { setLoading(index); getPresetComponents(build.id) }}>
                             <div className="absolute -right-[10px] -top-[10px] w-[20px] h-[20px]">
                                 <NextImage src="/Yellow-Star.png" width={20} height={20} alt='' />
                             </div>

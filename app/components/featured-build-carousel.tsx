@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import ProgressBar from '../ui/progress-bar';
 import Image from "next/image";
 import Slider from "react-slick";
+import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { builderActions } from "@/app/store/builder";
 
 // Import css files
 import "slick-carousel/slick/slick.css";
@@ -66,7 +69,7 @@ export function SimpleSlider({ builds }: { builds: any }) {
             <Slider ref={sliderRef} {...settings}>
                 {
                     builds?.length > 0 && builds.filter((build: any) => build.name !== "None").map((build: any) => (
-                        <Card key={build.id} title={build.name} src={build.image_url} ratings={[
+                        <Card key={build.id} buildId={build.id} title={build.name} src={build.image_url} ratings={[
                             { name: "Overall", value: build.overall || "0.0" },
                             { name: "Aerodynamic", value: build.aerodynamics || "0.0" },
                             { name: "Weight", value: build.weight || "0.0" },
@@ -78,12 +81,20 @@ export function SimpleSlider({ builds }: { builds: any }) {
     );
 }
 
-function Card({ title, src, ratings }: { title: string, src: string, ratings: any }) {
+function Card({ title, src, ratings, buildId }: { title: string, src: string, ratings: any, buildId: string }) {
+    const dispatch = useDispatch();
+
+    const handleClick = () => {
+        dispatch(builderActions.updateSelectedFeatureBuild(buildId));
+    }
+
     return (
         <div className='flex flex-col justify-between border p-5 w-96 h-[25rem]'>
             <div className='flex justify-between items-center gap-5'>
                 <h2 className='text-2xl font-bold'>{title}</h2>
-                <button className='border-none text-white p-3 bg-[#1A1A1A]'>VIEW&nbsp;BUILD</button>
+                <Link href="/build" onClick={handleClick}>
+                    <button className='border-none text-white p-3 bg-[#1A1A1A]'>VIEW&nbsp;BUILD</button>
+                </Link>
             </div>
             <div>
                 <div className='pt-5 w-[70%] text-right [&>p]:h-6'>

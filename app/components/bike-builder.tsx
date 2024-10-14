@@ -25,6 +25,7 @@ import Header from "@/app/components/header";
 import CanvasIcons from "@/app/components/canvas-icons";
 import BuildStart from "./build-start";
 import { useSelector } from "react-redux";
+import { IRootState } from "@/app/store";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
@@ -55,7 +56,8 @@ export default function BikeBuilder({
         tire: {},
     });
 
-    const newBuildStart = useSelector((state) => state.builderReducer.buildStart);
+    const newBuildStart = useSelector((state: IRootState) => state.builderReducer.buildStart);
+    const selectedFeatureBuild = useSelector((state: IRootState) => state.builderReducer.selectedFeatureBuild);
 
     const componentRefs = useRef([]);
 
@@ -86,7 +88,8 @@ export default function BikeBuilder({
         accessoryModels,
         addonAccessories,
         setAddonAccessories,
-        setLinkedComopnentDimensions
+        setLinkedComopnentDimensions,
+        selectedFeatureBuild
     }
 
     const canvasNumberData = [
