@@ -5,12 +5,15 @@ import NextImage from "next/image";
 import { useEffect, useState } from "react";
 import { positionCanvasImages } from "../utils/position-canvas-images";
 import { updateTooltips } from "../utils/update-tooltips";
+import { useDispatch } from "react-redux";
+import { builderActions } from "@/app/store/builder";
 
 export default function Presets({ parentProps, setFrameSetDimensions, builds, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, builds: any, modelsPresets: any }) {
     const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips, initialCanvasDrawImageProps, selectedFeatureBuild } = parentProps;
     const [loading, setLoading] = useState(0.5);
     const [multipleImages, setMultipleImages] = useState([]);
     const [uniqueImagePresetsProps, setUniqueImagePresetsProps]: any = useState(null);
+    const dispatch = useDispatch();
 
     const frameBuildIds = modelsPresets.filter((modelPreset: any) => modelPreset.model_id === canvasDrawImageProps.frameSet.id).map((modelPreset: any) => modelPreset.preset_id);
     
@@ -66,6 +69,14 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
     const getFilteredPresets = (presetId: string) => { 
         const filteredModelIds = modelsPresets.filter((item: any) => item.preset_id === presetId).map((item: any) => item.model_id);
         return models.filter((item: any) => filteredModelIds.includes(item?.id));
+    }
+
+    const completePresetLoading = () => {
+        setTooltips((prevState: any) => ({ ...prevState, model: "", key_metrics: "---" }))
+        setRerender((prevState: any) => !prevState);
+        setLoading(0.5);
+        setCanvasSelectionLevelState(6);
+        dispatch(builderActions.updateSelectedFeatureBuild(""));
     }
 
     const checkForFrameSetInPreset = (presetId: string) => {
@@ -161,10 +172,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
                     if (multipleImagePresets.length > 0) {
                         setUniqueImagePresetsProps({ multipleImagePresets, newFrameSetDimensions })
                     } else {
-                        setTooltips((prevState: any) => ({ ...prevState, model: "", key_metrics: "---" }))
-                        setRerender((prevState: any) => !prevState);
-                        setLoading(0.5);
-                        setCanvasSelectionLevelState(6);
+                        completePresetLoading();
                     }
                 }
             };
@@ -217,10 +225,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
                         ...prevState,
                         [canvasProp]: { brand, model }
                     }));
-                    setTooltips((prevState: any) => ({ ...prevState, model: "", key_metrics: "---" }))
-                    setRerender((prevState: any) => !prevState);
-                    setLoading(0.5);
-                    setCanvasSelectionLevelState(6);
+                    completePresetLoading();
                 }
             };
 
@@ -235,10 +240,10 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
     }, [uniqueImagePresetsProps])
 
     useEffect(() => {
-        if (selectedFeatureBuild) {
+        if (selectedFeatureBuild && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0) {
             getPresetComponents(selectedFeatureBuild);
         }
-    }, [selectedFeatureBuild])
+    }, [selectedFeatureBuild, initialCanvasDrawImageProps])
 
     return (
         <div className="flex flex-col w-28 flex-grow max-h-full overflow-hidden gap-2">
