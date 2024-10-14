@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import ProgressBar from '../ui/progress-bar';
 import Image from "next/image";
 import Slider from "react-slick";
+import Loading from "@/app/components/loading";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
@@ -63,6 +64,29 @@ export function SimpleSlider({ builds }: { builds: any }) {
         prevArrow: <CustomPrevArrow />,
         nextArrow: <CustomNextArrow />,
         beforeChange: (oldIndex: any, newIndex: any) => setCurrentSlide(newIndex),
+        responsive: [
+            {
+                breakpoint: 2500,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 1650,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 1300,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                },
+            },
+        ],
     };
     return (
         <div ref={containerRef}>
@@ -82,9 +106,11 @@ export function SimpleSlider({ builds }: { builds: any }) {
 }
 
 function Card({ title, src, ratings, buildId }: { title: string, src: string, ratings: any, buildId: string }) {
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
     const handleClick = () => {
+        setLoading(true);
         dispatch(builderActions.updateSelectedFeatureBuild(buildId));
     }
 
@@ -93,7 +119,10 @@ function Card({ title, src, ratings, buildId }: { title: string, src: string, ra
             <div className='flex justify-between items-center gap-5'>
                 <h2 className='text-2xl font-bold'>{title}</h2>
                 <Link href="/build" onClick={handleClick}>
-                    <button className='border-none text-white p-3 bg-[#1A1A1A]'>VIEW&nbsp;BUILD</button>
+                    <button className='border-none flex justify-center items-center gap-1 text-white p-3 bg-primary hover:bg-primary-hover active:bg-primary-active'>
+                        VIEW&nbsp;BUILD
+                        {loading && <span className='self-center'><Loading small white /></span>}
+                    </button>
                 </Link>
             </div>
             <div>
