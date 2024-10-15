@@ -24,7 +24,7 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                             return (
                                 <HeaderLink key={data.name} href={data.href}>
                                     {data.name}
-                                    {data.name.includes("Featured") && textColor === "white" && <NextImage className='absolute -right-[4px] top-[7px]' src="/Yellow-Star.png" width={18} height={18} alt='' />}
+                                    {data.name.includes("Featured") && textColor !== "white" && <NextImage className='absolute -right-[4px] top-[7px]' src="/Yellow-Star.png" width={18} height={18} alt='' />}
                                 </HeaderLink>
                             )
                         })
