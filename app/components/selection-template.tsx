@@ -278,6 +278,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             setInitialModelData(selectedModelData[0]);
             if (selectionPresetProps[identifier]?.presetColorPrice) {
                 selectedModelData[0].price = selectionPresetProps[identifier]?.presetColorPrice;
+                selectedModelData[0].src = selectionPresetProps[identifier]?.presetColorSrc;
             }
             setModelData(selectedModelData[0]);
         }
