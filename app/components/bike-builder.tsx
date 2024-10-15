@@ -55,6 +55,8 @@ export default function BikeBuilder({
         saddle: {},
         tire: {},
     });
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [image2Loaded, setImage2Loaded] = useState(false);
 
     const newBuildStart = useSelector((state: IRootState) => state.builderReducer.buildStart);
     const selectedFeatureBuild = useSelector((state: IRootState) => state.builderReducer.selectedFeatureBuild);
@@ -89,7 +91,11 @@ export default function BikeBuilder({
         addonAccessories,
         setAddonAccessories,
         setLinkedComopnentDimensions,
-        selectedFeatureBuild
+        selectedFeatureBuild,
+        imageLoaded,
+        image2Loaded,
+        setImageLoaded,
+        setImage2Loaded
     }
 
     const canvasNumberData = [

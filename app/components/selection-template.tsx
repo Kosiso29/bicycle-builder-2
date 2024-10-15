@@ -17,10 +17,13 @@ import ColorSelector from "@/app/ui/color-selector";
 import SizeChart from "./size_chart";
 import ModelButton from "@/app/ui/model-button";
 import KeyMetrics from "@/app/components/key-metrics";
+import { useSelector } from "react-redux";
+import { IRootState } from "@/app/store";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset, updateFrameSetData }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
-        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions } = parentProps;
+        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions, 
+        imageLoaded, image2Loaded, setImageLoaded, setImage2Loaded } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -28,8 +31,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [initialModelData, setInitialModelData] = useState(null);
     const [modelData, setModelData] = useState(null);
     const [allModels, setAllModels] = useState([]);
-    const [imageLoaded, setImageLoaded] = useState(false);
-    const [image2Loaded, setImage2Loaded] = useState(false);
     const [multipleImages, setMultipleImages] = useState([]);
     const [multipleImagesLoaded, setMultipleImagesLoaded] = useState(false);
     const imageRef = useRef(null);
@@ -40,6 +41,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [tyreTube, setTyreTube] = useState({});
     const [disableSelections, setDisableSelections] = useState(false);
     const [modelInfo, setModelInfo] = useState(null);
+
+    const selectedFeatureBuild = useSelector((state: IRootState) => state.builderReducer.selectedFeatureBuild);
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
@@ -315,7 +318,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             {identifier === "stem" && <h1 className="text-2xl font-bold">Cockpit</h1>}
             <div className="flex gap-2">
                 <h1 className={`${identifier === "stem" || identifier === "handleBar" ? "text-xl" : "text-2xl"} font-bold`}>Choose your {displayLabel || label}</h1>
-                {imageLoaded && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0 ? null : <div className='self-center'><Loading small /></div>}
+                {imageLoaded && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0 && !selectedFeatureBuild ? null : <div className='self-center'><Loading small /></div>}
             </div>
             <TextField select size="small" value={brand} disabled={disableSelections} sx={{ '& .Mui-disabled.MuiSelect-select': { cursor: 'not-allowed' } }} onChange={handleBrandChange} label="Brands">
                 {
