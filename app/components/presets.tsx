@@ -100,6 +100,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
         setUniqueImagePresetsProps(null);
 
         uniqueImagePresets.sort((a: any) => (a.category === "Frame Set" ? -1 : 1)).forEach((item: any) => {
+            let presetColorValue = "", presetColorPrice = "";
             const image = new Image();
 
             image.src = item.src;
@@ -112,10 +113,14 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
             if (canvasProp === 'frameSet') {
                 const { actualWidth } = item;
                 newFrameSetDimensions.actualWidth = actualWidth;
-                const frameColorArray: any = colorsPresets.filter((colorPreset: any) => colorPreset.preset_id === presetId);
-                if (frameColorArray.length > 0) {
-                    image.src = frameColorArray[0]?.color_image_url;
-                }
+            }
+
+            const modelColorArray: any = colorsPresets.filter((colorPreset: any) => colorPreset.preset_id === presetId && colorPreset.color_model_id === item.id );
+            
+            if (modelColorArray.length > 0) {
+                image.src = modelColorArray[0]?.color_image_url;
+                presetColorValue = modelColorArray[0]?.color_value;
+                presetColorPrice = modelColorArray[0]?.color_price;
             }
 
             image.onload = function () {
@@ -170,7 +175,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
 
                 setSelectionPresetProps((prevState: any) => ({
                     ...prevState,
-                    [canvasProp]: { brand, model }
+                    [canvasProp]: { brand, model, presetColorValue, presetColorPrice }
                 }));
                 if (loadedCountUnique === uniqueImagePresets.length) {
                     if (multipleImagePresets.length > 0) {

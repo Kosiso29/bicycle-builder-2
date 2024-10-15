@@ -149,6 +149,9 @@ export async function fetchColorsPresets() {
             SELECT 
                 c.id as color_id, 
                 c.name as color_name,
+                c.model_id as color_model_id,
+                c.value as color_value,
+                c.price as color_price,
                 c.image_url as color_image_url, 
                 p.id as preset_id, 
                 p.name as preset_name
