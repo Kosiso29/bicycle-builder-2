@@ -29,7 +29,7 @@ import { IRootState } from "@/app/store";
 
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
-    frameSetDimensions, setFrameSetDimensions, models, builds, modelsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
+    frameSetDimensions, setFrameSetDimensions, models, builds, modelsPresets, colorsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
     handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories, showBilling, totalPrice, setTotalPrice
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
@@ -95,7 +95,8 @@ export default function BikeBuilder({
         imageLoaded,
         image2Loaded,
         setImageLoaded,
-        setImage2Loaded
+        setImage2Loaded,
+        colorsPresets
     }
 
     const canvasNumberData = [

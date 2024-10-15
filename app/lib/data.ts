@@ -148,7 +148,8 @@ export async function fetchColorsPresets() {
         const data = await sql`
             SELECT 
                 c.id as color_id, 
-                c.name as color_name, 
+                c.name as color_name,
+                c.image_url as color_image_url, 
                 p.id as preset_id, 
                 p.name as preset_name
             FROM colors_presets cp

@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Types
 import { Models } from "@/app/lib/definitions";
 
-export default function Builder({ models, builds, modelsPresets, colors, accessoryModels }: { models: Models, builds: any, modelsPresets: any, colors: any, accessoryModels: any }) {
+export default function Builder({ models, builds, modelsPresets, colorsPresets, colors, accessoryModels }: { models: Models, builds: any, modelsPresets: any, colorsPresets: any, colors: any, accessoryModels: any }) {
     const [showSummary, setShowSummary] = useState(false);
     const [showBilling, setShowBilling] = useState(false);
     const [canvasImage, setCanvasImage] = useState("");
@@ -51,6 +51,7 @@ export default function Builder({ models, builds, modelsPresets, colors, accesso
                 models={models}
                 builds={builds}
                 modelsPresets={modelsPresets}
+                colorsPresets={colorsPresets}
                 colors={colors}
                 accessoryModels={accessoryModels}
                 setResetComponent={setResetComponent}

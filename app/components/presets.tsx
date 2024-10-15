@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
 
 export default function Presets({ parentProps, setFrameSetDimensions, builds, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, builds: any, modelsPresets: any }) {
-    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips, initialCanvasDrawImageProps, selectedFeatureBuild } = parentProps;
+    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips, initialCanvasDrawImageProps, selectedFeatureBuild, colorsPresets } = parentProps;
     const [loading, setLoading] = useState(0.5);
     const [multipleImages, setMultipleImages] = useState([]);
     const [uniqueImagePresetsProps, setUniqueImagePresetsProps]: any = useState(null);
@@ -112,6 +112,10 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
             if (canvasProp === 'frameSet') {
                 const { actualWidth } = item;
                 newFrameSetDimensions.actualWidth = actualWidth;
+                const frameColorArray: any = colorsPresets.filter((colorPreset: any) => colorPreset.preset_id === presetId);
+                if (frameColorArray.length > 0) {
+                    image.src = frameColorArray[0]?.color_image_url;
+                }
             }
 
             image.onload = function () {
