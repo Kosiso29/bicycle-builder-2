@@ -22,8 +22,7 @@ import { IRootState } from "@/app/store";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset, updateFrameSetData }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
-        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions, 
-        imageLoaded, image2Loaded, setImageLoaded, setImage2Loaded } = parentProps;
+        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -33,6 +32,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [allModels, setAllModels] = useState([]);
     const [multipleImages, setMultipleImages] = useState([]);
     const [multipleImagesLoaded, setMultipleImagesLoaded] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [image2Loaded, setImage2Loaded] = useState(false);
     const imageRef = useRef(null);
     const imageRef2 = useRef(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
