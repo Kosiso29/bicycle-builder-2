@@ -94,6 +94,7 @@ html {
 
 body {
     margin: 0;
+    scrollbar-width: thin; /* For Firefox */
 }
 
 button.MuiButton-containedPrimary {
