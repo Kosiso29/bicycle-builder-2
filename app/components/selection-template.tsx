@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 import { IRootState } from "@/app/store";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset, updateFrameSetData }) {
-    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps,
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps, selectionLevel,
         canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
@@ -325,9 +325,12 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     return (
         <div id={identifier} className="flex flex-col gap-4 mt-8">
             {identifier === "stem" && <h1 className="text-2xl font-bold">Cockpit</h1>}
-            <div className="flex gap-2">
-                <h1 className={`${identifier === "stem" || identifier === "handleBar" ? "text-xl" : "text-2xl"} font-bold`}>Choose your {displayLabel || label}</h1>
-                {imageLoaded && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0 && !selectedFeatureBuild ? null : <div className='self-center'><Loading small /></div>}
+            <div>
+                <div className="flex gap-2">
+                    <h1 className={`${identifier === "stem" || identifier === "handleBar" ? "text-xl" : "text-2xl"} font-bold`}>Choose your {displayLabel || label}</h1>
+                    {imageLoaded && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0 && !selectedFeatureBuild ? null : <div className='self-center'><Loading small /></div>}
+                </div>
+                {identifier !== "tire" && identifier !== "handleBar" &&  <div><p className="text-gray-400 text-lg">{selectionLevel}/5</p></div>}
             </div>
             <TextField select size="small" value={brand} disabled={disableSelections} sx={{ '& .Mui-disabled.MuiSelect-select': { cursor: 'not-allowed' } }} onChange={handleBrandChange} label="Brands" SelectProps={{ MenuProps: { disableScrollLock: true, keepMounted: true, } /** prevent scrollbar shift on windows */ }}>
                 {

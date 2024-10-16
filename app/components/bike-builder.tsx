@@ -77,6 +77,7 @@ export default function BikeBuilder({
         setCanvasSelectionLevelState,
         selectionPresetProps,
         setSelectionPresetProps,
+        selectionLevel,
         setSelectionLevel,
         setShowSummary,
         initialCanvasDrawImageProps,
