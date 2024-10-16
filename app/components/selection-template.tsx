@@ -329,7 +329,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 <h1 className={`${identifier === "stem" || identifier === "handleBar" ? "text-xl" : "text-2xl"} font-bold`}>Choose your {displayLabel || label}</h1>
                 {imageLoaded && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0 && !selectedFeatureBuild ? null : <div className='self-center'><Loading small /></div>}
             </div>
-            <TextField select size="small" value={brand} disabled={disableSelections} sx={{ '& .Mui-disabled.MuiSelect-select': { cursor: 'not-allowed' } }} onChange={handleBrandChange} label="Brands">
+            <TextField select size="small" value={brand} disabled={disableSelections} sx={{ '& .Mui-disabled.MuiSelect-select': { cursor: 'not-allowed' } }} onChange={handleBrandChange} label="Brands" SelectProps={{ MenuProps: { disableScrollLock: true, keepMounted: true, } /** prevent scrollbar shift on windows */ }}>
                 {
                     uniqueBrands.map(brand => (
                         <MenuItem value={brand} key={brand}>{brand}</MenuItem>
