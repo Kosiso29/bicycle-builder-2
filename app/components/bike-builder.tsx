@@ -498,7 +498,7 @@ export default function BikeBuilder({
             <div className="text-black">
                 <Header padding="10rem" />
             </div>
-            <div className="flex flex-col justify-evenly mr-[22rem] 2xl:mr-[25rem] h-full max-h-full overflow-auto">
+            <div className="flex flex-col justify-evenly mr-[22rem] 2xl:mr-[28rem] h-full max-h-full overflow-auto">
                 <div className="flex items-center max-h-[calc(100%-6rem)]">
                     <div className="flex flex-col border min-h-full max-h-full py-5 px-2">
                         <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} builds={builds} modelsPresets={modelsPresets} />
@@ -513,7 +513,7 @@ export default function BikeBuilder({
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} totalPrice={totalPrice} />
             </div>
-            <div id="selection" className={`flex flex-col fixed right-0 top-0 h-[calc(100vh-9rem)] w-[22rem] 2xl:w-[25rem] pt-5 pb-0 overflow-auto mt-[4rem] mb-[2rem] ${newBuildStart ? "overflow-hidden" : "overflow-y-scroll snap-y snap-mandatory"} pr-[2rem]`}>
+            <div id="selection" className={`flex flex-col fixed right-0 top-0 h-[calc(100vh-9rem)] w-[22rem] 2xl:w-[28rem] pt-5 pb-0 overflow-auto mt-[4rem] mb-[2rem] ${newBuildStart ? "overflow-hidden" : "overflow-y-scroll snap-y snap-mandatory"} pr-[2rem]`}>
                 {/* <div>
                     <div className="mb-3">
                     <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
