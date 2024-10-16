@@ -9,7 +9,7 @@ export default async function Page() {
         <div>
             <Header />
             <div className="pt-32 wrapper-padding">
-                <h1 className="flex items-center text-3xl font-bold">Featured Builds <span className="text-2xl font-normal ml-1">({ builds.length })</span></h1>
+                <h1 className="flex items-center text-3xl font-bold">Featured Builds <span className="text-2xl font-normal ml-1">({ builds.filter((build: any) => build.name !== "None").length })</span></h1>
                 <FeaturedBuilds builds={builds} />
             </div>
         </div>
