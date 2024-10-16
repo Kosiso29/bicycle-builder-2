@@ -5,7 +5,7 @@ import Link from 'next/link';
 import NextImage from "next/image";
 
 const headerData = [
-    { name: "Featured builds", href: "/build"},
+    { name: "Featured builds", href: "/featured-builds"},
     { name: "About Us", href: "/"},
 ]
 
@@ -13,7 +13,7 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
     return (
         <div className='absolute flex items-center justify-between gap-5 top-0 left-0 h-16 w-full wrapper-padding' style={{ color: textColor || "black", paddingLeft: padding, paddingRight: padding }}>
             <div className='flex items-center gap-5'>
-                <div className='font-bold text-2xl'>
+                <div className='font-bold text-2xl [&>a]:pl-0'>
                     <HeaderLink href="/">
                         BIKE BUILDER
                     </HeaderLink>
