@@ -6,7 +6,7 @@ export default async function Page() {
     const builds = await fetchBuilds();
 
     return (
-        <div>
+        <div className="bg-back-color">
             <Header />
             <div className="pt-32 wrapper-padding">
                 <h1 className="flex items-center text-3xl font-bold">Featured Builds <span className="text-2xl font-normal ml-1">({ builds.filter((build: any) => build.name !== "None").length })</span></h1>

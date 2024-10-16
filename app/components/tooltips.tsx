@@ -64,16 +64,16 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
                     <ArrowDownwardOutlined onClick={handleArrowClick} className="absolute left-1/2 -translate-x-1/2 border border-black hover:border-primary hover:text-primary cursor-pointer rounded-full p-[8px] w-12 h-12" />} */}
                 <div className="text-right [&>p]:h-6">
                     <div className="flex justify-end gap-3">
+                        <p>Overall</p>
+                        {renderProgressBar(tooltips.overall ?? 0.0)}
+                    </div>
+                    <div className="flex justify-end gap-3">
                         <p>Aerodynamics</p>
                         {renderProgressBar(tooltips.aerodynamics ??  0.0)}
                     </div>
                     <div className="flex justify-end gap-3">
-                        <p>Lightweight</p>
+                        <p>Weight</p>
                         {renderProgressBar(tooltips.weight ?? 0.0)}
-                    </div>
-                    <div className="flex justify-end gap-3">
-                        <p>Overall</p>
-                        {renderProgressBar(tooltips.overall ?? 0.0)}
                     </div>
                 </div>
             </div>
