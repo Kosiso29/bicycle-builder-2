@@ -22,7 +22,7 @@ import { IRootState } from "@/app/store";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset, updateFrameSetData }) {
     const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps, selectionLevel,
-        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions } = parentProps;
+        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions, setCanvasLoading } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -328,7 +328,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             <div>
                 <div className="flex gap-2">
                     <h1 className={`${identifier === "stem" || identifier === "handleBar" ? "text-xl" : "text-2xl"} font-bold`}>Choose your {displayLabel || label}</h1>
-                    {imageLoaded && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0 && !selectedFeatureBuild ? null : <div className='self-center'><Loading small /></div>}
+                    {imageLoaded && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0 && !selectedFeatureBuild ? setCanvasLoading(false) : setCanvasLoading(true)}
                 </div>
                 {identifier !== "tire" && identifier !== "handleBar" &&  <div><p className="text-gray-400 text-lg">{selectionLevel}/5</p></div>}
             </div>

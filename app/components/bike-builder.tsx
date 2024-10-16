@@ -24,6 +24,7 @@ import AddonSummary from "./addon-summary";
 import Header from "@/app/components/header";
 import CanvasIcons from "@/app/components/canvas-icons";
 import BuildStart from "./build-start";
+import LoadingBicycle from "@/app/components/loading-bicycle";
 import { useSelector } from "react-redux";
 import { IRootState } from "@/app/store";
 
@@ -37,6 +38,7 @@ export default function BikeBuilder({
     const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
     const [rerender, setRerender] = useState(false);
     const [canvasContext, setCanvasContext] = useState(null);
+    const [canvasLoading, setCanvasLoading] = useState(false);
     const [linkedComponentDimensions, setLinkedComopnentDimensions] = useState({ hasHandleBar: false }); // this does not affect canvasDrawImageProps
     const [tooltips, setTooltips] = useState({
         key_metrics: "---",
@@ -91,7 +93,8 @@ export default function BikeBuilder({
         setAddonAccessories,
         setLinkedComopnentDimensions,
         selectedFeatureBuild,
-        colorsPresets
+        colorsPresets,
+        setCanvasLoading
     }
 
     const canvasNumberData = [
@@ -507,9 +510,17 @@ export default function BikeBuilder({
                             <Button size="small" variant="outlined">Exit Builder</Button>
                         </Link> */}
                     </div>
-                    <div className="relative h-[calc(100vh-9rem)] min-h-[560px] max-h-[620px] w-[calc(((100vh-9rem)*900)/620)] min-w-[810px] max-w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
-                        <canvas id="canvas" style={{ transform: `scale(${CANVAS_SCALE})` }} onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
-                        <CanvasIcons />
+                    <div className="relative flex-grow">
+                        <div className="relative h-[calc(100vh-9rem)] min-h-[560px] max-h-[620px] w-[calc(((100vh-9rem)*900)/620)] min-w-[810px] max-w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
+                            <canvas id="canvas" style={{ transform: `scale(${CANVAS_SCALE})` }} onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
+                            <CanvasIcons />
+                        </div>
+                        {
+                            canvasLoading &&
+                            <div className="absolute inset-0 flex justify-center items-center">
+                                <LoadingBicycle />
+                            </div>
+                        }
                     </div>
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} totalPrice={totalPrice} />
