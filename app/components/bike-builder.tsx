@@ -504,7 +504,7 @@ export default function BikeBuilder({
             </div>
             <div className="flex flex-col justify-evenly mr-[22rem] 2xl:mr-[28rem] h-full max-h-full overflow-auto">
                 <div className="flex items-center max-h-[calc(100%-6rem)]">
-                    <div className="flex flex-col border min-h-full max-h-full py-5 px-2">
+                    <div className="flex flex-col min-h-full max-h-full py-5 px-2">
                         <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} builds={builds} modelsPresets={modelsPresets} />
                         {/* <Link href="/" className="block mt-2">
                             <Button size="small" variant="outlined">Exit Builder</Button>
