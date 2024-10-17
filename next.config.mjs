@@ -18,6 +18,16 @@ const nextConfig = {
                 hostname: 'www.cervelo.com',
                 pathname: '**',
             },
+            {
+                protocol: 'https',
+                hostname: 'imagekit.io',
+                pathname: '**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'ik.imagekit.io',
+                pathname: '**',
+            },
         ]
     }
 };
