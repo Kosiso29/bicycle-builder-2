@@ -429,8 +429,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                                     const { Tube, ...restProps } = prevState;
                                                     return { ...restProps };
                                                 })
-                                                setRerender(prevState => !prevState);
                                             }
+                                            setRerender(prevState => !prevState);
                                         }}
                                         src={item.previewSrc || item.src}
                                         model={item.model}
