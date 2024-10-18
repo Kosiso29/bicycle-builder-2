@@ -498,7 +498,7 @@ export default function BikeBuilder({
     }, []);
 
     return (
-        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color h-screen max-h-screen fade-in-animation pl-6 pt-[4rem]`}>
+        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color-1 h-screen max-h-screen fade-in-animation pl-6 pt-[4rem]`}>
             <div className="text-black">
                 <Header padding="10rem" />
             </div>
@@ -554,21 +554,21 @@ export default function BikeBuilder({
                 {
                     newBuildStart && <BuildStart />
                 }
-                <div ref={(el) => (componentRefs.current[0] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
+                <div ref={(el) => (componentRefs.current[0] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-light-01 px-5">
                     <FrameSet parentProps={parentProps} handleReset={handleReset} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
-                <div ref={(el) => (componentRefs.current[1] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
+                <div ref={(el) => (componentRefs.current[1] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-light-01 px-5">
                     <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
                     <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
-                <div ref={(el) => (componentRefs.current[2] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
+                <div ref={(el) => (componentRefs.current[2] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-light-01 px-5">
                     <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                     <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3 && (handleBarStemConditions || frameSetDimensions.hasStem) && !linkedComponentDimensions.hasHandleBar} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
-                <div ref={(el) => (componentRefs.current[3] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
+                <div ref={(el) => (componentRefs.current[3] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-light-01 px-5">
                     <GroupSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
                 </div>
-                <div ref={(el) => (componentRefs.current[4] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-[#F2F2F2] px-5">
+                <div ref={(el) => (componentRefs.current[4] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-light-01 px-5">
                     <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
                 {/* {

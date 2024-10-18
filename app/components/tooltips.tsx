@@ -68,7 +68,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
                         {renderProgressBar(tooltips.overall ?? 0.0)}
                     </div>
                     <div className="flex justify-end gap-3">
-                        <p>Aerodynamics</p>
+                        <p>Aerodynamic</p>
                         {renderProgressBar(tooltips.aerodynamics ??  0.0)}
                     </div>
                     <div className="flex justify-end gap-3">
