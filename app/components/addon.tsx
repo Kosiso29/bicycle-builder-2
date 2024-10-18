@@ -29,7 +29,7 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
 
     return (
         <div className="flex flex-col gap-4">
-            <TextField select size="small" value={addons[label]?.brand} onChange={(e) => { setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], brand: e.target.value, models: prevState[label].allBrandsData.filter((item: any) => item.brand === e.target.value), selectedIndex: null } })) }} label={label}>
+            <TextField select size="small" value={addons[label]?.brand} onChange={(e) => { setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], brand: e.target.value, models: prevState[label].allBrandsData.filter((item: any) => item.brand === e.target.value), selectedIndex: null } })) }} label={label} SelectProps={{ MenuProps: { disableScrollLock: true, keepMounted: true, } /** prevent scrollbar shift on windows */ }}>
                 {
                     addons[label]?.brands?.map((brand: string) => (
                         <MenuItem value={brand} key={brand}>{brand}</MenuItem>
