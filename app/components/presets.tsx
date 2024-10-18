@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
 
 export default function Presets({ parentProps, setFrameSetDimensions, builds, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, builds: any, modelsPresets: any }) {
-    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips, initialCanvasDrawImageProps, selectedFeatureBuild, colorsPresets } = parentProps;
+    const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips, initialCanvasDrawImageProps, selectedFeatureBuild, colorsPresets, updateSelectionLevel } = parentProps;
     const [loading, setLoading] = useState(0.5);
     const [multipleImages, setMultipleImages] = useState([]);
     const [uniqueImagePresetsProps, setUniqueImagePresetsProps]: any = useState(null);
@@ -93,7 +93,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
     }
 
     const getPresetComponents = (presetId: string) => {
-        setSelectionLevel(1); // set selection level away from stem/handleBar selections so that linkedStem/linkedHandleBar would be handled properly
+        updateSelectionLevel(1); // set selection level away from stem/handleBar selections so that linkedStem/linkedHandleBar would be handled properly
         const filteredPresets = getFilteredPresets(presetId);
         let loadedCountUnique = 0, newFrameSetDimensions = frameSetDimensions;
         const { uniqueImagePresets, multipleImagePresets } = populateMultipleImages(filteredPresets);

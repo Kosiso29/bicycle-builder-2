@@ -94,7 +94,8 @@ export default function BikeBuilder({
         setLinkedComopnentDimensions,
         selectedFeatureBuild,
         colorsPresets,
-        setCanvasLoading
+        setCanvasLoading,
+        updateSelectionLevel
     }
 
     const canvasNumberData = [
@@ -205,8 +206,9 @@ export default function BikeBuilder({
         })
     }
 
-    const updateSelectionLevel = (newSelectionLevel) => {
-        setSelectionLevel(newSelectionLevel);
+    function updateSelectionLevel(selectionLevel) {
+        setSelectionLevel(Number(selectionLevel));
+        componentRefs.current[Number(selectionLevel) - 1].scrollIntoView({ behavior: 'smooth' });
     }
 
     const handleCanvasEvents = (e, callback) => {
@@ -227,7 +229,6 @@ export default function BikeBuilder({
     const handleCanvasClick = (e) => {
         handleCanvasEvents(e, (index) => {
             updateSelectionLevel(Number(index) + 1);
-            componentRefs.current[Number(index)].scrollIntoView({ behavior: 'smooth' });
         })
     }
 
