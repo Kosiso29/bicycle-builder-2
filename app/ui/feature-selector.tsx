@@ -54,6 +54,7 @@ export default function FeatureSelector(
                 sx={{
                     '& .MuiInputLabel-root': { fontSize: ".85rem" }, // Font size for label
                 }}
+                SelectProps={{ MenuProps: { disableScrollLock: true, keepMounted: true, } /** prevent scrollbar shift on windows */ }}
             >
                 {
                     values?.map(value => (
