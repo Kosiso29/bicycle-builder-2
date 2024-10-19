@@ -339,10 +339,15 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     ))
                 }
             </TextField>
-            {identifier !== "groupSet_drivetrain" && identifier !== "stem" && identifier !== "handleBar" ? <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} /> : null}
-            <div className="flex justify-end">
-                <SizeChart size_chart_url={modelData?.size_chart_url} />
-            </div>
+            {
+                brand === modelData?.brand &&
+                <>
+                    { identifier !== "groupSet_drivetrain" && identifier !== "stem" && identifier !== "handleBar" ? <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} /> : null}
+                    <div className="flex justify-end">
+                        <SizeChart size_chart_url={modelData?.size_chart_url} />
+                    </div>
+                </>
+            }
             <div className="flex justify-between gap-2 flex-wrap pb-3">
                 {
                     allModels.length > 0 ?
