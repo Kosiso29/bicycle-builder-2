@@ -4,7 +4,7 @@ import { useState } from 'react';
 import FeaturedBuilds from "@/app/components/featured-builds";
 
 export default function FeaturedBuildsContainer({ builds }: { builds: any }) {
-    const [gridNumber, setGridNumber] = useState(2);
+    const [gridNumber, setGridNumber] = useState(3);
 
     return (
         <div className="pt-32 wrapper-padding">
@@ -60,7 +60,7 @@ export default function FeaturedBuildsContainer({ builds }: { builds: any }) {
                     </span>
                 </span>
             </h1>
-            <FeaturedBuilds builds={builds} />
+            <FeaturedBuilds builds={builds} gridNumber={gridNumber} />
         </div>
     )
 }
