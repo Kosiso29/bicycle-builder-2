@@ -44,7 +44,7 @@ function Card({ title, src, ratings, buildId, gridNumber }: { title: string, src
                 <Image className='!block !static !w-full !h-auto !max-w-full' src={src} fill style={{ objectFit: "cover" }} alt={title} />
             </div>
             <h2 className='text-2xl font-bold'>{title}</h2>
-            <div className={`flex justify-between items-center ${gridNumber === 2 ? "gap-[15%]" : "gap-[10%]"} pt-5`}>
+            <div className={`flex justify-between items-center ${gridNumber === 2 ? "gap-[15%]" : "gap-5"} pt-5`}>
                 <div className='flex-grow'>
                     <div className='text-right [&>p]:h-6'>
                         {
