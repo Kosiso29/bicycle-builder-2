@@ -318,6 +318,12 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         }
     }, [show])
 
+    useEffect(() => {
+        if (show) {
+            imageLoaded && image2Loaded && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0 && !selectedFeatureBuild ? setCanvasLoading(false) : setCanvasLoading(true)
+        }
+    }, [show, model, imageLoaded, image2Loaded, Object.keys(initialCanvasDrawImageProps.frameSet).length, selectedFeatureBuild])
+
     if (!show) {
         return null;
     }
@@ -328,7 +334,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             <div>
                 <div className="flex gap-2">
                     <h1 className={`${identifier === "stem" || identifier === "handleBar" ? "text-xl" : "text-2xl"} font-bold`}>Choose your {displayLabel || label}</h1>
-                    {imageLoaded && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0 && !selectedFeatureBuild ? setCanvasLoading(false) : setCanvasLoading(true)}
                 </div>
                 {identifier !== "tire" && identifier !== "handleBar" &&  <div><p className="text-gray-400 text-lg">{selectionLevel}/5</p></div>}
             </div>
