@@ -1,13 +1,12 @@
 import CTA from "@/app/ui/call-to-action";
 
-export default function ReadyToRide() {
+export default function ReadyToRideSection() {
     return (
-        <div className="flex items-center justify-end h-[45rem] wrapper-padding bg-[url('/Ready-To-Ride.png')] bg-no-repeat bg-left-bottom text-white bg-[#1A1A1A]">
-            <div className='max-w-[40%]'>
+        <div className="flex items-center justify-center py-40 text-white bg-[#1A1A1A] wrapper-padding">
+            <div className='flex flex-col items-center'>
                 <span className='text-5xl font-extrabold'>
                     READY TO RIDE?
                 </span>
-                <p>Start building your custom bike today and experience the difference</p>
                 <div className='mt-10'>
                     <CTA href='/build'>
                         START BUILDING YOUR BIKE

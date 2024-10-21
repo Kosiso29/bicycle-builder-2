@@ -3,7 +3,7 @@ import React from 'react'
 
 const quickLinks = [
     { name: "Home", href: "/"},
-    { name: "About Us", href: "/"},
+    { name: "About Us", href: "/about-us"},
     { name: "FAQ", href: "/faq"},
     { name: "Terms of Service", href: "/"},
     { name: "Privacy Policy", href: "/"},
