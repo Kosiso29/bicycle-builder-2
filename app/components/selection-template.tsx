@@ -344,15 +344,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                     ))
                 }
             </TextField>
-            {
-                brand === modelData?.brand &&
-                <>
-                    { identifier !== "groupSet_drivetrain" && identifier !== "stem" && identifier !== "handleBar" ? <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} /> : null}
-                    <div className="flex justify-end">
-                        <SizeChart size_chart_url={modelData?.size_chart_url} />
-                    </div>
-                </>
-            }
             <div className="flex justify-between gap-2 flex-wrap pb-3">
                 {
                     allModels.length > 0 ?
@@ -402,6 +393,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             {
                 brand === modelData?.brand &&
                 <div>
+                    { identifier !== "groupSet_drivetrain" && identifier !== "stem" && identifier !== "handleBar" ? <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} /> : null}
+                    <div className="flex justify-end">
+                        <SizeChart size_chart_url={modelData?.size_chart_url} />
+                    </div>
                     <div>
                         <FeatureSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
                         <div className="flex gap-2 justify-between">
