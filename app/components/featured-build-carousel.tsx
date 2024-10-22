@@ -110,6 +110,7 @@ function Card({ title, src, ratings, buildId }: { title: string, src: string, ra
     const handleClick = () => {
         dispatch(builderActions.updateSelectedFeatureBuild(buildId));
         dispatch(builderActions.updateloadingScreen(true));
+        dispatch(builderActions.updatebuildStart(false));
     }
 
     return (

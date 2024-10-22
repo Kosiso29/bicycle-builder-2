@@ -28,6 +28,7 @@ function Card({ title, src, ratings, buildId, gridNumber }: { title: string, src
     const handleClick = () => {
         dispatch(builderActions.updateSelectedFeatureBuild(buildId));
         dispatch(builderActions.updateloadingScreen(true));
+        dispatch(builderActions.updatebuildStart(false));
     }
 
     return (

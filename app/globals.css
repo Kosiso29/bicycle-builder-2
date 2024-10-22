@@ -30,6 +30,34 @@
     }
 }
 
+@-webkit-keyframes slide-out-right {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+        opacity: 1
+    }
+
+    100% {
+        -webkit-transform: translateX(1000px);
+        transform: translateX(1000px);
+        opacity: 0
+    }
+}
+
+@keyframes slide-out-right {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+        opacity: 1
+    }
+
+    100% {
+        -webkit-transform: translateX(1000px);
+        transform: translateX(1000px);
+        opacity: 0
+    }
+}
+
 @-webkit-keyframes fade-in {
     0% {
         opacity: 0
@@ -130,6 +158,10 @@ button.MuiButton-containedPrimary {
 
 .fade-in-animation {
     animation: fade-in 500ms ease-out;
+}
+
+.slide-out-animation {
+    animation: slide-out-right 1.5s 500ms ease-out forwards;
 }
 
 .slick-slide {
