@@ -12,6 +12,7 @@ export default function CallToAction({ href, type, children }: { href: string, t
     const handleClick = () => {
         setLoading(true);
         dispatch(builderActions.updatebuildStart(true));
+        dispatch(builderActions.updateloadingScreen(true));
     }
     
     return (

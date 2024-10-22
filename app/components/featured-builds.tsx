@@ -1,17 +1,10 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
 import ProgressBar from '../ui/progress-bar';
 import Image from "next/image";
-import Slider from "react-slick";
-import Loading from "@/app/components/loading";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
-
-// Import css files
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 export default function FeaturedBuilds({ builds, gridNumber }: { builds: any, gridNumber: number }) {
     return (
@@ -30,12 +23,11 @@ export default function FeaturedBuilds({ builds, gridNumber }: { builds: any, gr
 }
 
 function Card({ title, src, ratings, buildId, gridNumber }: { title: string, src: string, ratings: any, buildId: string, gridNumber: number }) {
-    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        setLoading(true);
         dispatch(builderActions.updateSelectedFeatureBuild(buildId));
+        dispatch(builderActions.updateloadingScreen(true));
     }
 
     return (
@@ -60,7 +52,6 @@ function Card({ title, src, ratings, buildId, gridNumber }: { title: string, src
                 <Link className='flex-grow' href="/build" onClick={handleClick}>
                     <button className='border-none w-full flex justify-center items-center gap-1 text-white p-3 bg-primary hover:bg-primary-hover active:bg-primary-active'>
                         VIEW&nbsp;BUILD
-                        {loading && <span className='self-center'><Loading small white /></span>}
                     </button>
                 </Link>
             </div>

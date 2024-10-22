@@ -25,7 +25,8 @@ import Header from "@/app/components/header";
 import CanvasIcons from "@/app/components/canvas-icons";
 import BuildStart from "./build-start";
 import LoadingBicycle from "@/app/components/loading-bicycle";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { builderActions } from "@/app/store/builder";
 import { IRootState } from "@/app/store";
 
 export default function BikeBuilder({
@@ -60,6 +61,7 @@ export default function BikeBuilder({
 
     const newBuildStart = useSelector((state: IRootState) => state.builderReducer.buildStart);
     const selectedFeatureBuild = useSelector((state: IRootState) => state.builderReducer.selectedFeatureBuild);
+    const dispatch = useDispatch();
 
     const componentRefs = useRef([]);
 
@@ -496,6 +498,10 @@ export default function BikeBuilder({
                 if (ref) observer.unobserve(ref);
             });
         };
+    }, []);
+
+    useEffect(() => {
+        dispatch(builderActions.updateloadingScreen(false));
     }, []);
 
     return (

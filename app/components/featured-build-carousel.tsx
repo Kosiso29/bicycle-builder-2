@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react'
 import ProgressBar from '../ui/progress-bar';
 import Image from "next/image";
 import Slider from "react-slick";
-import Loading from "@/app/components/loading";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
@@ -106,12 +105,11 @@ export function SimpleSlider({ builds }: { builds: any }) {
 }
 
 function Card({ title, src, ratings, buildId }: { title: string, src: string, ratings: any, buildId: string }) {
-    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        setLoading(true);
         dispatch(builderActions.updateSelectedFeatureBuild(buildId));
+        dispatch(builderActions.updateloadingScreen(true));
     }
 
     return (
@@ -121,7 +119,6 @@ function Card({ title, src, ratings, buildId }: { title: string, src: string, ra
                 <Link href="/build" onClick={handleClick}>
                     <button className='border-none flex justify-center items-center gap-1 text-white p-3 bg-primary hover:bg-primary-hover active:bg-primary-active'>
                         VIEW&nbsp;BUILD
-                        {loading && <span className='self-center'><Loading small white /></span>}
                     </button>
                 </Link>
             </div>
