@@ -11,12 +11,12 @@ const headerData = [
 
 export default function Header({ textColor, padding }: { textColor?: string, padding?: string }) {
     return (
-        <div className={`h-16 ${textColor === "white" ? "bg-primary relative" : "relative"}`}>
-            <div className={`absolute flex items-center justify-between gap-5 top-0 left-1/2 transform -translate-x-1/2 h-16 w-full wrapper ${textColor === "white" ? "bg-primary" : "border-b border-b-back-color"}`} style={{ color: textColor || "black", paddingLeft: padding, paddingRight: padding }}>
+        <div className={`h-16 ${textColor === "white" ? "bg-primary relative" : "border-b border-b-back-color relative"}`}>
+            <div className={`absolute flex items-center justify-between gap-5 top-0 left-1/2 transform -translate-x-1/2 h-16 w-full wrapper`} style={{ color: textColor || "black", paddingLeft: padding, paddingRight: padding }}>
                 <div className='flex items-center gap-5'>
                     <div className='font-bold text-2xl [&>a]:pl-0'>
                         <HeaderLink href="/">
-                            BIKE BUILDER
+                            CYKE
                         </HeaderLink>
                     </div>
                     <div className='flex'>
@@ -32,11 +32,23 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                         }
                     </div>
                 </div>
-                <div className='flex gap-3 text-inherit'>
-                    <Link href="/login">
-                        <PersonOutline />
-                    </Link>
-                    <HelpOutline />
+                <div className='flex gap-4 text-inherit'>
+                    {
+                        textColor === "white" ?
+                            <>
+                                <Link href="/login">
+                                    <PersonOutline />
+                                </Link>
+                                <HelpOutline />
+                            </> :
+                            <>
+                                <span className='flex items-center gap-1 hover:cursor-pointer'>
+                                    USD
+                                    <NextImage src="/USD-Icon.svg" width={24} height={24} alt='' />
+                                </span>
+                                <NextImage className='hover:cursor-pointer' src="/Profile-Icon.svg" width={30} height={30} alt='' />
+                            </>
+                    }
                 </div>
             </div>
         </div>
