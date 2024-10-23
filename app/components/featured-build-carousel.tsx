@@ -14,7 +14,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 export default function FeaturedBuildCarousel({ builds }: { builds: any }) {
     return (
-        <div className='py-20 wrapper-padding'>
+        <div className='py-20 wrapper'>
             <h1 className='flex justify-center text-2xl font-bold mb-20'>Featured Builds</h1>
             <SimpleSlider builds={builds} />
         </div>
@@ -64,13 +64,6 @@ export function SimpleSlider({ builds }: { builds: any }) {
         nextArrow: <CustomNextArrow />,
         beforeChange: (oldIndex: any, newIndex: any) => setCurrentSlide(newIndex),
         responsive: [
-            {
-                breakpoint: 2500,
-                settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 1,
-                },
-            },
             {
                 breakpoint: 1650,
                 settings: {

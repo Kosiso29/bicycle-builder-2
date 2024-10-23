@@ -24,7 +24,7 @@ const contacts = [
 
 export default function Footer() {
     return (
-        <div className='py-20 wrapper-padding'>
+        <div className='py-20 wrapper'>
             <div className='flex justify-between'>
                 <div className='flex gap-36'>
                     <div>

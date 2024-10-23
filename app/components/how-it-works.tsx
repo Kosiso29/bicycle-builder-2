@@ -8,7 +8,7 @@ const cardData = [
 
 export default function HowItWorks() {
     return (
-        <div className='py-20 wrapper-padding'>
+        <div className='py-20 wrapper'>
             <h1 className='flex justify-center text-2xl mb-20 font-extrabold'>HOW IT WORKS</h1>
             <div className='flex justify-between gap-3'>
                 {
