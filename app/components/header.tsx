@@ -9,6 +9,12 @@ const headerData = [
     { name: "About Us", href: "/about-us"},
 ]
 
+const headerDataConfigurator = [
+    { name: "Configure", href: "/"},
+    { name: "Featured builds", href: "/featured-builds"},
+    { name: "Support", href: "/"},
+]
+
 export default function Header({ textColor, padding }: { textColor?: string, padding?: string }) {
     return (
         <div className={`h-16 ${textColor === "white" ? "bg-primary relative" : "border-b border-b-back-color relative"}`}>
@@ -21,7 +27,7 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                     </div>
                     <div className='flex'>
                         {
-                            headerData.map(data => {
+                            (textColor === "white" ? headerData : headerDataConfigurator).map(data => {
                                 return (
                                     <HeaderLink key={data.name} href={data.href}>
                                         {data.name}
