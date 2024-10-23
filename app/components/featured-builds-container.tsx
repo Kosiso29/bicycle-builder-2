@@ -7,7 +7,7 @@ export default function FeaturedBuildsContainer({ builds }: { builds: any }) {
     const [gridNumber, setGridNumber] = useState(2);
 
     return (
-        <div className="pt-32 wrapper-padding">
+        <div className="pt-32 wrapper">
             <h1 className="flex justify-between items-center text-3xl font-bold">
                 <span>
                     Featured Builds

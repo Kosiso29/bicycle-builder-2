@@ -505,12 +505,12 @@ export default function BikeBuilder({
     }, []);
 
     return (
-        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color-1 h-screen max-h-screen fade-in-animation pl-6 pt-[4rem]`}>
+        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color-1 h-screen max-h-screen fade-in-animation pl-6`}>
             <div className="text-black">
-                <Header padding="10rem" />
+                <Header />
             </div>
-            <div className="flex flex-col justify-evenly mr-[22rem] 2xl:mr-[28rem] h-full max-h-full overflow-auto">
-                <div className="flex items-center max-h-[calc(100%-6rem)]">
+            <div className="flex flex-col justify-evenly mr-[22rem] 2xl:mr-[28rem] h-[calc(100%-4rem)] max-h-[calc(100%-4rem)] overflow-auto">
+                <div className="flex items-center max-h-[calc(100%-10rem)]">
                     <div className="flex flex-col min-h-full max-h-full py-5 px-2">
                         <Presets parentProps={parentProps} setFrameSetDimensions={setFrameSetDimensions} builds={builds} modelsPresets={modelsPresets} />
                         {/* <Link href="/" className="block mt-2">
