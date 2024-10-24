@@ -30,7 +30,7 @@ export default function LoadingScreen() {
     }
 
     return (
-        <div className={`fixed flex justify-center items-center inset-0 bg-white fade-in-animation ${!loadingScreen && transitioning ? "slide-out-animation" : ""}`} /*style={{ animation: !loadingScreen && transitioning ? "slide-out-right 1.5s 500ms ease-out forwards" : "initial" }}*/>
+        <div className={`fixed flex justify-center items-center z-[100] inset-0 bg-white fade-in-animation ${!loadingScreen && transitioning ? "slide-out-animation" : ""}`} /*style={{ animation: !loadingScreen && transitioning ? "slide-out-right 1.5s 500ms ease-out forwards" : "initial" }}*/>
             <div className="max-w-[10rem]">
                 <NextImage className='!block !static !w-full !h-auto !max-w-full' src="/Bike-Loading.svg" fill style={{ objectFit: "cover" }} alt="bicycle" />
                 <LoadingBicycle />
