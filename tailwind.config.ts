@@ -24,6 +24,7 @@ const config: Config = {
                 'secondary': '#FFFFFF',
                 'back-color': '#C4C4C480',
                 'back-color-1': '#F0EFEF',
+                'back-color-1-transparent': '#F0EFEF80',
                 'light-01': '#F8F7F7',
                 'light-03': '#DFDFDF',
             }

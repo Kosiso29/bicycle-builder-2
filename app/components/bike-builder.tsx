@@ -532,7 +532,7 @@ export default function BikeBuilder({
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} totalPrice={totalPrice} />
             </div>
-            <div id="back-color" className="fixed right-0 top-0 h-[calc(100vh-13rem)] w-[20rem] 2xl:w-[26rem] pb-0 z-10 mt-[6rem] mb-[2rem] mr-[2rem] bg-light-01"></div>
+            <div id="selection-back-color" className="fixed right-0 top-0 h-[calc(100vh-13rem)] w-[20rem] 2xl:w-[26rem] pb-0 z-10 mt-[6rem] mb-[2rem] mr-[2rem] bg-light-01"></div>
             <div id="selection" className={`flex flex-col fixed right-0 top-0 h-[calc(100vh-5rem)] w-[22rem] 2xl:w-[28rem] pb-[4rem] overflow-auto z-20 pt-[4rem] mt-[2rem] mb-[2rem] ${newBuildStart ? "overflow-hidden" : "overflow-y-scroll snap-y snap-mandatory"} pr-[2rem]`}>
                 {/* <div>
                     <div className="mb-3">
@@ -588,6 +588,7 @@ export default function BikeBuilder({
                     </div>
                 </div> */}
             </div>
+            <div id="selection-overflow-fading" className="fixed top-[calc(100vh-7rem)] z-30 h-[4rem] bg-gradient-to-b from-back-color-1-transparent to-back-color-1 via-back-color-1-transparent right-0 w-[20rem] 2xl:w-[23rem] mr-[2rem]"></div>
             {
                 !newBuildStart &&
                 <div className="fixed top-[calc(100vh-3rem)] right-0 flex justify-between items-center gap-5 w-[20rem] 2xl:w-[23rem] mr-[2rem]">

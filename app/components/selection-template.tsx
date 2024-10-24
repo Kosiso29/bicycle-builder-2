@@ -330,10 +330,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     return (
         <div id={identifier} className="flex flex-col gap-4 mt-6">
-            {identifier === "stem" && <h1 className="text-2xl font-bold">Cockpit</h1>}
+            {identifier === "stem" && <h1 className="text-2xl font-extrabold">Cockpit</h1>}
             <div>
                 <div className="flex gap-2">
-                    <h1 className={`${identifier === "stem" || identifier === "handleBar" ? "text-xl" : "text-2xl"} font-bold`}>Choose your {displayLabel || label}</h1>
+                    <h1 className={`${identifier === "stem" || identifier === "handleBar" ? "text-xl" : "text-2xl"} font-extrabold`}>Choose your {displayLabel || label}</h1>
                 </div>
                 {identifier !== "tire" && identifier !== "handleBar" &&  <div><p className="text-gray-400 text-lg">{selectionLevel}/5</p></div>}
             </div>
