@@ -588,10 +588,10 @@ export default function BikeBuilder({
                     </div>
                 </div> */}
             </div>
-            <div id="selection-overflow-fading" className="fixed top-[calc(100vh-7rem)] z-30 h-[4rem] bg-gradient-to-b from-back-color-1-transparent to-back-color-1 via-back-color-1-transparent right-0 w-[20rem] 2xl:w-[23rem] mr-[2rem]"></div>
+            <div id="selection-overflow-fading" className="fixed top-[calc(100vh-7rem)] z-30 h-[4rem] bg-gradient-to-b from-back-color-1-transparent to-back-color-1 via-back-color-1-transparent right-0 w-[20rem] 2xl:w-[26rem] mr-[2rem]"></div>
             {
                 !newBuildStart &&
-                <div className="fixed top-[calc(100vh-3rem)] right-0 flex justify-between items-center gap-5 w-[20rem] 2xl:w-[23rem] mr-[2rem]">
+                <div className="fixed top-[calc(100vh-3rem)] right-0 flex justify-between items-center gap-5 w-[20rem] 2xl:w-[26rem] mr-[2rem]">
                     <Button fullWidth size="small" className="flex gap-2 items-center basis-1/3" variant="text" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleReset}>Reset <ThreeSixtyOutlined /></Button>
                     <Button fullWidth size="small" className="basis-[55%]" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSummary}>Checkout</Button>
                 </div>

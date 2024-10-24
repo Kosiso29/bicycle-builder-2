@@ -22,7 +22,7 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                 <div className='flex items-center gap-5'>
                     <div className='font-bold text-2xl [&>a]:pl-0'>
                         <HeaderLink href="/">
-                            CYKE
+                            Cyke
                         </HeaderLink>
                     </div>
                     <div className='flex'>
