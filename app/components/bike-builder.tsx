@@ -532,7 +532,8 @@ export default function BikeBuilder({
                 </div>
                 <Tooltips tooltips={tooltips} canvasDrawImageProps={canvasDrawImageProps} totalPrice={totalPrice} />
             </div>
-            <div id="selection" className={`flex flex-col fixed right-0 top-0 h-[calc(100vh-9rem)] w-[22rem] 2xl:w-[28rem] pt-5 pb-0 overflow-auto mt-[4rem] mb-[2rem] ${newBuildStart ? "overflow-hidden" : "overflow-y-scroll snap-y snap-mandatory"} pr-[2rem]`}>
+            <div id="back-color" className="fixed right-0 top-0 h-[calc(100vh-13rem)] w-[20rem] 2xl:w-[26rem] pb-0 z-10 mt-[6rem] mb-[2rem] mr-[2rem] bg-light-01"></div>
+            <div id="selection" className={`flex flex-col fixed right-0 top-0 h-[calc(100vh-5rem)] w-[22rem] 2xl:w-[28rem] pb-[4rem] overflow-auto z-20 pt-[4rem] mt-[2rem] mb-[2rem] ${newBuildStart ? "overflow-hidden" : "overflow-y-scroll snap-y snap-mandatory"} pr-[2rem]`}>
                 {/* <div>
                     <div className="mb-3">
                     <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
@@ -561,21 +562,21 @@ export default function BikeBuilder({
                 {
                     newBuildStart && <BuildStart />
                 }
-                <div ref={(el) => (componentRefs.current[0] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-light-01 px-5">
+                <div ref={(el) => (componentRefs.current[0] = el)} className="snap-center min-h-[calc(100vh-13rem)] min-w-full overflow-auto px-5">
                     <FrameSet parentProps={parentProps} handleReset={handleReset} show={selectionLevel === 1} setFrameSetDimensions={setFrameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
-                <div ref={(el) => (componentRefs.current[1] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-light-01 px-5">
+                <div ref={(el) => (componentRefs.current[1] = el)} className="snap-center min-h-[calc(100vh-13rem)] min-w-full overflow-auto px-5">
                     <WheelSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={45} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Front Wheel Set" />
                     <Tire parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 2} canvasX={540} canvasY={254} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
-                <div ref={(el) => (componentRefs.current[2] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-light-01 px-5">
+                <div ref={(el) => (componentRefs.current[2] = el)} className="snap-center min-h-[calc(100vh-13rem)] min-w-full overflow-auto px-5">
                     <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                     <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3 && (handleBarStemConditions || frameSetDimensions.hasStem) && !linkedComponentDimensions.hasHandleBar} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
-                <div ref={(el) => (componentRefs.current[3] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-light-01 px-5">
+                <div ref={(el) => (componentRefs.current[3] = el)} className="snap-center min-h-[calc(100vh-13rem)] min-w-full overflow-auto px-5">
                     <GroupSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
                 </div>
-                <div ref={(el) => (componentRefs.current[4] = el)} className="snap-start min-h-full max-h-full min-w-full overflow-auto bg-light-01 px-5">
+                <div ref={(el) => (componentRefs.current[4] = el)} className="snap-center min-h-[calc(100vh-13rem)] min-w-full overflow-auto px-5">
                     <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
                 {/* {
@@ -589,7 +590,7 @@ export default function BikeBuilder({
             </div>
             {
                 !newBuildStart &&
-                <div className="fixed top-[calc(100vh-9rem+6rem)] right-0 flex justify-between items-center gap-5 w-[20rem] 2xl:w-[23rem] mr-[2rem]">
+                <div className="fixed top-[calc(100vh-3rem)] right-0 flex justify-between items-center gap-5 w-[20rem] 2xl:w-[23rem] mr-[2rem]">
                     <Button fullWidth size="small" className="flex gap-2 items-center basis-1/3" variant="text" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleReset}>Reset <ThreeSixtyOutlined /></Button>
                     <Button fullWidth size="small" className="basis-[55%]" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSummary}>Checkout</Button>
                 </div>

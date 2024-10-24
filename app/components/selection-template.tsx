@@ -324,12 +324,12 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         }
     }, [show, model, imageLoaded, image2Loaded, Object.keys(initialCanvasDrawImageProps.frameSet).length, selectedFeatureBuild])
 
-    if (!show) {
-        return null;
-    }
+    // if (!show) {
+    //     return null;
+    // }
 
     return (
-        <div id={identifier} className="flex flex-col gap-4 mt-8">
+        <div id={identifier} className="flex flex-col gap-4 mt-6">
             {identifier === "stem" && <h1 className="text-2xl font-bold">Cockpit</h1>}
             <div>
                 <div className="flex gap-2">
@@ -388,8 +388,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                         : null
                 }
             </div>
-            <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
-            <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
+            {
+                show && 
+                <>
+                    <NextImage ref={imageRef} src={''} id="preview" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImageLoaded(true)} />
+                    <NextImage ref={imageRef2} src={''} id="preview2" style={{ width: "auto", height: "auto", display: "none" }} alt="" crossOrigin="anonymous" onLoad={() => setImage2Loaded(true)} />
+                </>
+            }
             {
                 brand === modelData?.brand &&
                 <div>
