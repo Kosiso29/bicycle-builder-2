@@ -324,9 +324,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         }
     }, [show, model, imageLoaded, image2Loaded, Object.keys(initialCanvasDrawImageProps.frameSet).length, selectedFeatureBuild])
 
-    // if (!show) {
-    //     return null;
-    // }
+    if (!show && identifier === "handleBar") {
+        return null;
+    }
 
     return (
         <div id={identifier} className="flex flex-col gap-2 mt-6">

@@ -577,7 +577,7 @@ export default function BikeBuilder({
                 </div>
                 <div ref={(el) => (componentRefs.current[2] = el)} className="snap-center min-h-[calc(100vh-13rem)] min-w-full overflow-auto px-5">
                     <Stem parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3} canvasX={600} canvasY={150} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
-                    <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 3 && (handleBarStemConditions || frameSetDimensions.hasStem) && !linkedComponentDimensions.hasHandleBar} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
+                    <HandleBar parentProps={parentProps} canvasContext={canvasContext} show={(handleBarStemConditions || frameSetDimensions.hasStem) && !linkedComponentDimensions.hasHandleBar} canvasX={635} canvasY={157} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
                 <div ref={(el) => (componentRefs.current[3] = el)} className="snap-center min-h-[calc(100vh-13rem)] min-w-full overflow-auto px-5">
                     <GroupSet parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 4} canvasX={550} canvasY={265} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} label="Groupset" />
