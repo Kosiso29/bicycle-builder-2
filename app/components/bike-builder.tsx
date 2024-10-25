@@ -25,6 +25,7 @@ import Header from "@/app/components/header";
 import CanvasIcons from "@/app/components/canvas-icons";
 import BuildStart from "./build-start";
 import LoadingBicycle from "@/app/components/loading-bicycle";
+import Modal from "@/app/components/modal";
 import { useSelector, useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
 import { IRootState } from "@/app/store";
@@ -50,6 +51,8 @@ export default function BikeBuilder({
         overall: "---"
     });
     const [canvasSelectorImage, setCanvasSelectorImage] = useState(null);
+    const [showSizeChartModal, setShowSizeChartModal] = useState(false);
+    const [sizeChartUrl, setSizeChartUrl] = useState("");
     // selectionPresetProps sets the selection template with brand and model after preset selection is made
     const [selectionPresetProps, setSelectionPresetProps] = useState({
         frontWheelSet: {},
@@ -97,7 +100,10 @@ export default function BikeBuilder({
         selectedFeatureBuild,
         colorsPresets,
         setCanvasLoading,
-        updateSelectionLevel
+        updateSelectionLevel,
+        sizeChartUrl,
+        setShowSizeChartModal,
+        setSizeChartUrl
     }
 
     const canvasNumberData = [
@@ -596,6 +602,7 @@ export default function BikeBuilder({
                     <Button fullWidth size="small" className="basis-[55%]" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSummary}>Checkout</Button>
                 </div>
             }
+            {showSizeChartModal && <Modal src={sizeChartUrl} closeModal={() => { setShowSizeChartModal(false) }} />}
         </div>
 
     );

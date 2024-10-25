@@ -21,8 +21,8 @@ import { useSelector } from "react-redux";
 import { IRootState } from "@/app/store";
 
 export default function SelectionTemplate({ parentProps, dataSet, label, show, updateDrawImageProps, setActualWidth, identifier, displayLabel, handleReset, updateFrameSetData }) {
-    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps, selectionLevel,
-        canvasDrawImageProps, frameSetDimensions, stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions, setCanvasLoading } = parentProps;
+    const { setRerender, setCanvasDrawImageProps, models: databaseModels, selectionLevelProps, selectionPresetProps, initialCanvasDrawImageProps, selectionLevel, canvasDrawImageProps, frameSetDimensions, 
+        stemDimensions, setTooltips, colors, accessoryModels, setAddonAccessories, setLinkedComopnentDimensions, setCanvasLoading, setShowSizeChartModal, setSizeChartUrl } = parentProps;
     const [brand, setBrand] = useState("");
     const [allBrandsData, setAllBrandsData] = useState([]);
     const [uniqueBrands, setUniqueBrands] = useState([]);
@@ -400,7 +400,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 <div>
                     { identifier !== "groupSet_drivetrain" && identifier !== "stem" && identifier !== "handleBar" ? <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} /> : null}
                     <div className="flex justify-end">
-                        <SizeChart size_chart_url={modelData?.size_chart_url} />
+                        <SizeChart sizeChartUrl={modelData?.size_chart_url} setSizeChartUrl={setSizeChartUrl} setShowSizeChartModal={setShowSizeChartModal} />
                     </div>
                     <div>
                         <FeatureSelector values={modelData?.lengths} type="lengths" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
