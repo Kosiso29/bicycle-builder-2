@@ -329,7 +329,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     // }
 
     return (
-        <div id={identifier} className="flex flex-col gap-4 mt-6">
+        <div id={identifier} className="flex flex-col gap-2 mt-6">
             {identifier === "stem" && <h1 className="text-2xl font-extrabold">Cockpit</h1>}
             <div>
                 <div className="flex gap-2">

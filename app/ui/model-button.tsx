@@ -15,15 +15,15 @@ export default function ModelButton({ src, model, price, selected, style, disabl
 
     return (
         <button
-            style={{ transition: ".2s ease-in", border: selected ? "2px solid #1A1A1A" : "", opacity: disabled ? "0.3" : "unset", cursor: disabled ? "not-allowed" : "pointer", ...style }}
+            style={{ transition: ".2s ease-in", border: selected ? "1px solid #1A1A1A" : "", opacity: disabled ? "0.3" : "unset", cursor: disabled ? "not-allowed" : "pointer", ...style }}
             disabled={disabled}
-            className="relative flex flex-col justify-between text-sm gap-1 min-h-40 w-[45%] p-2 border-[2px] border-transparent hover:border-back-color focus-visible:outline-primary"
+            className="relative flex flex-col justify-between text-sm gap-[2px] min-h-32 w-[45%] p-2 border border-transparent hover:border-back-color focus-visible:outline-primary"
             onClick={handleModelButtonClick}
         >
             {setModelInfo && <InfoOutlined fontSize="small" className="absolute right-1 top-1 text-[#545454] hover:text-primary hover:scale-110" onClick={handleInfoClick} />}
-            {src && <NextImage src={src} style={{ width: "80%", maxWidth: "80%", height: "auto" }} width={70} height={70} alt='' />}
+            {src && <NextImage src={src} style={{ width: "80%", maxWidth: "80%", height: "auto", marginBottom: ".4rem" }} width={60} height={60} alt='' />}
             {children}
-            <span className="text-left font-bold">{ model }</span>
+            <span className="text-left font-semibold">{ model }</span>
             <span>${price}</span>
         </button>
     )

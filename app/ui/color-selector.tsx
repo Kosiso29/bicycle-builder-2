@@ -36,31 +36,19 @@ export default function SizeSelector(
 
     return (
         <div>
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: "0.2rem", minHeight: "2rem" }}>
-                {/* <button
-                    // variant='outlined'
-                    style={{ color: modelData?.color_value, border: selectedFeatures?.[type] === modelData?.color_value ? "2px solid #1A1A1A" : "" }}
-                    className='p-[2px] h-5 w-5 rounded-full'
-                    onClick={() => handleSizeChange(modelData?.color_value)}
-                >
-                    <span className='block w-full h-full rounded-full' style={{ backgroundColor: modelData?.color_value }}></span>
-                </button> */}
+            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: "0.2rem", minHeight: "1rem" }}>
                 {values?.map((value) => (
-                    <div key={value}>
+                    <div key={value} className='flex items-center'>
                         <button
-                            // variant='outlined'
-                            style={{ border: selectedFeatures?.[type] === value ? "2px solid #1A1A1A" : "" }}
-                            className='p-[2px] h-6 w-6 rounded-full border-2 border-transparent hover:border-back-color transition-all'
+                            style={{ border: selectedFeatures?.[type] === value ? "1px solid #1A1A1A" : "" }}
+                            className='p-[1px] h-5 w-5 rounded-full border border-transparent hover:border-back-color transition-all'
                             onClick={(e) => { isModelSelected && e.stopPropagation(); handleSizeChange(value) }}
                         >
                             <span className='block w-full h-full rounded-full' style={{ backgroundColor: value }}></span>
-                            
-                            {/* {selectedFeatures?.[type] === modelData?.color_value ? <CheckOutlined style={{ filter: "invert(1)" }} /> : " "} */}
                         </button>
                     </div>
                 ))}
             </Box>
-            {/* {type === 'colors' && <p className='text-primary mt-2'>{filteredColors?.filter((color: any) => color.value === selectedFeatures?.[type])?.[0]?.name || modelData?.color_name || "Stock"}</p>} */}
         </div>
     );
 }
