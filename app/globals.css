@@ -2,82 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@-webkit-keyframes slide-in-left {
-    0% {
-        -webkit-transform: translateX(-1000px);
-        transform: translateX(-1000px);
-        opacity: 0
-    }
-
-    100% {
-        -webkit-transform: translateX(0);
-        transform: translateX(0);
-        opacity: 1
-    }
-}
-
-@keyframes slide-in-left {
-    0% {
-        -webkit-transform: translateX(-1000px);
-        transform: translateX(-1000px);
-        opacity: 0
-    }
-
-    100% {
-        -webkit-transform: translateX(0);
-        transform: translateX(0);
-        opacity: 1
-    }
-}
-
-@-webkit-keyframes slide-out-right {
-    0% {
-        -webkit-transform: translateX(0);
-        transform: translateX(0);
-        opacity: 1
-    }
-
-    100% {
-        -webkit-transform: translateX(1000px);
-        transform: translateX(1000px);
-        opacity: 0
-    }
-}
-
-@keyframes slide-out-right {
-    0% {
-        -webkit-transform: translateX(0);
-        transform: translateX(0);
-        opacity: 1
-    }
-
-    100% {
-        -webkit-transform: translateX(1000px);
-        transform: translateX(1000px);
-        opacity: 0
-    }
-}
-
-@-webkit-keyframes fade-in {
-    0% {
-        opacity: 0
-    }
-
-    100% {
-        opacity: 1
-    }
-}
-
-@keyframes fade-in {
-    0% {
-        opacity: 0
-    }
-
-    100% {
-        opacity: 1
-    }
-}
-
+@import "./variables.css";
 
 *::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -132,10 +57,6 @@ body {
 
 button.MuiButton-containedPrimary {
     background-color: #1A1A1A;
-}
-
-:root {
-    --sidebar-width: 7rem;
 }
 
 * {
@@ -202,19 +123,4 @@ button.MuiButton-containedPrimary {
 
 .loading-square:nth-child(5) {
     animation-delay: 0.4s;
-}
-
-/* Keyframe to move and change colors */
-@keyframes moveAndChangeColor {
-
-    0%,
-    100% {
-        background-color: #F7CE7D;
-        /* Base color */
-    }
-
-    50% {
-        background-color: #F1AB1D;
-        /* Darker color for more contrast */
-    }
 }
