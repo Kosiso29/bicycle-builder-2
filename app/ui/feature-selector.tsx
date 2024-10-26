@@ -5,21 +5,17 @@ import { TextField, MenuItem } from "@mui/material";
 const mapToLabel: any = (label: string) => {
     return {
         'lengths': {
-            [label]: `${label} Length`,
-            'Group Set - Drivetrain': 'Crankset Length',
+            [label]: `Length`,
+            'Group Set - Drivetrain': 'Length',
         },
         'sizes': {
-            [label]: `${label} Size`,
-            'Group Set - Drivetrain': 'Crankset Size',
+            [label]: `Size`,
+            'Group Set - Drivetrain': 'Size',
 
         },
         'ratios': {
             'Group Set - Drivetrain': 'Cassette Ratio'
         },
-        'colors': {
-            [label]: `${label} Color`,
-            'Group Set - Drivetrain': 'Crankset Color',
-        }
     }
 }
 
