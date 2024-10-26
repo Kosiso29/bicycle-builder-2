@@ -11,7 +11,7 @@ export default function SizeChart({ sizeChartUrl, setSizeChartUrl, setShowSizeCh
     return (
         <div>
             <button onClick={() => { setSizeChartUrl(sizeChartUrl), setShowSizeChartModal(true) }} className="flex gap-1 underline items-center text-primary">
-                what is my size?
+                What is my size?
                 {/* <OpenInNew fontSize="inherit" /> */}
             </button>
         </div>
