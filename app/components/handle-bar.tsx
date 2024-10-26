@@ -8,7 +8,7 @@ const HANDLE_BAR_PROP = 'handleBar';
 
 export default function HandleBar({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
     const [actualWidth, setActualWidth] = useState("0")
-    const { setSelectionLevelProps, setHandleBarDimensions, stemDimensions } = parentProps;
+    const { setSelectionLevelProps, setHandleBarDimensions, stemDimensions, selectionLevel } = parentProps;
     const updateDrawImageProps = (extraDrawImageProps, { allModels }) => {
         let x, y;
         if (frameSetDimensions.hasStem) {
@@ -37,7 +37,7 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
     }
 
     useEffect(() => {
-        if (show) {
+        if (selectionLevel === 3 && show) { // the selectionLevel is used to prevent handlebar from getting added to selectionLevelProps and causing deleting bug for frameSet w/ handlebar
             setSelectionLevelProps(prevState => {
                 if (!prevState.includes('stem')) {
                     return [HANDLE_BAR_PROP];
@@ -48,7 +48,7 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
                 return prevState;
             })
         }
-    }, [setSelectionLevelProps, show])
+    }, [setSelectionLevelProps, selectionLevel, show])
 
     return (
         <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={handleBar} label="Handle Bar" setActualWidth={setActualWidth} identifier={HANDLE_BAR_PROP} />
