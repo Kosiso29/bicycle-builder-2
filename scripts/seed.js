@@ -472,9 +472,9 @@ async function autoCalculateRatings(client) {
 async function addColumns(client) {
     try {
         const addColumn = await client.sql`
-            ALTER TABLE presets
-            ADD COLUMN IF NOT EXISTS weight Numeric(2,1),
-            ADD COLUMN IF NOT EXISTS overall Numeric(2,1);
+            ALTER TABLE models
+            ADD COLUMN IF NOT EXISTS canvas_marker_x INTEGER,
+            ADD COLUMN IF NOT EXISTS canvas_marker_y INTEGER;
         `
 
         const modelsTable = await client.sql`SELECT * FROM presets;`;

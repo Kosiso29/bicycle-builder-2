@@ -479,6 +479,14 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                         showFrameSetOffsets ?
                                             <>
                                                 <div className="flex gap-4">
+                                                    {/* Canvas Marker Offset X */}
+                                                    <TextField name='canvas_marker_x' defaultValue={model?.canvas_marker_x ?? ""} label='Canvas Marker Offset X' />
+
+                                                    {/* Canvas Marker Offset Y */}
+                                                    <TextField name='canvas_marker_y' defaultValue={model?.canvas_marker_y ?? ""} label='Canvas Marker Offset Y' />
+                                                </div>
+
+                                                <div className="flex gap-4">
                                                     {/* Stem Offset X */}
                                                     <TextField name='stem_x' defaultValue={model?.stem_x ?? "600"} label='Stem Offset X' />
 
