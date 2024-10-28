@@ -6,7 +6,7 @@ import SelectionTemplate from "./selection-template";
 
 const HANDLE_BAR_PROP = 'handleBar';
 
-export default function HandleBar({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions }) {
+export default function HandleBar({ parentProps, show, canvasContext, canvasX, canvasY, frameSetDimensions, handleBarShow }) {
     const [actualWidth, setActualWidth] = useState("0")
     const { setSelectionLevelProps, setHandleBarDimensions, stemDimensions, selectionLevel } = parentProps;
     const updateDrawImageProps = (extraDrawImageProps, { allModels }) => {
@@ -37,7 +37,7 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
     }
 
     useEffect(() => {
-        if (selectionLevel === 3 && show) { // the selectionLevel is used to prevent handlebar from getting added to selectionLevelProps and causing deleting bug for frameSet w/ handlebar
+        if (show) { // the selectionLevel is used to prevent handlebar from getting added to selectionLevelProps and causing deleting bug for frameSet w/ handlebar
             setSelectionLevelProps(prevState => {
                 if (!prevState.includes('stem')) {
                     return [HANDLE_BAR_PROP];
@@ -51,6 +51,6 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
     }, [setSelectionLevelProps, selectionLevel, show])
 
     return (
-        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={handleBar} label="Handle Bar" setActualWidth={setActualWidth} identifier={HANDLE_BAR_PROP} />
+        <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={handleBar} label="Handle Bar" setActualWidth={setActualWidth} identifier={HANDLE_BAR_PROP} handleBarShow={handleBarShow} />
     )
 }
