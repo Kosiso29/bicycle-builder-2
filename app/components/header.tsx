@@ -49,8 +49,8 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                             </> :
                             <>
                                 <span className='flex items-center gap-1 hover:cursor-pointer'>
-                                    USD
-                                    <NextImage src="/USD-Icon.svg" width={24} height={24} alt='' />
+                                    SGD
+                                    <NextImage src="/SGD-Icon.svg" width={24} height={24} alt='' />
                                 </span>
                                 <NextImage className='hover:cursor-pointer' src="/Profile-Icon.svg" width={30} height={30} alt='' />
                             </>
