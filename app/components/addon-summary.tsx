@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Button } from "@mui/material";
 import SummaryList from "./summary-list";
 import Addon from "./addon";
+import Accordion from "@/app/ui/accordion";
 
 export default function AddonSummary({ parentProps }: { parentProps: any }) {
     const { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, setRerender } = parentProps;
     const [showAddons, setShowAddons] = useState(false);
     const [addons, setAddons] = useState({});
+    const [accordionSelectedIndex, setAccordionSelectedIndex] = useState<number | boolean>(false);
 
     const handleAddonComplete = () => {
         setShowAddons(false);
@@ -25,15 +27,17 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
     if (showAddons) {
         return (
             <div className="flex flex-col gap-8">
-                <h1 className="text-xl font-bold">Addons</h1>
-                <div className='flex flex-col gap-8'>
+                <h1 className="text-2xl font-bold">Addons</h1>
+                <div className='flex flex-col'>
                     {
                         accessoryModels.filter((obj: any, index: number, self: any) =>
                             index === self.findIndex((t: any) => (
                                 t.accessory === obj.accessory
                             )) && obj.accessory !== "Tube"
-                        ).map((item: any) => (
-                            <Addon key={item.accessory} label={item.accessory} parentProps={parentProps} addons={addons} setAddons={setAddons} />
+                        ).map((item: any, index: number) => (
+                            <Accordion key={item.accessory} title={item.accessory} accordionIndex={index} selectedIndex={accordionSelectedIndex} setSelectedIndex={setAccordionSelectedIndex}>
+                                <Addon label={item.accessory} parentProps={parentProps} addons={addons} setAddons={setAddons} />
+                            </Accordion>
                         ))
                     }
                 </div>

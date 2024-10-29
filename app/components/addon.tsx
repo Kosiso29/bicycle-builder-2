@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { MenuItem, List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
-import { CloseOutlined } from "@mui/icons-material";
+import { MenuItem, TextField } from "@mui/material";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import ModelButton from "@/app/ui/model-button";
 
@@ -28,77 +27,36 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
     }, [accessoryModels, label, setAddons]);
 
     return (
-        <div className="flex flex-col gap-4">
-            <TextField select size="small" value={addons[label]?.brand} onChange={(e) => { setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], brand: e.target.value, models: prevState[label].allBrandsData.filter((item: any) => item.brand === e.target.value), selectedIndex: null } })) }} label={label} SelectProps={{ MenuProps: { disableScrollLock: true, keepMounted: true, } /** prevent scrollbar shift on windows */ }}>
+        <div className="flex flex-col gap-4 pr-10">
+            <TextField select size="small" value={addons[label]?.brand} onChange={(e) => { setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], brand: e.target.value, models: prevState[label].allBrandsData.filter((item: any) => item.brand === e.target.value), selectedIndex: null } })) }} label={"Brands"} SelectProps={{ MenuProps: { disableScrollLock: true, keepMounted: true, } /** prevent scrollbar shift on windows */ }}>
                 {
                     addons[label]?.brands?.map((brand: string) => (
                         <MenuItem value={brand} key={brand}>{brand}</MenuItem>
                     ))
                 }
             </TextField>
-                <div className="flex justify-between gap-2 flex-wrap">
-                    {
-                        addons[label]?.models?.length > 0 ?
-                            addons[label]?.models.map((item: any, index: number) => (
-                                <ModelButton
-                                    key={item.model + index}
-                                    selected={addons[label]?.selectedIndex === index}
-                                    onClick={() => {
-                                        if (addons[label]?.selectedIndex !== index) {
-                                            setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: index, model: item.model, price: item.price } }));
-                                        } else {
-                                            handleAddonRemove();
-                                        }
-                                    }}
-                                    src={item.previewSrc || item.src}
-                                    model={item.model}
-                                    price={CurrencyFormatter(item.price)}
-                                />
-                            ))
-                            : null
-                    }
-                </div>
-            {/* {
-                addons[label]?.models?.length > 0 ?
-                    <List
-                        sx={{ borderRadius: "4px", paddingTop: "0", paddingBottom: "0", overflow: "hidden", border: "1px solid lightgray" }}
-                        subheader={
-                            <ListSubheader sx={{ backgroundColor: "rgb(156 163 175)", color: "white", lineHeight: "2.5rem" }}>
-                                Models
-                            </ListSubheader>
-                        }
-                        dense
-                    >
-                        {
-                            addons[label]?.models.map((item: any, index: number) => (
-                                <ListItem
-                                    key={label + item.model + index}
-                                    disablePadding
-                                    sx={{
-                                        backgroundColor: addons[label]?.selectedIndex === index ? "#1A1A1A" : "initial",
-                                        color: addons[label]?.selectedIndex === index ? "white" : "initial",
-                                        transition: ".2s ease-in"
-                                    }}>
-                                    <ListItemButton
-                                        divider={index !== (addons[label]?.models.length - 1) ? true : false}
-                                        selected={addons[label]?.selectedIndex === index}
-                                        onClick={() => {
-                                            if (addons[label]?.selectedIndex !== index) {
-                                                setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: index, model: item.model, price: item.price } }));
-                                            }
-                                        }}>
-                                        <ListItemText primary={item.model} style={{ lineHeight: 1, fontSize: ".2rem" }} />
-                                        <div className="flex items-center gap-2 ml-2">
-                                            <ListItemText className={`flex justify-end ${addons[label]?.selectedIndex === index ? "text-white whitespace-nowrap" : "text-primary"}`} primary={<>$&nbsp;{CurrencyFormatter(item.price)}</>} style={{ lineHeight: 1, fontSize: ".2rem" }} />
-                                            <ListItemText className={`flex justify-end ${addons[label]?.selectedIndex === index ? "text-white" : addons[label]?.selectedIndex === null ? "hidden" : "invisible"}`} onClick={handleAddonRemove} primary={<CloseOutlined fontSize="small" />} />
-                                        </div>
-                                    </ListItemButton>
-                                </ListItem>
-                            ))
-                        }
-                    </List>
-                    : null
-            } */}
+            <div className="flex justify-between gap-1 flex-wrap">
+                {
+                    addons[label]?.models?.length > 0 ?
+                        addons[label]?.models.map((item: any, index: number) => (
+                            <ModelButton
+                                key={item.model + index}
+                                selected={addons[label]?.selectedIndex === index}
+                                onClick={() => {
+                                    if (addons[label]?.selectedIndex !== index) {
+                                        setAddons((prevState: any) => ({ ...prevState, [label]: { ...prevState[label], selectedIndex: index, model: item.model, price: item.price } }));
+                                    } else {
+                                        handleAddonRemove();
+                                    }
+                                }}
+                                src={item.previewSrc || item.src}
+                                model={item.model}
+                                price={CurrencyFormatter(item.price)}
+                            />
+                        ))
+                        : null
+                }
+            </div>
         </div>
     )
 }
