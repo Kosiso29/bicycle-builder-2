@@ -1,0 +1,1 @@
+export const truncateString = (text: string) => text.length > 25 ? text.slice(0, 25) + "..." : text;

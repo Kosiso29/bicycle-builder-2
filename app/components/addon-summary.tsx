@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import SummaryList from "./summary-list";
 import Addon from "./addon";
 import Accordion from "@/app/ui/accordion";
+import { truncateString } from "@/app/utils/truncate-string";
 
 export default function AddonSummary({ parentProps }: { parentProps: any }) {
     const { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, setRerender } = parentProps;
@@ -24,6 +25,19 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
         }
     };
 
+    const getModelAndPrice = (accessory: string) => {
+        let modelAndPrice = "";
+        Object.entries(addons).forEach((entries: any) => {
+            if (entries[0] === accessory) {
+                if (entries[1].selectedIndex || entries[1].selectedIndex === 0) {
+                    const selectedModelData = entries[1].models[entries[1].selectedIndex];
+                    modelAndPrice = truncateString(selectedModelData.model) + " - " + "$" + selectedModelData.price
+                }
+            }
+        });
+        return modelAndPrice;
+    }
+
     if (showAddons) {
         return (
             <div className="flex flex-col gap-8">
@@ -35,7 +49,7 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
                                 t.accessory === obj.accessory
                             )) && obj.accessory !== "Tube"
                         ).map((item: any, index: number) => (
-                            <Accordion key={item.accessory} title={item.accessory} accordionIndex={index} selectedIndex={accordionSelectedIndex} setSelectedIndex={setAccordionSelectedIndex}>
+                            <Accordion key={item.accessory} title={item.accessory} modelAndPrice={getModelAndPrice(item.accessory)} accordionIndex={index} selectedIndex={accordionSelectedIndex} setSelectedIndex={setAccordionSelectedIndex}>
                                 <Addon label={item.accessory} parentProps={parentProps} addons={addons} setAddons={setAddons} />
                             </Accordion>
                         ))

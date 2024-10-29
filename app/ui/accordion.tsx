@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { AddOutlined, RemoveOutlined } from "@mui/icons-material";
 
-export default function AccordionComponent({ title, children, accordionIndex, selectedIndex, setSelectedIndex }: { title: string, children: React.ReactNode, accordionIndex: number, selectedIndex: number | boolean, setSelectedIndex: any  }) {
+export default function AccordionComponent({ title, children, accordionIndex, selectedIndex, setSelectedIndex, modelAndPrice }: { title: string, children: React.ReactNode, accordionIndex: number, selectedIndex: number | boolean, setSelectedIndex: any, modelAndPrice?: string  }) {
 
     const handleAccordionChange = (index: number) => (
         event: React.SyntheticEvent,
@@ -29,8 +29,11 @@ export default function AccordionComponent({ title, children, accordionIndex, se
                 '&:before': { display: 'none' },
             }}
         >
-            <AccordionSummary expandIcon={selectedIndex === accordionIndex ? <RemoveOutlined className='text-primary text-[1.8rem]' /> : <AddOutlined className='text-primary text-[1.8rem]' />} sx={{ padding: 0 }}>
-                <Typography className='font-bold text-lg'>{ title }</Typography>
+            <AccordionSummary className='flex items-center' expandIcon={selectedIndex === accordionIndex ? <RemoveOutlined className='text-primary text-[1.8rem]' /> : <AddOutlined className='text-primary text-[1.8rem]' />} sx={{ padding: 0 }}>
+                <Typography>
+                    <span className='font-bold text-lg'>{title}</span>
+                    <span className='text-sm'>{ selectedIndex !== accordionIndex && modelAndPrice ? " - " + modelAndPrice : "" }</span>
+                </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ paddingLeft: 0, paddingRight: 0 }}>
                 { children }
