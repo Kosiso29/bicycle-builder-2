@@ -38,7 +38,7 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                         }
                     </div>
                 </div>
-                <div className='flex gap-4 text-inherit'>
+                <div className='flex items-center gap-4 text-inherit'>
                     {
                         textColor === "white" ?
                             <>
