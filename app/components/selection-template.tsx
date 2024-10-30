@@ -277,11 +277,12 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 setSelectedFeatures(prevState => ({ ...prevState, colors: selectedModelData[0]?.color_value }))
             }
             setInitialModelData(selectedModelData[0]);
+            const newSelectedModelData = { ...selectedModelData[0] };
             if (selectionPresetProps[identifier]?.presetColorPrice) {
-                selectedModelData[0].price = selectionPresetProps[identifier]?.presetColorPrice;
-                selectedModelData[0].src = selectionPresetProps[identifier]?.presetColorSrc;
+                newSelectedModelData.price = selectionPresetProps[identifier]?.presetColorPrice;
+                newSelectedModelData.src = selectionPresetProps[identifier]?.presetColorSrc;
             }
-            setModelData(selectedModelData[0]);
+            setModelData(newSelectedModelData);
         }
     }, [selectionPresetProps[identifier]?.model]);
 
