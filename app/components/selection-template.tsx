@@ -424,7 +424,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 </>
             }
             {
-                brand === modelData?.brand &&
+                brand === modelData?.brand && (modelData?.lengths?.length > 0 || modelData?.ratios?.length > 0 || modelData?.sizes?.length > 0 || modelData?.size_chart_url) &&
                 <div>
                     { identifier !== "groupSet_drivetrain" && identifier !== "stem" && identifier !== "handleBar" ? <SizeSelector values={modelData?.sizes} type="sizes" label={label} model={model} selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} /> : null}
                     <div className="flex justify-end">
@@ -441,7 +441,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }
             {
                 identifier === "tire" && modelData &&
-                <div className="flex flex-col gap-4 pb-10">
+                <div className="flex flex-col gap-4 pt-5 pb-10">
                     <TextField select size="small" value={tyreTube.tubeBrand} onChange={(e) => { setTyreTube(prevState => ({ ...prevState, tube: e.target.value === "Tubeless" ? "Tubeless" : "Tube", tubeBrand: e.target.value, tubeModels: e.target.value === "Tubeless" ? null : prevState.allTubeData.filter(item => item.brand === e.target.value), selectedIndex: null })) }} label="Tube/Tubeless" SelectProps={{ MenuProps: { disableScrollLock: true, keepMounted: true, } /** prevent scrollbar shift on windows */ }}>
                         <MenuItem value={"Tubeless"}>Tubeless</MenuItem>
                         {
