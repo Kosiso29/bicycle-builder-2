@@ -3,13 +3,13 @@ import React from 'react';
 
 function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessories, small }) {
     const titles = {
-        frameSet: 'Frame Set',
-        frontWheelSet: 'Wheel Set',
+        frameSet: 'Frame',
+        frontWheelSet: 'Wheel',
         stem: 'Stem',
         handleBar: 'Handle Bar',
         saddle: 'Saddle',
         tire: 'Tyre',
-        groupSet_drivetrain: 'Group Set'
+        groupSet_drivetrain: 'Groupset'
     }
     const values = Object.entries(canvasDrawImageProps);
 
