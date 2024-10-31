@@ -34,12 +34,6 @@ export default function WheelSet({ parentProps, show, canvasContext, label, canv
             backWheelSet: { image: image2, x: x2, y: y2, width, height, actualWidth, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', brand: backWheetSet.brand, model: backWheetSet.model, price: backWheetSet.price }
         }
     }
-    
-    useEffect(() => {
-        if (show) {
-            setSelectionLevelProps([WHEELSET_PROP, 'backWheelSet'])
-        }
-    }, [setSelectionLevelProps, show, label])
 
     return (
         <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label={label} displayLabel={/Groupset/i.test(label) ? "Groupset" : "Wheel"} setActualWidth={setActualWidth} identifier={WHEELSET_PROP} />

@@ -38,12 +38,6 @@ export default function GroupSet({ parentProps, show, canvasContext, label, canv
             groupSet_shifter: { ...canvasDrawImageProps.groupSet_shifter, image: image2, width: width2, height: height2, previewImageWidth: previewImage2Width, previewImageHeight: previewImage2Height, actualWidth: groupSetShifter.actualWidth, globalCompositeOperation: 'destination-over', ...extraDrawImageProps }
         }
     }
-    
-    useEffect(() => {
-        if (show) {
-            setSelectionLevelProps([GROUPSET_DRIVETRAIN_PROP, GROUPSET_SHIFTER_PROP])
-        }
-    }, [setSelectionLevelProps, show])
 
     return (
         <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} label={"Group Set - Drivetrain"} displayLabel={/Groupset/i.test(label) ? "Groupset" : "Wheel"} setActualWidth={setActualWidth} identifier={GROUPSET_DRIVETRAIN_PROP} />

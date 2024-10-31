@@ -99,12 +99,21 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const resetCanvasComponents = () => {
         const setCanvasDrawImagePropsFromSelectionLevelProps = (prevState) => {
             selectionLevelProps.forEach(selectionLevelProp => {
-                // This is for the cockpit of stem and handleBar selectionLevelProps
-                if ((selectionLevelProps.length > 1 && !selectionLevelProp.includes('Wheel') && !selectionLevelProp.includes('groupSet')) || identifier === "tire") {
-                    if (selectionLevelProp === identifier) {
-                        prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
-                    }
-                } else {
+                // // This is for the cockpit of stem and handleBar selectionLevelProps
+                // if ((selectionLevelProps.length > 1 && !selectionLevelProp.includes('Wheel') && !selectionLevelProp.includes('groupSet')) || identifier === "tire") {
+                //     if (selectionLevelProp === identifier) {
+                //         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
+                //     }
+                // } else {
+                //     if (selectionLevelProp === 'groupSet_shifter') {
+                //         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2, stemShifterX: prevState[selectionLevelProp].stemShifterX, stemShifterY: prevState[selectionLevelProp].stemShifterY };
+                //     } else if (identifier === 'saddle') {
+                //         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState.frameSet.saddleY - initialCanvasDrawImageProps[selectionLevelProp]?.height };
+                //     } else {
+                //         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
+                //     }
+                // }
+                if (selectionLevelProp === identifier || (selectionLevelProp === "backWheelSet" && identifier === "frontWheelSet") || (selectionLevelProp === "groupSet_shifter" && identifier === "groupSet_drivetrain")) {
                     if (selectionLevelProp === 'groupSet_shifter') {
                         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2, stemShifterX: prevState[selectionLevelProp].stemShifterX, stemShifterY: prevState[selectionLevelProp].stemShifterY };
                     } else if (identifier === 'saddle') {

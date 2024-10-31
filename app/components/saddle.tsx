@@ -24,12 +24,6 @@ export default function Saddle({ parentProps, show, canvasContext, canvasX, canv
         return { saddle: { image, x, y, width, height, actualWidth, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps } };
     }
 
-    useEffect(() => {
-        if (show) {
-            setSelectionLevelProps([SADDLE_PROP])
-        }
-    }, [setSelectionLevelProps, show])
-
     return (
         <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={saddle} label="Saddle" setActualWidth={setActualWidth} identifier={SADDLE_PROP} />
     )

@@ -30,6 +30,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
 import { IRootState } from "@/app/store";
 
+const FRAMESET_PROP = 'frameSet';
+const FRONTWHEELSET_PROP = 'frontWheelSet';
+const BACKWHEELSET_PROP = 'backWheelSet';
+const TIRE_PROP = 'tire';
+const STEM_PROP = 'stem';
+const HANDLE_BAR_PROP = 'handleBar';
+const GROUPSET_DRIVETRAIN_PROP = 'groupSet_drivetrain';
+const GROUPSET_SHIFTER_PROP = 'groupSet_shifter';
+const SADDLE_PROP = "saddle";
+
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
     frameSetDimensions, setFrameSetDimensions, models, builds, modelsPresets, colorsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
@@ -505,6 +515,28 @@ export default function BikeBuilder({
             });
         };
     }, []);
+
+    useEffect(() => {
+        if (selectionLevel === 1) {
+            setSelectionLevelProps([FRAMESET_PROP])
+        }
+        if (selectionLevel === 2) {
+            setSelectionLevelProps([FRONTWHEELSET_PROP, BACKWHEELSET_PROP, TIRE_PROP])
+        }
+        if (selectionLevel === 3) {
+            if ((handleBarStemConditions || frameSetDimensions.hasStem) && !linkedComponentDimensions.hasHandleBar) {
+                setSelectionLevelProps([STEM_PROP, HANDLE_BAR_PROP])
+            } else {
+                setSelectionLevelProps([STEM_PROP])
+            }
+        }
+        if (selectionLevel === 4) {
+            setSelectionLevelProps([GROUPSET_DRIVETRAIN_PROP, GROUPSET_SHIFTER_PROP])
+        }
+        if (selectionLevel === 5) {
+            setSelectionLevelProps([SADDLE_PROP])
+        }
+    }, [setSelectionLevelProps, selectionLevel, handleBarStemConditions, frameSetDimensions, linkedComponentDimensions])
 
     useEffect(() => {
         dispatch(builderActions.updateloadingScreen(false));

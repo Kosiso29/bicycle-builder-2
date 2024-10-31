@@ -29,17 +29,6 @@ export default function Stem({ parentProps, show, canvasContext, canvasX, canvas
         return { stem: { image, x, y, width, height, actualWidth, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets, hasHandleBar } };
     }
 
-    useEffect(() => {
-        if (show) {
-            setSelectionLevelProps(prevState => {
-                if (!prevState.includes(STEM_PROP)) {
-                    return [STEM_PROP];
-                }
-                return prevState;
-            })
-        }
-    }, [setSelectionLevelProps, show])
-
     return (
         <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={stem} label="Stem" setActualWidth={setActualWidth} identifier={STEM_PROP} />
     )

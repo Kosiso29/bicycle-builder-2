@@ -36,20 +36,6 @@ export default function HandleBar({ parentProps, show, canvasContext, canvasX, c
         return { handleBar: { image, x, y, width, height, actualWidth, previewImageWidth, previewImageHeight, globalCompositeOperation: 'source-over', ...extraDrawImageProps, ...offsets } };
     }
 
-    useEffect(() => {
-        if (show) { // the selectionLevel is used to prevent handlebar from getting added to selectionLevelProps and causing deleting bug for frameSet w/ handlebar
-            setSelectionLevelProps(prevState => {
-                if (!prevState.includes('stem')) {
-                    return [HANDLE_BAR_PROP];
-                }
-                if (!prevState.includes(HANDLE_BAR_PROP)) {
-                    prevState.push(HANDLE_BAR_PROP);
-                }
-                return prevState;
-            })
-        }
-    }, [setSelectionLevelProps, selectionLevel, show])
-
     return (
         <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={handleBar} label="Handle Bar" setActualWidth={setActualWidth} identifier={HANDLE_BAR_PROP} handleBarShow={handleBarShow} />
     )

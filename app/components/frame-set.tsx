@@ -36,12 +36,6 @@ export default function FrameSet({ parentProps, show, handleReset, setFrameSetDi
         return frameSetData;
     }
 
-    useEffect(() => {
-        if (show) {
-            setSelectionLevelProps([FRAMESET_PROP])
-        }
-    }, [setSelectionLevelProps, show])
-
     function updateFrameSetData(frameSetData) {
         const { stemX, stemY, saddleX, saddleY, frontWheelSetX, frontWheelSetY, backWheelSetX, backWheelSetY,
             groupSet_drivetrainX, groupSet_drivetrainY, groupSet_shifterX, groupSet_shifterY, handleBarX, handleBarY,

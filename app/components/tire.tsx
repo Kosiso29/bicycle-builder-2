@@ -27,17 +27,6 @@ export default function Tire({ parentProps, show, canvasContext, canvasX, canvas
         return { tire: { image, x, y, width, height, actualWidth, image2: image, x2, y2, width2: width, height2: height, previewImageWidth, previewImageHeight, globalCompositeOperation: 'destination-over', ...extraDrawImageProps } };
     }
 
-    useEffect(() => {
-        if (show) {
-            setSelectionLevelProps(prevState => {
-                if (!prevState.includes(TYRE_PROP)) {
-                    prevState.push(TYRE_PROP);
-                }
-                return [ ...prevState ];
-            })
-        }
-    }, [setSelectionLevelProps, show])
-
     return (
         <SelectionTemplate parentProps={parentProps} show={show} updateDrawImageProps={updateDrawImageProps} dataSet={tire} label="Tyre" setActualWidth={setActualWidth} identifier={TYRE_PROP} />
     )
