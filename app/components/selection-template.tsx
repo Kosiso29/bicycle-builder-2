@@ -96,7 +96,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setSelectedIndex(index);
     }
 
-    const resetCanvasComponents = () => {
+    const resetCanvasComponents = (canvasProp) => {
         const setCanvasDrawImagePropsFromSelectionLevelProps = (prevState) => {
             selectionLevelProps.forEach(selectionLevelProp => {
                 // // This is for the cockpit of stem and handleBar selectionLevelProps
@@ -113,13 +113,27 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 //         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
                 //     }
                 // }
-                if (selectionLevelProp === identifier || (selectionLevelProp === "backWheelSet" && identifier === "frontWheelSet") || (selectionLevelProp === "groupSet_shifter" && identifier === "groupSet_drivetrain")) {
-                    if (selectionLevelProp === 'groupSet_shifter') {
-                        prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2, stemShifterX: prevState[selectionLevelProp].stemShifterX, stemShifterY: prevState[selectionLevelProp].stemShifterY };
-                    } else if (identifier === 'saddle') {
-                        prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState.frameSet.saddleY - initialCanvasDrawImageProps[selectionLevelProp]?.height };
+                if (canvasProp) {
+                    if (canvasProp === 'frontWheelSet') {
+                        prevState[canvasProp] = { ...initialCanvasDrawImageProps[canvasProp], x: prevState[canvasProp]?.x, y: prevState[canvasProp]?.y, x2: prevState[canvasProp]?.x2, y2: prevState[canvasProp]?.y2 };
+                        prevState['backWheelSet'] = { ...initialCanvasDrawImageProps['backWheelSet'], x: prevState['backWheelSet']?.x, y: prevState['backWheelSet']?.y, x2: prevState['backWheelSet']?.x2, y2: prevState['backWheelSet']?.y2 };
+                    } else if (canvasProp === 'groupSet_drivetrain') {
+                        prevState['groupSet_shifter'] = { ...initialCanvasDrawImageProps['groupSet_shifter'], x: prevState['groupSet_shifter']?.x, y: prevState['groupSet_shifter']?.y, x2: prevState['groupSet_shifter']?.x2, y2: prevState['groupSet_shifter']?.y2, stemShifterX: prevState['groupSet_shifter'].stemShifterX, stemShifterY: prevState['groupSet_shifter'].stemShifterY };
+                        prevState[canvasProp] = { ...initialCanvasDrawImageProps[canvasProp], x: prevState[canvasProp]?.x, y: prevState[canvasProp]?.y, x2: prevState[canvasProp]?.x2, y2: prevState[canvasProp]?.y2 };
+                    } else if (canvasProp === 'saddle') {
+                        prevState[canvasProp] = { ...initialCanvasDrawImageProps[canvasProp], x: prevState[canvasProp]?.x, y: prevState.frameSet.saddleY - initialCanvasDrawImageProps[canvasProp]?.height };
                     } else {
-                        prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
+                        prevState[canvasProp] = { ...initialCanvasDrawImageProps[canvasProp], x: prevState[canvasProp]?.x, y: prevState[canvasProp]?.y, x2: prevState[canvasProp]?.x2, y2: prevState[canvasProp]?.y2 };
+                    }
+                } else {
+                    if (selectionLevelProp === identifier || (selectionLevelProp === "backWheelSet" && identifier === "frontWheelSet") || (selectionLevelProp === "groupSet_shifter" && identifier === "groupSet_drivetrain")) {
+                        if (selectionLevelProp === 'groupSet_shifter') {
+                            prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2, stemShifterX: prevState[selectionLevelProp].stemShifterX, stemShifterY: prevState[selectionLevelProp].stemShifterY };
+                        } else if (identifier === 'saddle') {
+                            prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState.frameSet.saddleY - initialCanvasDrawImageProps[selectionLevelProp]?.height };
+                        } else {
+                            prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
+                        }
                     }
                 }
             })
@@ -135,7 +149,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         positionCanvasImages(newCanvasDrawImageProps[identifier], identifier, newCanvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions);
     }
 
-    const handleModelRemove = (index) => {
+    const handleModelRemove = (index, modelData) => {
         setModel("");
         setModelData(null);
         setSelectedIndex(null);
@@ -150,7 +164,11 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             imageRef2.current?.setAttribute("src", "/Cadex-Saddle.png");
         };
 
-        resetCanvasComponents();
+        const joinedHyphenatedProp = modelData.category.split(" - ").map((item: any, index: number) => index === 1 ? item.toLowerCase() : item).join("_")
+
+        const canvasProp = joinedHyphenatedProp.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
+
+        resetCanvasComponents(canvasProp);
 
         if (selectionLevelProps.includes('frameSet')) {
             updateFrameSetData(initialCanvasDrawImageProps.frameSet);
@@ -368,7 +386,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         handleModelChange(index, item);
                                         setInitialModelData(item);
                                     } else {
-                                        handleModelRemove(index);
+                                        handleModelRemove(index, item);
                                     }
                                 }}
                                 src={item.previewSrc || item.src}
