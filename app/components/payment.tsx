@@ -58,11 +58,11 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
                                     </p>
                                     <p className="flex justify-between">
                                         <span>Delivery:</span>
-                                        <span className="font-bold">$100</span>
+                                        <span className="font-bold">Free</span>
                                     </p>
                                     <p className="flex justify-between">
                                         <span>Total:</span>
-                                        <span className="font-bold">${Math.round(totalPrice) + 100}</span>
+                                        <span className="font-bold">${totalPrice}</span>
                                     </p>
                                 </div>
                                 {
