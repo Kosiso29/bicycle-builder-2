@@ -4,7 +4,7 @@ import PaypalPayment from '@/app/components/paypal-payment';
 import Image from "next/image";
 import CardPayment from '@/app/components/card-payment';
 
-export default function PaymentOptions() {
+export default function PaymentOptions({ setBuildProcessStage }: { setBuildProcessStage: any }) {
     const [paymentOption, setPaymentOption] = useState("");
     return (
         <div>
@@ -22,7 +22,7 @@ export default function PaymentOptions() {
                     <Image src="/Paypal.png" className='!inline-block mr-2' width={40} height={20} alt='' />
                     Paypal
                 </label>
-                {paymentOption === "paypal" && <PaypalPayment />}
+                {paymentOption === "paypal" && <PaypalPayment setBuildProcessStage={setBuildProcessStage} />}
             </div>
             <div>
                 <Radio

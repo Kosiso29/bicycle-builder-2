@@ -6,7 +6,7 @@ import PaymentOptions from "@/app/components/payment-options";
 import Header from "@/app/components/header";
 import { useState } from "react";
 
-export default function Payment({ showBilling, setShowBilling, canvasImage, totalPrice, setTotalPrice }: { showBilling: any, setShowBilling: any, canvasImage: string, totalPrice: any, setTotalPrice: any }) {
+export default function Payment({ showBilling, setShowBilling, canvasImage, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage }: { showBilling: any, setShowBilling: any, canvasImage: string, totalPrice: any, setTotalPrice: any, buildProcessState: any, setBuildProcessStage: any }) {
     const [showPaymentOptions, setShowPaymentOptions] = useState(false);
     const [shippingInformation, setShippingInformation] = useState({
         email: "",
@@ -26,7 +26,7 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
         }
     }
 
-    if (!showBilling) {
+    if (buildProcessState !== "payment") {
         return null;
     }
 
@@ -36,14 +36,14 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
             <div className="pt-4 pb-20 wrapper">
                 <div>
                     <div className='mb-4 -ml-16'>
-                        <Button variant="text" onClick={() => setShowBilling(false)}> <ArrowBackIos /> Back</Button>
+                        <Button variant="text" onClick={() => setBuildProcessStage("summary")}> <ArrowBackIos /> Back</Button>
                     </div>
                     <h1 className='text-2xl font-bold mb-5'>{showPaymentOptions ? "Payment" : "Shipping"}</h1>
                 </div>
                 <div className='flex'>
                     <div className='basis-[50%] max-w-[50%]'>
                         {
-                            showPaymentOptions ? <PaymentOptions /> : <ShippingForm setShowPaymentOptions={setShowPaymentOptions} shippingInformation={shippingInformation} setShippingInformation={setShippingInformation} />
+                            showPaymentOptions ? <PaymentOptions setBuildProcessStage={setBuildProcessStage} /> : <ShippingForm setShowPaymentOptions={setShowPaymentOptions} shippingInformation={shippingInformation} setShippingInformation={setShippingInformation} />
                         }
                     </div>
                     <div className='basis-[50%] flex justify-end'>

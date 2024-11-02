@@ -6,11 +6,13 @@ import { ToastContainer } from 'react-toastify';
 import { useState } from "react";
 import Payment from "@/app/components/payment";
 import 'react-toastify/dist/ReactToastify.css';
+import PaymentResult from "@/app/components/payment-result";
 
 // Types
 import { Models } from "@/app/lib/definitions";
 
 export default function Builder({ models, builds, modelsPresets, colorsPresets, colors, accessoryModels }: { models: Models, builds: any, modelsPresets: any, colorsPresets: any, colors: any, accessoryModels: any }) {
+    const [buildProcessState, setBuildProcessStage] = useState("build")
     const [showSummary, setShowSummary] = useState(false);
     const [showBilling, setShowBilling] = useState(false);
     const [canvasImage, setCanvasImage] = useState("");
@@ -60,6 +62,8 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 showBilling={showBilling}
                 totalPrice={totalPrice}
                 setTotalPrice={setTotalPrice}
+                buildProcessState={buildProcessState}
+                setBuildProcessStage={setBuildProcessStage}
             />
             <Summary
                 canvasDrawImageProps={canvasDrawImageProps}
@@ -72,6 +76,8 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 accessoryModels={accessoryModels}
                 showBilling={showBilling}
                 setShowBilling={setShowBilling}
+                buildProcessState={buildProcessState}
+                setBuildProcessStage={setBuildProcessStage}
             />
             <Payment
                 showBilling={showBilling}
@@ -79,6 +85,12 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 canvasImage={canvasImage}
                 totalPrice={totalPrice}
                 setTotalPrice={setTotalPrice}
+                buildProcessState={buildProcessState}
+                setBuildProcessStage={setBuildProcessStage}
+            />
+            <PaymentResult
+                buildProcessState={buildProcessState}
+                setBuildProcessStage={setBuildProcessStage}
             />
             <ToastContainer
                 autoClose={3500}

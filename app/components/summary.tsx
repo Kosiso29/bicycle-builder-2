@@ -7,11 +7,11 @@ import SummaryList from "@/app/components/summary-list";
 import AddonSummary from './addon-summary';
 import Header from "@/app/components/header";
 
-export default function Summary({ canvasDrawImageProps, canvasImage, showSummary, setShowSummary, frameSetDimensions, addonAccessories, setAddonAccessories, accessoryModels, showBilling, setShowBilling }) {
+export default function Summary({ canvasDrawImageProps, canvasImage, showSummary, setShowSummary, frameSetDimensions, addonAccessories, setAddonAccessories, accessoryModels, showBilling, setShowBilling, buildProcessState, setBuildProcessStage }) {
     // pass in props as parentProps for AddonSummary
     const parentProps = { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories }
 
-    if (!showSummary || showBilling) {
+    if (buildProcessState !== "summary") {
         return null;
     }
 
@@ -21,7 +21,7 @@ export default function Summary({ canvasDrawImageProps, canvasImage, showSummary
             <div className='flex pb-16 wrapper'>
                 <div className='flex flex-col gap-2 basis-[50%] p-5 pl-0 max-w-[50%] max-h-[calc(100vh-4rem)]'>
                     <div className='my-4 -ml-16'>
-                        <Button variant="text" onClick={() => setShowSummary(false)}> <ArrowBackIos /> Back</Button>
+                        <Button variant="text" onClick={() => setBuildProcessStage("build")}> <ArrowBackIos /> Back</Button>
                     </div>
                     <h1 className='text-3xl leading-10 font-extrabold'>Reviews and <br /> Checkout</h1>
                     <div className="flex flex-grow items-center slide-in-animation">
@@ -38,7 +38,7 @@ export default function Summary({ canvasDrawImageProps, canvasImage, showSummary
                         <div className="flex justify-center">
                             <div className="flex justify-end flex-grow mt-5 max-w-[30rem]">
                                 {/* <Button variant="text">Add to Favourites</Button> */}
-                                <Button variant="contained" onClick={() => setShowBilling(true)}>Proceed to Payment</Button>
+                                <Button variant="contained" onClick={() => setBuildProcessStage("payment")}>Proceed to Payment</Button>
                             </div>
                         </div>
                     </div>

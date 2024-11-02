@@ -43,7 +43,7 @@ const SADDLE_PROP = "saddle";
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
     frameSetDimensions, setFrameSetDimensions, models, builds, modelsPresets, colorsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
-    handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories, showBilling, totalPrice, setTotalPrice
+    handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories, showBilling, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
     const [selectionLevelProps, setSelectionLevelProps] = useState([]);
@@ -296,7 +296,6 @@ export default function BikeBuilder({
         setFrameSetDimensions({});
         setStemDimensions({ hasHandleBar: true });
         setResetComponent(prevState => prevState + 1);
-        setShowSummary(false);
         setTotalPrice(null);
     }
 
@@ -421,7 +420,7 @@ export default function BikeBuilder({
         const canvas = document.getElementById('canvas');
         setCanvasImage(canvas.toDataURL());
         setImage(false, true);
-        setShowSummary(true);
+        setBuildProcessStage("summary");
     }
 
     const calculateTotalPrice = () => {
@@ -455,12 +454,6 @@ export default function BikeBuilder({
             renderCanvasPlaceholderImages();
         }
     }, [canvasContext, canvasSelectorImage]);
-
-    useEffect(() => {
-        if (selectionLevel < 6) {
-            setShowSummary(false);
-        }
-    }, [selectionLevel]);
 
     useEffect(() => {
         // reset handlebar props when there's no handlebar
@@ -543,7 +536,7 @@ export default function BikeBuilder({
     }, []);
 
     return (
-        <div className={`${showSummary || showBilling ? "hidden" : ""} bg-back-color-1 h-screen max-h-screen fade-in-animation`}>
+        <div className={`${buildProcessState !== "build" ? "hidden" : ""} bg-back-color-1 h-screen max-h-screen fade-in-animation`}>
             <div className="text-black">
                 <Header />
             </div>
