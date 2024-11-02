@@ -9,15 +9,15 @@ import { useState } from "react";
 export default function Payment({ showBilling, setShowBilling, canvasImage, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage }: { showBilling: any, setShowBilling: any, canvasImage: string, totalPrice: any, setTotalPrice: any, buildProcessState: any, setBuildProcessStage: any }) {
     const [showPaymentOptions, setShowPaymentOptions] = useState(false);
     const [shippingInformation, setShippingInformation] = useState({
-        email: "",
-        firstName: "",
-        lastName: "",
-        street: "",
-        city: "",
-        zip: "",
-        country: "",
-        state: "",
-        phone: ""
+        "email": "",
+        "first-name": "",
+        "last-name": "",
+        "address": "",
+        "city": "",
+        "postal-code": "",
+        "country": "",
+        "state": "",
+        "phone": ""
     });
 
     const handlePaymentClick = () => {
@@ -71,18 +71,18 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
                                         <h2 className="flex justify-between items-center text-lg font-semibold">Shipping to <EditOutlined className="cursor-pointer" fontSize="small" onClick={() => setShowPaymentOptions(false)} /></h2>
                                         <p className="flex justify-between">
                                             {
-                                                shippingInformation.street || shippingInformation.city ?
-                                                    <span>{shippingInformation.street + " " + shippingInformation.city},</span> : null
+                                                shippingInformation['address'] || shippingInformation["city"] ?
+                                                    <span>{shippingInformation['address'] + " " + shippingInformation["city"]},</span> : null
                                             }
                                         </p>
                                         <p className="flex justify-between">
-                                            {shippingInformation.state && <span>{shippingInformation.state},</span>}
+                                            {shippingInformation["state"] && <span>{shippingInformation["state"]},</span>}
                                         </p>
                                         <p className="flex justify-between">
                                             <span>{shippingInformation.country}</span>
                                         </p>
                                         <p className="flex justify-between">
-                                            <span>{shippingInformation.zip}</span>
+                                            <span>{shippingInformation["postal-code"]}</span>
                                         </p>
                                     </div>
                                 }
