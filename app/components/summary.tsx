@@ -19,7 +19,7 @@ export default function Summary({ canvasDrawImageProps, canvasImage, showSummary
         <div className='bg-[#F0EFEF] min-h-screen'>
             <Header />
             <div className='flex pb-16 wrapper'>
-                <div className='flex flex-col gap-2 basis-[50%] p-5 pl-0 max-w-[50%] max-h-[calc(100vh-4rem)]'>
+                <div className='flex flex-col gap-2 basis-[50%] p-5 pl-0 max-w-[50%] h-[calc(100vh-4rem)]'>
                     <div className='my-4 -ml-16'>
                         <Button variant="text" onClick={() => setBuildProcessStage("build")}> <ArrowBackIos /> Back</Button>
                     </div>
