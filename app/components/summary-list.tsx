@@ -5,11 +5,11 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
     const titles = {
         frameSet: 'Frame',
         frontWheelSet: 'Wheel',
+        tire: 'Tyre',
         stem: 'Stem',
         handleBar: 'Handle Bar',
+        groupSet_drivetrain: 'Groupset',
         saddle: 'Saddle',
-        tire: 'Tyre',
-        groupSet_drivetrain: 'Groupset'
     }
     const values = Object.entries(canvasDrawImageProps);
 
@@ -18,12 +18,12 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
             <div>
                 <h1 className={`text-center font-bold ${small ? "text-xl" : "text-4xl"} mb-5`} > Summary</h1>
                 {
-                    Object.entries(canvasDrawImageProps).map((item, index) => (
-                        item[1].brand && titles[item[0]] && <div key={item[1].brand + item[1].model + titles[item[0]] + index}>
+                    Object.keys(titles).map((item, index) => (
+                        canvasDrawImageProps[item].brand && titles[item] && <div key={canvasDrawImageProps[item].brand + canvasDrawImageProps[item].model + titles[item] + index}>
                             <div className='flex justify-between py-3'>
-                                <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[30%]`}>{titles[item[0]]}</h1>
-                                <p className={`basis-[30%] text-primary ${small ? "text-sm" : ""}`}>{item[1].brand && !(titles[item[0]] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item[0]] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? item[1].brand + " - " + item[1].model : "---"}</p>
-                                <p className={`basis-[20%] text-primary ${small ? "text-sm" : ""}`}>{item[1].brand && !(titles[item[0]] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item[0]] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? "$" + item[1].price : "---"}</p>
+                                <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[30%]`}>{titles[item]}</h1>
+                                <p className={`basis-[30%] text-primary ${small ? "text-sm" : ""}`}>{canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? canvasDrawImageProps[item].brand + " - " + canvasDrawImageProps[item].model : "---"}</p>
+                                <p className={`basis-[20%] text-primary ${small ? "text-sm" : ""}`}>{canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? "$" + canvasDrawImageProps[item].price : "---"}</p>
                             </div>
                             <hr className='h-[2px] bg-gray-400' />
                         </div>
