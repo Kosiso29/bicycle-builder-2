@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 
-function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessories, small }) {
+function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessories, small, totalPrice }) {
     const titles = {
         frameSet: 'Frame',
         frontWheelSet: 'Wheel',
@@ -41,6 +41,10 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                         </div>
                     ))
                 }
+                <div className='flex justify-between py-3'>
+                    <h1 className={`font-bold ${small ? "text-lg" : "text-4xl"} basis-[30%]`}>Subtotal</h1>
+                    <p className={`basis-[20%] text-primary font-bold ${small ? "text-md" : ""}`}>{"$" + totalPrice}</p>
+                </div>
             </div>
         </div >
     );

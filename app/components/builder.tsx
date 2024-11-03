@@ -78,6 +78,7 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 setShowBilling={setShowBilling}
                 buildProcessState={buildProcessState}
                 setBuildProcessStage={setBuildProcessStage}
+                totalPrice={totalPrice}
             />
             <Payment
                 showBilling={showBilling}
