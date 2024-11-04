@@ -1,5 +1,7 @@
 // @ts-nocheck
-import React from 'react';
+'use client'
+
+import React, { useState } from 'react';
 import Image from "next/image";
 import { Button } from "@mui/material";
 import { ArrowBackIos } from "@mui/icons-material";
@@ -8,8 +10,9 @@ import AddonSummary from './addon-summary';
 import Header from "@/app/components/header";
 
 export default function Summary({ canvasDrawImageProps, canvasImage, showSummary, setShowSummary, frameSetDimensions, addonAccessories, setAddonAccessories, accessoryModels, showBilling, setShowBilling, buildProcessState, setBuildProcessStage, totalPrice }) {
+    const [showAddons, setShowAddons] = useState(false);
     // pass in props as parentProps for AddonSummary
-    const parentProps = { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, totalPrice }
+    const parentProps = { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, totalPrice, showAddons, setShowAddons }
 
     if (buildProcessState !== "summary") {
         return null;
@@ -38,7 +41,7 @@ export default function Summary({ canvasDrawImageProps, canvasImage, showSummary
                         <div className="flex justify-center">
                             <div className="flex justify-end flex-grow mt-5 max-w-[30rem]">
                                 {/* <Button variant="text">Add to Favourites</Button> */}
-                                <Button variant="contained" onClick={() => setBuildProcessStage("payment")}>Proceed to Payment</Button>
+                                {!showAddons && <Button variant="contained" onClick={() => setBuildProcessStage("payment")}>Proceed to Payment</Button>}
                             </div>
                         </div>
                     </div>
