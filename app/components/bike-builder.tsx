@@ -43,12 +43,11 @@ const SADDLE_PROP = "saddle";
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
     frameSetDimensions, setFrameSetDimensions, models, builds, modelsPresets, colorsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
-    handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories, showBilling, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage
+    handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories, showBilling, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage, rerender, setRerender
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
     const [selectionLevelProps, setSelectionLevelProps] = useState([]);
     const [canvasSelectionLevelState, setCanvasSelectionLevelState] = useState(1);
-    const [rerender, setRerender] = useState(false);
     const [canvasContext, setCanvasContext] = useState(null);
     const [canvasLoading, setCanvasLoading] = useState(false);
     const [linkedComponentDimensions, setLinkedComopnentDimensions] = useState({ hasHandleBar: false }); // this does not affect canvasDrawImageProps

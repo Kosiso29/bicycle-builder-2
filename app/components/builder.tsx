@@ -3,7 +3,7 @@
 import BikeBuilder from "./bike-builder";
 import Summary from "./summary";
 import { ToastContainer } from 'react-toastify';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Payment from "@/app/components/payment";
 import 'react-toastify/dist/ReactToastify.css';
 import PaymentResult from "@/app/components/payment-result";
@@ -20,7 +20,7 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
     const [frameSetDimensions, setFrameSetDimensions] = useState({});
     const [stemDimensions, setStemDimensions] = useState({ hasHandleBar: true });
     const [handleBarDimensions, setHandleBarDimensions] = useState({});
-    const [canvasDrawImageProps, setCanvasDrawImageProps] = useState({
+    const [canvasDrawImageProps, setCanvasDrawImageProps] = useState<any>({
         frameSet: {},
         frontWheelSet: {},
         backWheelSet: {},
@@ -31,7 +31,30 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
     });
     const [initialCanvasDrawImageProps, setInitialCanvasDrawImageProps] = useState(canvasDrawImageProps);
     const [addonAccessories, setAddonAccessories] = useState({});
-    const [totalPrice, setTotalPrice] = useState(null);
+    const [rerender, setRerender] = useState(false);
+    const [totalPrice, setTotalPrice] = useState<any>(null);
+    
+    useEffect(() => {
+        const calculateTotalPrice = () => {
+            const componentsPrice: any = Object.keys(canvasDrawImageProps).reduce((acc: any, key) => {
+                if (key !== "backWheelSet" && key !== "groupSet_shifter") {
+                    acc.push(canvasDrawImageProps[key]);
+                }
+                return acc;
+            }, []).reduce((acc: any, item: any) => {
+                if (item.price) {
+                    acc = (parseFloat(acc) + parseFloat(item.price)).toFixed(2);
+                }
+                return acc;
+            }, 0);
+            const accessoriesPrice: any = Object.values(addonAccessories).reduce((acc: any, value: any) => {
+                acc = (parseFloat(acc) + parseFloat(value.price)).toFixed(2);
+                return acc;
+            }, 0);
+            setTotalPrice(parseFloat(componentsPrice) + parseFloat(accessoriesPrice));
+        }
+        calculateTotalPrice();
+    }, [rerender, addonAccessories, canvasDrawImageProps])
 
     return (
         <div>
@@ -64,6 +87,8 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 setTotalPrice={setTotalPrice}
                 buildProcessState={buildProcessState}
                 setBuildProcessStage={setBuildProcessStage}
+                rerender={rerender}
+                setRerender={setRerender}
             />
             <Summary
                 canvasDrawImageProps={canvasDrawImageProps}
