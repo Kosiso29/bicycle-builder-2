@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import Badge from "@/app/components/badge";
 
 function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessories, small, totalPrice }) {
     const titles = {
@@ -21,9 +21,19 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                     Object.keys(titles).map((item, index) => (
                         canvasDrawImageProps[item].brand && titles[item] && <div key={canvasDrawImageProps[item].brand + canvasDrawImageProps[item].model + titles[item] + index}>
                             <div className='flex justify-between py-3'>
-                                <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[30%]`}>{titles[item]}</h1>
-                                <p className={`basis-[30%] text-primary ${small ? "text-sm" : ""}`}>{canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? canvasDrawImageProps[item].brand + " - " + canvasDrawImageProps[item].model : "---"}</p>
-                                <p className={`basis-[20%] text-primary ${small ? "text-sm" : ""}`}>{canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? "$" + canvasDrawImageProps[item].price : "---"}</p>
+                                <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[20%]`}>{titles[item]}</h1>
+                                <p className={`basis-[40%] text-primary ${small ? "text-sm" : ""}`}>
+                                    {canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? canvasDrawImageProps[item].brand + " - " + canvasDrawImageProps[item].model : "---"}
+                                    <div className="flex gap-2 pt-2">
+                                        {console.log('summary canvasDrawImageProps', canvasDrawImageProps[item], item)}
+                                        {
+                                            Object.entries(canvasDrawImageProps[item].selectedFeatures || {})?.map(([featureKey, featureValue]) => (
+                                                <Badge key={featureKey} featureKey={featureKey} featureValue={featureValue} />
+                                            ))
+                                        }
+                                    </div>
+                                </p>
+                                <p className={`basis-[20%] text-right text-primary ${small ? "text-sm" : ""}`}>{canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? "$" + canvasDrawImageProps[item].price : "---"}</p>
                             </div>
                             <hr className='h-[2px] bg-gray-400' />
                         </div>
@@ -33,17 +43,17 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                     Object.keys(addonAccessories)?.length > 0 && Object.entries(addonAccessories).map((item, index) => (
                         <div key={item[1].brand + item[1].model + index}>
                             <div className='flex justify-between py-3'>
-                                <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[30%]`}>{item[0]}</h1>
-                                <p className={`basis-[30%] text-primary ${small ? "text-sm" : ""}`}>{item[1].brand + " - " + item[1].model}</p>
-                                <p className={`basis-[20%] text-primary ${small ? "text-sm" : ""}`}>{"$" + item[1].price}</p>
+                                <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[20%]`}>{item[0]}</h1>
+                                <p className={`basis-[40%] text-primary ${small ? "text-sm" : ""}`}>{item[1].brand + " - " + item[1].model}</p>
+                                <p className={`basis-[20%] text-right text-primary ${small ? "text-sm" : ""}`}>{"$" + item[1].price}</p>
                             </div>
                             <hr className='h-[2px] bg-gray-400' />
                         </div>
                     ))
                 }
                 <div className='flex justify-between py-3'>
-                    <h1 className={`font-bold ${small ? "text-lg" : "text-4xl"} basis-[30%]`}>Subtotal</h1>
-                    <p className={`basis-[20%] text-primary font-bold ${small ? "text-md" : ""}`}>{"$" + totalPrice}</p>
+                    <h1 className={`font-bold ${small ? "text-lg" : "text-4xl"} basis-[20%]`}>Subtotal</h1>
+                    <p className={`basis-[20%] text-right text-primary font-bold ${small ? "text-md" : ""}`}>{"$" + totalPrice}</p>
                 </div>
             </div>
         </div >

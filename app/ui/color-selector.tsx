@@ -39,13 +39,13 @@ export default function SizeSelector(
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: "0.2rem", minHeight: "1rem" }}>
                 {values?.map((value) => (
                     <div key={value} className='flex items-center'>
-                        <button
+                        <span
                             style={{ border: selectedFeatures?.[type] === value ? "1px solid #1A1A1A" : "" }}
                             className='p-[1px] h-5 w-5 rounded-full border border-transparent hover:border-back-color transition-all'
                             onClick={(e) => { isModelSelected && e.stopPropagation(); handleSizeChange(value) }}
                         >
                             <span className='block w-full h-full rounded-full' style={{ backgroundColor: value }}></span>
-                        </button>
+                        </span>
                     </div>
                 ))}
             </Box>

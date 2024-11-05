@@ -347,6 +347,15 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }, [show])
 
     useEffect(() => {
+        if ((show || selectionPresetProps) && identifier) {
+            setCanvasDrawImageProps(prevState => ({
+                ...prevState,
+                [identifier]: { ...prevState[identifier], selectedFeatures }
+            }));
+        }
+    }, [selectedFeatures, show, selectionPresetProps, identifier])
+
+    useEffect(() => {
         if (show) {
             imageLoaded && image2Loaded && Object.keys(initialCanvasDrawImageProps.frameSet).length > 0 && !selectedFeatureBuild ? setCanvasLoading(false) : setCanvasLoading(true)
         }

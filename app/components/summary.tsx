@@ -31,10 +31,10 @@ export default function Summary({ canvasDrawImageProps, canvasImage, showSummary
                         <Image src={canvasImage} style={{ width: "100%", height: "auto" }} width={0} height={0} alt='' />
                     </div>
                 </div>
-                <div className='basis-[50%] pt-[10vh] px-32'>
+                <div className='basis-[50%] pt-[10vh] px-24'>
                     <div className='flex flex-col justify-between gap-6 min-h-[calc(80vh-4rem)]'>
                         <div className="flex justify-center">
-                            <div className='flex-grow max-w-[30rem]'>
+                            <div className='flex-grow max-w-[50rem]'>
                                 <AddonSummary parentProps={parentProps} />
                             </div>
                         </div>
