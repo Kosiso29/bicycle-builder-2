@@ -43,7 +43,7 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
                 <div className='flex'>
                     <div className='basis-[50%] max-w-[50%]'>
                         {
-                            showPaymentOptions ? <PaymentOptions setBuildProcessStage={setBuildProcessStage} /> : <ShippingForm setShowPaymentOptions={setShowPaymentOptions} shippingInformation={shippingInformation} setShippingInformation={setShippingInformation} />
+                            showPaymentOptions ? <PaymentOptions setBuildProcessStage={setBuildProcessStage} totalPrice={totalPrice} /> : <ShippingForm setShowPaymentOptions={setShowPaymentOptions} shippingInformation={shippingInformation} setShippingInformation={setShippingInformation} />
                         }
                     </div>
                     <div className='basis-[50%] flex justify-end'>

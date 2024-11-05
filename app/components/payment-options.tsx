@@ -3,8 +3,9 @@ import { Radio } from "@mui/material";
 import PaypalPayment from '@/app/components/paypal-payment';
 import Image from "next/image";
 import CardPayment from '@/app/components/card-payment';
+import GooglePayButton from "@google-pay/button-react";
 
-export default function PaymentOptions({ setBuildProcessStage }: { setBuildProcessStage: any }) {
+export default function PaymentOptions({ setBuildProcessStage, totalPrice }: { setBuildProcessStage: any, totalPrice: number }) {
     const [paymentOption, setPaymentOption] = useState("");
     return (
         <div>
@@ -19,10 +20,52 @@ export default function PaymentOptions({ setBuildProcessStage }: { setBuildProce
                     inputProps={{ 'aria-label': 'paypal' }}
                 />
                 <label htmlFor="paypal" className='cursor-pointer'>
-                    <Image src="/Paypal.png" className='!inline-block mr-2' width={40} height={20} alt='' />
-                    Paypal
+                    <Image src="/G-Pay.svg" className='!inline-block mr-2' width={50} height={20} alt='' />
                 </label>
-                {paymentOption === "paypal" && <PaypalPayment setBuildProcessStage={setBuildProcessStage} />}
+                {paymentOption === "paypal" &&
+                    <div>
+                        <GooglePayButton
+                            environment='TEST'
+                            paymentRequest={{
+                                apiVersion: 2,
+                                apiVersionMinor: 0,
+                                allowedPaymentMethods: [
+                                    {
+                                        type: "CARD",
+                                        parameters: {
+                                            allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                                            allowedCardNetworks: ['MASTERCARD', 'VISA']
+                                        },
+                                        tokenizationSpecification: {
+                                            type: "PAYMENT_GATEWAY",
+                                            parameters: {
+                                                gateway: "example",
+                                                gatewayMerchantId: "exampleGatewayMerchantId"
+                                            }
+                                        }
+                                    }
+                                ],
+                                merchantInfo: {
+                                    merchantId: "12345678901234567890",
+                                    merchantName: "Demo Merchant"
+                                },
+                                transactionInfo: {
+                                    totalPriceStatus: "FINAL",
+                                    totalPriceLabel: "Total",
+                                    totalPrice: totalPrice.toString(),
+                                    currencyCode: "USD",
+                                    countryCode: "US"
+                                },
+                                shippingAddressRequired: true,
+                            }}
+                            onLoadPaymentData={paymentRequest => {
+                                console.log('load payment data', paymentRequest);
+                            }}
+                            buttonSizeMode='fill'
+                            style={{ width: "100%" }}
+                        />
+                    </div>
+                }
             </div>
             <div>
                 <Radio
