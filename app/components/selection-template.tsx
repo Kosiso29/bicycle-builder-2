@@ -299,9 +299,9 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             setSelectedIndex(selectedModelIndex);
             const selectedModelData = models.filter(itemModel => itemModel.model === selectionPresetProps[identifier]?.model);
             if (selectionPresetProps[identifier]?.presetColorValue) {
-                setSelectedFeatures(prevState => ({ ...prevState, colors: selectionPresetProps[identifier]?.presetColorValue }))
+                setSelectedFeatures(prevState => ({ ...prevState, colors: { name: selectionPresetProps[identifier]?.presetColorName, value: selectionPresetProps[identifier]?.presetColorValue } }))
             } else {
-                setSelectedFeatures(prevState => ({ ...prevState, colors: selectedModelData[0]?.color_value }))
+                setSelectedFeatures(prevState => ({ ...prevState, colors: selectedModelData[0]?.color_value ? { name: selectedModelData[0]?.color_name, value: selectedModelData[0]?.color_value } : {} }))
             }
             setInitialModelData(selectedModelData[0]);
             const newSelectedModelData = { ...selectedModelData[0] };

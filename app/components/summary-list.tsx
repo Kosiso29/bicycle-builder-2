@@ -22,7 +22,7 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                         canvasDrawImageProps[item].brand && titles[item] && <div key={canvasDrawImageProps[item].brand + canvasDrawImageProps[item].model + titles[item] + index}>
                             <div className='flex justify-between py-3'>
                                 <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[20%]`}>{titles[item]}</h1>
-                                <p className={`basis-[40%] text-primary ${small ? "text-sm" : ""}`}>
+                                <p className={`basis-[50%] text-primary ${small ? "text-sm" : ""}`}>
                                     {canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? canvasDrawImageProps[item].brand + " - " + canvasDrawImageProps[item].model : "---"}
                                     <div className="flex gap-2 pt-2">
                                         {console.log('summary canvasDrawImageProps', canvasDrawImageProps[item], item)}
@@ -44,7 +44,7 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                         <div key={item[1].brand + item[1].model + index}>
                             <div className='flex justify-between py-3'>
                                 <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[20%]`}>{item[0]}</h1>
-                                <p className={`basis-[40%] text-primary ${small ? "text-sm" : ""}`}>{item[1].brand + " - " + item[1].model}</p>
+                                <p className={`basis-[50%] text-primary ${small ? "text-sm" : ""}`}>{item[1].brand + " - " + item[1].model}</p>
                                 <p className={`basis-[20%] text-right text-primary ${small ? "text-sm" : ""}`}>{"$" + item[1].price}</p>
                             </div>
                             <hr className='h-[2px] bg-gray-400' />

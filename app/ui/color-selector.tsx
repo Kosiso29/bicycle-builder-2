@@ -12,7 +12,7 @@ export default function SizeSelector(
 
     const handleSizeChange = (value: string) => {
         if (modelData) {
-            setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: value }));
+            setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: { name: filteredColors.filter((color: any) => color.value === value)?.[0]?.name || modelData.color_name, value } }));
             let backWheelSetColor = null;
             const colorData = filteredColors.filter((color: any) => color.value === value)?.[0];
             const newModelData = { ...modelData, src: colorData?.image_url || initialModelData?.src, price: colorData?.price || initialModelData?.price };
@@ -26,7 +26,7 @@ export default function SizeSelector(
     };
 
     useEffect(() => {
-        setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type] || modelData?.color_value }));
+        setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type]?.value || modelData?.color_value ? { name: selectedFeatures?.[type]?.name || modelData?.color_name, value: selectedFeatures?.[type]?.value || modelData?.color_value } : {} }));
         setFilteredColors(colors?.filter((color: any) => color?.model_id === modelData?.id));
     }, [defaultValue, type, modelData, model]);
 
@@ -40,7 +40,7 @@ export default function SizeSelector(
                 {values?.map((value) => (
                     <div key={value} className='flex items-center'>
                         <span
-                            style={{ border: selectedFeatures?.[type] === value ? "1px solid #1A1A1A" : "" }}
+                            style={{ border: selectedFeatures?.[type]?.value === value ? "1px solid #1A1A1A" : "" }}
                             className='p-[1px] h-5 w-5 rounded-full border border-transparent hover:border-back-color transition-all'
                             onClick={(e) => { isModelSelected && e.stopPropagation(); handleSizeChange(value) }}
                         >
