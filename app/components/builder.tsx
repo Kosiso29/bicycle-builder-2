@@ -117,6 +117,7 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
             <PaymentResult
                 buildProcessState={buildProcessState}
                 setBuildProcessStage={setBuildProcessStage}
+                totalPrice={totalPrice}
             />
             <ToastContainer
                 autoClose={3500}

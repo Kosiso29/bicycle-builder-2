@@ -2,9 +2,13 @@ import NextImage from "next/image";
 import Header from "@/app/components/header";
 import { Button } from "@mui/material";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { builderActions } from "@/app/store/builder";
 
-export default function PaymentResult({ buildProcessState, setBuildProcessStage }: { buildProcessState: any, setBuildProcessStage: any }) {
+export default function PaymentResult({ buildProcessState, setBuildProcessStage, totalPrice }: { buildProcessState: any, setBuildProcessStage: any, totalPrice: any }) {
     const [testState, setTestState] = useState(true);
+    const dispatch = useDispatch();
+
     if (buildProcessState !== "result") {
         return null;
     }
@@ -29,11 +33,11 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage 
                     <p className="mb-8">
                         {
                             testState ? 
-                                "Payment of $20,0000 was successfully completed. Your order has been received and is being processed." :
-                                "The payment of $20,0000 was not successfully completed. Your order has been received and is being processed."
+                                `Payment of $${totalPrice} was successfully completed. Your order has been received and is being processed.` :
+                                `The payment of $${totalPrice} was not successfully completed. Your order has been received and is being processed.`
                         }
                     </p>
-                    <Button fullWidth variant="contained" onClick={() => { testState && window.location.reload() }}>
+                    <Button fullWidth variant="contained" onClick={() => { dispatch(builderActions.updateloadingScreen(true)); window.location.reload() }}>
                         {
                             testState ? "EXPLORE MORE BIKES" : "TRY AGAIN"
                         }

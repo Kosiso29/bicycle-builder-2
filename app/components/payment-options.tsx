@@ -6,23 +6,23 @@ import CardPayment from '@/app/components/card-payment';
 import GooglePayButton from "@google-pay/button-react";
 
 export default function PaymentOptions({ setBuildProcessStage, totalPrice }: { setBuildProcessStage: any, totalPrice: number }) {
-    const [paymentOption, setPaymentOption] = useState("");
+    const [paymentOption, setPaymentOption] = useState("gpay");
     return (
         <div>
             <h2 className='text-lg font-semibold mb-5' >Payment options</h2>
             <div>
                 <Radio
-                    checked={paymentOption === 'paypal'}
-                    onChange={() => setPaymentOption("paypal")}
-                    value="paypal"
-                    id='paypal'
+                    checked={paymentOption === 'gpay'}
+                    onChange={() => setPaymentOption("gpay")}
+                    value="gpay"
+                    id='gpay'
                     name='payment-option'
-                    inputProps={{ 'aria-label': 'paypal' }}
+                    inputProps={{ 'aria-label': 'gpay' }}
                 />
-                <label htmlFor="paypal" className='cursor-pointer'>
+                <label htmlFor="gpay" className='cursor-pointer'>
                     <Image src="/G-Pay.svg" className='!inline-block mr-2' width={50} height={20} alt='' />
                 </label>
-                {paymentOption === "paypal" &&
+                {paymentOption === "gpay" &&
                     <div>
                         <GooglePayButton
                             environment='TEST'
@@ -53,8 +53,8 @@ export default function PaymentOptions({ setBuildProcessStage, totalPrice }: { s
                                     totalPriceStatus: "FINAL",
                                     totalPriceLabel: "Total",
                                     totalPrice: totalPrice.toString(),
-                                    currencyCode: "USD",
-                                    countryCode: "US"
+                                    currencyCode: "SGD",
+                                    countryCode: "SG"
                                 },
                                 shippingAddressRequired: true,
                             }}
@@ -62,10 +62,6 @@ export default function PaymentOptions({ setBuildProcessStage, totalPrice }: { s
                                 console.log('load payment data', paymentRequest);
                                 setBuildProcessStage("result");
                             }}
-                            // onPaymentAuthorized={paymentData => {
-                            //     console.log('Payment Authorized Success', paymentData);
-                            //     return { transactionState: "SUCCESS" }
-                            // }}
                             existingPaymentMethodRequired={false}
                             buttonSizeMode='fill'
                             style={{ width: "100%" }}
