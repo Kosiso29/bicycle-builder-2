@@ -24,7 +24,7 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                                 <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[20%]`}>{titles[item]}</h1>
                                 <p className={`basis-[50%] text-primary ${small ? "text-sm" : ""}`}>
                                     {canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? canvasDrawImageProps[item].brand + " - " + canvasDrawImageProps[item].model : "---"}
-                                    <div className="flex gap-2 pt-2">
+                                    <div className="flex flex-wrap gap-2 pt-2">
                                         {console.log('summary canvasDrawImageProps', canvasDrawImageProps[item], item)}
                                         {
                                             Object.entries(canvasDrawImageProps[item].selectedFeatures || {})?.map(([featureKey, featureValue]) => (

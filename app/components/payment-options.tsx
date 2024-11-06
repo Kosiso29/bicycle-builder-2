@@ -60,7 +60,13 @@ export default function PaymentOptions({ setBuildProcessStage, totalPrice }: { s
                             }}
                             onLoadPaymentData={paymentRequest => {
                                 console.log('load payment data', paymentRequest);
+                                setBuildProcessStage("result");
                             }}
+                            // onPaymentAuthorized={paymentData => {
+                            //     console.log('Payment Authorized Success', paymentData);
+                            //     return { transactionState: "SUCCESS" }
+                            // }}
+                            existingPaymentMethodRequired={false}
                             buttonSizeMode='fill'
                             style={{ width: "100%" }}
                         />

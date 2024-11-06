@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 
 export default function PaymentResult({ buildProcessState, setBuildProcessStage }: { buildProcessState: any, setBuildProcessStage: any }) {
-    const [testState, setTestState] = useState(false);
+    const [testState, setTestState] = useState(true);
     if (buildProcessState !== "result") {
         return null;
     }
@@ -33,7 +33,7 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage 
                                 "The payment of $20,0000 was not successfully completed. Your order has been received and is being processed."
                         }
                     </p>
-                    <Button fullWidth variant="contained" onClick={() => { setTestState(prevState => !prevState), testState && setBuildProcessStage("build") }}>
+                    <Button fullWidth variant="contained" onClick={() => { testState && window.location.reload() }}>
                         {
                             testState ? "EXPLORE MORE BIKES" : "TRY AGAIN"
                         }
