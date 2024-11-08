@@ -10,7 +10,7 @@ const headerData = [
 ]
 
 const headerDataConfigurator = [
-    { name: "Configure", href: "/"},
+    { name: "Configure", href: "/build"},
     { name: "Featured builds", href: "/featured-builds"},
     { name: "Support", href: "/"},
 ]
