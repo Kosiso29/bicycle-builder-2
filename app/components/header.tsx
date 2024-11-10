@@ -3,6 +3,7 @@ import HeaderLink from "@/app/components/header-link";
 import { PersonOutline, HelpOutline } from "@mui/icons-material";
 import Link from 'next/link';
 import NextImage from "next/image";
+import RegionSelector from "@/app/ui/region-selector";
 
 const headerData = [
     { name: "Featured builds", href: "/featured-builds"},
@@ -38,7 +39,7 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                         }
                     </div>
                 </div>
-                <div className='flex items-center gap-4 text-inherit'>
+                <div className='flex items-center gap-5 text-inherit'>
                     {
                         textColor === "white" ?
                             <>
@@ -48,10 +49,7 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                                 <HelpOutline />
                             </> :
                             <>
-                                <span className='flex items-center gap-1 hover:cursor-pointer'>
-                                    SGD
-                                    <NextImage src="/SGD-Icon.svg" width={24} height={24} alt='' />
-                                </span>
+                                <RegionSelector />
                                 <NextImage className='hover:cursor-pointer' src="/Profile-Icon.svg" width={30} height={30} alt='' />
                             </>
                     }
