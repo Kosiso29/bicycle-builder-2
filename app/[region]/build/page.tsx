@@ -1,11 +1,17 @@
-import Builder from "../components/builder";
+import Builder from "@/app/components/builder";
 import { fetchModels, fetchBuilds, fetchModelsPresets, fetchColors, fetchAccessoryModels, fetchColorsPresets } from "@/app/lib/data";
 
 // Types
 import { Models } from "@/app/lib/definitions";
 
+// Define static paths for each supported region
+export async function generateStaticParams() {
+    const regions = ['sg', 'us', 'uk', 'in'];
+    return regions.map(region => ({ region }));
+}
+
 export default async function Build() {
- 
+
     const models: Models = await fetchModels();
     const builds = await fetchBuilds();
     const modelsPresets = await fetchModelsPresets();
@@ -17,6 +23,5 @@ export default async function Build() {
         <main>
             <Builder models={models} builds={builds} modelsPresets={modelsPresets} colorsPresets={colorsPresets} colors={colors} accessoryModels={accessoryModels} />
         </main>
-
     );
 }
