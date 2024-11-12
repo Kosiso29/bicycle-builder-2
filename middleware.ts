@@ -9,27 +9,50 @@ export default NextAuth(authConfig).auth;
 const allowedRegions: string[] = ['us', 'sg', 'uk', 'in'];
 const defaultRegion: string = 'us';
 
+// Helper function to detect region based on the `Accept-Language` header
+function detectRegionFromHeader(acceptLanguage: string | null): string {
+    if (!acceptLanguage) return defaultRegion;
+
+    // Mapping language to regions based on common preferences
+    const regionMappings: { [key: string]: string } = {
+        'en-US': 'us',
+        'en-GB': 'uk',
+        'en-IN': 'in',
+        'en-SG': 'sg',
+    };
+
+    // Find a region that matches the user's language preference
+    for (const [lang, region] of Object.entries(regionMappings)) {
+        if (acceptLanguage.includes(lang)) {
+            return region;
+        }
+    }
+
+    // Default region if no match is found
+    return defaultRegion;
+}
+
 export function middleware(request: NextRequest): NextResponse {
     const { pathname } = request.nextUrl;
     const segments = pathname.split('/').filter(Boolean);
 
-    // Attempt to get the region from the cookie
+    // Check for existing region cookie
     const regionCookie = request.cookies.get('region');
-    let region = regionCookie ? regionCookie.value : segments[0] || defaultRegion; // Use region cookie if available, otherwise fallback to path segment
+    let region = regionCookie ? regionCookie.value : detectRegionFromHeader(request.headers.get('accept-language'));
 
-    // Check if the extracted region is valid; if not, use the default region
+    // Validate the detected region; use the default region if it's invalid
     if (!allowedRegions.includes(region)) {
         region = defaultRegion;
     }
 
-    // Redirect `/build` without a region prefix to `/{region}/build`
+    // Redirect `/build` or `/featured-builds` without a region prefix to `/{region}/build`
     if (pathname === '/build' || pathname === '/featured-builds') {
         const url = request.nextUrl.clone();
         url.pathname = `/${region}/${pathname}`; // Redirect to `/{region}/build`
         return NextResponse.redirect(url);
     }
 
-    // If the request is for `/[region]/build` but has an invalid region, redirect to `/{defaultRegion}/build`
+    // If the request is for `/[region]/build` or `/[region]/featured-builds` with an invalid region, redirect to `/{region}/build`
     if ((segments[1] === 'build' || segments[1] === 'featured-builds') && !allowedRegions.includes(segments[0])) {
         const url = request.nextUrl.clone();
         url.pathname = `/${region}/${segments[1]}`; // Redirect to `/{region}/build`

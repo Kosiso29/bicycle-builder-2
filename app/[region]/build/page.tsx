@@ -4,12 +4,6 @@ import { fetchModels, fetchBuilds, fetchModelsPresets, fetchColors, fetchAccesso
 // Types
 import { Models } from "@/app/lib/definitions";
 
-// Define static paths for each supported region
-export async function generateStaticParams() {
-    const regions = ['us', 'sg', 'uk', 'in'];
-    return regions.map(region => ({ region }));
-}
-
 export default async function Build() {
 
     const models: Models = await fetchModels();
