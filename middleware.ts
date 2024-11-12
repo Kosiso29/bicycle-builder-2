@@ -6,8 +6,8 @@ import { authConfig } from './auth.config';
 export default NextAuth(authConfig).auth;
 
 // Define allowed regions and the default region
-const allowedRegions = ['sg', 'us', 'uk', 'in'];
-const defaultRegion = 'sg';
+const allowedRegions = ['us', 'sg', 'uk', 'in'];
+const defaultRegion = 'us';
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;

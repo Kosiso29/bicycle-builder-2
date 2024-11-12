@@ -6,7 +6,7 @@ import { Models } from "@/app/lib/definitions";
 
 // Define static paths for each supported region
 export async function generateStaticParams() {
-    const regions = ['sg', 'us', 'uk', 'in'];
+    const regions = ['us', 'sg', 'uk', 'in'];
     return regions.map(region => ({ region }));
 }
 

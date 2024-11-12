@@ -5,10 +5,10 @@ import { createSlice } from "@reduxjs/toolkit";
 export const regionSlice = createSlice({
     name: 'region',
     initialState: {
-        region: "sg"
+        region: "us"
     },
     reducers: {
-        updateregion(state, action) {
+        updateRegion(state, action) {
             const region = action.payload;
             state.region = region;
         }

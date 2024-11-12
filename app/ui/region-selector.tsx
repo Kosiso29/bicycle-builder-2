@@ -9,8 +9,8 @@ import { IRootState } from "@/app/store";
 import { TextField, MenuItem } from "@mui/material";
 
 const regionCodes = [
-    { name: "SGD", value: "sg", icon: "/SGD-Icon.svg" },
     { name: "USD", value: "us", icon: "/USD-Icon.svg" },
+    { name: "SGD", value: "sg", icon: "/SGD-Icon.svg" },
     { name: "GBP", value: "uk", icon: "/GBP-Icon.svg" },
     { name: "INR", value: "in", icon: "/INR-Icon.svg" },
 ]
@@ -21,7 +21,7 @@ export default function RegionSelector() {
     const router = useRouter();
 
     const handleRegionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(regionActions.updateregion(e.target.value));
+        dispatch(regionActions.updateRegion(e.target.value));
         localStorage.setItem("region", e.target.value);
         const currentPath = window.location.pathname.split('/').slice(2).join('/');
         router.push(`/${e.target.value}/${currentPath}`);
@@ -30,7 +30,7 @@ export default function RegionSelector() {
     useEffect(() => {
         const localStorageRegion = localStorage.getItem("region");
         if (localStorageRegion) {
-            dispatch(regionActions.updateregion(localStorageRegion));
+            dispatch(regionActions.updateRegion(localStorageRegion));
         }
     });
 
