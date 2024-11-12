@@ -13,20 +13,11 @@ const defaultRegion: string = 'us';
 function detectRegionFromHeader(acceptLanguage: string | null): string {
     if (!acceptLanguage) return defaultRegion;
 
-    // Mapping language to regions based on common preferences
-    const regionMappings: { [key: string]: string } = {
-        'en-US': 'us',
-        'en-GB': 'uk',
-        'en-IN': 'in',
-        'en-SG': 'sg',
-    };
-
-    // Find a region that matches the user's language preference
-    for (const [lang, region] of Object.entries(regionMappings)) {
-        if (acceptLanguage.includes(lang)) {
-            return region;
-        }
-    }
+    // Detect regions based on the last two characters of the locale code
+    if (acceptLanguage.includes('-US')) return 'us';
+    if (acceptLanguage.includes('-SG')) return 'sg';
+    if (acceptLanguage.includes('-GB')) return 'uk';
+    if (acceptLanguage.includes('-IN')) return 'in';
 
     // Default region if no match is found
     return defaultRegion;
