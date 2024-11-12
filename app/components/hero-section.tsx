@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from "next/image";
-import HeroSectionLink from "@/app/components/hero-section-link";
+import CTA from "@/app/ui/call-to-action";
 
 export default function HeroSection() {
     return (
@@ -13,7 +13,9 @@ export default function HeroSection() {
                     </span>
                     <p className='text-gray-300'>Customize, personalize, and visualize your perfect ride with our <span className='whitespace-nowrap'>state-of-the-art</span> bike configurator.</p>
                     <div className='mt-10'>
-                        <HeroSectionLink />
+                        <CTA href='/build'>
+                            START BUILDING YOUR BIKE
+                        </CTA>
                     </div>
                 </div>
                 <div className='w-[50%]'>

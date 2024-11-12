@@ -6,30 +6,45 @@ import { authConfig } from './auth.config';
 export default NextAuth(authConfig).auth;
 
 // Define allowed regions and the default region
-const allowedRegions = ['us', 'sg', 'uk', 'in'];
-const defaultRegion = 'us';
+const allowedRegions: string[] = ['us', 'sg', 'uk', 'in'];
+const defaultRegion: string = 'us';
 
-export function middleware(request: NextRequest) {
+export function middleware(request: NextRequest): NextResponse {
     const { pathname } = request.nextUrl;
     const segments = pathname.split('/').filter(Boolean);
-    const region = segments[0]; // Assume region is the first path segment
 
-    // Redirect `/build` without a region prefix to `/sg/build`
+    // Attempt to get the region from the cookie
+    const regionCookie = request.cookies.get('region');
+    let region = regionCookie ? regionCookie.value : segments[0] || defaultRegion; // Use region cookie if available, otherwise fallback to path segment
+
+    // Check if the extracted region is valid; if not, use the default region
+    if (!allowedRegions.includes(region)) {
+        region = defaultRegion;
+    }
+
+    // Redirect `/build` without a region prefix to `/{region}/build`
     if (pathname === '/build') {
         const url = request.nextUrl.clone();
-        url.pathname = `/${defaultRegion}/build`; // Redirect to `/sg/build`
+        url.pathname = `/${region}/build`; // Redirect to `/{region}/build`
         return NextResponse.redirect(url);
     }
 
-    // If the request is for `/[region]/build` but has an invalid region, redirect to `/sg/build`
-    if (segments[1] === 'build' && !allowedRegions.includes(region)) {
+    // If the request is for `/[region]/build` but has an invalid region, redirect to `/{defaultRegion}/build`
+    if (segments[1] === 'build' && !allowedRegions.includes(segments[0])) {
         const url = request.nextUrl.clone();
-        url.pathname = `/${defaultRegion}/build`; // Redirect to `/sg/build`
+        url.pathname = `/${region}/build`; // Redirect to `/{region}/build`
         return NextResponse.redirect(url);
     }
 
     // Proceed with the authentication
-    return NextResponse.next();
+    const response = NextResponse.next();
+
+    // Set the region as a cookie if not already present
+    if (!regionCookie) {
+        response.cookies.set('region', region, { path: '/', maxAge: 31536000 }); // Set cookie for 1 year
+    }
+
+    return response;
 }
 
 export const config = {

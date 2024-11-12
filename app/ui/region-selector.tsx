@@ -23,6 +23,7 @@ export default function RegionSelector() {
     const handleRegionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(regionActions.updateRegion(e.target.value));
         localStorage.setItem("region", e.target.value);
+        document.cookie = `region=${e.target.value}; path=/; max-age=31536000`;
         const currentPath = window.location.pathname.split('/').slice(2).join('/');
         router.push(`/${e.target.value}/${currentPath}`);
     }
