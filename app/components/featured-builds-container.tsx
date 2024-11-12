@@ -1,10 +1,17 @@
 'use client'
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FeaturedBuilds from "@/app/components/featured-builds";
+import { useDispatch } from "react-redux";
+import { builderActions } from "@/app/store/builder";
 
 export default function FeaturedBuildsContainer({ builds }: { builds: any }) {
     const [gridNumber, setGridNumber] = useState(2);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(builderActions.updateloadingScreen(false));
+    })
 
     return (
         <div className="pt-32 wrapper">

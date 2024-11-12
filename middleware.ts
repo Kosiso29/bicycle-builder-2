@@ -23,16 +23,16 @@ export function middleware(request: NextRequest): NextResponse {
     }
 
     // Redirect `/build` without a region prefix to `/{region}/build`
-    if (pathname === '/build') {
+    if (pathname === '/build' || pathname === '/featured-builds') {
         const url = request.nextUrl.clone();
-        url.pathname = `/${region}/build`; // Redirect to `/{region}/build`
+        url.pathname = `/${region}/${pathname}`; // Redirect to `/{region}/build`
         return NextResponse.redirect(url);
     }
 
     // If the request is for `/[region]/build` but has an invalid region, redirect to `/{defaultRegion}/build`
-    if (segments[1] === 'build' && !allowedRegions.includes(segments[0])) {
+    if ((segments[1] === 'build' || segments[1] === 'featured-builds') && !allowedRegions.includes(segments[0])) {
         const url = request.nextUrl.clone();
-        url.pathname = `/${region}/build`; // Redirect to `/{region}/build`
+        url.pathname = `/${region}/${segments[1]}`; // Redirect to `/{region}/build`
         return NextResponse.redirect(url);
     }
 

@@ -2,10 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { builderActions } from "@/app/store/builder";
 import clsx from "clsx";
 
 export default function HeaderLink({ href, children }: { href: string, children: React.ReactNode }) {
     const pathname = usePathname();
+    const dispatch = useDispatch();
+
+    const handleLinkClick = (link: string) => {
+        if (link === "/featured-builds" || link === "/build") {
+            dispatch(builderActions.updateloadingScreen(true));
+        }
+    }
 
     return (
         <Link
@@ -16,6 +25,7 @@ export default function HeaderLink({ href, children }: { href: string, children:
                     "bg-primary-active": pathname === href || (href === "/dashboard/components" && pathname.includes(href))
                 }
             )}
+            onClick={() => handleLinkClick(href)}
         >
             {children}
         </Link>
