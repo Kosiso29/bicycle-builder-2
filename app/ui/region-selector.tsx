@@ -5,6 +5,7 @@ import NextImage from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { regionActions } from "@/app/store/region";
+import { builderActions } from "@/app/store/builder";
 import { IRootState } from "@/app/store";
 import { TextField, MenuItem } from "@mui/material";
 
@@ -22,16 +23,16 @@ export default function RegionSelector() {
 
     const handleRegionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(regionActions.updateRegion(e.target.value));
-        localStorage.setItem("region", e.target.value);
+        dispatch(builderActions.updateloadingScreen(true));
         document.cookie = `region=${e.target.value}; path=/; max-age=31536000`;
         const currentPath = window.location.pathname.split('/').slice(2).join('/');
         router.push(`/${e.target.value}/${currentPath}`);
     }
 
     useEffect(() => {
-        const localStorageRegion = localStorage.getItem("region");
-        if (localStorageRegion) {
-            dispatch(regionActions.updateRegion(localStorageRegion));
+        const match = document.cookie.match(new RegExp('(^| )region=([^;]+)'));
+        if (match) {
+            dispatch(regionActions.updateRegion(match[2]));
         }
     });
 
