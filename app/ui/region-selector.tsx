@@ -12,7 +12,7 @@ import { TextField, MenuItem } from "@mui/material";
 const regionCodes = [
     { name: "USD", value: "us", icon: "/USD-Icon.svg" },
     { name: "SGD", value: "sg", icon: "/SGD-Icon.svg" },
-    { name: "GBP", value: "uk", icon: "/GBP-Icon.svg" },
+    { name: "GBP", value: "gb", icon: "/GBP-Icon.svg" },
     { name: "INR", value: "in", icon: "/INR-Icon.svg" },
 ]
 

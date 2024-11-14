@@ -6,7 +6,7 @@ import { authConfig } from './auth.config';
 export default NextAuth(authConfig).auth;
 
 // Define allowed regions and the default region
-const allowedRegions: string[] = ['us', 'sg', 'uk', 'in'];
+const allowedRegions: string[] = ['us', 'sg', 'gb', 'in'];
 const defaultRegion: string = 'us';
 
 // Helper function to detect region based on the `Accept-Language` header
@@ -16,7 +16,7 @@ function detectRegionFromHeader(acceptLanguage: string | null): string {
     // Detect regions based on the last two characters of the locale code
     if (acceptLanguage.includes('-US')) return 'us';
     if (acceptLanguage.includes('-SG')) return 'sg';
-    if (acceptLanguage.includes('-GB')) return 'uk';
+    if (acceptLanguage.includes('-GB')) return 'gb';
     if (acceptLanguage.includes('-IN')) return 'in';
 
     // Default region if no match is found
