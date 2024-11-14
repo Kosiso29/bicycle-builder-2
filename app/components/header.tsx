@@ -18,7 +18,7 @@ const headerDataConfigurator = [
 
 export default function Header({ textColor, padding }: { textColor?: string, padding?: string }) {
     return (
-        <div className={`h-16 z-50 ${textColor === "white" ? "bg-primary relative" : "border-b border-b-back-color bg-back-color-1 relative"}`}>
+        <div className={`h-16 z-50 ${textColor === "white" ? "bg-primary relative" : "border-b border-b-back-color bg-back-color-1-header relative"}`}>
             <div className={`absolute flex items-center justify-between gap-5 top-0 left-1/2 transform -translate-x-1/2 h-16 w-full wrapper`} style={{ color: textColor || "black", paddingLeft: padding, paddingRight: padding }}>
                 <div className='flex items-center gap-5'>
                     <div className='font-bold text-2xl [&>a]:pl-0'>
