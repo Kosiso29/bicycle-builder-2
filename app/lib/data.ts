@@ -34,7 +34,7 @@ export async function fetchModels(): Promise<Models> {
             m.handle_bar_x AS "handleBarX",
             m.handle_bar_y AS "handleBarY",
             m.price,
-            m.price_uk,
+            m.price_gb,
             m.price_sg,
             m.price_in,
             m.key_metrics,
@@ -253,7 +253,7 @@ export async function fetchColors() {
             c.value,
             c.image_url,
             c.price,
-            c.price_uk,
+            c.price_gb,
             c.price_sg,
             c.price_in
         FROM

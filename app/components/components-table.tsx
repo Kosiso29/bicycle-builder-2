@@ -145,16 +145,16 @@ export default function Table({ models, preset }) {
                                     <span className="inline-flex justify-center w-full">Actual width</span>
                                 </th>
                                 <th scope="col" className="px-3 py-5 font-medium">
-                                    <span className="inline-flex justify-center w-full">Price</span>
+                                    <span className="inline-flex justify-center w-full">Price USD</span>
                                 </th>
                                 <th scope="col" className="px-3 py-5 font-medium">
-                                    <span className="inline-flex justify-center w-full">Price UK</span>
+                                    <span className="inline-flex justify-center w-full">Price GBP</span>
                                 </th>
                                 <th scope="col" className="px-3 py-5 font-medium">
-                                    <span className="inline-flex justify-center w-full">Price SG</span>
+                                    <span className="inline-flex justify-center w-full">Price SGD</span>
                                 </th>
                                 <th scope="col" className="px-3 py-5 font-medium">
-                                    <span className="inline-flex justify-center w-full">Price IN</span>
+                                    <span className="inline-flex justify-center w-full">Price INR</span>
                                 </th>
                                 <th scope="col" className="px-3 py-5 font-medium">
                                     <span className="inline-flex justify-center w-full">Preview image</span>
@@ -191,7 +191,7 @@ export default function Table({ models, preset }) {
                                         <span className="inline-flex justify-center w-full">{model.price}</span>
                                     </td>
                                     <td className="px-3 py-3">
-                                        <span className="inline-flex justify-center w-full">{model.price_uk}</span>
+                                        <span className="inline-flex justify-center w-full">{model.price_gb}</span>
                                     </td>
                                     <td className="px-3 py-3">
                                         <span className="inline-flex justify-center w-full">{model.price_sg}</span>

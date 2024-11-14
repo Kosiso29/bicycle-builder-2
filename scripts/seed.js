@@ -495,13 +495,13 @@ async function addColumns(client) {
 async function alterColumns(client) {
     try {
         const alterColumn = await client.sql`
-        ALTER TABLE models 
-        ALTER COLUMN price TYPE numeric(10, 2);
+        ALTER TABLE colors 
+        RENAME COLUMN price_uk TO price_gb;
     `
 
         console.log(`Adjusted column types`);
 
-        const modelsTable = await client.sql`SELECT * FROM models;`;
+        const modelsTable = await client.sql`SELECT * FROM colors;`;
 
         console.log('model data', modelsTable?.rows);
 
