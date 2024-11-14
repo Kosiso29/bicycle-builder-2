@@ -14,16 +14,14 @@ export function middleware(request: NextRequest): NextResponse {
     const segments = pathname.split('/').filter(Boolean);
     const { geo } = request;
 
-    console.log('geo', geo?.region, geo?.country, geo);
-
     // Check for existing region cookie
     const regionCookie = request.cookies.get('region');
-    let region: any = regionCookie ? regionCookie.value : geo?.country?.toLowerCase() || "xx";
+    let region: any = regionCookie ? regionCookie.value : geo?.country?.toLowerCase();
 
     // Validate the detected region; use the default region if it's invalid
-    // if (!allowedRegions.includes(region)) {
-    //     region = defaultRegion;
-    // }
+    if (!allowedRegions.includes(region)) {
+        region = defaultRegion;
+    }
 
     // Redirect `/build` or `/featured-builds` without a region prefix to `/{region}/build`
     if (pathname === '/build' || pathname === '/featured-builds') {
