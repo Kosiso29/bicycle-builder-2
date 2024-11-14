@@ -2,17 +2,24 @@ import { NextRequest, NextResponse } from 'next/server';
 import NextAuth from 'next-auth';
 import { authConfig } from './auth.config';
 
-// Initialize NextAuth authentication middleware
-export default NextAuth(authConfig).auth;
-
 // Define allowed regions and the default region
 const allowedRegions: string[] = ['us', 'sg', 'gb', 'in'];
 const defaultRegion: string = 'us';
 
-export function middleware(request: NextRequest): NextResponse {
+export async function middleware(request: any) {
+
     const { pathname } = request.nextUrl;
     const segments = pathname.split('/').filter(Boolean);
     const { geo } = request;
+    
+    if (pathname.startsWith('/login') || pathname.startsWith('/dashboard')) {
+        // First, handle NextAuth authentication
+        const authResponse = await NextAuth(authConfig).auth(request);
+        if (authResponse) {
+            // If authentication fails, return the response immediately
+            return authResponse;
+        }
+    }
 
     // Check for existing region cookie
     const regionCookie = request.cookies.get('region');
@@ -37,7 +44,7 @@ export function middleware(request: NextRequest): NextResponse {
         return NextResponse.redirect(url);
     }
 
-    // Proceed with the authentication
+    // Proceed with setting the region cookie if not already present
     const response = NextResponse.next();
 
     // Set the region as a cookie if not already present
