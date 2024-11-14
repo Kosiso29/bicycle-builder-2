@@ -17,7 +17,7 @@ export async function createModel(formData: FormData) {
     });
 
     const { category_id, brand_id, model, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
-        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
+        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, price_uk, price_sg, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
         groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
         lengths, sizes, ratios, size_chart_url, is_primary, color_name, color_value, color_props, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y } = formDataObject;
 
@@ -26,11 +26,11 @@ export async function createModel(formData: FormData) {
     try {
         await sql`
             INSERT INTO models (category_id, brand_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
-            back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
+            back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price, price_uk, price_sg, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
             groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
             lengths, sizes, ratios, size_chart_url, is_primary, color_name, color_value, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y)
             VALUES (${category_id}, ${brand_id}, ${model}, ${image_url}, ${Number(actual_width)}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
-            ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
+            ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price}, ${price_uk}, ${price_sg}, ${price_in}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
             ${groupset_drivetrain_x}, ${groupset_drivetrain_y}, ${groupset_shifter_x}, ${groupset_shifter_y}, ${handle_bar_x}, ${handle_bar_y}, ${global_composite_operation}, ${canvas_layer_level},
             ${JSON.parse(lengths)}, ${JSON.parse(sizes)}, ${JSON.parse(ratios)}, ${size_chart_url}, ${!!is_primary}, ${color_name}, ${color_value}, ${checkForNull(linked_stem)}, ${checkForNull(linked_handle_bar)}, ${preview_image_url}, ${canvas_marker_x}, ${canvas_marker_y})
         `;
@@ -55,7 +55,7 @@ export async function createModel(formData: FormData) {
         for (const color_prop of JSON.parse(color_props)) {
             const model_id = selectedModel.rows[0]?.id;
             await sql`
-                INSERT INTO colors (model_id, name, value, image_url, price) VALUES (${model_id}::uuid, ${color_prop.name}, ${color_prop.value}, ${color_prop.image_url}, ${color_prop.price});
+                INSERT INTO colors (model_id, name, value, image_url, price, price_uk, price_sg, price_in) VALUES (${model_id}::uuid, ${color_prop.name}, ${color_prop.value}, ${color_prop.image_url}, ${color_prop.price}, ${color_prop.price_uk}, ${color_prop.price_sg}, ${color_prop.price_in});
             `
         }
 

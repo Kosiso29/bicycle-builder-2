@@ -473,13 +473,14 @@ async function addColumns(client) {
     try {
         const addColumn = await client.sql`
             ALTER TABLE models
-            ADD COLUMN IF NOT EXISTS canvas_marker_x INTEGER,
-            ADD COLUMN IF NOT EXISTS canvas_marker_y INTEGER;
+            ADD COLUMN IF NOT EXISTS price_uk numeric(10, 2),
+            ADD COLUMN IF NOT EXISTS price_sg numeric(10, 2),
+            ADD COLUMN IF NOT EXISTS price_in numeric(10, 2);
         `
 
-        const modelsTable = await client.sql`SELECT * FROM presets;`;
+        const modelsTable = await client.sql`SELECT * FROM models;`;
 
-        console.log(`Created columns in presets`, modelsTable.rows);
+        console.log(`Created columns in models`, modelsTable.rows);
 
         return {
             addColumn,

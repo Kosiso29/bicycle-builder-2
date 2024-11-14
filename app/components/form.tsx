@@ -26,7 +26,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const [colorItems, setColorItems] = useState<any>([])
 
     const addModelColors = () => {
-        setColorItems((prevState: any) => [...prevState, { name: "", value: "", image_url: "", price: "" }])
+        setColorItems((prevState: any) => [...prevState, { name: "", value: "", image_url: "", price: "", price_uk: "", price_sg: "", price_in: "" }])
     }
 
     const removeModelColors = () => {
@@ -40,8 +40,8 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     useEffect(() => {
         if (model) {
             const newColorItems = colors.filter((color: any) => color.model_id === model.id).map((color: any) => {
-                const { name, value, image_url, price } = color;
-                return { name, value, image_url, price };
+                const { name, value, image_url, price, price_uk, price_sg, price_in } = color;
+                return { name, value, image_url, price, price_uk, price_sg, price_in };
             });
     
             if (newColorItems.length > 0) {
@@ -220,16 +220,19 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                         Model colors
                     </label>
                     <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-                        <div className='flex gap-5 items-center'>
+                        <div className='flex gap-2 items-center'>
                             {/* Model Color Name */}
                             <TextField name='color_name' defaultValue={model?.color_name} type='text' placeholder='Model Color Name' fullWidth />
                             {/* Model Color Value */}
                             <TextField name='color_value' defaultValue={model?.color_value} type='text' placeholder='Model Color Value' fullWidth />
                             {/* Image URL */}
                             <TextField name='image_url' type='text' defaultValue={model?.image_url} placeholder='Model Color Image URL' fullWidth />
-                            <div className='flex w-full gap-3'>
+                            <div className='flex min-w-[45%] basis-1/2 w-full gap-3'>
                                 {/* Price */}
-                                <TextField name='price' step={0.01} min={0.0} defaultValue={model?.price ?? 0.00} placeholder='Model Color Price' fullWidth />
+                                <TextField name='price' step={0.01} min={0.0} defaultValue={model ? model?.price ?? 0.00 : null} placeholder='Price USD' fullWidth />
+                                <TextField name='price_uk' step={0.01} min={0.0} defaultValue={model ? model?.price_uk ?? 0.00 : null} placeholder='Price GBP' fullWidth />
+                                <TextField name='price_sg' step={0.01} min={0.0} defaultValue={model ? model?.price_sg ?? 0.00 : null} placeholder='Price SGD' fullWidth />
+                                <TextField name='price_in' step={0.01} min={0.0} defaultValue={model ? model?.price_in ?? 0.00 : null} placeholder='Price INR' fullWidth />
                                 {
                                     colorItems.length === 0 &&
                                     <div className='flex gap-2 text-primary items-center mb-4 mt-2'>
@@ -240,16 +243,19 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                         </div>
                         {
                             colorItems.map((colorItem: any, index: number) => (
-                                <div key={index} className='flex gap-5 items-center'>
+                                <div key={index} className='flex gap-2 items-center'>
                                     {/* Model Color Name */}
                                     <TextField name='model_color_name' value={colorItem.name} onChange={(e: any) => { handleModelColorTextChange(e, index, "name") }} type='text' placeholder='Model Color Name' fullWidth />
                                     {/* Model Color Value */}
                                     <TextField name='model_color_value' value={colorItem.value} onChange={(e: any) => { handleModelColorTextChange(e, index, "value") }} type='text' placeholder='Model Color Value' fullWidth />
                                     {/* Model Color Image URL */}
                                     <TextField name='model_color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Color Image URL' fullWidth />
-                                    <div className='flex w-full gap-3'>
+                                    <div className='flex min-w-[45%] basis-1/2 w-full gap-3'>
                                         {/* Model Color Price */}
-                                        <TextField name='model_color_price' value={colorItem.price} onChange={(e: any) => { handleModelColorTextChange(e, index, "price") }} step={0.01} min={0.0} placeholder='Model Color Price' fullWidth />
+                                        <TextField name='model_color_price' value={colorItem.price} onChange={(e: any) => { handleModelColorTextChange(e, index, "price") }} step={0.01} min={0.0} placeholder='Price USD' fullWidth />
+                                        <TextField name='model_color_price_uk' value={colorItem.price_uk} onChange={(e: any) => { handleModelColorTextChange(e, index, "price_uk") }} step={0.01} min={0.0} placeholder='Price GBP' fullWidth />
+                                        <TextField name='model_color_price_sg' value={colorItem.price_sg} onChange={(e: any) => { handleModelColorTextChange(e, index, "price_sg") }} step={0.01} min={0.0} placeholder='Price SGD' fullWidth />
+                                        <TextField name='model_color_price_in' value={colorItem.price_in} onChange={(e: any) => { handleModelColorTextChange(e, index, "price_in") }} step={0.01} min={0.0} placeholder='Price INR' fullWidth />
                                         {
                                             index === (colorItems.length - 1) &&
                                             <div className='flex gap-2 text-primary items-center mb-4 mt-2'>
@@ -480,10 +486,10 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                             <>
                                                 <div className="flex gap-4">
                                                     {/* Canvas Marker Offset X */}
-                                                    <TextField name='canvas_marker_x' defaultValue={model?.canvas_marker_x ?? ""} label='Canvas Marker Offset X' />
+                                                    <TextField name='canvas_marker_x' defaultValue={model?.canvas_marker_x ?? "0"} label='Canvas Marker Offset X' />
 
                                                     {/* Canvas Marker Offset Y */}
-                                                    <TextField name='canvas_marker_y' defaultValue={model?.canvas_marker_y ?? ""} label='Canvas Marker Offset Y' />
+                                                    <TextField name='canvas_marker_y' defaultValue={model?.canvas_marker_y ?? "0"} label='Canvas Marker Offset Y' />
                                                 </div>
 
                                                 <div className="flex gap-4">
@@ -605,10 +611,10 @@ function TextField({ type, name, defaultValue, label, step, min, max, placeholde
                         onChange={onChange}
                         defaultValue={defaultValue}
                         placeholder={placeholder || label}
-                        className={`peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500 ${max ? "min-w-[200px]" : ""}`}
+                        className={`peer block w-full rounded-md border border-gray-200 py-2 px-3 text-sm outline-2 placeholder:text-gray-500 ${max ? "min-w-[200px]" : ""}`}
                         aria-describedby={`${name}-error`}
                     />
-                    <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                    {/* <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" /> */}
                 </div>
             </div>
         </div>

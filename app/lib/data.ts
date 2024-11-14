@@ -249,7 +249,10 @@ export async function fetchColors() {
             c.name,
             c.value,
             c.image_url,
-            c.price
+            c.price,
+            c.price_uk,
+            c.price_sg,
+            c.price_in
         FROM
             colors c
         JOIN
