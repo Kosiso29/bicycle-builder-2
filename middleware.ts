@@ -18,7 +18,7 @@ export function middleware(request: NextRequest): NextResponse {
 
     // Check for existing region cookie
     const regionCookie = request.cookies.get('region');
-    let region: any = regionCookie ? regionCookie.value : geo?.region?.toLowerCase() || "xx";
+    let region: any = regionCookie ? regionCookie.value : geo?.country?.toLowerCase() || "xx";
 
     // Validate the detected region; use the default region if it's invalid
     // if (!allowedRegions.includes(region)) {
