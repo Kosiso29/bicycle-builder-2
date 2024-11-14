@@ -9,32 +9,21 @@ export default NextAuth(authConfig).auth;
 const allowedRegions: string[] = ['us', 'sg', 'gb', 'in'];
 const defaultRegion: string = 'us';
 
-// Helper function to detect region based on the `Accept-Language` header
-function detectRegionFromHeader(acceptLanguage: string | null): string {
-    if (!acceptLanguage) return defaultRegion;
-
-    // Detect regions based on the last two characters of the locale code
-    if (acceptLanguage.includes('-US')) return 'us';
-    if (acceptLanguage.includes('-SG')) return 'sg';
-    if (acceptLanguage.includes('-GB')) return 'gb';
-    if (acceptLanguage.includes('-IN')) return 'in';
-
-    // Default region if no match is found
-    return defaultRegion;
-}
-
 export function middleware(request: NextRequest): NextResponse {
     const { pathname } = request.nextUrl;
     const segments = pathname.split('/').filter(Boolean);
+    const { geo } = request;
+
+    console.log('geo', geo?.region, geo?.country, geo);
 
     // Check for existing region cookie
     const regionCookie = request.cookies.get('region');
-    let region = regionCookie ? regionCookie.value : detectRegionFromHeader(request.headers.get('accept-language'));
+    let region: any = regionCookie ? regionCookie.value : geo?.region?.toLowerCase() || "xx";
 
     // Validate the detected region; use the default region if it's invalid
-    if (!allowedRegions.includes(region)) {
-        region = defaultRegion;
-    }
+    // if (!allowedRegions.includes(region)) {
+    //     region = defaultRegion;
+    // }
 
     // Redirect `/build` or `/featured-builds` without a region prefix to `/{region}/build`
     if (pathname === '/build' || pathname === '/featured-builds') {
