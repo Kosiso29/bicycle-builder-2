@@ -3,12 +3,15 @@ import { useEffect, useRef, useState } from "react";
 import ProgressBar from "@/app/ui/progress-bar";
 import { Button, TextField } from "@mui/material";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
+import { useSelector } from "react-redux";
+import { IRootState } from "@/app/store";
 
 export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }: { tooltips: any, canvasDrawImageProps: any, totalPrice: number }) {
     const [openFullTooltips, setOpenFullToolTips] = useState(false);
     const [buildName, setBuildName] = useState("Unnamed build");
     const [showBuildNameTextField, setShowBuildNameTextField] = useState(false);
     const tooltipsRef = useRef<HTMLDivElement>(null);
+    const currencySymbol = useSelector((state: IRootState) => state.regionReducer.currencySymbol);
 
     const renderProgressBar = (tooltip: number | string) => {
         return tooltip === "---" ? <ProgressBar value={0} /> : <ProgressBar value={Number(tooltip) * 20} />
@@ -50,7 +53,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
                     </div>
                     <div className='flex gap-2 items-center mt-3'>
                         <h1 className={`text-xl`}>Total:</h1>
-                        <p className={`text-primary text-md font-extrabold`}>{totalPrice !== null ? '$' + CurrencyFormatter(totalPrice) : "$0"}</p>
+                        <p className={`text-primary text-md font-extrabold`}>{totalPrice !== null ? currencySymbol + CurrencyFormatter(totalPrice) : currencySymbol + "0"}</p>
                     </div>
                     {/* <p>{tooltips.model && tooltips.model + " -"}</p> */}
                     {/* <p className="whitespace-pre-wrap">{openFullTooltips ? tooltips.key_metrics || "---" : tooltips.key_metrics?.split("\n")?.[0] || "---"}</p> */}

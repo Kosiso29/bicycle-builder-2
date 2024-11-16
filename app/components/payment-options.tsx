@@ -4,8 +4,13 @@ import PaypalPayment from '@/app/components/paypal-payment';
 import Image from "next/image";
 import CardPayment from '@/app/components/card-payment';
 import GooglePayButton from "@google-pay/button-react";
+import { useSelector } from "react-redux";
+import { IRootState } from "@/app/store";
 
 export default function PaymentOptions({ setBuildProcessStage, totalPrice }: { setBuildProcessStage: any, totalPrice: number }) {
+    const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
+    const countryCode = useSelector((state: IRootState) => state.regionReducer.countryCode);
+
     const [paymentOption, setPaymentOption] = useState("gpay");
     return (
         <div>
@@ -53,8 +58,8 @@ export default function PaymentOptions({ setBuildProcessStage, totalPrice }: { s
                                     totalPriceStatus: "FINAL",
                                     totalPriceLabel: "Total",
                                     totalPrice: totalPrice.toString(),
-                                    currencyCode: "SGD",
-                                    countryCode: "SG"
+                                    currencyCode,
+                                    countryCode
                                 },
                                 shippingAddressRequired: true,
                             }}

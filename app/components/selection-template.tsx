@@ -44,6 +44,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const [modelInfo, setModelInfo] = useState(null);
 
     const selectedFeatureBuild = useSelector((state: IRootState) => state.builderReducer.selectedFeatureBuild);
+    const region = useSelector((state: IRootState) => state.regionReducer.region);
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
@@ -53,7 +54,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     const handleModelChange = (index, modelData, modelData2) => {
         setModel(modelData?.model);
-        setPrice(modelData?.price);
+        setPrice((region === "sg" ? modelData?.price : modelData?.[`price_${region}`]));
         setModelData(modelData);
         setMultipleImages([]);
 
@@ -400,7 +401,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                 }}
                                 src={item.previewSrc || item.src}
                                 model={item.model}
-                                price={CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}
+                                price={CurrencyFormatter(price && checkSelectedIndex(index) ? price : (region === "sg" ? item.price : item[`price_${region}`]))}
                                 modelInfo={item}
                                 setModelInfo={setModelInfo}
                             >

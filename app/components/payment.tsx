@@ -5,8 +5,12 @@ import Image from "next/image";
 import PaymentOptions from "@/app/components/payment-options";
 import Header from "@/app/components/header";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { IRootState } from "@/app/store";
 
 export default function Payment({ showBilling, setShowBilling, canvasImage, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage }: { showBilling: any, setShowBilling: any, canvasImage: string, totalPrice: any, setTotalPrice: any, buildProcessState: any, setBuildProcessStage: any }) {
+    const currencySymbol = useSelector((state: IRootState) => state.regionReducer.currencySymbol)
+
     const [showPaymentOptions, setShowPaymentOptions] = useState(false);
     const [shippingInformation, setShippingInformation] = useState({
         "email": "",
@@ -54,7 +58,7 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
                                     <h2 className="text-lg font-semibold">Billing Summary</h2>
                                     <p className="flex justify-between">
                                         <span>Subtotal:</span>
-                                        <span className="font-bold">${Math.round(totalPrice)}</span>
+                                        <span className="font-bold">{ currencySymbol }{Math.round(totalPrice)}</span>
                                     </p>
                                     <p className="flex justify-between">
                                         <span>Delivery:</span>
@@ -62,7 +66,7 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
                                     </p>
                                     <p className="flex justify-between">
                                         <span>Total:</span>
-                                        <span className="font-bold">${totalPrice}</span>
+                                        <span className="font-bold">{ currencySymbol }{totalPrice}</span>
                                     </p>
                                 </div>
                                 {

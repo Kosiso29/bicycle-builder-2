@@ -1,7 +1,11 @@
 // @ts-nocheck
 import Badge from "@/app/components/badge";
+import { useSelector } from "react-redux";
+import { IRootState } from "@/app/store";
 
 function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessories, small, totalPrice }) {
+    const currencySymbol = useSelector((state: IRootState) => state.regionReducer.currencySymbol);
+
     const titles = {
         frameSet: 'Frame',
         frontWheelSet: 'Wheel',
@@ -33,7 +37,7 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                                         }
                                     </div>
                                 </p>
-                                <p className={`basis-[20%] text-right text-primary ${small ? "text-sm" : ""}`}>{canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? "$" + canvasDrawImageProps[item].price : "---"}</p>
+                                <p className={`basis-[20%] text-right text-primary ${small ? "text-sm" : ""}`}>{canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? currencySymbol + canvasDrawImageProps[item].price : "---"}</p>
                             </div>
                             <hr className='h-[2px] bg-gray-400' />
                         </div>
@@ -45,7 +49,7 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                             <div className='flex justify-between py-3'>
                                 <h1 className={`font-bold ${small ? "text-md" : "text-2xl"} basis-[20%]`}>{item[0]}</h1>
                                 <p className={`basis-[50%] text-primary ${small ? "text-sm" : ""}`}>{item[1].brand + " - " + item[1].model}</p>
-                                <p className={`basis-[20%] text-right text-primary ${small ? "text-sm" : ""}`}>{"$" + item[1].price}</p>
+                                <p className={`basis-[20%] text-right text-primary ${small ? "text-sm" : ""}`}>{currencySymbol + item[1].price}</p>
                             </div>
                             <hr className='h-[2px] bg-gray-400' />
                         </div>
@@ -53,7 +57,7 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                 }
                 <div className='flex justify-between py-3'>
                     <h1 className={`font-bold ${small ? "text-lg" : "text-4xl"} basis-[20%]`}>Subtotal</h1>
-                    <p className={`basis-[20%] text-right text-primary font-bold ${small ? "text-md" : ""}`}>{"$" + totalPrice}</p>
+                    <p className={`basis-[20%] text-right text-primary font-bold ${small ? "text-md" : ""}`}>{currencySymbol + totalPrice}</p>
                 </div>
             </div>
         </div >
