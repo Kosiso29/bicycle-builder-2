@@ -11,7 +11,7 @@ import { builderActions } from "@/app/store/builder";
 export default function Presets({ parentProps, setFrameSetDimensions, builds, modelsPresets }: { parentProps: any, setFrameSetDimensions: any, builds: any, modelsPresets: any }) {
     const { models, setCanvasDrawImageProps, setRerender, frameSetDimensions, canvasDrawImageProps, setCanvasSelectionLevelState, setStemDimensions, setSelectionPresetProps, setSelectionLevel, setShowSummary, stemDimensions, setTooltips, initialCanvasDrawImageProps, selectedFeatureBuild, colorsPresets, updateSelectionLevel } = parentProps;
     const [loading, setLoading] = useState(0.5);
-    const [multipleImages, setMultipleImages] = useState([]);
+    const [multipleImages, setMultipleImages] = useState<any>([]);
     const [uniqueImagePresetsProps, setUniqueImagePresetsProps]: any = useState(null);
     const dispatch = useDispatch();
 
@@ -196,7 +196,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
     }
 
     const renderMultipleImagePresets = (multipleImagePresets: any, newFrameSetDimensions: any) => {
-        let loadedCountMultiple = 0;
+        let loadedCountMultiple = 0, newPrice: any = null;
 
         multipleImagePresets.forEach((item: any) => {
             const image = new Image();
@@ -209,7 +209,11 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
             const canvasProp = joinedHyphenatedProp.split(" ").map((item: any, index: number) => index === 0 ? item.toLowerCase() : item).join("").replace("y", "i");
 
             image.onload = function () {
-                const { actualWidth, brand, model, price } = item;
+                const { actualWidth, brand, model, price, is_primary } = item;
+
+                if (is_primary) {
+                    newPrice = price;
+                }
 
                 const previewImageWidth = image?.width;
                 const previewImageHeight = image?.height;
@@ -219,7 +223,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
     
                 setMultipleImages((prevState: any) => {
                     prevState.push({ image, globalCompositeOperation: item.globalCompositeOperation, canvasLayerLevel: item.canvasLayerLevel });
-                    return prevState;
+                    return [ ...prevState ];
                 })
 
                 positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions)
@@ -229,7 +233,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
                 if (loadedCountMultiple === multipleImagePresets.length) {
                     setCanvasDrawImageProps((prevState: any) => ({
                         ...prevState,
-                        [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, multipleImages, width, height, actualWidth, previewImageWidth, previewImageHeight, brand, model, price, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
+                        [canvasProp]: { ...prevState[canvasProp], image, image2: canvasProp === 'tire' ? image : undefined, multipleImages, width, height, actualWidth, previewImageWidth, previewImageHeight, brand, model, price: newPrice, y: canvasProp === 'saddle' ? newFrameSetDimensions.saddleY - height : prevState[canvasProp].y, globalCompositeOperation: /tire|wheel|groupSet_shifter/i.test(canvasProp) ? 'destination-over' : 'source-over' },
                     }));
 
                     setSelectionPresetProps((prevState: any) => ({
