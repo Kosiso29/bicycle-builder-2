@@ -188,7 +188,7 @@ export default function Table({ models, preset }) {
                                         <span className="inline-flex justify-center w-full">{model.actualWidth}</span>
                                     </td>
                                     <td className="px-3 py-3">
-                                        <span className="inline-flex justify-center w-full">{model.price}</span>
+                                        <span className="inline-flex justify-center w-full">{model.price_sg}</span>
                                     </td>
                                     <td className="px-3 py-3">
                                         <span className="inline-flex justify-center w-full">{model.price_us}</span>

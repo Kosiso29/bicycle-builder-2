@@ -7,7 +7,7 @@ import { Models } from "@/app/lib/definitions";
 
 // Map region to the appropriate price column
 const regionPriceMapping: Record<string, string> = {
-    sg: 'price',
+    sg: 'price_sg',
     us: 'price_us',
     gb: 'price_gb',
     in: 'price_in',
@@ -45,7 +45,7 @@ export async function fetchModels(): Promise<Models> {
             m.groupset_shifter_y AS "groupSet_shifterY",
             m.handle_bar_x AS "handleBarX",
             m.handle_bar_y AS "handleBarY",
-            m.price,
+            m.price_sg,
             m.price_gb,
             m.price_us,
             m.price_in,
@@ -167,7 +167,7 @@ export async function fetchColorsPresets() {
                 c.name as color_name,
                 c.model_id as color_model_id,
                 c.value as color_value,
-                c.price as color_price,
+                c.price_sg as color_price,
                 c.image_url as color_image_url, 
                 p.id as preset_id, 
                 p.name as preset_name
@@ -268,7 +268,7 @@ export async function fetchColors() {
             c.name,
             c.value,
             c.image_url,
-            c.price,
+            c.price_sg,
             c.price_gb,
             c.price_us,
             c.price_in

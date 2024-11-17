@@ -26,7 +26,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     const [colorItems, setColorItems] = useState<any>([])
 
     const addModelColors = () => {
-        setColorItems((prevState: any) => [...prevState, { name: "", value: "", image_url: "", price: "", price_gb: "", price_us: "", price_in: "" }])
+        setColorItems((prevState: any) => [...prevState, { name: "", value: "", image_url: "", price_sg: "", price_gb: "", price_us: "", price_in: "" }])
     }
 
     const removeModelColors = () => {
@@ -40,8 +40,8 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     useEffect(() => {
         if (model) {
             const newColorItems = colors.filter((color: any) => color.model_id === model.id).map((color: any) => {
-                const { name, value, image_url, price, price_gb, price_us, price_in } = color;
-                return { name, value, image_url, price, price_gb, price_us, price_in };
+                const { name, value, image_url, price_sg, price_gb, price_us, price_in } = color;
+                return { name, value, image_url, price_sg, price_gb, price_us, price_in };
             });
     
             if (newColorItems.length > 0) {
@@ -229,7 +229,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                             <TextField name='image_url' type='text' defaultValue={model?.image_url} placeholder='Model Color Image URL' fullWidth />
                             <div className='flex min-w-[45%] basis-1/2 w-full gap-3'>
                                 {/* Price */}
-                                <TextField name='price' step={0.01} min={0.0} defaultValue={model ? model?.price ?? 0.00 : null} placeholder='Price SGD' fullWidth />
+                                <TextField name='price_sg' step={0.01} min={0.0} defaultValue={model ? model?.price_sg ?? 0.00 : null} placeholder='Price SGD' fullWidth />
                                 <TextField name='price_us' step={0.01} min={0.0} defaultValue={model ? model?.price_us ?? 0.00 : null} placeholder='Price USD' fullWidth />
                                 <TextField name='price_in' step={0.01} min={0.0} defaultValue={model ? model?.price_in ?? 0.00 : null} placeholder='Price INR' fullWidth />
                                 <TextField name='price_gb' step={0.01} min={0.0} defaultValue={model ? model?.price_gb ?? 0.00 : null} placeholder='Price GBP' fullWidth />
@@ -252,7 +252,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                     <TextField name='model_color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Color Image URL' fullWidth />
                                     <div className='flex min-w-[45%] basis-1/2 w-full gap-3'>
                                         {/* Model Color Price */}
-                                        <TextField name='model_color_price' value={colorItem.price} onChange={(e: any) => { handleModelColorTextChange(e, index, "price") }} step={0.01} min={0.0} placeholder='Price SGD' fullWidth />
+                                        <TextField name='model_color_price_sg' value={colorItem.price_sg} onChange={(e: any) => { handleModelColorTextChange(e, index, "price_sg") }} step={0.01} min={0.0} placeholder='Price SGD' fullWidth />
                                         <TextField name='model_color_price_us' value={colorItem.price_us} onChange={(e: any) => { handleModelColorTextChange(e, index, "price_us") }} step={0.01} min={0.0} placeholder='Price USD' fullWidth />
                                         <TextField name='model_color_price_in' value={colorItem.price_in} onChange={(e: any) => { handleModelColorTextChange(e, index, "price_in") }} step={0.01} min={0.0} placeholder='Price INR' fullWidth />
                                         <TextField name='model_color_price_gb' value={colorItem.price_gb} onChange={(e: any) => { handleModelColorTextChange(e, index, "price_gb") }} step={0.01} min={0.0} placeholder='Price GBP' fullWidth />
