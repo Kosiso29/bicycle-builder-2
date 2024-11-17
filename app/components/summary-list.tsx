@@ -57,7 +57,7 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                 }
                 <div className='flex justify-between py-3'>
                     <h1 className={`font-bold ${small ? "text-lg" : "text-4xl"} basis-[20%]`}>Subtotal</h1>
-                    <p className={`basis-[20%] text-right text-primary font-bold ${small ? "text-md" : ""}`}>{currencySymbol + totalPrice}</p>
+                    <p className={`basis-[20%] text-right text-primary font-bold ${small ? "text-md" : ""}`}>{currencySymbol + (totalPrice).toFixed(2)}</p>
                 </div>
             </div>
         </div >

@@ -53,7 +53,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
                     </div>
                     <div className='flex gap-2 items-center mt-3'>
                         <h1 className={`text-xl`}>Total:</h1>
-                        <p className={`text-primary text-md font-extrabold`}>{totalPrice !== null ? currencySymbol + CurrencyFormatter(totalPrice) : currencySymbol + "0"}</p>
+                        <p className={`text-primary text-md font-extrabold`}>{totalPrice !== null ? currencySymbol + (totalPrice).toFixed(2) : currencySymbol + "0"}</p>
                     </div>
                     {/* <p>{tooltips.model && tooltips.model + " -"}</p> */}
                     {/* <p className="whitespace-pre-wrap">{openFullTooltips ? tooltips.key_metrics || "---" : tooltips.key_metrics?.split("\n")?.[0] || "---"}</p> */}

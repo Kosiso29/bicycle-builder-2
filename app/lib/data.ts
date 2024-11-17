@@ -1,11 +1,23 @@
 import { QueryResultRow, sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from "next/cache";
+import { cookies } from 'next/headers';
 
 // Types
 import { Models } from "@/app/lib/definitions";
 
+// Map region to the appropriate price column
+const regionPriceMapping: Record<string, string> = {
+    sg: 'price',
+    us: 'price_us',
+    gb: 'price_gb',
+    in: 'price_in',
+};
+
 export async function fetchModels(): Promise<Models> {
     noStore();
+    const regionCookie = cookies().get('region')?.value || 'us';
+
+    const priceColumn = regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us'
     try {
         const data = await sql`
         SELECT
@@ -64,9 +76,10 @@ export async function fetchModels(): Promise<Models> {
         ORDER BY
             b.name, m.name;`;
 
-        const models = data.rows.map((model: QueryResultRow) => ({
-            ...model
-        })) as Models;
+        const models: any = data.rows.map((model: QueryResultRow) => ({
+            ...model,
+            price: model[priceColumn]
+        }));
         return models;
     } catch (error) {
         console.error('Database Error:', error);
@@ -243,6 +256,9 @@ export async function fetchBuilds() {
 
 export async function fetchColors() {
     noStore();
+    const regionCookie = cookies().get('region')?.value || 'us';
+
+    const priceColumn = regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us'
     try {
         const data = await sql`
         SELECT
@@ -263,7 +279,10 @@ export async function fetchColors() {
         ORDER BY
             c.name;`;
 
-        const colors = data.rows;
+        const colors = data.rows.map((color: QueryResultRow) => ({
+            ...color,
+            price: color[priceColumn]
+        }));;
 
         return colors;
     } catch (error) {
