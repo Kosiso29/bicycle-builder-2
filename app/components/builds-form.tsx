@@ -92,7 +92,7 @@ export default function BuildForm({ build_id }: { build_id?: string }) {
                     </SelectField>
 
                     {/* Frame Set Color */}
-                    <SelectField name='color[]' label='Frame Set Color' defaultValue={getColorDefaultValue(frameSetValueId)} placeholder={models.filter((model: any) => model.id === frameSetValueId)[0].color_name} placeholderDisabled={false}>
+                    <SelectField name='color[]' label='Frame Set Color' defaultValue={getColorDefaultValue(frameSetValueId)} placeholder={frameSetValueId ? models.filter((model: any) => model.id === frameSetValueId)[0]?.color_name : "None"} placeholderDisabled={false}>
                         {
                             colors.filter((item: any) => item.model_id === frameSetValueId).map((item: any) => (
                                 <option key={item.id} value={item.id}>{item.name}</option>
