@@ -223,7 +223,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
     
                 setMultipleImages((prevState: any) => {
                     prevState.push({ image, globalCompositeOperation: item.globalCompositeOperation, canvasLayerLevel: item.canvasLayerLevel });
-                    return [ ...prevState ];
+                    return prevState;
                 })
 
                 positionCanvasImages(item, canvasProp, canvasDrawImageProps, setCanvasDrawImageProps, newFrameSetDimensions, stemDimensions)
