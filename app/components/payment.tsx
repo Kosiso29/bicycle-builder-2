@@ -7,9 +7,12 @@ import Header from "@/app/components/header";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { IRootState } from "@/app/store";
+import GooglePayButton from "@google-pay/button-react";
 
 export default function Payment({ showBilling, setShowBilling, canvasImage, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage }: { showBilling: any, setShowBilling: any, canvasImage: string, totalPrice: any, setTotalPrice: any, buildProcessState: any, setBuildProcessStage: any }) {
-    const currencySymbol = useSelector((state: IRootState) => state.regionReducer.currencySymbol)
+    const currencySymbol = useSelector((state: IRootState) => state.regionReducer.currencySymbol);
+    const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
+    const countryCode = useSelector((state: IRootState) => state.regionReducer.countryCode);
 
     const [showPaymentOptions, setShowPaymentOptions] = useState(false);
     const [shippingInformation, setShippingInformation] = useState({
@@ -42,12 +45,65 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
                     <div className='mb-4 -ml-16'>
                         <Button variant="text" onClick={() => setBuildProcessStage("summary")}> <ArrowBackIos /> Back</Button>
                     </div>
-                    <h1 className='text-2xl font-bold mb-5'>{showPaymentOptions ? "Payment" : "Shipping"}</h1>
+                    {
+                        showPaymentOptions ?
+                        <h1 className='text-2xl font-bold mb-5'>Payment</h1> :
+                        <h1 className='font-semibold mb-5'>EXPRESS CHECKOUT</h1>
+                    }
                 </div>
                 <div className='flex'>
                     <div className='basis-[50%] max-w-[50%]'>
                         {
-                            showPaymentOptions ? <PaymentOptions setBuildProcessStage={setBuildProcessStage} totalPrice={totalPrice} /> : <ShippingForm setShowPaymentOptions={setShowPaymentOptions} shippingInformation={shippingInformation} setShippingInformation={setShippingInformation} />
+                            showPaymentOptions ?
+                                <PaymentOptions setBuildProcessStage={setBuildProcessStage} totalPrice={totalPrice} /> :
+                                <div>
+                                    <div>
+                                        <GooglePayButton
+                                            environment='TEST'
+                                            paymentRequest={{
+                                                apiVersion: 2,
+                                                apiVersionMinor: 0,
+                                                allowedPaymentMethods: [
+                                                    {
+                                                        type: "CARD",
+                                                        parameters: {
+                                                            allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                                                            allowedCardNetworks: ['MASTERCARD', 'VISA']
+                                                        },
+                                                        tokenizationSpecification: {
+                                                            type: "PAYMENT_GATEWAY",
+                                                            parameters: {
+                                                                gateway: "example",
+                                                                gatewayMerchantId: "exampleGatewayMerchantId"
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                merchantInfo: {
+                                                    merchantId: "12345678901234567890",
+                                                    merchantName: "Demo Merchant"
+                                                },
+                                                transactionInfo: {
+                                                    totalPriceStatus: "FINAL",
+                                                    totalPriceLabel: "Total",
+                                                    totalPrice: totalPrice.toString(),
+                                                    currencyCode,
+                                                    countryCode
+                                                },
+                                                shippingAddressRequired: true,
+                                            }}
+                                            onLoadPaymentData={paymentRequest => {
+                                                console.log('load payment data', paymentRequest);
+                                                setBuildProcessStage("result");
+                                            }}
+                                            existingPaymentMethodRequired={false}
+                                            buttonSizeMode='fill'
+                                            style={{ width: "100%" }}
+                                        />
+                                    </div>
+                                    <p className="my-4 font-semibold">OR</p>
+                                    <ShippingForm setShowPaymentOptions={setShowPaymentOptions} shippingInformation={shippingInformation} setShippingInformation={setShippingInformation} />
+                                </div>
                         }
                     </div>
                     <div className='basis-[50%] flex justify-end'>
