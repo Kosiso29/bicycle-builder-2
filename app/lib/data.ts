@@ -160,6 +160,9 @@ export async function fetchModelsPresets() {
 
 export async function fetchColorsPresets() {
     noStore();
+    const regionCookie = cookies().get('region')?.value || 'us';
+
+    const priceColumn = regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us'
     try {
         const data = await sql`
             SELECT 
@@ -167,7 +170,10 @@ export async function fetchColorsPresets() {
                 c.name as color_name,
                 c.model_id as color_model_id,
                 c.value as color_value,
-                c.price_sg as color_price,
+                c.price_sg as color_price_sg,
+                c.price_us as color_price_us,
+                c.price_gb as color_price_gb,
+                c.price_in as color_price_in,
                 c.image_url as color_image_url, 
                 p.id as preset_id, 
                 p.name as preset_name
@@ -176,7 +182,8 @@ export async function fetchColorsPresets() {
             JOIN presets p ON cp.preset_id = p.id;`;
 
         const colorsPresets = data.rows.map((colorPreset) => ({
-            ...colorPreset
+            ...colorPreset,
+            color_price: colorPreset[`color_${priceColumn}`]
         }));
         return colorsPresets;
     } catch (error) {
