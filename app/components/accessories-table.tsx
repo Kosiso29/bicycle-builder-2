@@ -71,7 +71,16 @@ export default function AccessoriesTable({ models }) {
                                     <span className="inline-flex justify-center w-full">Preview image</span>
                                 </th>
                                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                                    Price
+                                    Price SGD
+                                </th>
+                                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                                    Price USD
+                                </th>
+                                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                                    Price INR
+                                </th>
+                                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                                    Price GBP
                                 </th>
                                 <th scope="col" className="relative px-3 py-5 font-medium">
                                     <span className="sr-only">Edit</span>
@@ -99,7 +108,16 @@ export default function AccessoriesTable({ models }) {
                                         </div>
                                     </td>
                                     <td className="py-3 pl-6 pr-3 max-w-48">
-                                        {model.price ?? "0.00"}
+                                        {model.price_sg ?? "0.00"}
+                                    </td>
+                                    <td className="py-3 pl-6 pr-3 max-w-48">
+                                        {model.price_us ?? "0.00"}
+                                    </td>
+                                    <td className="py-3 pl-6 pr-3 max-w-48">
+                                        {model.price_in ?? "0.00"}
+                                    </td>
+                                    <td className="py-3 pl-6 pr-3 max-w-48">
+                                        {model.price_gb ?? "0.00"}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
                                         <div className="flex justify-center gap-3">

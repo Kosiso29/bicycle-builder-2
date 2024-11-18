@@ -89,6 +89,9 @@ export async function fetchModels(): Promise<Models> {
 
 export async function fetchAccessoryModels(): Promise<Models> {
     noStore();
+    const regionCookie = cookies().get('region')?.value || 'us';
+
+    const priceColumn = regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us'
     try {
         const data = await sql`
         SELECT
@@ -97,7 +100,10 @@ export async function fetchAccessoryModels(): Promise<Models> {
             am.name AS model,
             am.preview_image_url AS "previewSrc",
             am.id,
-            am.price
+            am.price_sg,
+            am.price_us,
+            am.price_gb,
+            am.price_in
         FROM
             accessories a
         JOIN
@@ -108,7 +114,8 @@ export async function fetchAccessoryModels(): Promise<Models> {
             b.name, am.name;`;
 
         const accessoryModels: any = data.rows.map((accessoryModel: QueryResultRow) => ({
-            ...accessoryModel
+            ...accessoryModel,
+            price: accessoryModel[priceColumn]
         }));
         return accessoryModels;
     } catch (error) {
