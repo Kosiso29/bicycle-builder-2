@@ -132,8 +132,8 @@ export default function AccessoryForm({ model }: { model?: any, model_id?: strin
                 <div className='flex w-full gap-3'>
                     <TextField name='price_sg' step={0.01} min={0.0} defaultValue={model?.price_sg} label='Price SGD' placeholder='Model price SGD' fullWidth />
                     <TextField name='price_us' step={0.01} min={0.0} defaultValue={model?.price_us} label='Price USD' placeholder='Model price USD' fullWidth />
-                    <TextField name='price_gb' step={0.01} min={0.0} defaultValue={model?.price_gb} label='Price GBD' placeholder='Model price GBD' fullWidth />
                     <TextField name='price_in' step={0.01} min={0.0} defaultValue={model?.price_in} label='Price INR' placeholder='Model price INR' fullWidth />
+                    <TextField name='price_gb' step={0.01} min={0.0} defaultValue={model?.price_gb} label='Price GBP' placeholder='Model price GBP' fullWidth />
                 </div>
 
                 {/* Preview Image URL */}
