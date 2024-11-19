@@ -1,3 +1,3 @@
-export function CurrencyFormatter(value: number) {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value).replace(/\$/, "");
+export function CurrencyFormatter(value: number, currencyCode?: string, countryCode?: string) {
+    return new Intl.NumberFormat('en-' + countryCode || 'US', { style: 'currency', currency: currencyCode || 'USD' }).format(value);
 }

@@ -11,7 +11,8 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
     const [buildName, setBuildName] = useState("Unnamed build");
     const [showBuildNameTextField, setShowBuildNameTextField] = useState(false);
     const tooltipsRef = useRef<HTMLDivElement>(null);
-    const currencySymbol = useSelector((state: IRootState) => state.regionReducer.currencySymbol);
+    const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
+    const countryCode = useSelector((state: IRootState) => state.regionReducer.countryCode);
 
     const renderProgressBar = (tooltip: number | string) => {
         return tooltip === "---" ? <ProgressBar value={0} /> : <ProgressBar value={Number(tooltip) * 20} />
@@ -53,7 +54,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
                     </div>
                     <div className='flex gap-2 items-center mt-3'>
                         <h1 className={`text-xl`}>Total:</h1>
-                        <p className={`text-primary text-md font-extrabold`}>{totalPrice !== null ? currencySymbol + (totalPrice).toFixed(2) : currencySymbol + "0"}</p>
+                        <p className={`text-primary text-md font-extrabold`}>{CurrencyFormatter(totalPrice !== null ? totalPrice : 0, currencyCode, countryCode)}</p>
                     </div>
                     {/* <p>{tooltips.model && tooltips.model + " -"}</p> */}
                     {/* <p className="whitespace-pre-wrap">{openFullTooltips ? tooltips.key_metrics || "---" : tooltips.key_metrics?.split("\n")?.[0] || "---"}</p> */}

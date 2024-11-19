@@ -45,6 +45,8 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     const selectedFeatureBuild = useSelector((state: IRootState) => state.builderReducer.selectedFeatureBuild);
     const region = useSelector((state: IRootState) => state.regionReducer.region);
+    const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
+    const countryCode = useSelector((state: IRootState) => state.regionReducer.countryCode);
 
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
@@ -401,7 +403,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                 }}
                                 src={item.previewSrc || item.src}
                                 model={item.model}
-                                price={CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price)}
+                                price={CurrencyFormatter(price && checkSelectedIndex(index) ? price : item.price, currencyCode, countryCode)}
                                 modelInfo={item}
                                 setModelInfo={setModelInfo}
                             >

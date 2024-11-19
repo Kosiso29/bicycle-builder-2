@@ -1,11 +1,8 @@
 import NextImage from "next/image";
 import React, { CSSProperties } from "react";
 import { InfoOutlined, CheckOutlined } from "@mui/icons-material";
-import { useSelector } from "react-redux";
-import { IRootState } from "@/app/store";
 
-export default function ModelButton({ src, model, price, selected, style, disabled, onClick, modelInfo, setModelInfo, children }: { src: string, model: string, price: number | string, selected: boolean, style?: CSSProperties, disabled?: boolean, onClick: React.MouseEventHandler<HTMLButtonElement>, modelInfo?: any, setModelInfo?: any, children?: React.ReactNode }) {    
-    const currencySymbol = useSelector((state: IRootState) => state.regionReducer.currencySymbol)
+export default function ModelButton({ src, model, price, selected, style, disabled, onClick, modelInfo, setModelInfo, children }: { src: string, model: string, price: number | string, selected: boolean, style?: CSSProperties, disabled?: boolean, onClick: React.MouseEventHandler<HTMLButtonElement>, modelInfo?: any, setModelInfo?: any, children?: React.ReactNode }) {
     const handleModelButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         onClick(e);
@@ -32,7 +29,7 @@ export default function ModelButton({ src, model, price, selected, style, disabl
                 {children}
             </div>
             <span className="text-left font-semibold group-hover:translate-y-1">{ model }</span>
-            <span className="group-hover:translate-y-1">{ currencySymbol }{price}</span>
+            <span className="group-hover:translate-y-1">{price}</span>
         </button>
     )
 }
