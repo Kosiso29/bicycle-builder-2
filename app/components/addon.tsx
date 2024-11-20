@@ -1,10 +1,14 @@
 import { useEffect } from "react";
 import { MenuItem, TextField } from "@mui/material";
+import { useSelector } from "react-redux";
+import { IRootState } from "@/app/store";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import ModelButton from "@/app/ui/model-button";
 
 export default function Addon({ label, parentProps, addons, setAddons }: { label: string, parentProps: any, addons: any, setAddons: any }) {
     const { setRerender, accessoryModels } = parentProps;
+    const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
+    const countryCode = useSelector((state: IRootState) => state.regionReducer.countryCode);
 
     const handleAddonRemove = () => {
         setAddons((prevState: any) => ({
@@ -51,7 +55,7 @@ export default function Addon({ label, parentProps, addons, setAddons }: { label
                                 }}
                                 src={item.previewSrc || item.src}
                                 model={item.model}
-                                price={CurrencyFormatter(item.price)}
+                                price={CurrencyFormatter(item.price, currencyCode, countryCode)}
                             />
                         ))
                         : null
