@@ -6,8 +6,7 @@ import Accordion from "@/app/ui/accordion";
 import { truncateString } from "@/app/utils/truncate-string";
 
 export default function AddonSummary({ parentProps }: { parentProps: any }) {
-    const { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, setRerender, totalPrice, showAddons, setShowAddons } = parentProps;
-    const [addons, setAddons] = useState({});
+    const { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, setRerender, totalPrice, showAddons, setShowAddons, addons, setAddons } = parentProps;
     const [accordionSelectedIndex, setAccordionSelectedIndex] = useState<number | boolean>(false);
 
     const handleAddonComplete = () => {

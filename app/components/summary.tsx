@@ -11,8 +11,9 @@ import Header from "@/app/components/header";
 
 export default function Summary({ canvasDrawImageProps, canvasImage, showSummary, setShowSummary, frameSetDimensions, addonAccessories, setAddonAccessories, accessoryModels, showBilling, setShowBilling, buildProcessState, setBuildProcessStage, totalPrice }) {
     const [showAddons, setShowAddons] = useState(false);
+    const [addons, setAddons] = useState({});
     // pass in props as parentProps for AddonSummary
-    const parentProps = { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, totalPrice, showAddons, setShowAddons }
+    const parentProps = { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, totalPrice, showAddons, setShowAddons, addons, setAddons }
 
     if (buildProcessState !== "summary") {
         return null;
