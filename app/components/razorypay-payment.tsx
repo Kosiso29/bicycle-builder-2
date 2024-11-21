@@ -6,7 +6,7 @@ import NextImage from "next/image";
 import { useSelector } from "react-redux";
 import { IRootState } from "@/app/store";
 
-const RazorpayCheckout = ({ totalPrice }: { totalPrice: number }) => {
+const RazorpayCheckout = ({ totalPrice, setBuildProcessStage }: { totalPrice: number, setBuildProcessStage: any }) => {
     const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
 
     const loadRazorpay = () => {
@@ -17,7 +17,7 @@ const RazorpayCheckout = ({ totalPrice }: { totalPrice: number }) => {
 
         script.onload = () => {
             const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
                 amount: totalPrice * 100,
                 currency: currencyCode,
                 name: 'Cyke',
@@ -25,6 +25,7 @@ const RazorpayCheckout = ({ totalPrice }: { totalPrice: number }) => {
                 image: 'https://www.cyke.life/Bike-Loading.svg',
                 handler: (response: any) => {
                     console.log('Payment successful!', response);
+                    setBuildProcessStage("result");
                 },
                 prefill: {
                     name: 'Your Name',

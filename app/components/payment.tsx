@@ -104,7 +104,7 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
                                                 style={{ width: "100%", height: "3rem" }}
                                             />
                                         </div>
-                                        <RazorPayPayment totalPrice={totalPrice} />
+                                        <RazorPayPayment totalPrice={totalPrice} setBuildProcessStage={setBuildProcessStage} />
                                     </div>
                                     <p className="my-4 font-semibold">OR</p>
                                     <ShippingForm setShowPaymentOptions={setShowPaymentOptions} shippingInformation={shippingInformation} setShippingInformation={setShippingInformation} />
