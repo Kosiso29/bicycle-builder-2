@@ -484,7 +484,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                                         }}
                                         src={item.previewSrc || item.src}
                                         model={item.model}
-                                        price={CurrencyFormatter(item.price)}
+                                        price={CurrencyFormatter(item.price, currencyCode, countryCode)}
                                     />
                                 ))
                                 : null
