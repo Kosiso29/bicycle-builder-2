@@ -31,7 +31,6 @@ function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessorie
                                 <p className={`basis-[50%] text-primary ${small ? "text-sm" : ""}`}>
                                     {canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && frameSetDimensions.hasStem) && !(titles[item] === 'Handle Bar' && frameSetDimensions.hasHandleBar) ? canvasDrawImageProps[item].brand + " - " + canvasDrawImageProps[item].model : "---"}
                                     <div className="flex flex-wrap gap-2 pt-2">
-                                        {console.log('summary canvasDrawImageProps', canvasDrawImageProps[item], item)}
                                         {
                                             Object.entries(canvasDrawImageProps[item].selectedFeatures || {})?.map(([featureKey, featureValue]) => (
                                                 <Badge key={featureKey} featureKey={featureKey} featureValue={featureValue} />

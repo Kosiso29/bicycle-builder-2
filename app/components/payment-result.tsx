@@ -41,10 +41,8 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
             }
             
             setSuccess(true);
-            console.log('Email sent successfully');
         } catch (err: any) {
             setError(err.message || 'An unknown error occurred');
-            console.error('Error:', err);
         } finally {
             setLoading(false);
         }

@@ -60,51 +60,53 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
                                 <PaymentOptions setBuildProcessStage={setBuildProcessStage} totalPrice={totalPrice} /> :
                                 <div>
                                     <div className="flex justify-between gap-4 items-center">
-                                        <div className="flex items-center min-w-[50%]">
-                                            <GooglePayButton
-                                                environment='TEST'
-                                                paymentRequest={{
-                                                    apiVersion: 2,
-                                                    apiVersionMinor: 0,
-                                                    allowedPaymentMethods: [
-                                                        {
-                                                            type: "CARD",
-                                                            parameters: {
-                                                                allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-                                                                allowedCardNetworks: ['MASTERCARD', 'VISA']
-                                                            },
-                                                            tokenizationSpecification: {
-                                                                type: "PAYMENT_GATEWAY",
+                                        {countryCode === "IN" ? 
+                                            <RazorPayPayment totalPrice={totalPrice} setBuildProcessStage={setBuildProcessStage} /> :
+                                            <div className="flex items-center min-w-[50%]">
+                                                <GooglePayButton
+                                                    environment='TEST'
+                                                    paymentRequest={{
+                                                        apiVersion: 2,
+                                                        apiVersionMinor: 0,
+                                                        allowedPaymentMethods: [
+                                                            {
+                                                                type: "CARD",
                                                                 parameters: {
-                                                                    gateway: "example",
-                                                                    gatewayMerchantId: "exampleGatewayMerchantId"
+                                                                    allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                                                                    allowedCardNetworks: ['MASTERCARD', 'VISA']
+                                                                },
+                                                                tokenizationSpecification: {
+                                                                    type: "PAYMENT_GATEWAY",
+                                                                    parameters: {
+                                                                        gateway: "example",
+                                                                        gatewayMerchantId: "exampleGatewayMerchantId"
+                                                                    }
                                                                 }
                                                             }
-                                                        }
-                                                    ],
-                                                    merchantInfo: {
-                                                        merchantId: "12345678901234567890",
-                                                        merchantName: "Demo Merchant"
-                                                    },
-                                                    transactionInfo: {
-                                                        totalPriceStatus: "FINAL",
-                                                        totalPriceLabel: "Total",
-                                                        totalPrice: totalPrice.toString(),
-                                                        currencyCode,
-                                                        countryCode
-                                                    },
-                                                    shippingAddressRequired: true,
-                                                }}
-                                                onLoadPaymentData={paymentRequest => {
-                                                    console.log('load payment data', paymentRequest);
-                                                    setBuildProcessStage("result");
-                                                }}
-                                                existingPaymentMethodRequired={false}
-                                                buttonSizeMode='fill'
-                                                style={{ width: "100%", height: "3rem" }}
-                                            />
-                                        </div>
-                                        {countryCode === "IN" && <RazorPayPayment totalPrice={totalPrice} setBuildProcessStage={setBuildProcessStage} />}
+                                                        ],
+                                                        merchantInfo: {
+                                                            merchantId: "12345678901234567890",
+                                                            merchantName: "Demo Merchant"
+                                                        },
+                                                        transactionInfo: {
+                                                            totalPriceStatus: "FINAL",
+                                                            totalPriceLabel: "Total",
+                                                            totalPrice: totalPrice.toString(),
+                                                            currencyCode,
+                                                            countryCode
+                                                        },
+                                                        shippingAddressRequired: true,
+                                                    }}
+                                                    onLoadPaymentData={paymentRequest => {
+                                                        console.log('load payment data', paymentRequest);
+                                                        setBuildProcessStage("result");
+                                                    }}
+                                                    existingPaymentMethodRequired={false}
+                                                    buttonSizeMode='fill'
+                                                    style={{ width: "100%", height: "3rem" }}
+                                                />
+                                            </div>
+                                        }
                                     </div>
                                     <p className="my-4 font-semibold">OR</p>
                                     <ShippingForm setShowPaymentOptions={setShowPaymentOptions} shippingInformation={shippingInformation} setShippingInformation={setShippingInformation} />

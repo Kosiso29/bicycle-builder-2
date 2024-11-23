@@ -21,10 +21,6 @@ export default function LoadingScreen() {
         }
     }, [loadingScreen]);
 
-    useEffect(() => {
-        console.log('states', loadingScreen, transitioning);
-    }, [loadingScreen, transitioning])
-
     if (!loadingScreen && !transitioning) {
         return null;
     }
