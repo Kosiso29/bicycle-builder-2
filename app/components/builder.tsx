@@ -118,6 +118,8 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 buildProcessState={buildProcessState}
                 setBuildProcessStage={setBuildProcessStage}
                 totalPrice={totalPrice}
+                canvasDrawImageProps={canvasDrawImageProps}
+                addonAccessories={addonAccessories}
             />
             <ToastContainer
                 autoClose={3500}
