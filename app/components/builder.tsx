@@ -33,6 +33,15 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
     const [addonAccessories, setAddonAccessories] = useState({});
     const [rerender, setRerender] = useState(false);
     const [totalPrice, setTotalPrice] = useState<any>(null);
+    const titles = {
+        frameSet: 'Frame',
+        frontWheelSet: 'Wheel',
+        tire: 'Tyre',
+        stem: 'Stem',
+        handleBar: 'Handle Bar',
+        groupSet_drivetrain: 'Groupset',
+        saddle: 'Saddle',
+    }
     
     useEffect(() => {
         const calculateTotalPrice = () => {
@@ -104,6 +113,7 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 buildProcessState={buildProcessState}
                 setBuildProcessStage={setBuildProcessStage}
                 totalPrice={totalPrice}
+                titles={titles}
             />
             <Payment
                 showBilling={showBilling}
@@ -120,6 +130,7 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 totalPrice={totalPrice}
                 canvasDrawImageProps={canvasDrawImageProps}
                 addonAccessories={addonAccessories}
+                titles={titles}
             />
             <ToastContainer
                 autoClose={3500}

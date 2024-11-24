@@ -4,19 +4,9 @@ import { useSelector } from "react-redux";
 import { IRootState } from "@/app/store";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
-function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessories, small, totalPrice }) {
+function SummaryList({ canvasDrawImageProps, frameSetDimensions, addonAccessories, small, totalPrice, titles }) {
     const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
     const countryCode = useSelector((state: IRootState) => state.regionReducer.countryCode);
-
-    const titles = {
-        frameSet: 'Frame',
-        frontWheelSet: 'Wheel',
-        tire: 'Tyre',
-        stem: 'Stem',
-        handleBar: 'Handle Bar',
-        groupSet_drivetrain: 'Groupset',
-        saddle: 'Saddle',
-    }
     const values = Object.entries(canvasDrawImageProps);
 
     return (

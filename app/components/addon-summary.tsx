@@ -6,7 +6,7 @@ import Accordion from "@/app/ui/accordion";
 import { truncateString } from "@/app/utils/truncate-string";
 
 export default function AddonSummary({ parentProps }: { parentProps: any }) {
-    const { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, setRerender, totalPrice, showAddons, setShowAddons, addons, setAddons } = parentProps;
+    const { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, setRerender, totalPrice, showAddons, setShowAddons, addons, setAddons, titles } = parentProps;
     const [accordionSelectedIndex, setAccordionSelectedIndex] = useState<number | boolean>(false);
 
     const handleAddonComplete = () => {
@@ -61,7 +61,7 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
     return (
         <div>
             <div className='flex flex-col gap-8'>
-                <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} addonAccessories={addonAccessories} totalPrice={totalPrice} small />
+                <SummaryList canvasDrawImageProps={canvasDrawImageProps} frameSetDimensions={frameSetDimensions} addonAccessories={addonAccessories} totalPrice={totalPrice} titles={titles} small />
             </div>
             <Button className="mt-8" fullWidth variant="contained" onClick={() => setShowAddons(true)}>Get Addons →</Button>
         </div>

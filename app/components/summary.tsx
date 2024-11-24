@@ -9,11 +9,11 @@ import SummaryList from "@/app/components/summary-list";
 import AddonSummary from './addon-summary';
 import Header from "@/app/components/header";
 
-export default function Summary({ canvasDrawImageProps, canvasImage, showSummary, setShowSummary, frameSetDimensions, addonAccessories, setAddonAccessories, accessoryModels, showBilling, setShowBilling, buildProcessState, setBuildProcessStage, totalPrice }) {
+export default function Summary({ canvasDrawImageProps, canvasImage, showSummary, setShowSummary, frameSetDimensions, addonAccessories, setAddonAccessories, accessoryModels, showBilling, setShowBilling, buildProcessState, setBuildProcessStage, totalPrice, titles }) {
     const [showAddons, setShowAddons] = useState(false);
     const [addons, setAddons] = useState({});
     // pass in props as parentProps for AddonSummary
-    const parentProps = { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, totalPrice, showAddons, setShowAddons, addons, setAddons }
+    const parentProps = { canvasDrawImageProps, frameSetDimensions, accessoryModels, addonAccessories, setAddonAccessories, totalPrice, showAddons, setShowAddons, addons, setAddons, titles }
 
     if (buildProcessState !== "summary") {
         return null;

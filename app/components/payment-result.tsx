@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
 import Loading from "@/app/components/loading";
 
-export default function PaymentResult({ buildProcessState, setBuildProcessStage, totalPrice, canvasDrawImageProps, addonAccessories }: { buildProcessState: any, setBuildProcessStage: any, totalPrice: any, canvasDrawImageProps: any, addonAccessories: any }) {
+export default function PaymentResult({ buildProcessState, setBuildProcessStage, totalPrice, canvasDrawImageProps, addonAccessories, titles }: { buildProcessState: any, setBuildProcessStage: any, totalPrice: any, canvasDrawImageProps: any, addonAccessories: any, titles: any }) {
     const [testState, setTestState] = useState(true);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -21,10 +21,11 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
 
         const order = {
             email: 'kafoenyi@yahoo.com',
-            total: totalPrice,
+            totalPrice,
             items: {
-                ...canvasDrawImageProps,
-                ...addonAccessories,
+                canvasDrawImageProps,
+                addonAccessories,
+                titles
             },
         };
 
