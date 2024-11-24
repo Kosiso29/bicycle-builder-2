@@ -3,8 +3,9 @@ import NextImage from "next/image";
 import Header from "@/app/components/header";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
+import { IRootState } from "@/app/store";
 import Loading from "@/app/components/loading";
 
 export default function PaymentResult({ buildProcessState, setBuildProcessStage, totalPrice, canvasDrawImageProps, addonAccessories, titles }: { buildProcessState: any, setBuildProcessStage: any, totalPrice: any, canvasDrawImageProps: any, addonAccessories: any, titles: any }) {
@@ -12,6 +13,7 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const email = useSelector((state: IRootState) => state.paymentReducer.email);
     const dispatch = useDispatch();
 
     const handleSendEmail = async () => {
@@ -20,7 +22,7 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
         setError(null);
 
         const order = {
-            email: 'kafoenyi@yahoo.com',
+            email: email || 'kafoenyi@yahoo.com',
             totalPrice,
             items: {
                 canvasDrawImageProps,

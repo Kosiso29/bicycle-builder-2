@@ -6,6 +6,7 @@ import { authSlice } from "./auth";
 import { usersSlice } from "./users";
 import { builderSlice } from "./builder";
 import { regionSlice } from "./region";
+import { paymentSlice } from "./payment";
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         usersReducer: usersSlice.reducer,
         builderReducer: builderSlice.reducer,
         regionReducer: regionSlice.reducer,
+        paymentReducer: paymentSlice.reducer,
     }
 })
 

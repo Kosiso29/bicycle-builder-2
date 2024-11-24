@@ -5,7 +5,8 @@ import Image from "next/image";
 import PaymentOptions from "@/app/components/payment-options";
 import Header from "@/app/components/header";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { paymentActions } from "@/app/store/payment";
 import { IRootState } from "@/app/store";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import GooglePayButton from "@google-pay/button-react";
@@ -15,6 +16,7 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
     // const currencySymbol = useSelector((state: IRootState) => state.regionReducer.currencySymbol);
     const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
     const countryCode = useSelector((state: IRootState) => state.regionReducer.countryCode);
+    const dispatch = useDispatch();
 
     const [showPaymentOptions, setShowPaymentOptions] = useState(false);
     const [shippingInformation, setShippingInformation] = useState({
@@ -96,9 +98,11 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
                                                             countryCode
                                                         },
                                                         shippingAddressRequired: true,
+                                                        emailRequired: true
                                                     }}
                                                     onLoadPaymentData={paymentRequest => {
                                                         console.log('load payment data', paymentRequest);
+                                                        dispatch(paymentActions.updateEmail(paymentRequest.email));
                                                         setBuildProcessStage("result");
                                                     }}
                                                     existingPaymentMethodRequired={false}
