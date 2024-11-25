@@ -38,60 +38,67 @@ export async function POST(req: Request) {
             to: email,
             subject: `Order Confirmation`,
             html: `
-                <h1>BIKE BUILDER</h1>
-                <h1>Thank you for your order!</h1>
-                <p>We have now received your order and will contact you again when your order has been processed. </p>
-                <button>TRACK ORDER</button>
-                <p>LATEST ESTIMATED DELIVERY</p>
-                <h1>${formatDeliveryDate(nextWeek)}</h1>
-                <p>Total: <strong>${totalPrice}</strong></p>
-                <div>
-                    <p>ORDER SUMMARY</p>
-                    <img src="data:image/png;base64,${strippedBase64CanvasImage}" height="150" width="150" alt="bike-image" />
-                    ${
-                        Object.keys(titles).map((item: any, index) => (
-                            canvasDrawImageProps[item].brand && titles[item] && `
-                            <div>
-                                <div style="display:flex;justify-content:space-between;padding-top:12px;padding-bottom:12px">
-                                    <h1>${titles[item]}</h1>
-                                    <p>
-                                        ${canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && canvasDrawImageProps.frameSet.hasStem) && !(titles[item] === 'Handle Bar' && canvasDrawImageProps.frameSet.hasHandleBar) ? canvasDrawImageProps[item].brand + " - " + canvasDrawImageProps[item].model : "---"}
-                                        <div class="flex flex-wrap gap-2 pt-2">
-                                            ${
-                                                Object.entries(canvasDrawImageProps[item].selectedFeatures || {})?.map(([featureKey, featureValue]: any) => (
-                                                    `<span class='flex justify-center items-center border border-black min-w-6 min-h-5 text-sm px-1'>
-                                                        ${
-                                                            featureKey === "colors" ? featureValue.name || "" : featureValue || ""
-                                                        }
-                                                    </span>`
-                                                ))
-                                            }
+                <div style="width:500px;margin-left:auto;margin-right:auto;text-align:center">
+                    <h1>BIKE BUILDER</h1>
+                    <h1>Thank you for your order!</h1>
+                    <p>We have now received your order and will contact you again when your order has been processed. </p>
+                    <button>TRACK ORDER</button>
+                    <p>LATEST ESTIMATED DELIVERY</p>
+                    <h1>${formatDeliveryDate(nextWeek)}</h1>
+                    <p>Total: <strong>${totalPrice}</strong></p>
+                    <div style="background-color:#F0EFEF;padding:20px">
+                        <p>ORDER SUMMARY</p>
+                        ${
+                            Object.keys(titles).map((item: any, index) => (
+                                canvasDrawImageProps[item].brand && titles[item] && `
+                                <div>
+                                    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:12px">
+                                        <h1>${titles[item]}</h1>
+                                        <div>
+                                            <p>${canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && canvasDrawImageProps.frameSet.hasStem) && !(titles[item] === 'Handle Bar' && canvasDrawImageProps.frameSet.hasHandleBar) ? canvasDrawImageProps[item].brand + " - " + canvasDrawImageProps[item].model : "---"}</p><br>
+                                            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:8px;">
+                                                ${
+                                                    Object.entries(canvasDrawImageProps[item].selectedFeatures || {})?.map(([featureKey, featureValue]: any) => 
+                                                        featureKey === "colors" ?
+                                                        `<span style="display: flex; justify-content: center; align-items: center; border: 1px solid black; min-width: 1.5rem; min-height: 1.25rem; font-size: 0.875rem; padding-left: 0.25rem; padding-right: 0.25rem;">
+                                                            ${
+                                                                 featureValue.name || ""
+                                                            }
+                                                        </span>` :
+                                                        `<span style="display: flex; justify-content: center; align-items: center; border: 1px solid black; min-width: 1.5rem; min-height: 1.25rem; font-size: 0.875rem; padding-left: 0.25rem; padding-right: 0.25rem;">
+                                                            ${
+                                                                featureValue || ""
+                                                            }
+                                                        </span>`
+                                                    )
+                                                }
+                                            </div>
                                         </div>
-                                    </p>
-                                    <p>${canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && canvasDrawImageProps.frameSet.hasStem) && !(titles[item] === 'Handle Bar' && canvasDrawImageProps.frameSet.hasHandleBar) ? canvasDrawImageProps[item].price : "---"}</p>
-                                </div>
-                                <hr class='h-[2px] bg-gray-400' />
-                            </div>`
-                        ))
-                    }
-                    ${
-                        Object.keys(addonAccessories)?.length > 0 ? Object.entries(addonAccessories).map((item: any, index) => (
-                            `<div>
-                                <div style="display:flex;justify-content:space-between;padding-top:12px;padding-bottom:12px">
-                                    <h1>${item[0]}</h1>
-                                    <p>${item[1].brand + " - " + item[1].model}</p>
-                                    <p>${item[1].price}</p>
-                                </div>
-                                <hr class='h-[2px] bg-gray-400' />
-                            </div>`
-                        )) : ""
-                    }
-                    <div style="display:flex;justify-content:space-between;padding-top:12px;padding-bottom:12px">
-                        <h1>Subtotal</h1>
-                        <p>${totalPrice}</p>
+                                        <p>${canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && canvasDrawImageProps.frameSet.hasStem) && !(titles[item] === 'Handle Bar' && canvasDrawImageProps.frameSet.hasHandleBar) ? canvasDrawImageProps[item].price : "---"}</p>
+                                    </div>
+                                    <hr class='h-[2px] bg-gray-400' />
+                                </div>`
+                            ))
+                        }
+                        ${
+                            Object.keys(addonAccessories)?.length > 0 ? Object.entries(addonAccessories).map((item: any, index) => (
+                                `<div>
+                                    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:12px">
+                                        <h1>${item[0]}</h1>
+                                        <p>${item[1].brand + " - " + item[1].model}</p>
+                                        <p>${item[1].price}</p>
+                                    </div>
+                                    <hr class='h-[2px] bg-gray-400' />
+                                </div>`
+                            )) : ""
+                        }
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:12px">
+                            <h1>Subtotal</h1>
+                            <p>${totalPrice}</p>
+                        </div>
                     </div>
+                    <p>We hope you enjoy your purchase!</p>
                 </div>
-                <p>We hope you enjoy your purchase!</p>
             `,
         });
 
