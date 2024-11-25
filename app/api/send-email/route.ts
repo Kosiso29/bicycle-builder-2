@@ -48,7 +48,7 @@ export async function POST(req: Request) {
                         ))
                     }
                     ${
-                        Object.keys(addonAccessories)?.length > 0 && Object.entries(addonAccessories).map((item: any, index) => (
+                        Object.keys(addonAccessories)?.length > 0 ? Object.entries(addonAccessories).map((item: any, index) => (
                             `<div>
                                 <div class='flex justify-between py-3'>
                                     <h1>${item[0]}</h1>
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
                                 </div>
                                 <hr class='h-[2px] bg-gray-400' />
                             </div>`
-                        ))
+                        )) : ""
                     }
                     <div class='flex justify-between py-3'>
                         <h1>Subtotal</h1>

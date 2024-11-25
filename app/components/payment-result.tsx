@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
 import { IRootState } from "@/app/store";
 import Loading from "@/app/components/loading";
+import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
 export default function PaymentResult({ buildProcessState, setBuildProcessStage, totalPrice, canvasDrawImageProps, addonAccessories, titles }: { buildProcessState: any, setBuildProcessStage: any, totalPrice: any, canvasDrawImageProps: any, addonAccessories: any, titles: any }) {
     const [testState, setTestState] = useState(true);
@@ -14,6 +15,8 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const email = useSelector((state: IRootState) => state.paymentReducer.email);
+    const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
+    const countryCode = useSelector((state: IRootState) => state.regionReducer.countryCode);
     const dispatch = useDispatch();
 
     const handleSendEmail = async () => {
@@ -21,12 +24,23 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
         setSuccess(false);
         setError(null);
 
+        const formattedCanvasDrawImageProps = { ...canvasDrawImageProps };
+        const formattedAddonAccessories = { ...addonAccessories };
+        
+        Object.entries(formattedCanvasDrawImageProps).forEach((entry: any) => {
+            formattedCanvasDrawImageProps[entry[0]].price = CurrencyFormatter(entry[1].price?.toString(), currencyCode, countryCode)
+        });
+
+        Object.entries(formattedAddonAccessories).forEach((entry: any) => {
+            formattedAddonAccessories[entry[0]].price = CurrencyFormatter(entry[1].price?.toString(), currencyCode, countryCode)
+        });
+
         const order = {
-            email: email || 'kafoenyi@yahoo.com',
-            totalPrice,
+            email,
+            totalPrice: CurrencyFormatter(totalPrice, currencyCode, countryCode),
             items: {
-                canvasDrawImageProps,
-                addonAccessories,
+                canvasDrawImageProps: formattedCanvasDrawImageProps,
+                addonAccessories: formattedAddonAccessories,
                 titles
             },
         };
