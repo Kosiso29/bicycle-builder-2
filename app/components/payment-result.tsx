@@ -9,7 +9,7 @@ import { IRootState } from "@/app/store";
 import Loading from "@/app/components/loading";
 import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 
-export default function PaymentResult({ buildProcessState, setBuildProcessStage, totalPrice, canvasDrawImageProps, addonAccessories, titles }: { buildProcessState: any, setBuildProcessStage: any, totalPrice: any, canvasDrawImageProps: any, addonAccessories: any, titles: any }) {
+export default function PaymentResult({ buildProcessState, setBuildProcessStage, totalPrice, canvasDrawImageProps, addonAccessories, titles, canvasImage }: { buildProcessState: any, setBuildProcessStage: any, totalPrice: any, canvasDrawImageProps: any, addonAccessories: any, titles: any, canvasImage: any }) {
     const [testState, setTestState] = useState(true);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -24,8 +24,8 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
         setSuccess(false);
         setError(null);
 
-        const formattedCanvasDrawImageProps = { ...canvasDrawImageProps };
-        const formattedAddonAccessories = { ...addonAccessories };
+        const formattedCanvasDrawImageProps = Object.assign(canvasDrawImageProps, {});
+        const formattedAddonAccessories = Object.assign(addonAccessories, {});
         
         Object.entries(formattedCanvasDrawImageProps).forEach((entry: any) => {
             formattedCanvasDrawImageProps[entry[0]].price = CurrencyFormatter(entry[1].price?.toString(), currencyCode, countryCode)
@@ -38,6 +38,7 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
         const order = {
             email,
             totalPrice: CurrencyFormatter(totalPrice, currencyCode, countryCode),
+            canvasImage,
             items: {
                 canvasDrawImageProps: formattedCanvasDrawImageProps,
                 addonAccessories: formattedAddonAccessories,
@@ -101,7 +102,7 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
                     </p>
 
                     <div className="my-4">
-                        {loading && <div className="flex justify-center items-center"><p className="flex items-center gap-2">Sending&nbsp;email <Loading small /></p></div>}
+                        {loading && <div className="flex justify-center items-center"><p className="flex items-center gap-2 whitespace-nowrap">Sending Order Confirmation Email <Loading small /></p></div>}
                         {success && <p>Order Confirmation Email sent successfully!</p>}
                         {error && <p style={{ color: 'red' }}>Email error: {error}</p>}
                     </div>

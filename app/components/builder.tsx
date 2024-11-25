@@ -131,6 +131,7 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 canvasDrawImageProps={canvasDrawImageProps}
                 addonAccessories={addonAccessories}
                 titles={titles}
+                canvasImage={canvasImage}
             />
             <ToastContainer
                 autoClose={3500}
