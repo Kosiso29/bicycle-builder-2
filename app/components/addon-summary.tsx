@@ -17,7 +17,7 @@ export default function AddonSummary({ parentProps }: { parentProps: any }) {
                 newAddonAccessories[addon[0]] = { brand: addon[1].brand, model: addon[1].model, price: addon[1].price };
             }
         });
-        setAddonAccessories(newAddonAccessories);
+        setAddonAccessories((prevState: any) => ({ ...prevState, ...newAddonAccessories }));
         if (setRerender) {
             setRerender((prevState: any) => !prevState);
         }
