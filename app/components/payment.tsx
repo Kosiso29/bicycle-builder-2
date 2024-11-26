@@ -12,7 +12,7 @@ import { CurrencyFormatter } from "@/app/utils/currency-formatter";
 import GooglePayButton from "@google-pay/button-react";
 import RazorPayPayment from "@/app/components/razorypay-payment";
 
-export default function Payment({ showBilling, setShowBilling, canvasImage, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage }: { showBilling: any, setShowBilling: any, canvasImage: string, totalPrice: any, setTotalPrice: any, buildProcessState: any, setBuildProcessStage: any }) {
+export default function Payment({ showBilling, setShowBilling, canvasImage, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage, paymentInformation, setPaymentInformation }: { showBilling: any, setShowBilling: any, canvasImage: string, totalPrice: any, setTotalPrice: any, buildProcessState: any, setBuildProcessStage: any, paymentInformation: any, setPaymentInformation: any }) {
     // const currencySymbol = useSelector((state: IRootState) => state.regionReducer.currencySymbol);
     const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
     const countryCode = useSelector((state: IRootState) => state.regionReducer.countryCode);
@@ -103,6 +103,12 @@ export default function Payment({ showBilling, setShowBilling, canvasImage, tota
                                                     onLoadPaymentData={paymentRequest => {
                                                         console.log('load payment data', paymentRequest);
                                                         dispatch(paymentActions.updateEmail(paymentRequest.email));
+                                                        dispatch(paymentActions.updateFirstName(paymentRequest.shippingAddress?.name));
+                                                        dispatch(paymentActions.updateAddress(paymentRequest.shippingAddress?.address1 || paymentRequest.shippingAddress?.address2 || paymentRequest.shippingAddress?.address3));
+                                                        dispatch(paymentActions.updateCity(paymentRequest.shippingAddress?.locality));
+                                                        dispatch(paymentActions.updateState(paymentRequest.shippingAddress?.administrativeArea));
+                                                        dispatch(paymentActions.updateCountry(paymentRequest.shippingAddress?.countryCode));
+                                                        dispatch(paymentActions.updatePostalCode(paymentRequest.shippingAddress?.postalCode));
                                                         setBuildProcessStage("result");
                                                     }}
                                                     existingPaymentMethodRequired={false}

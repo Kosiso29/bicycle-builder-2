@@ -33,6 +33,17 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
     const [addonAccessories, setAddonAccessories] = useState({});
     const [rerender, setRerender] = useState(false);
     const [totalPrice, setTotalPrice] = useState<any>(null);
+    const [paymentInformation, setPaymentInformation] = useState({ // Not using this yet. still checking whether redux state needs to be changed to this one.
+        "email": "",
+        "firstName": "",
+        "lastName": "",
+        "address": "",
+        "city": "",
+        "postalCode": "",
+        "country": "",
+        "state": "",
+        "phone": ""
+    });
     const titles = {
         frameSet: 'Frame',
         frontWheelSet: 'Wheel',
@@ -123,6 +134,8 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 setTotalPrice={setTotalPrice}
                 buildProcessState={buildProcessState}
                 setBuildProcessStage={setBuildProcessStage}
+                paymentInformation={paymentInformation}
+                setPaymentInformation={setPaymentInformation}
             />
             <PaymentResult
                 buildProcessState={buildProcessState}

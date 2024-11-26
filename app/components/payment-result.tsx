@@ -17,6 +17,12 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
     const email = useSelector((state: IRootState) => state.paymentReducer.email);
     const currencyCode = useSelector((state: IRootState) => state.regionReducer.currencyCode);
     const countryCode = useSelector((state: IRootState) => state.regionReducer.countryCode);
+    const firstName = useSelector((state: IRootState) => state.paymentReducer.firstName);
+    const address = useSelector((state: IRootState) => state.paymentReducer.address);
+    const city = useSelector((state: IRootState) => state.paymentReducer.city);
+    const state = useSelector((state: IRootState) => state.paymentReducer.state);
+    const country = useSelector((state: IRootState) => state.paymentReducer.country);
+    const postalCode = useSelector((state: IRootState) => state.paymentReducer.postalCode);
     const dispatch = useDispatch();
 
     const handleSendEmail = async () => {
@@ -39,6 +45,7 @@ export default function PaymentResult({ buildProcessState, setBuildProcessStage,
             email,
             totalPrice: CurrencyFormatter(totalPrice, currencyCode, countryCode),
             canvasImage,
+            shippingAddress: { firstName, address, city, state, country, postalCode },
             items: {
                 canvasDrawImageProps: formattedCanvasDrawImageProps,
                 addonAccessories: formattedAddonAccessories,

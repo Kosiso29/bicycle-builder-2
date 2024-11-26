@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 
 export async function POST(req: Request) {
     try {
-        const { email, items: { canvasDrawImageProps, addonAccessories, titles }, totalPrice, canvasImage } = await req.json(); // Get the request body
+        const { email, items: { canvasDrawImageProps, addonAccessories, titles }, totalPrice, canvasImage, shippingAddress } = await req.json(); // Get the request body
 
         const transporter = nodemailer.createTransport({
             service: 'Gmail', // Replace with your email service
@@ -50,6 +50,11 @@ export async function POST(req: Request) {
                     </div>
                     <div style="background-color:#F0EFEF;padding:20px 50px">
                         <p>YOUR DELIVERY DETAILS</p>
+                        <h3>${shippingAddress.firstName || ""}</h3>
+                        <h3>${shippingAddress.address || ""}</h3>
+                        <h3>${shippingAddress.city || "" + " " + shippingAddress.state || ""}</h3>
+                        <h3>${shippingAddress.country || ""}</h3>
+                        <h3>${shippingAddress.postalCode || ""}</h3>
                         <hr>
                         <p>YOUR ORDER DETAILS</p>
                         <p>ORDER NO: 0001</p>
