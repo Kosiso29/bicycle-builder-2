@@ -24,7 +24,7 @@ export async function POST(req: Request) {
             const month = months[date.getMonth()];
             const year = date.getFullYear();
     
-            return `${dayOfWeek} ${day} ${month}, ${year}`;
+            return `${dayOfWeek} ${day} ${month},<br> ${year}`;
         };
 
         const today = new Date();
@@ -38,66 +38,72 @@ export async function POST(req: Request) {
             to: email,
             subject: `Order Confirmation`,
             html: `
-                <div style="width:500px;margin-left:auto;margin-right:auto;text-align:center">
-                    <h1>BIKE BUILDER</h1>
-                    <h1>Thank you for your order!</h1>
-                    <p>We have now received your order and will contact you again when your order has been processed. </p>
-                    <button>TRACK ORDER</button>
-                    <p>LATEST ESTIMATED DELIVERY</p>
-                    <h1>${formatDeliveryDate(nextWeek)}</h1>
-                    <p>Total: <strong>${totalPrice}</strong></p>
-                    <div style="background-color:#F0EFEF;padding:20px">
+                <div style="width:500px;margin-left:auto;margin-right:auto">
+                    <div style="text-align:center">
+                        <h1>BIKE BUILDER</h1>
+                        <h1>Thank you for your order!</h1>
+                        <p style="padding-left:50px;padding-right:50px;">We have now received your order and will contact you again when your order has been processed. </p>
+                        <button style="background-color:#1A1A1A;color:white;padding:0.8rem 4rem;margin:20px 0;cursor:pointer">TRACK ORDER</button>
+                        <hr>
+                        <p style="margin-top: 50px">LATEST ESTIMATED DELIVERY</p>
+                        <h2 style="margin-bottom:50px">${formatDeliveryDate(nextWeek)}</h2>
+                    </div>
+                    <div style="background-color:#F0EFEF;padding:20px 50px">
+                        <p>YOUR DELIVERY DETAILS</p>
+                        <hr>
+                        <p>YOUR ORDER DETAILS</p>
+                        <p>ORDER NO: 0001</p>
+                        <p>ORDER DATE: ${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}</p>
+                        <hr>
                         <p>ORDER SUMMARY</p>
-                        ${
-                            Object.keys(titles).map((item: any, index) => (
-                                canvasDrawImageProps[item].brand && titles[item] && `
-                                <div>
-                                    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:12px">
-                                        <h1>${titles[item]}</h1>
-                                        <div>
-                                            <p>${canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && canvasDrawImageProps.frameSet.hasStem) && !(titles[item] === 'Handle Bar' && canvasDrawImageProps.frameSet.hasHandleBar) ? canvasDrawImageProps[item].brand + " - " + canvasDrawImageProps[item].model : "---"}</p><br>
-                                            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:8px;">
+                        <table width="100%" style="border-spacing: 50px 0; border-collapse: collapse;">
+                            ${
+                                Object.keys(titles).map((item: any, index) => (
+                                    canvasDrawImageProps[item].brand && titles[item] ? `
+                                    <tr>
+                                        <td><h3>${titles[item]}</h3></td>
+                                        <td style="padding:0 10px;text-align:center">
+                                            <p style="margin-botton:0;">${canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && canvasDrawImageProps.frameSet.hasStem) && !(titles[item] === 'Handle Bar' && canvasDrawImageProps.frameSet.hasHandleBar) ? canvasDrawImageProps[item].brand + " - " + canvasDrawImageProps[item].model : "---"}</p>
+                                            <div>
                                                 ${
                                                     Object.entries(canvasDrawImageProps[item].selectedFeatures || {})?.map(([featureKey, featureValue]: any) => 
                                                         featureKey === "colors" ?
-                                                        `<span style="display: flex; justify-content: center; align-items: center; border: 1px solid black; min-width: 1.5rem; min-height: 1.25rem; font-size: 0.875rem; padding-left: 0.25rem; padding-right: 0.25rem;">
+                                                        (featureValue.name ?
+                                                        `<span style="display: inline-block; border: 1px solid black; min-width: 1.5rem; min-height: 1.25rem; font-size: 0.875rem; padding: 0.25rem; margin-right: 0.25rem; margin-bottom: 0.25rem">
                                                             ${
-                                                                 featureValue.name || ""
+                                                                featureValue.name
                                                             }
-                                                        </span>` :
-                                                        `<span style="display: flex; justify-content: center; align-items: center; border: 1px solid black; min-width: 1.5rem; min-height: 1.25rem; font-size: 0.875rem; padding-left: 0.25rem; padding-right: 0.25rem;">
+                                                        </span>` : "") :
+                                                        (featureValue ?
+                                                        `<span style="display: inline-block; border: 1px solid black; min-width: 1.5rem; min-height: 1.25rem; font-size: 0.875rem; padding: 0.25rem; margin-right: 0.25rem; margin-bottom: 0.25rem">
                                                             ${
-                                                                featureValue || ""
+                                                                featureValue
                                                             }
-                                                        </span>`
-                                                    )
+                                                        </span>` : "")
+                                                    ).join('')
                                                 }
                                             </div>
-                                        </div>
-                                        <p>${canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && canvasDrawImageProps.frameSet.hasStem) && !(titles[item] === 'Handle Bar' && canvasDrawImageProps.frameSet.hasHandleBar) ? canvasDrawImageProps[item].price : "---"}</p>
-                                    </div>
-                                    <hr class='h-[2px] bg-gray-400' />
-                                </div>`
-                            ))
-                        }
-                        ${
-                            Object.keys(addonAccessories)?.length > 0 ? Object.entries(addonAccessories).map((item: any, index) => (
-                                `<div>
-                                    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:12px">
-                                        <h1>${item[0]}</h1>
-                                        <p>${item[1].brand + " - " + item[1].model}</p>
-                                        <p>${item[1].price}</p>
-                                    </div>
-                                    <hr class='h-[2px] bg-gray-400' />
-                                </div>`
-                            )) : ""
-                        }
-                        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:12px">
-                            <h1>Subtotal</h1>
-                            <p>${totalPrice}</p>
-                        </div>
+                                        </td>
+                                        <td style="text-align:right">${canvasDrawImageProps[item].brand && !(titles[item] === 'Stem' && canvasDrawImageProps.frameSet.hasStem) && !(titles[item] === 'Handle Bar' && canvasDrawImageProps.frameSet.hasHandleBar) ? canvasDrawImageProps[item].price : "---"}</td>
+                                    </tr>` : ""
+                                )).join('')
+                            }
+                            ${
+                                Object.keys(addonAccessories)?.length > 0 ? Object.entries(addonAccessories).map((item: any, index) => (
+                                    `<tr>
+                                        <td><h3>${item[0]}</h3></td>
+                                        <td style="padding:0 10px;text-align:center">${item[1].brand + " - " + item[1].model}</td>
+                                        <td style="text-align:right">${item[1].price}</td>
+                                    </tr>`
+                                )).join('') : ""
+                            }
+                            <tr>
+                                <td><h2>Total</h2></td>
+                                <td></td>
+                                <td style="text-align:right;"><h3>${totalPrice}</h3></td>
+                            </tr>
+                        </table>
                     </div>
-                    <p>We hope you enjoy your purchase!</p>
                 </div>
             `,
         });
