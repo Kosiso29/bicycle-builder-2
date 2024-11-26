@@ -37,10 +37,11 @@ export async function POST(req: Request) {
             from: process.env.EMAIL_USER,
             to: email,
             subject: `Order Confirmation`,
+            bcc: process.env.EMAIL_BCC || undefined,
             html: `
                 <div style="width:500px;margin-left:auto;margin-right:auto">
                     <div style="text-align:center">
-                        <h1>BIKE BUILDER</h1>
+                        <h1>Cyke</h1>
                         <h1>Thank you for your order!</h1>
                         <p style="padding-left:50px;padding-right:50px;">We have now received your order and will contact you again when your order has been processed. </p>
                         <button style="background-color:#1A1A1A;color:white;padding:0.8rem 4rem;margin:20px 0;cursor:pointer">TRACK ORDER</button>
