@@ -472,15 +472,13 @@ async function autoCalculateRatings(client) {
 async function addColumns(client) {
     try {
         const addColumn = await client.sql`
-            ALTER TABLE accessory_models
-            ADD COLUMN IF NOT EXISTS price_uk numeric(10, 2),
-            ADD COLUMN IF NOT EXISTS price_us numeric(10, 2),
-            ADD COLUMN IF NOT EXISTS price_in numeric(10, 2);
+            ALTER TABLE models
+            ADD COLUMN IF NOT EXISTS steerer_sizes TEXT[];
         `
 
-        const modelsTable = await client.sql`SELECT * FROM accessory_models;`;
+        const modelsTable = await client.sql`SELECT * FROM models;`;
 
-        console.log(`Created columns in accessory_models`, modelsTable.rows);
+        console.log(`Created columns in models`, modelsTable.rows);
 
         return {
             addColumn,

@@ -276,13 +276,16 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                 </div>
 
                 {/* Length */}
-                <MultipleInput initialItems={model?.lengths} title='Length values' buttonText={<>Add&nbsp;Length</>} name='lengths' />
+                <MultipleInput initialItems={model?.lengths} title='Length values' buttonText={<>Add&nbsp;Length</>} name='lengths' placeholder='Length values' />
 
                 {/* Size */}
-                <MultipleInput initialItems={model?.sizes} title='Size values' buttonText={<>Add&nbsp;Size</>} name='sizes' />
+                <MultipleInput initialItems={model?.sizes} title='Size values' buttonText={<>Add&nbsp;Size</>} name='sizes' placeholder='Size values' />
 
                 {/* Ratio */}
-                <MultipleInput initialItems={model?.ratios} title='Ratio values' buttonText={<>Add&nbsp;Ratio</>} name='ratios' />
+                <MultipleInput initialItems={model?.ratios} title='Ratio values' buttonText={<>Add&nbsp;Ratio</>} name='ratios' placeholder='Ratio values' />
+
+                {/* Steerer Sizes */}
+                <MultipleInput initialItems={model?.steerer_sizes} title='Steerer size values' buttonText={<>Add&nbsp;Steerer&nbsp;Size</>} name='steerer_sizes' placeholder='Steerer size values' />
 
                 {/* Linked Stem */}
                 <SelectField name='linked_stem' label='Linked Stem' defaultValue={model?.linked_stem || ""} placeholder='None' placeholderDisabled={false}>

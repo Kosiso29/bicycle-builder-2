@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CancelOutlined } from '@mui/icons-material';
 
-export default function MultipleInput({ title, name, buttonText, initialItems }: { title: string, name: string, buttonText: any, initialItems: string[] }) {
+export default function MultipleInput({ title, name, buttonText, initialItems, placeholder }: { title: string, name: string, buttonText: any, initialItems: string[], placeholder?: string }) {
     const [items, setItems] = useState<string[]>(initialItems || []);
     const [inputValue, setInputValue] = useState('');
 
@@ -29,7 +29,7 @@ export default function MultipleInput({ title, name, buttonText, initialItems }:
                         type="text"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        placeholder="Add brand"
+                        placeholder={placeholder || "Add brand"}
                         className="p-2 border border-gray-200 rounded-l w-full text-sm focus:outline-none"
                     />
                     <input
