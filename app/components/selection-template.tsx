@@ -51,7 +51,12 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const handleBrandChange = (e) => {
         setBrand(e.target.value);
         const models = allBrandsData.filter(itemBrand => itemBrand.brand === e.target.value && itemBrand.is_primary);
-        setAllModels(models);
+        if (identifier === 'stem') {
+            const filteredStemBrandsBySteererSize = models.filter(item => item.steerer_size && canvasDrawImageProps.frameSet.steerer_size ? parseFloat(item.steerer_size.match(/\d+(\.\d+)?/)[0]) >= parseFloat(canvasDrawImageProps.frameSet.steerer_size.match(/\d+(\.\d+)?/)[0]) : true);
+            setAllModels(filteredStemBrandsBySteererSize);
+        } else {
+            setAllModels(models);
+        }
     }
 
     const handleModelChange = (index, modelData, modelData2) => {
@@ -230,13 +235,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     const updateBrandsData = (brands) => {
         setAllBrandsData(brands);
-        const reducedBrands = [];
+        const uniqueBrands = [];
         brands.forEach(brandItem => {
-            if (!reducedBrands.includes(brandItem.brand)) {
-                reducedBrands.push(brandItem.brand);
+            if (!uniqueBrands.includes(brandItem.brand)) {
+                uniqueBrands.push(brandItem.brand);
             }
         });
-        setUniqueBrands(reducedBrands);
+        setUniqueBrands(uniqueBrands);
     }
 
     const resetSelection = () => {

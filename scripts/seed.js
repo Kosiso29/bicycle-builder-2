@@ -472,8 +472,9 @@ async function autoCalculateRatings(client) {
 async function addColumns(client) {
     try {
         const addColumn = await client.sql`
+            ALTER TABLE models DROP COLUMN steerer_sizes;
             ALTER TABLE models
-            ADD COLUMN IF NOT EXISTS steerer_sizes TEXT[];
+            ADD COLUMN IF NOT EXISTS steerer_size VARCHAR(255);
         `
 
         const modelsTable = await client.sql`SELECT * FROM models;`;

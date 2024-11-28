@@ -59,7 +59,7 @@ export async function fetchModels(): Promise<Models> {
             m.lengths,
             m.sizes,
             m.ratios,
-            m.steerer_sizes,
+            m.steerer_size,
             m.size_chart_url,
             m.is_primary,
             m.color_name,
