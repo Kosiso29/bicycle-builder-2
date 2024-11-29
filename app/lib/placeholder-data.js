@@ -124,6 +124,21 @@ const colors = [
     }
 ]
 
+const products = [
+    {
+        sku: '001',
+        vendor: 'Specialized',
+        buy_price_us: 150,
+        sell_price_sg: 150,
+        sell_price_us: 150,
+        sell_price_gb: 150,
+        sell_price_in: 150,
+        location: 'India',
+        lead_time: '7 days',
+        price: 150
+    }
+]
+
 const models = [
     {
         category_id: categories[0].id,
@@ -351,6 +366,7 @@ module.exports = {
     presets,
     users,
     colors,
+    products,
     accessories,
     accessory_models
 };

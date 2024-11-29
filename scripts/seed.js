@@ -7,7 +7,8 @@ const {
     users,
     colors,
     accessories,
-    accessory_models
+    accessory_models,
+    products
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -262,6 +263,49 @@ async function seedColors(client) {
         };
     } catch (error) {
         console.error('Error seeding colors:', error);
+        throw error;
+    }
+}
+
+async function seedProducts(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+        // Create the "products" table if it doesn't exist
+        const createTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS products (
+                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+                sku VARCHAR(50),
+                vendor VARCHAR(255),
+                buy_price_us NUMERIC(10, 2),
+                sell_price_sg NUMERIC(10, 2),
+                sell_price_us NUMERIC(10, 2),
+                sell_price_gb NUMERIC(10, 2),
+                sell_price_in NUMERIC(10, 2),
+                location VARCHAR(255),
+                lead_time VARCHAR(50)
+            );
+        `;
+
+        console.log(`Created "products" table`);
+
+        // Insert data into the "products" table
+        const insertedProducts = await Promise.all(
+            products.map(async (product) => {
+                return client.sql`
+            INSERT INTO products (sku, vendor, buy_price_us, sell_price_sg, sell_price_us, sell_price_gb, sell_price_in, location, lead_time)
+            VALUES (${product.sku}, ${product.vendor}, ${product.buy_price_us}, ${product.sell_price_sg}, ${product.sell_price_us}, ${product.sell_price_gb}, ${product.sell_price_in}, ${product.location}, ${product.lead_time});
+        `;
+        }),
+        );
+
+        console.log(`Seeded ${insertedProducts} products`);
+
+        return {
+            createTable,
+            products: insertedProducts,
+        };
+    } catch (error) {
+        console.error('Error seeding products:', error);
         throw error;
     }
 }
@@ -593,10 +637,13 @@ async function getModelsPresets(client) {
         
         const modelsPresetsTable = await client.sql`SELECT * FROM models_presets;`;
 
+        const productsTable = await client.sql`SELECT * FROM products;`;
+
         console.log('models data', modelsTable?.rows);
         console.log('presets data', presetsTable?.rows);
         console.log('colors data', colorsTable?.rows);
         console.log('modelsPresets data', modelsPresetsTable?.rows);
+        console.log('products data', productsTable?.rows);
 
         return {
             modelsTable,
@@ -617,13 +664,14 @@ async function main() {
     // await seedCategories(client);
     // await seedBrands(client);
     // await seedColors(client);
+    await seedProducts(client);
     // await seedModels(client);
     // await autoCalculateRatings(client);
     // await addColumns(client);
     // await alterColumns(client);
     // await alterForeignKeyColumns(client);
     // await createManyToManyMappingTable(client);
-    await getModelsPresets(client);
+    // await getModelsPresets(client);
     // await seedUsers(client);
 
     await client.end();
