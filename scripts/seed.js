@@ -8,7 +8,8 @@ const {
     colors,
     accessories,
     accessory_models,
-    products
+    products,
+    productTypes
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -117,6 +118,42 @@ async function seedAccessories(client) {
         };
     } catch (error) {
         console.error('Error seeding accessories:', error);
+        throw error;
+    }
+}
+
+async function seedProductTypes(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+        // Create the "productTypes" table if it doesn't exist
+        const createTable = await client.sql`
+            DROP TABLE productTypes;
+            CREATE TABLE IF NOT EXISTS product_types (
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            name VARCHAR(255) NOT NULL UNIQUE
+        );
+        `;
+
+        console.log(`Created "product_types" table`);
+
+        // Insert data into the "product_types" table
+        const insertedProductTypes = await Promise.all(
+            productTypes.map((productType) => client.sql`
+                    INSERT INTO product_types (name)
+                    VALUES (${productType.name});
+                `,
+            ),
+        );
+
+        console.log(`Seeded ${insertedProductTypes.length} productTypes`);
+
+        return {
+            createTable,
+            productTypes: insertedProductTypes,
+        };
+    } catch (error) {
+        console.error('Error seeding productTypes:', error);
         throw error;
     }
 }
@@ -660,11 +697,12 @@ async function main() {
 
     // await seedPresets(client);
     // await seedAccessories(client);
+    await seedProductTypes(client);
     // await seedAccessoryModels(client);
     // await seedCategories(client);
     // await seedBrands(client);
     // await seedColors(client);
-    await seedProducts(client);
+    // await seedProducts(client);
     // await seedModels(client);
     // await autoCalculateRatings(client);
     // await addColumns(client);

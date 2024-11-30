@@ -30,6 +30,49 @@ const accessories = [
     },
 ];
 
+const productTypes = [
+    {
+        id: 'f559ade9-effd-2b63-bf0e-892b52c07826',
+        name: 'Frame Set'
+    },
+    {
+        id: '4e4d24a9-0c27-48c8-8ea8-63f0d9eea603',
+        name: 'Wheel'
+    },
+    {
+        id: '4e4d24a9-0c27-48c8-8ea8-63f0d9d6a603',
+        name: 'Group Set'
+    },
+    {
+        id: '9569d23f-c9d5-4c85-b67d-71d2529fa63e',
+        name: 'Stem'
+    },
+    {
+        id: '37ffef15-c253-4b7d-b29c-692071e9fd44',
+        name: 'Handle Bar'
+    },
+    {
+        id: 'd3d8ae41-7fe2-9c6f-b91f-53d470b17350',
+        name: 'Saddle'
+    },
+    {
+        id: '6141097c-1632-4a30-96bc-4e8775ccb30c',
+        name: 'Tyre'
+    },
+    {
+        id: '30b134b9-1498-48d5-4c7d-198d3c449d28',
+        name: 'Tube'
+    },
+    {
+        id: '0a5d4387-411a-4b97-9f3e-cd07d0136622',
+        name: 'Pedals'
+    },
+    {
+        id: '5b678460-a17a-4a57-b53e-8eb5e3d58654',
+        name: 'Bar Tape'
+    },
+];
+
 const categories = [
     {
         id: 'f559ade9-effd-4463-bf0e-892b52c07826',
@@ -367,6 +410,7 @@ module.exports = {
     users,
     colors,
     products,
+    productTypes,
     accessories,
     accessory_models
 };
