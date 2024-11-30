@@ -16,7 +16,7 @@ const sideBarData = [
     { name: "CUSTOMERS", href: "/dashboard/customers", icon: GroupOutlined },
 ]
 
-export default function Sidebar({ models, categories, brands, presets, builds, modelsPresets, colorsPresets, colors, accessories, accessoryModels, buildsAndModelsBuilds }) {
+export default function Sidebar({ models, categories, brands, presets, builds, modelsPresets, colorsPresets, colors, accessories, accessoryModels, buildsAndModelsBuilds, products, productTypes }) {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(componentsActions.updateModels(models));
@@ -30,6 +30,8 @@ export default function Sidebar({ models, categories, brands, presets, builds, m
         dispatch(componentsActions.updateAccessories(accessories));
         dispatch(componentsActions.updateAccessoryModels(accessoryModels));
         dispatch(componentsActions.updateBuildsAndModelsBuilds(buildsAndModelsBuilds));
+        dispatch(componentsActions.updateProducts(products));
+        dispatch(componentsActions.updateProductTypes(productTypes));
     }, [])
     return (
         <div className='flex flex-col justify-between py-12 h-full'>

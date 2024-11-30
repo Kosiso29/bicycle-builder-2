@@ -15,7 +15,9 @@ export const componentsSlice = createSlice({
         colors: [],
         accessories: [],
         accessoryModels: [],
-        buildsAndModelsBuilds: []
+        buildsAndModelsBuilds: [],
+        products: [],
+        productTypes: []
     },
     reducers: {
         updateModels(state, actions) {
@@ -83,6 +85,14 @@ export const componentsSlice = createSlice({
             if (buildsAndModelsBuilds) {
                 state.buildsAndModelsBuilds = buildsAndModelsBuilds;
             }
+        },
+        updateProducts(state, actions) {
+            const products = actions.payload;
+            state.products = products;
+        },
+        updateProductTypes(state, actions) {
+            const productTypes = actions.payload;
+            state.productTypes = productTypes;
         },
     }
 });

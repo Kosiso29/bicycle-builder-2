@@ -88,6 +88,41 @@ export async function fetchModels(): Promise<Models> {
     }
 }
 
+export async function fetchProducts(): Promise<Models> {
+    noStore();
+    const regionCookie = cookies().get('region')?.value || 'us';
+
+    const priceColumn = regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us'
+    try {
+        const data = await sql`
+        SELECT
+            pt.name AS product_type,
+            p.sku,
+            p.buy_price_us,
+            p.sell_price_sg as price_sg,
+            p.sell_price_us as price_us,
+            p.sell_price_gb as price_gb,
+            p.sell_price_in as price_in,
+            p.location,
+            p.lead_time
+        FROM
+            product_types pt
+        JOIN
+            products p ON pt.id = p.product_type_id
+        ORDER BY
+            pt.name, p.vendor;`;
+
+        const products: any = data.rows.map((product: QueryResultRow) => ({
+            ...product,
+            price: product[priceColumn]
+        }));
+        return products;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the products.');
+    }
+}
+
 export async function fetchAccessoryModels(): Promise<Models> {
     noStore();
     const regionCookie = cookies().get('region')?.value || 'us';
@@ -303,6 +338,41 @@ export async function fetchColors() {
     } catch (error) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch the colors.');
+    }
+}
+
+export async function fetchProductTypes() {
+    noStore();
+    try {
+        const data = await sql`
+        SELECT * FROM product_types;`;
+
+        const productTypes = data.rows.reduce((acc, row) => {
+            acc[row.id] = row.name;
+            return acc;
+        }, {});
+
+        return productTypes;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch the product_types.');
+    }
+}
+
+export async function fetchProductById(id: string) {
+    noStore();
+    try {
+        const data = await sql`
+        SELECT * FROM products
+        WHERE products.id = ${id};
+        `
+
+        const product = data.rows[0];
+
+        return product;
+    } catch (error) {
+        console.log('Database Error:', error);
+        throw new Error('Failed to fetch the product.');
     }
 }
 
