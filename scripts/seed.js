@@ -128,7 +128,6 @@ async function seedProductTypes(client) {
 
         // Create the "productTypes" table if it doesn't exist
         const createTable = await client.sql`
-            DROP TABLE productTypes;
             CREATE TABLE IF NOT EXISTS product_types (
             id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
             name VARCHAR(255) NOT NULL UNIQUE
@@ -311,7 +310,8 @@ async function seedProducts(client) {
         const createTable = await client.sql`
             CREATE TABLE IF NOT EXISTS products (
                 id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-                sku VARCHAR(50),
+                product_type_id UUID REFERENCES product_types(id),
+                sku VARCHAR(50) UNIQUE,
                 vendor VARCHAR(255),
                 buy_price_us NUMERIC(10, 2),
                 sell_price_sg NUMERIC(10, 2),
@@ -329,8 +329,8 @@ async function seedProducts(client) {
         const insertedProducts = await Promise.all(
             products.map(async (product) => {
                 return client.sql`
-            INSERT INTO products (sku, vendor, buy_price_us, sell_price_sg, sell_price_us, sell_price_gb, sell_price_in, location, lead_time)
-            VALUES (${product.sku}, ${product.vendor}, ${product.buy_price_us}, ${product.sell_price_sg}, ${product.sell_price_us}, ${product.sell_price_gb}, ${product.sell_price_in}, ${product.location}, ${product.lead_time});
+            INSERT INTO products (product_type_id, sku, vendor, buy_price_us, sell_price_sg, sell_price_us, sell_price_gb, sell_price_in, location, lead_time)
+            VALUES (${product.product_type}, ${product.sku}, ${product.vendor}, ${product.buy_price_us}, ${product.sell_price_sg}, ${product.sell_price_us}, ${product.sell_price_gb}, ${product.sell_price_in}, ${product.location}, ${product.lead_time});
         `;
         }),
         );
@@ -697,7 +697,7 @@ async function main() {
 
     // await seedPresets(client);
     // await seedAccessories(client);
-    await seedProductTypes(client);
+    // await seedProductTypes(client);
     // await seedAccessoryModels(client);
     // await seedCategories(client);
     // await seedBrands(client);
@@ -709,7 +709,7 @@ async function main() {
     // await alterColumns(client);
     // await alterForeignKeyColumns(client);
     // await createManyToManyMappingTable(client);
-    // await getModelsPresets(client);
+    await getModelsPresets(client);
     // await seedUsers(client);
 
     await client.end();

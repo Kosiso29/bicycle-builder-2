@@ -32,7 +32,7 @@ const accessories = [
 
 const productTypes = [
     {
-        id: 'f559ade9-effd-2b63-bf0e-892b52c07826',
+        id: 'c00a2aa0-9ad3-4423-aeeb-6b79a55508fd',
         name: 'Frame Set'
     },
     {
@@ -170,6 +170,7 @@ const colors = [
 const products = [
     {
         sku: '001',
+        product_type: productTypes[0].id,
         vendor: 'Specialized',
         buy_price_us: 150,
         sell_price_sg: 150,
