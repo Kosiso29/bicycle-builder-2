@@ -6,6 +6,7 @@ import SelectionTabs from "@/app/components/selection-tabs";
 import Accessory from "@/app/components/accessory";
 import Inventory from "@/app/components/inventory";
 import AdminBuilds from "@/app/components/admin-builds";
+import Products from "@/app/components/products";
 
 export default function Components() {
     const [tabSelectionState, setTabSelectionState] = useState("");
@@ -19,8 +20,10 @@ export default function Components() {
             setTabSelectionState("accessory");
         } else if (searchParams.get("tab") === "builds") {
             setTabSelectionState("builds");
-        } else {
+        } else if (searchParams.get("tab") === "inventory") {
             setTabSelectionState("inventory");
+        } else {
+            setTabSelectionState("products");
         }
     }, [searchParams])
 
@@ -32,6 +35,9 @@ export default function Components() {
         } else if (tabSelectionState === "builds") {
             params.set("tab", "builds");
             router.push(`${pathname}?${params.toString()}`);
+        } else if (tabSelectionState === "inventory") {
+            params.set("tab", "inventory");
+            router.push(`${pathname}?${params.toString()}`);
         } else {
             router.push(`${pathname}`);
         }
@@ -39,7 +45,8 @@ export default function Components() {
 
     return (
         <div>
-            <SelectionTabs indexArray={["inventory", "accessory", "builds"]} value={tabSelectionState || false} updateSelectionLevel={setTabSelectionState} />
+            <SelectionTabs indexArray={["products", "inventory", "accessory", "builds"]} value={tabSelectionState || false} updateSelectionLevel={setTabSelectionState} />
+            { tabSelectionState === "products" && <Products /> }
             { tabSelectionState === "inventory" && <Inventory /> }
             { tabSelectionState === "accessory" && <Accessory /> }
             { tabSelectionState === "builds" && <AdminBuilds /> }

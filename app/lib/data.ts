@@ -98,11 +98,12 @@ export async function fetchProducts(): Promise<Models> {
         SELECT
             pt.name AS product_type,
             p.sku,
+            p.vendor,
             p.buy_price_us,
-            p.sell_price_sg as price_sg,
-            p.sell_price_us as price_us,
-            p.sell_price_gb as price_gb,
-            p.sell_price_in as price_in,
+            p.sell_price_sg,
+            p.sell_price_us,
+            p.sell_price_gb,
+            p.sell_price_in,
             p.location,
             p.lead_time
         FROM
