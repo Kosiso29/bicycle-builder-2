@@ -1,9 +1,9 @@
 import Form from "@/app/components/form";
-import { fetchModelById } from "@/app/lib/data";
+import { fetchProductById } from "@/app/lib/data";
 
 export default async function Page({ params }: { params: { id: string } }) {
 
-    const model = await fetchModelById(params.id);
+    const product = await fetchProductById(params.id);
 
     return (
         <div>
@@ -11,7 +11,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                 Edit Component
             </h1>
             <div className='bg-white w-full mt-8 rounded-lg md:p-8 py-8 px-2 h-auto'>
-                <Form model={model} model_id={params.id} />
+                <Form product={product} />
             </div>
         </div>
     );

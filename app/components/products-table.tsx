@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Loading from "./loading";
 import { EditOutlined, DeleteOutline } from '@mui/icons-material';
-import { deleteAccessoryModel } from "../lib/actions";
+import { deleteProduct } from "../lib/actions";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import YesNo from "./yesno";
@@ -34,15 +34,15 @@ export default function AccessoriesTable({ products }) {
     useEffect(() => {
         if (answer === "yes") {
             setLoadingForDelete(true);
-            deleteAccessoryModel(deleteId).then(() => {
+            deleteProduct(deleteId).then(() => {
                 setDeleteId("");
                 setLoadingForDelete(false);
                 setAnswer("");
-                toast.success("Accessory deleted!")
+                toast.success("Product deleted!")
             })
                 .then(() => window.location.reload())
                 .catch(error => {
-                    toast.error(`Accessory failed to delete: ${error}`)
+                    toast.error(`Product failed to delete: ${error}`)
                 });
         }
         if (answer === "no") {
@@ -132,7 +132,7 @@ export default function AccessoriesTable({ products }) {
                                     <td className="whitespace-nowrap px-3 py-3">
                                         <div className="flex justify-center gap-3">
                                             <Link
-                                                href={`/dashboard/components/accessory/${product.id}/edit`}
+                                                href={`/dashboard/components/${product.id}/edit`}
                                                 className="rounded-md border p-2 hover:bg-gray-100"
                                             >
                                                 <EditOutlined className="w-5" />
@@ -159,7 +159,7 @@ export default function AccessoriesTable({ products }) {
                     }
                 </div>
             </div>
-            <YesNo setAnswer={setAnswer} show={!!deleteId && !answer} message="Delete accessory?" />
+            <YesNo setAnswer={setAnswer} show={!!deleteId && !answer} message="Delete product?" />
             <ToastContainer autoClose={3500} position="top-right" />
         </div>
     )

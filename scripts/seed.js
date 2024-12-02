@@ -553,9 +553,10 @@ async function autoCalculateRatings(client) {
 async function addColumns(client) {
     try {
         const addColumn = await client.sql`
-            ALTER TABLE models DROP COLUMN steerer_sizes;
             ALTER TABLE models
-            ADD COLUMN IF NOT EXISTS steerer_size VARCHAR(255);
+            ADD COLUMN product_id UUID,
+            ADD CONSTRAINT fk_product_id_products
+            FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE;
         `
 
         const modelsTable = await client.sql`SELECT * FROM models;`;

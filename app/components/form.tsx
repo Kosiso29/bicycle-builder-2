@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { CheckOutlined, TimerOutlined, PersonOutline, AddOutlined, RemoveOutlined } from '@mui/icons-material';
 import { useSelector } from "react-redux";
+import { IRootState } from "@/app/store";
 import { updateModel, createModel } from "@/app/lib/actions";
 import Loading from "./loading";
 import { useEffect, useState } from 'react';
@@ -12,14 +13,17 @@ import MultipleInput from "@/app/ui/multiple-input";
 import SelectField from "@/app/ui/select-field";
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Form({ model, model_id }: { model?: any, model_id?: string }) {
-    const categories = useSelector((state: any) => state.componentsReducer.categories);
-    const brands = useSelector((state: any) => state.componentsReducer.brands);
-    const presets = useSelector((state: any) => state.componentsReducer.presets);
-    const modelsPresets = useSelector((state: any) => state.componentsReducer.modelsPresets);
-    const colors = useSelector((state: any) => state.componentsReducer.colors);
-    const models = useSelector((state: any) => state.componentsReducer.models);
+export default function Form({ product }: { product?: any }) {
+    const productTypes = useSelector((state: IRootState) => state.componentsReducer.productTypes);
+    const categories = useSelector((state: IRootState) => state.componentsReducer.categories);
+    const brands = useSelector((state: IRootState) => state.componentsReducer.brands);
+    const presets = useSelector((state: IRootState) => state.componentsReducer.presets);
+    const modelsPresets = useSelector((state: IRootState) => state.componentsReducer.modelsPresets);
+    const colors = useSelector((state: IRootState) => state.componentsReducer.colors);
+    const models = useSelector((state: IRootState) => state.componentsReducer.models);
     const user = useSelector((state: any) => state.authReducer.user);
+    const model: any = product && models?.filter(((item: any) => (item.product_id === product?.id) && item.is_primary))[0];
+    const [productId, setProductId] = useState(product?.product_type_id || "");
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
     const [loading, setLoading] = useState(false);
@@ -60,7 +64,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
 
     const getPresetCheckState = (preset_id: string) => {
         return modelsPresets.filter((item: any) => {
-            return item.model_id === model_id && item.preset_id === preset_id
+            return item.model_id === model?.id && item.preset_id === preset_id
         }).length > 0
     }
 
@@ -81,7 +85,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     }
 
     const handleFormUpdate = (formData: any) => {
-        updateModel(model.id, formData)
+        updateModel(product.id, formData)
             .then(() => {
                 setLoading(false);
                 toast.success("Component updated!")
@@ -108,7 +112,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
             });
     }
 
-    const handleFormSubmission = model ? handleFormUpdate : handleFormCreation;
+    const handleFormSubmission = product ? handleFormUpdate : handleFormCreation;
 
     const showOffsets = (Object.values(categories)[0] === categories[categoryId]) || (Object.values(categories)[3] === categories[categoryId]) || Object.values(categories)[4] === categories[categoryId];
     const showFrameSetOffsets = Object.values(categories)[0] === categories[categoryId];
@@ -118,6 +122,52 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
             <div className="rounded-md bg-gray-100 p-4 md:p-6">
+                <div className="flex gap-4 mb-4">
+                    {/* SKU */}
+                    <TextField name='sku' type='text' defaultValue={product?.sku} label='SKU' placeholder='SKU' fullWidth />
+                    {/* Product Type */}
+                    <div className='w-full'>
+                        <div className="mb-2 flex items-center justify-between text-sm font-medium">
+                            <label htmlFor="product_type_id">
+                                Product Type
+                            </label>
+                        </div>
+                        <div className="relative">
+                            <select
+                                id="product_type_id"
+                                name="product_type_id"
+                                className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                value={productId ?? product?.product_type_id ?? ""}
+                                onChange={(e) => setProductId(e.target.value)}
+                                aria-describedby="product_type_id-error"
+                            >
+                                <option value="" disabled>
+                                    Select a product type
+                                </option>
+                                {
+                                    Object.entries(productTypes).map((item: any) => (
+                                        <option key={item[1]} value={item[0]}>{item[1]}</option>
+                                    ))
+                                }
+                            </select>
+                            <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex gap-4 mb-4">
+                    {/* Vendor */}
+                    <TextField name='vendor' type='text' defaultValue={product?.vendor} label='Vendor' placeholder='Vendor' fullWidth />
+                    {/* Buy Price US */}
+                    <TextField name='buy_price_us' step={0.01} min={0.0} defaultValue={product ? product?.buy_price_us ?? 0.00 : null} label='Buy Price USD' placeholder='Buy Price USD' fullWidth />
+                </div>
+
+                <div className="flex gap-4 mb-4">
+                    {/* Location */}
+                    <TextField name='location' type='text' defaultValue={product?.location} label='Location' placeholder='Location' fullWidth />
+                    {/* Lead Time */}
+                    <TextField name='lead_time' type='text' defaultValue={product?.lead_time} label='Lead Time' placeholder='Lead Time' fullWidth />
+                </div>
 
                 {/* Category */}
                 <div className="mb-4">
@@ -350,7 +400,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                                                         id={"preset_" + item[1]}
                                                         name={"preset_" + item[1]}
                                                         type="checkbox"
-                                                        value={model_id + "_" + item[0]}
+                                                        value={model?.id + "_" + item[0]}
                                                         disabled={categories[categoryId] === 'Group Set - Drivetrain' ? false : checkExistingModelPreset(item[0])}
                                                         defaultChecked={getPresetCheckState(item[0])}
                                                         className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 accent-primary"
@@ -584,7 +634,7 @@ export default function Form({ model, model_id }: { model?: any, model_id?: stri
                     onClick={() => setLoading(true)}
                     disabled={user.permission > 1}
                 >
-                    <span className="hidden md:block">{model ? "Update Component" : "Create Component"}</span>
+                    <span className="hidden md:block">{product ? "Update Component" : "Create Component"}</span>
                 </button>
                 {
                     loading ? <div className='self-center'><Loading small /></div> : null

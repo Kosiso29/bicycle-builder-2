@@ -97,6 +97,7 @@ export async function fetchProducts(): Promise<Models> {
         const data = await sql`
         SELECT
             pt.name AS product_type,
+            p.id,
             p.sku,
             p.vendor,
             p.buy_price_us,
