@@ -38,8 +38,8 @@ export async function createModel(formData: FormData) {
 
         await sql`
             UPDATE models
-            SET product_id = ${selectedProduct.id}
-            WHERE model = ${model} AND brand_id = ${brand_id};
+            SET product_id = ${selectedProduct.rows[0]?.id}
+            WHERE name = ${model} AND brand_id = ${brand_id};
         `
 
         // await sql`

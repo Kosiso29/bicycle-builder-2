@@ -9,11 +9,12 @@ import Loading from "./loading";
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
+import { generateSKU } from "@/app/utils/generateSKU";
 import MultipleInput from "@/app/ui/multiple-input";
 import SelectField from "@/app/ui/select-field";
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Form({ product }: { product?: any }) {
+export default function Form({ product, productModels }: { product?: any, productModels?: any }) {
     const productTypes = useSelector((state: IRootState) => state.componentsReducer.productTypes);
     const categories = useSelector((state: IRootState) => state.componentsReducer.categories);
     const brands = useSelector((state: IRootState) => state.componentsReducer.brands);
@@ -22,9 +23,11 @@ export default function Form({ product }: { product?: any }) {
     const colors = useSelector((state: IRootState) => state.componentsReducer.colors);
     const models = useSelector((state: IRootState) => state.componentsReducer.models);
     const user = useSelector((state: any) => state.authReducer.user);
-    const model: any = product && models?.filter(((item: any) => (item.product_id === product?.id) && item.is_primary))[0];
-    const [productId, setProductId] = useState(product?.product_type_id || "");
+    const model: any = product && productModels?.filter(((item: any) => item.is_primary))[0];
+    const [productTypeId, setProductTypeId] = useState(product?.product_type_id || "");
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
+    const [brandId, setBrandId] = useState(model?.brand_id || "");
+    const [modelValue, setModelValue] = useState(model?.name || "");
     const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
     const [loading, setLoading] = useState(false);
     const [colorItems, setColorItems] = useState<any>([])
@@ -84,6 +87,14 @@ export default function Form({ product }: { product?: any }) {
         return false;
     }
 
+    const getSKU = () => {
+        const filterArray = (arrayData: any, id: string): any => {
+            const filteredItem: any = Object.entries(arrayData).filter((item: any) => item[0] === id)[0];
+            return id ? filteredItem?.[1] : ""
+        }
+        return generateSKU(filterArray(productTypes, productTypeId), filterArray(brands, brandId), modelValue)
+    }
+
     const handleFormUpdate = (formData: any) => {
         updateModel(product.id, formData)
             .then(() => {
@@ -124,7 +135,7 @@ export default function Form({ product }: { product?: any }) {
             <div className="rounded-md bg-gray-100 p-4 md:p-6">
                 <div className="flex gap-4 mb-4">
                     {/* SKU */}
-                    <TextField name='sku' type='text' defaultValue={product?.sku} label='SKU' placeholder='SKU' fullWidth />
+                    <TextField name='sku' type='text' readOnly style={{ cursor: "not-allowed" }} label='SKU' value={productTypeId || brandId || model ? getSKU() : product?.sku || "--"} placeholder='SKU' fullWidth />
                     {/* Product Type */}
                     <div className='w-full'>
                         <div className="mb-2 flex items-center justify-between text-sm font-medium">
@@ -137,8 +148,8 @@ export default function Form({ product }: { product?: any }) {
                                 id="product_type_id"
                                 name="product_type_id"
                                 className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                value={productId ?? product?.product_type_id ?? ""}
-                                onChange={(e) => setProductId(e.target.value)}
+                                value={productTypeId ?? product?.product_type_id ?? ""}
+                                onChange={(e) => setProductTypeId(e.target.value)}
                                 aria-describedby="product_type_id-error"
                             >
                                 <option value="" disabled>
@@ -226,7 +237,8 @@ export default function Form({ product }: { product?: any }) {
                                 id="brand_id"
                                 name="brand_id"
                                 className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                defaultValue={model?.brand_id ?? ""}
+                                value={brandId ?? model?.brand_id ?? ""}
+                                onChange={(e) => setBrandId(e.target.value)}
                                 aria-describedby="brand_id-error"
                             >
                                 <option value="" disabled>
@@ -252,7 +264,7 @@ export default function Form({ product }: { product?: any }) {
 
                 <div className='flex gap-5'>
                     {/* Model */}
-                    <TextField name='model' type='text' defaultValue={model?.name} label='Model' placeholder='Model name' fullWidth />
+                    <TextField name='model' type='text' value={modelValue || model?.name} onChange={(e: any) => setModelValue(e.target.value)} label='Model' placeholder='Model name' fullWidth />
                     {/* Preview Image URL */}
                     <TextField name='preview_image_url' type='text' defaultValue={model?.preview_image_url} label='Preview Image URL' fullWidth />
                 </div>
@@ -279,10 +291,10 @@ export default function Form({ product }: { product?: any }) {
                             <TextField name='image_url' type='text' defaultValue={model?.image_url} placeholder='Model Color Image URL' fullWidth />
                             <div className='flex min-w-[45%] basis-1/2 w-full gap-3'>
                                 {/* Price */}
-                                <TextField name='price_sg' step={0.01} min={0.0} defaultValue={model ? model?.price_sg ?? 0.00 : null} placeholder='Price SGD' fullWidth />
-                                <TextField name='price_us' step={0.01} min={0.0} defaultValue={model ? model?.price_us ?? 0.00 : null} placeholder='Price USD' fullWidth />
-                                <TextField name='price_in' step={0.01} min={0.0} defaultValue={model ? model?.price_in ?? 0.00 : null} placeholder='Price INR' fullWidth />
-                                <TextField name='price_gb' step={0.01} min={0.0} defaultValue={model ? model?.price_gb ?? 0.00 : null} placeholder='Price GBP' fullWidth />
+                                <TextField name='price_sg' step={0.01} min={0.0} defaultValue={model ? model?.price_sg ?? 0.00 : ""} placeholder='Price SGD' fullWidth />
+                                <TextField name='price_us' step={0.01} min={0.0} defaultValue={model ? model?.price_us ?? 0.00 : ""} placeholder='Price USD' fullWidth />
+                                <TextField name='price_in' step={0.01} min={0.0} defaultValue={model ? model?.price_in ?? 0.00 : ""} placeholder='Price INR' fullWidth />
+                                <TextField name='price_gb' step={0.01} min={0.0} defaultValue={model ? model?.price_gb ?? 0.00 : ""} placeholder='Price GBP' fullWidth />
                                 {
                                     colorItems.length === 0 &&
                                     <div className='flex gap-2 text-primary items-center mb-4 mt-2'>
@@ -645,7 +657,7 @@ export default function Form({ product }: { product?: any }) {
     );
 }
 
-function TextField({ type, name, defaultValue, label, step, min, max, placeholder, value, onChange, fullWidth }: { type?: string, name: string, defaultValue?: string, label?: string, step?: number, min?: number, max?: number, placeholder?: string, value?: string, onChange?: any, fullWidth?: boolean }) {
+function TextField({ type, name, defaultValue, label, step, min, max, placeholder, value, onChange, disabled, style, readOnly, fullWidth }: { type?: string, name: string, defaultValue?: string, label?: string, step?: number, min?: number, max?: number, placeholder?: string, value?: string, onChange?: any, disabled?: boolean, style?: any, readOnly?: boolean, fullWidth?: boolean }) {
     return (
         <div className={`mb-4 ${fullWidth && "w-full"}`}>
             {
@@ -666,8 +678,11 @@ function TextField({ type, name, defaultValue, label, step, min, max, placeholde
                         onChange={onChange}
                         defaultValue={defaultValue}
                         placeholder={placeholder || label}
-                        className={`peer block w-full rounded-md border border-gray-200 py-2 px-3 text-sm outline-2 placeholder:text-gray-500 ${max ? "min-w-[200px]" : ""}`}
+                        className={`peer block w-full rounded-md border border-gray-200 py-2 px-3 text-sm outline-2 placeholder:text-gray-500 disabled:cursor-not-allowed ${max ? "min-w-[200px]" : ""}`}
                         aria-describedby={`${name}-error`}
+                        disabled={disabled}
+                        readOnly={readOnly}
+                        style={style}
                     />
                     {/* <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" /> */}
                 </div>

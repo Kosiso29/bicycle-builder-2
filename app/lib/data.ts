@@ -22,10 +22,13 @@ export async function fetchModels(): Promise<Models> {
         const data = await sql`
         SELECT
             c1.name AS category,
+            c1.id AS category_id,
             b.name AS brand,
+            b.id AS brand_id,
             m.name AS model,
             c2.name AS "canvasLayerLevel",
             m.id,
+            m.product_id,
             m.image_url AS src,
             m.preview_image_url AS "previewSrc",
             m.actual_width AS "actualWidth",
@@ -387,6 +390,23 @@ export async function fetchModelById(id: string) {
         `
 
         const model = data.rows[0];
+
+        return model;
+    } catch (error) {
+        console.log('Database Error:', error);
+        throw new Error('Failed to fetch the model.');
+    }
+}
+
+export async function fetchModelsByProductId(product_id: string) {
+    noStore();
+    try {
+        const data = await sql`
+        SELECT * FROM models
+        WHERE models.product_id = ${product_id};
+        `
+
+        const model = data.rows;
 
         return model;
     } catch (error) {
