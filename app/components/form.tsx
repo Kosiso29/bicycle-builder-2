@@ -264,7 +264,7 @@ export default function Form({ product, productModels }: { product?: any, produc
 
                 <div className='flex gap-5'>
                     {/* Model */}
-                    <TextField name='model' type='text' value={modelValue || model?.name} onChange={(e: any) => setModelValue(e.target.value)} label='Model' placeholder='Model name' fullWidth />
+                    <TextField name='model' type='text' value={modelValue} onChange={(e: any) => setModelValue(e.target.value)} label='Model' placeholder='Model name' fullWidth />
                     {/* Preview Image URL */}
                     <TextField name='preview_image_url' type='text' defaultValue={model?.preview_image_url} label='Preview Image URL' fullWidth />
                 </div>
