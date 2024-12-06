@@ -36,48 +36,48 @@ export async function createModel(formData: FormData) {
             SELECT * FROM products WHERE sku = ${sku};
         `;
 
+        const productId = selectedProduct.rows[0]?.id;
+
+        if (!productId) {
+            throw new Error('Failed to retrieve product ID');
+        }
+
         await sql`
-            UPDATE models
-            SET product_id = ${selectedProduct.rows[0]?.id}
-            WHERE name = ${model} AND brand_id = ${brand_id};
-        `
+            INSERT INTO models (category_id, brand_id, product_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
+            back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
+            groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
+            lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y)
+            VALUES (${category_id}, ${brand_id}, ${productId}, ${model}, ${image_url}, ${Number(actual_width)}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
+            ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price_sg}, ${price_gb}, ${price_us}, ${price_in}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
+            ${groupset_drivetrain_x}, ${groupset_drivetrain_y}, ${groupset_shifter_x}, ${groupset_shifter_y}, ${handle_bar_x}, ${handle_bar_y}, ${global_composite_operation}, ${canvas_layer_level},
+            ${JSON.parse(lengths)}, ${JSON.parse(sizes)}, ${JSON.parse(ratios)}, ${steerer_size}, ${size_chart_url}, ${!!is_primary}, ${color_name}, ${color_value}, ${checkForNull(linked_stem)}, ${checkForNull(linked_handle_bar)}, ${preview_image_url}, ${canvas_marker_x}, ${canvas_marker_y})
+        `;
 
-        // await sql`
-        //     INSERT INTO models (category_id, brand_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
-        //     back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
-        //     groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
-        //     lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y)
-        //     VALUES (${category_id}, ${brand_id}, ${model}, ${image_url}, ${Number(actual_width)}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
-        //     ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price_sg}, ${price_gb}, ${price_us}, ${price_in}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
-        //     ${groupset_drivetrain_x}, ${groupset_drivetrain_y}, ${groupset_shifter_x}, ${groupset_shifter_y}, ${handle_bar_x}, ${handle_bar_y}, ${global_composite_operation}, ${canvas_layer_level},
-        //     ${JSON.parse(lengths)}, ${JSON.parse(sizes)}, ${JSON.parse(ratios)}, ${steerer_size}, ${size_chart_url}, ${!!is_primary}, ${color_name}, ${color_value}, ${checkForNull(linked_stem)}, ${checkForNull(linked_handle_bar)}, ${preview_image_url}, ${canvas_marker_x}, ${canvas_marker_y})
-        // `;
+        const selectedModel: any = await sql`
+        SELECT * FROM models WHERE name = ${model} AND category_id = ${category_id} AND brand_id = ${brand_id} AND image_url = ${image_url};
+        `;
 
-        // const selectedModel: any = await sql`
-        // SELECT * FROM models WHERE name = ${model} AND category_id = ${category_id} AND brand_id = ${brand_id} AND image_url = ${image_url};
-        // `;
+        // Only insert new presets if any were selected, else don't create any presets mapping
+        if (modelsPresets.length > 0) {
+            for (const modelPreset of modelsPresets) {
+                const splitModelPreset = modelPreset[1].split("_");
+                const model_id = selectedModel.rows[0]?.id;
+                const preset_id = splitModelPreset[1];
+                await sql`
+              INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${preset_id}::uuid);
+              `
+            }
+        }
 
-        // // Only insert new presets if any were selected, else don't create any presets mapping
-        // if (modelsPresets.length > 0) {
-        //     for (const modelPreset of modelsPresets) {
-        //         const splitModelPreset = modelPreset[1].split("_");
-        //         const model_id = selectedModel.rows[0]?.id;
-        //         const preset_id = splitModelPreset[1];
-        //         await sql`
-        //       INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${preset_id}::uuid);
-        //       `
-        //     }
-        // }
+        // create colors
+        for (const color_prop of JSON.parse(color_props)) {
+            const model_id = selectedModel.rows[0]?.id;
+            await sql`
+                INSERT INTO colors (model_id, name, value, image_url, price_sg, price_gb, price_us, price_in) VALUES (${model_id}::uuid, ${color_prop.name}, ${color_prop.value}, ${color_prop.image_url}, ${color_prop.price_sg}, ${color_prop.price_gb}, ${color_prop.price_us}, ${color_prop.price_in});
+            `
+        }
 
-        // // create colors
-        // for (const color_prop of JSON.parse(color_props)) {
-        //     const model_id = selectedModel.rows[0]?.id;
-        //     await sql`
-        //         INSERT INTO colors (model_id, name, value, image_url, price_sg, price_gb, price_us, price_in) VALUES (${model_id}::uuid, ${color_prop.name}, ${color_prop.value}, ${color_prop.image_url}, ${color_prop.price_sg}, ${color_prop.price_gb}, ${color_prop.price_us}, ${color_prop.price_in});
-        //     `
-        // }
-
-        // await autoCalculateRatings();
+        await autoCalculateRatings();
 
     } catch (error) {
         console.log('error', error)
