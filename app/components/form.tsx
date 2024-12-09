@@ -16,7 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Form({ product, productModels }: { product?: any, productModels?: any }) {
     const productTypes = useSelector((state: IRootState) => state.componentsReducer.productTypes);
-    const categories = useSelector((state: IRootState) => state.componentsReducer.categories);
+    const categories: any = useSelector((state: IRootState) => state.componentsReducer.categories);
     const brands = useSelector((state: IRootState) => state.componentsReducer.brands);
     const presets = useSelector((state: IRootState) => state.componentsReducer.presets);
     const modelsPresets = useSelector((state: IRootState) => state.componentsReducer.modelsPresets);
@@ -30,10 +30,15 @@ export default function Form({ product, productModels }: { product?: any, produc
     const [modelValue, setModelValue] = useState(model?.name || "");
     const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
     const [loading, setLoading] = useState(false);
-    const [colorItems, setColorItems] = useState<any>([])
+    const [colorItems, setColorItems] = useState<any>([]);
+    // We are using these to feel the subset parameters of wheels and groupsets.
+    const backWheelSetCategoryId: any = (Object.entries(categories || {}) as any)?.filter((category: any) => category[1] === "Back Wheel Set")[0]?.[0];
+    const groupSetCategoryId: any = (Object.entries(categories || {}) as any)?.filter((category: any) => category[1] === "Group Set - Shifter")[0]?.[0];
+    const wheelProductTypeId: any = (Object.entries(productTypes || {}) as any)?.filter((productType: any) => productType[1] === "Wheel")[0]?.[0];
+    const groupSetProductTypeId: any = (Object.entries(productTypes || {}) as any)?.filter((productType: any) => productType[1] === "Group Set")[0]?.[0];
 
     const addModelColors = () => {
-        setColorItems((prevState: any) => [...prevState, { name: "", value: "", image_url: "", price_sg: "", price_gb: "", price_us: "", price_in: "" }])
+        setColorItems((prevState: any) => [...prevState, { name: "", value: "", image_url: "", image_url_2: "", price_sg: "", price_gb: "", price_us: "", price_in: "" }])
     }
 
     const removeModelColors = () => {
@@ -46,16 +51,43 @@ export default function Form({ product, productModels }: { product?: any, produc
 
     useEffect(() => {
         if (model) {
-            const newColorItems = colors.filter((color: any) => color.model_id === model.id).map((color: any) => {
-                const { name, value, image_url, price_sg, price_gb, price_us, price_in } = color;
-                return { name, value, image_url, price_sg, price_gb, price_us, price_in };
+            let newColorItems = colors.filter((color: any) => color.model_id === model.id).map((color: any) => {
+                const { name, value, image_url, image_url_2, price_sg, price_gb, price_us, price_in } = color;
+                return { name, value, image_url, image_url_2, price_sg, price_gb, price_us, price_in };
             });
+
+            const applyImageURL2Values = (secondImageCategoryId: string) => {
+                const filteredProductType: any = Object.entries(productTypes || {}).filter((productType: any) => productType[0] === product.product_type_id)[0];
+                const secondImageModel: any = productModels.filter((productModel: any) => productModel.category_id === secondImageCategoryId)[0];
+    
+                if (filteredProductType?.[1]?.includes('Wheel') || filteredProductType?.[1]?.includes('Group Set')) {
+                    const filteredSecondImageColors: any = colors.filter((color: any) => color.model_id === secondImageModel.id);
+                    newColorItems = newColorItems.map(newColorItem => {
+                        return {
+                            ...newColorItem,
+                            image_url_2: filteredSecondImageColors.filter((filteredSecondImageColor: any) => filteredSecondImageColor.name === newColorItem.name)[0].image_url
+                        }
+                    })
+                }
+            }
+            
+            if (productModels.filter((productModel: any) => productModel.category_id === backWheelSetCategoryId).length > 0) {
+                applyImageURL2Values(backWheelSetCategoryId);
+            }
+
+            if (productModels.filter((productModel: any) => productModel.category_id === groupSetCategoryId).length > 0) {
+                applyImageURL2Values(groupSetCategoryId);
+            }
     
             if (newColorItems.length > 0) {
                 setColorItems(newColorItems);
             }
         }
-    }, [colors, model]);
+    }, [colors, model, backWheelSetCategoryId, groupSetCategoryId, product, productModels, productTypes]);
+
+    const getSecondImageUrl = (secondImageCategoryId: string) => {
+        return productModels?.filter(((item: any) => item.category_id === secondImageCategoryId))[0]?.image_url
+    }
 
     const handleModelColorTextChange = (e: any, index: number, key: string) => {
         setColorItems((prevState: any) => {
@@ -129,6 +161,7 @@ export default function Form({ product, productModels }: { product?: any, produc
     const showFrameSetOffsets = Object.values(categories)[0] === categories[categoryId];
     const showFrameSetStemOffsets = Object.values(categories)[0] === categories[categoryId] || (Object.values(categories)[3] === categories[categoryId]);
     const showStemHandleBarOffsets = Object.values(categories)[3] === categories[categoryId] || Object.values(categories)[4] === categories[categoryId];
+    const showSecondImageUrl = productTypeId === wheelProductTypeId || productTypeId === groupSetProductTypeId;
 
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
@@ -181,12 +214,11 @@ export default function Form({ product, productModels }: { product?: any, produc
                 </div>
 
                 {/* Category */}
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     <div className="mb-2 flex items-center justify-between text-sm font-medium">
                         <label htmlFor="category_id">
                             Category
                         </label>
-                        {/* Primary */}
                         <div className="flex items-center gap-2">
                             <label
                                 htmlFor="is_primary"
@@ -224,7 +256,7 @@ export default function Form({ product, productModels }: { product?: any, produc
                         </select>
                         <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
                     </div>
-                </div>
+                </div> */}
 
                 {/* Brand */}
                 <div className="mb-4">
@@ -289,6 +321,10 @@ export default function Form({ product, productModels }: { product?: any, produc
                             <TextField name='color_value' defaultValue={model?.color_value} type='text' placeholder='Model Color Value' fullWidth />
                             {/* Image URL */}
                             <TextField name='image_url' type='text' defaultValue={model?.image_url} placeholder='Model Color Image URL' fullWidth />
+                            {
+                                showSecondImageUrl &&
+                                <TextField name='image_url_2' type='text' defaultValue={getSecondImageUrl(productTypeId === wheelProductTypeId ? backWheelSetCategoryId : groupSetCategoryId )} placeholder='Second Model Color Image URL' fullWidth />
+                            }
                             <div className='flex min-w-[45%] basis-1/2 w-full gap-3'>
                                 {/* Price */}
                                 <TextField name='price_sg' step={0.01} min={0.0} defaultValue={model ? model?.price_sg ?? 0.00 : ""} placeholder='Price SGD' fullWidth />
@@ -312,6 +348,10 @@ export default function Form({ product, productModels }: { product?: any, produc
                                     <TextField name='model_color_value' value={colorItem.value} onChange={(e: any) => { handleModelColorTextChange(e, index, "value") }} type='text' placeholder='Model Color Value' fullWidth />
                                     {/* Model Color Image URL */}
                                     <TextField name='model_color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Color Image URL' fullWidth />
+                                    {
+                                        showSecondImageUrl &&
+                                        <TextField name='model_color_image_url_2' value={colorItem.image_url_2} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url_2") }} type='text' placeholder='Second Model Color Image URL' fullWidth />
+                                    }
                                     <div className='flex min-w-[45%] basis-1/2 w-full gap-3'>
                                         {/* Model Color Price */}
                                         <TextField name='model_color_price_sg' value={colorItem.price_sg} onChange={(e: any) => { handleModelColorTextChange(e, index, "price_sg") }} step={0.01} min={0.0} placeholder='Price SGD' fullWidth />
