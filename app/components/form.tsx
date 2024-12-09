@@ -85,8 +85,8 @@ export default function Form({ product, productModels }: { product?: any, produc
         }
     }, [colors, model, backWheelSetCategoryId, groupSetCategoryId, product, productModels, productTypes]);
 
-    const getSecondImageUrl = (secondImageCategoryId: string) => {
-        return productModels?.filter(((item: any) => item.category_id === secondImageCategoryId))[0]?.image_url
+    const getSecondFormData = (secondFormDataId: string, property: string) => {
+        return productModels?.filter(((item: any) => item.category_id === secondFormDataId))[0]?.[property]
     }
 
     const handleModelColorTextChange = (e: any, index: number, key: string) => {
@@ -161,7 +161,7 @@ export default function Form({ product, productModels }: { product?: any, produc
     const showFrameSetOffsets = Object.values(categories)[0] === categories[categoryId];
     const showFrameSetStemOffsets = Object.values(categories)[0] === categories[categoryId] || (Object.values(categories)[3] === categories[categoryId]);
     const showStemHandleBarOffsets = Object.values(categories)[3] === categories[categoryId] || Object.values(categories)[4] === categories[categoryId];
-    const showSecondImageUrl = productTypeId === wheelProductTypeId || productTypeId === groupSetProductTypeId;
+    const showSecondData = productTypeId === wheelProductTypeId || productTypeId === groupSetProductTypeId;
 
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
@@ -304,6 +304,10 @@ export default function Form({ product, productModels }: { product?: any, produc
                 <div className='flex gap-5'>
                     {/* Actual width */}
                     <TextField name='actual_width' defaultValue={model?.actual_width} label='Actual width' fullWidth />
+                    {
+                        showSecondData &&
+                        <TextField name='actual_width_2' defaultValue={getSecondFormData(productTypeId === wheelProductTypeId ? backWheelSetCategoryId : groupSetCategoryId, 'actual_width') || ""} label='Actual width 2' fullWidth />
+                    }
                     {/* Size chart URL */}
                     <TextField name='size_chart_url' type='text' defaultValue={model?.size_chart_url} label='Size chart URL' fullWidth />
                 </div>
@@ -322,8 +326,8 @@ export default function Form({ product, productModels }: { product?: any, produc
                             {/* Image URL */}
                             <TextField name='image_url' type='text' defaultValue={model?.image_url} placeholder='Model Color Image URL' fullWidth />
                             {
-                                showSecondImageUrl &&
-                                <TextField name='image_url_2' type='text' defaultValue={getSecondImageUrl(productTypeId === wheelProductTypeId ? backWheelSetCategoryId : groupSetCategoryId )} placeholder='Second Model Color Image URL' fullWidth />
+                                showSecondData &&
+                                <TextField name='image_url_2' type='text' defaultValue={getSecondFormData(productTypeId === wheelProductTypeId ? backWheelSetCategoryId : groupSetCategoryId, 'image_url')} placeholder='Second Model Color Image URL' fullWidth />
                             }
                             <div className='flex min-w-[45%] basis-1/2 w-full gap-3'>
                                 {/* Price */}
@@ -349,7 +353,7 @@ export default function Form({ product, productModels }: { product?: any, produc
                                     {/* Model Color Image URL */}
                                     <TextField name='model_color_image_url' value={colorItem.image_url} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url") }} type='text' placeholder='Model Color Image URL' fullWidth />
                                     {
-                                        showSecondImageUrl &&
+                                        showSecondData &&
                                         <TextField name='model_color_image_url_2' value={colorItem.image_url_2} onChange={(e: any) => { handleModelColorTextChange(e, index, "image_url_2") }} type='text' placeholder='Second Model Color Image URL' fullWidth />
                                     }
                                     <div className='flex min-w-[45%] basis-1/2 w-full gap-3'>
