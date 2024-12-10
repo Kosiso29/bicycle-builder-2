@@ -28,7 +28,6 @@ export default function Form({ product, productModels }: { product?: any, produc
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [brandId, setBrandId] = useState(model?.brand_id || "");
     const [modelValue, setModelValue] = useState(model?.name || "");
-    const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
     const [loading, setLoading] = useState(false);
     const [colorItems, setColorItems] = useState<any>([]);
     // We are using these to feel the subset parameters of wheels and groupsets.
@@ -57,10 +56,10 @@ export default function Form({ product, productModels }: { product?: any, produc
             });
 
             const applyImageURL2Values = (secondImageCategoryId: string) => {
-                const filteredProductType: any = Object.entries(productTypes || {}).filter((productType: any) => productType[0] === product.product_type_id)[0];
+                const filteredProductType: any = productTypes[product.product_type_id];
                 const secondImageModel: any = productModels.filter((productModel: any) => productModel.category_id === secondImageCategoryId)[0];
     
-                if (filteredProductType?.[1]?.includes('Wheel') || filteredProductType?.[1]?.includes('Group Set')) {
+                if (filteredProductType?.includes('Wheel') || filteredProductType?.includes('Group Set')) {
                     const filteredSecondImageColors: any = colors.filter((color: any) => color.model_id === secondImageModel.id);
                     newColorItems = newColorItems.map(newColorItem => {
                         return {
@@ -87,6 +86,11 @@ export default function Form({ product, productModels }: { product?: any, produc
 
     const getSecondFormData = (secondFormDataId: string, property: string) => {
         return productModels?.filter(((item: any) => item.category_id === secondFormDataId))[0]?.[property]
+    }
+
+    const getCanvasLayerData = (property: string) => {
+        console.log('canvasLayerData', productModels?.filter(((item: any) => (item.category_id === categoryId) && !item.is_primary))[0]?.[property])
+        return productModels?.filter(((item: any) => (item.category_id === categoryId) && !item.is_primary))[0]?.[property]
     }
 
     const handleModelColorTextChange = (e: any, index: number, key: string) => {
@@ -435,7 +439,7 @@ export default function Form({ product, productModels }: { product?: any, produc
 
                 {/* Specifications */}
                 {
-                    categoryId ?
+                    productTypeId ?
                         <fieldset className='mb-4'>
                             <legend className="mb-2 block text-sm font-medium">
                                 Specifications
@@ -474,45 +478,16 @@ export default function Form({ product, productModels }: { product?: any, produc
                                         <AddOutlined className="pointer-events-none" />
                                     </Link>
                                 </div>
-                                <div className='my-2'>
-                                    <div className='flex items-center gap-5'>
-                                        <span className='font-bold'>Component should appear</span>
-                                        <div className='w-36'>
-                                            <select
-                                                id="global_composite_operation"
-                                                name="global_composite_operation"
-                                                className="peer font-bold block w-full cursor-pointer rounded-md border border-gray-200 py-2 outline-2 placeholder:text-gray-500"
-                                                defaultValue={model?.global_composite_operation ?? ""}
-                                                aria-describedby="global_composite_operation-error"
-                                            >
-                                                <option value="" disabled>
-                                                    Select position
-                                                </option>
-                                                <option value="source-over">in front of</option>
-                                                <option value="destination-over">behind</option>
-                                            </select>
-                                            <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                                        </div>
-                                        <span className='font-bold'>the</span>
-                                        <div className="w-48">
-                                            <select
-                                                id="canvas_layer_level"
-                                                name="canvas_layer_level"
-                                                className="peer font-bold block w-full cursor-pointer rounded-md border border-gray-200 py-2 outline-2 placeholder:text-gray-500"
-                                                value={(canvasLayerLevel || model?.canvas_layer_level) ?? ""}
-                                                onChange={(e) => { setCanvasLayerLevel(e.target.value) }}
-                                                aria-describedby="canvas_layer_level-error"
-                                            >
-                                                <option value="" disabled>
-                                                    Select a component
-                                                </option>
-                                                {
-                                                    Object.entries(categories).map((item: any) => (
-                                                        <option key={item[1]} value={item[0]}>{item[1]}</option>
-                                                    ))
-                                                }
-                                            </select>
-                                            <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                                <div className='mt-4'>
+                                    <label htmlFor="">Set canvas layer level for the current default canvas image of the component: </label>
+                                    <CanvasLayer positionSelectElementName='global_composite_operation' componentSelectElementName='canvas_layer_level' preText='The default canvas image' model={model} categories={categories} />
+                                </div>
+                                <div>
+                                    <label htmlFor="">Set second canvas layer image url and its canvas layer level: </label>
+                                    <div className="flex gap-8">
+                                        <TextField name='image_url_layer' type='text' defaultValue={getCanvasLayerData('image_url') || ""} placeholder='Canvas Layer Image URL' fullWidth />
+                                        <div className='min-w-fit'>
+                                            <CanvasLayer positionSelectElementName='global_composite_operation_2' componentSelectElementName='canvas_layer_level_2' secondCanvasComponentValue={getCanvasLayerData('canvas_layer_level')} secondCanvasLayerLevelValue={getCanvasLayerData('global_composite_operation')} preText='This canvas image' model={model} categories={categories} />
                                         </div>
                                     </div>
                                 </div>
@@ -733,5 +708,54 @@ function TextField({ type, name, defaultValue, label, step, min, max, placeholde
             </div>
         </div>
 
+    )
+}
+
+function CanvasLayer({ model, categories, componentSelectElementName, positionSelectElementName, preText, secondCanvasLayerLevelValue, secondCanvasComponentValue }: { model: any, categories: any, componentSelectElementName: string, positionSelectElementName: string, preText: string, secondCanvasLayerLevelValue?: string, secondCanvasComponentValue?: string }) {
+    const [canvasLayerLevel, setCanvasLayerLevel] = useState("");
+
+    return (
+        <div className='my-2'>
+            <div className='flex items-center gap-5'>
+                <span className='font-bold'>{ preText } should appear</span>
+                <div className='w-36'>
+                    <select
+                        id={positionSelectElementName}
+                        name={positionSelectElementName}
+                        className="peer font-bold block w-full cursor-pointer rounded-md border border-gray-200 py-2 outline-2 placeholder:text-gray-500"
+                        defaultValue={(secondCanvasLayerLevelValue || model?.global_composite_operation) ?? ""}
+                        aria-describedby={`${positionSelectElementName}-error`}
+                    >
+                        <option value="" disabled>
+                            Select position
+                        </option>
+                        <option value="source-over">in front of</option>
+                        <option value="destination-over">behind</option>
+                    </select>
+                    <PersonOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                </div>
+                <span className='font-bold'>the</span>
+                <div className="w-48">
+                    <select
+                        id={componentSelectElementName}
+                        name={componentSelectElementName}
+                        className="peer font-bold block w-full cursor-pointer rounded-md border border-gray-200 py-2 outline-2 placeholder:text-gray-500"
+                        value={(canvasLayerLevel || secondCanvasComponentValue || model?.canvas_layer_level) ?? ""}
+                        onChange={(e) => { setCanvasLayerLevel(e.target.value) }}
+                        aria-describedby={`${componentSelectElementName}-error`}
+                    >
+                        <option value="" disabled>
+                            Select a component
+                        </option>
+                        {
+                            Object.entries(categories).map((item: any) => (
+                                <option key={item[1]} value={item[0]}>{item[1]}</option>
+                            ))
+                        }
+                    </select>
+                    <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                </div>
+            </div>
+        </div>
     )
 }

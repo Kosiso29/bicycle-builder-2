@@ -16,9 +16,9 @@ export async function createModel(formData: FormData) {
         formDataObject[key] = value;
     });
 
-    const { category_id, brand_id, model, image_url, image_url_2, actual_width, actual_width_2, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
+    const { category_id, brand_id, model, image_url, image_url_2, image_url_layer, actual_width, actual_width_2, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
         back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
-        groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
+        groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level, global_composite_operation_2, canvas_layer_level_2,
         lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, color_props, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y,
         ////////////////////////////////////////////////// products props /////////////////////////////////////////////////////////////////
         sku, product_type_id, vendor, buy_price_us, location, lead_time
@@ -58,30 +58,44 @@ export async function createModel(formData: FormData) {
         
         for (const category of categories.rows) {
             if (category.name.includes(productTypeName)) {
-                await sql`
-                    INSERT INTO models (category_id, brand_id, product_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
-                    back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
-                    groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
-                    lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y)
-                    VALUES (${category.id}, ${brand_id}, ${productId}, ${model}, ${/Back|Shifter/i.test(category.name) ? image_url_2 : image_url}, ${Number(/Back|Shifter/i.test(category.name) ? actual_width_2 : actual_width)}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
-                    ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price_sg}, ${price_gb}, ${price_us}, ${price_in}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
-                    ${groupset_drivetrain_x}, ${groupset_drivetrain_y}, ${groupset_shifter_x}, ${groupset_shifter_y}, ${handle_bar_x}, ${handle_bar_y}, ${global_composite_operation}, ${canvas_layer_level},
-                    ${JSON.parse(lengths)}, ${JSON.parse(sizes)}, ${JSON.parse(ratios)}, ${steerer_size}, ${size_chart_url}, ${/Back|Shifter/i.test(category.name) ? false : true}, ${color_name}, ${color_value}, ${checkForNull(linked_stem)}, ${checkForNull(linked_handle_bar)}, ${preview_image_url}, ${canvas_marker_x}, ${canvas_marker_y})
-                `;
+
+                const modelInsertQuery = async (canvasLayerImageUrl?: string, globalCompositeOperation?: string, canvasLayerLevel?: string) => {
+                    const imageUrl = /Back|Shifter/i.test(category.name) ? image_url_2 : image_url;
+                    const actualWidth = Number(/Back|Shifter/i.test(category.name) ? actual_width_2 : actual_width);
+                    const isPrimary = /Back|Shifter/i.test(category.name) ? false : true;
+                    await sql`
+                        INSERT INTO models (category_id, brand_id, product_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
+                        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
+                        groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
+                        lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y)
+                        VALUES (${category.id}, ${brand_id}, ${productId}, ${model}, ${canvasLayerImageUrl || imageUrl}, ${actualWidth}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
+                        ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price_sg}, ${price_gb}, ${price_us}, ${price_in}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
+                        ${groupset_drivetrain_x}, ${groupset_drivetrain_y}, ${groupset_shifter_x}, ${groupset_shifter_y}, ${handle_bar_x}, ${handle_bar_y}, ${globalCompositeOperation || global_composite_operation}, ${canvasLayerLevel || canvas_layer_level},
+                        ${JSON.parse(lengths)}, ${JSON.parse(sizes)}, ${JSON.parse(ratios)}, ${steerer_size}, ${size_chart_url}, ${canvasLayerImageUrl ? false : isPrimary}, ${color_name}, ${color_value}, ${checkForNull(linked_stem)}, ${checkForNull(linked_handle_bar)}, ${preview_image_url}, ${canvas_marker_x}, ${canvas_marker_y})
+                    `;
+                }
+
+                await modelInsertQuery();
         
                 const selectedModel: any = await sql`
                     SELECT * FROM models WHERE name = ${model} AND category_id = ${category.id} AND brand_id = ${brand_id} AND image_url = ${/Back|Shifter/i.test(category.name) ? image_url_2 : image_url};
                 `;
-        
-                // Only insert new presets if any were selected, else don't create any presets mapping
-                if (modelsPresets.length > 0 && !/Back|Shifter/i.test(category.name)) {
-                    for (const modelPreset of modelsPresets) {
-                        const splitModelPreset = modelPreset[1].split("_");
-                        const model_id = selectedModel.rows[0]?.id;
-                        const preset_id = splitModelPreset[1];
-                        await sql`
-                      INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${preset_id}::uuid);
-                      `
+
+                if (!/Back|Shifter/i.test(category.name)) {
+                    if (image_url_layer && global_composite_operation_2 && canvas_layer_level_2) {
+                        await modelInsertQuery(image_url_layer, global_composite_operation_2, canvas_layer_level_2);
+                    }
+
+                    // Only insert new presets if any were selected, else don't create any presets mapping
+                    if (modelsPresets.length > 0) {
+                        for (const modelPreset of modelsPresets) {
+                            const splitModelPreset = modelPreset[1].split("_");
+                            const model_id = selectedModel.rows[0]?.id;
+                            const preset_id = splitModelPreset[1];
+                            await sql`
+                                INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${preset_id}::uuid);
+                            `
+                        }
                     }
                 }
         
