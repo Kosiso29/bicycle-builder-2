@@ -294,9 +294,9 @@ export async function updateModel(id: string, formData: any) {
 
     const modelsPresets: any = Object.entries(formDataObject).filter(item => item[0].includes("preset_"));
 
-    const { category_id, brand_id, model, image_url, image_url_2, actual_width, actual_width_2, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
+    const { category_id, brand_id, model, image_url, image_url_2, image_url_layer, actual_width, actual_width_2, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
         back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
-        groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
+        groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level, global_composite_operation_2, canvas_layer_level_2,
         lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, color_props, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y,
         ////////////////////////////////////////////////// products props /////////////////////////////////////////////////////////////////
         sku, product_type_id, vendor, buy_price_us, location, lead_time
@@ -328,9 +328,19 @@ export async function updateModel(id: string, formData: any) {
         for (const category of categories.rows) {
             if (category.name.includes(productTypeName)) {
 
-                const selectedModel: any = await sql`
-                    SELECT * FROM models WHERE product_id = ${id} AND category_id = ${category.id};
-                `;
+                const getSelectedModel = async () => {
+                    if (/Back|Shifter/i.test(category.name)) { 
+                        return await sql`
+                            SELECT * FROM models WHERE product_id = ${id} AND category_id = ${category.id} AND is_primary = ${false};
+                        `;
+                    }
+
+                    return await sql`
+                        SELECT * FROM models WHERE product_id = ${id} AND category_id = ${category.id} AND is_primary = ${true};
+                    `;
+                }
+
+                const selectedModel: any = await getSelectedModel();
 
                 const modelId = selectedModel.rows[0]?.id;
         
@@ -338,29 +348,53 @@ export async function updateModel(id: string, formData: any) {
                     throw new Error('Failed to retrieve model ID');
                 }
 
-                await sql`
-                    UPDATE models
-                    SET category_id = ${category.id}, brand_id = ${brand_id}, name = ${model}, image_url = ${/Back|Shifter/i.test(category.name) ? image_url_2 : image_url}, actual_width = ${/Back|Shifter/i.test(category.name) ? actual_width_2 : actual_width}, stem_x = ${stem_x}, stem_y = ${stem_y}, saddle_x = ${saddle_x}, saddle_y = ${saddle_y}, front_wheel_x = ${front_wheel_x}, front_wheel_y = ${front_wheel_y}, 
-                    back_wheel_x = ${back_wheel_x}, back_wheel_y = ${back_wheel_y}, has_stem = ${!!has_stem}, has_handle_bar = ${!!has_handle_bar}, price_sg = ${price_sg}, price_gb = ${price_gb}, price_us = ${price_us}, price_in = ${price_in}, key_metrics = ${key_metrics}, aerodynamics = ${aerodynamics}, weight = ${weight}, comfort = ${comfort}, stiffness = ${stiffness}, overall = ${overall}, 
-                    groupset_drivetrain_x = ${groupset_drivetrain_x}, groupset_drivetrain_y = ${groupset_drivetrain_y}, groupset_shifter_x = ${groupset_shifter_x}, groupset_shifter_y = ${groupset_shifter_y}, handle_bar_x = ${handle_bar_x}, handle_bar_y = ${handle_bar_y}, global_composite_operation = ${global_composite_operation}, canvas_layer_level = ${canvas_layer_level},
-                    lengths = ${JSON.parse(lengths)}, sizes = ${JSON.parse(sizes)}, ratios = ${JSON.parse(ratios)}, steerer_size = ${steerer_size}, size_chart_url = ${size_chart_url}, is_primary = ${/Back|Shifter/i.test(category.name) ? false : true}, color_name = ${color_name}, color_value = ${color_value}, linked_stem = ${checkForNull(linked_stem)}, linked_handle_bar = ${checkForNull(linked_handle_bar)}, preview_image_url = ${preview_image_url}, canvas_marker_x = ${canvas_marker_x}, canvas_marker_y = ${canvas_marker_y}
-                    WHERE id = ${modelId};
-                `
+                const modelUpdateQuery = async (modelUpdateId: string, canvasLayerImageUrl?: string, globalCompositeOperation?: string, canvasLayerLevel?: string) => {
+                    const imageUrl = /Back|Shifter/i.test(category.name) ? image_url_2 : image_url;
+                    const actualWidth = Number(/Back|Shifter/i.test(category.name) ? actual_width_2 : actual_width);
+                    const isPrimary = /Back|Shifter/i.test(category.name) ? false : true;
+                    await sql`
+                        UPDATE models
+                        SET category_id = ${category.id}, brand_id = ${brand_id}, name = ${model}, image_url = ${canvasLayerImageUrl || imageUrl}, actual_width = ${actualWidth}, stem_x = ${stem_x}, stem_y = ${stem_y}, saddle_x = ${saddle_x}, saddle_y = ${saddle_y}, front_wheel_x = ${front_wheel_x}, front_wheel_y = ${front_wheel_y}, 
+                        back_wheel_x = ${back_wheel_x}, back_wheel_y = ${back_wheel_y}, has_stem = ${!!has_stem}, has_handle_bar = ${!!has_handle_bar}, price_sg = ${price_sg}, price_gb = ${price_gb}, price_us = ${price_us}, price_in = ${price_in}, key_metrics = ${key_metrics}, aerodynamics = ${aerodynamics}, weight = ${weight}, comfort = ${comfort}, stiffness = ${stiffness}, overall = ${overall}, 
+                        groupset_drivetrain_x = ${groupset_drivetrain_x}, groupset_drivetrain_y = ${groupset_drivetrain_y}, groupset_shifter_x = ${groupset_shifter_x}, groupset_shifter_y = ${groupset_shifter_y}, handle_bar_x = ${handle_bar_x}, handle_bar_y = ${handle_bar_y}, global_composite_operation = ${globalCompositeOperation || global_composite_operation}, canvas_layer_level = ${canvasLayerLevel || canvas_layer_level},
+                        lengths = ${JSON.parse(lengths)}, sizes = ${JSON.parse(sizes)}, ratios = ${JSON.parse(ratios)}, steerer_size = ${steerer_size}, size_chart_url = ${size_chart_url}, is_primary = ${canvasLayerImageUrl ? false : isPrimary}, color_name = ${color_name}, color_value = ${color_value}, linked_stem = ${checkForNull(linked_stem)}, linked_handle_bar = ${checkForNull(linked_handle_bar)}, preview_image_url = ${preview_image_url}, canvas_marker_x = ${canvas_marker_x}, canvas_marker_y = ${canvas_marker_y}
+                        WHERE id = ${modelUpdateId};
+                    `;
+                }
+
+                await modelUpdateQuery(modelId);
         
                 // Delete existing presets mapping for the current model so that new ones can be used to overwrite them (this is only required in models update)
                 await sql`
                     DELETE FROM models_presets WHERE model_id = ${modelId};
                 `
+
+                if (!/Back|Shifter/i.test(category.name)) {
+                    // This handles layered image components therefore it gets its own component modelId from the database
+                    if (image_url_layer && global_composite_operation_2 && canvas_layer_level_2) {
+                        const layeredImageModel: any = await sql`
+                            SELECT * FROM models WHERE product_id = ${id} AND category_id = ${category.id} AND is_primary = ${false};
+                        `;
         
-                // Only insert new presets if any were selected, else don't create any presets mapping
-                if (modelsPresets.length > 0 && !/Back|Shifter/i.test(category.name)) {
-                    for (const modelPreset of modelsPresets) {
-                        const splitModelPreset = modelPreset[1].split("_");
-                        const model_id = splitModelPreset[0];
-                        const preset_id = splitModelPreset[1];
-                        await sql`
-                        INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${preset_id}::uuid);
-                        `
+                        const layeredImageModelId = layeredImageModel.rows[0]?.id;
+                
+                        if (!layeredImageModelId) {
+                            throw new Error('Failed to retrieve Layered Image model ID');
+                        }
+
+                        await modelUpdateQuery(layeredImageModelId, image_url_layer, global_composite_operation_2, canvas_layer_level_2);
+                    }
+                    
+                    // Only insert new presets if any were selected, else don't create any presets mapping
+                    if (modelsPresets.length > 0) {
+                        for (const modelPreset of modelsPresets) {
+                            const splitModelPreset = modelPreset[1].split("_");
+                            const model_id = splitModelPreset[0];
+                            const preset_id = splitModelPreset[1];
+                            await sql`
+                            INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${preset_id}::uuid);
+                            `
+                        }
                     }
                 }
         
