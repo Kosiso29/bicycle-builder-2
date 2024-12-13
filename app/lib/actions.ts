@@ -95,7 +95,7 @@ export async function createModel(formData: FormData, linkedStemFormData: any, l
             SELECT * FROM categories;
         `;
 
-        let linkedStemModelId = null, linkedHandleBarModelId = null;
+        let linkedStemModelId: any = null, linkedHandleBarModelId: any = null;
 
         if (linkedStemFormData) {
             linkedStemModelId = await createLinkedModels(linkedStemFormData, productId);
