@@ -1,4 +1,4 @@
-import Form from "@/app/components/form";
+import FormContainer from "@/app/components/form-container";
 
 export default function Page() {
 
@@ -8,7 +8,7 @@ export default function Page() {
                 Create Component
             </h1>
             <div className='bg-white w-full mt-8 rounded-lg md:p-8 py-8 px-2 h-auto'>
-                <Form />
+                <FormContainer />
             </div>
         </div>
     );

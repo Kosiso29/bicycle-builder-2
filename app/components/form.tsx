@@ -14,7 +14,7 @@ import MultipleInput from "@/app/ui/multiple-input";
 import SelectField from "@/app/ui/select-field";
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Form({ product, productModels }: { product?: any, productModels?: any }) {
+export default function Form({ product, productModels, showFormForLinkedComponents, setShowFormForLinkedComponents, linkedStemFormData, setLinkedStemFormData, linkedHandleBarFormData, setLinkedHandleBarFormData }: { product?: any, productModels?: any, showFormForLinkedComponents: string, setShowFormForLinkedComponents: Function, linkedStemFormData?: any, setLinkedStemFormData?: any, linkedHandleBarFormData?: any, setLinkedHandleBarFormData?: any }) {
     const productTypes = useSelector((state: IRootState) => state.componentsReducer.productTypes);
     const categories: any = useSelector((state: IRootState) => state.componentsReducer.categories);
     const brands = useSelector((state: IRootState) => state.componentsReducer.brands);
@@ -33,6 +33,7 @@ export default function Form({ product, productModels }: { product?: any, produc
     // We are using these to feel the subset parameters of wheels and groupsets.
     const backWheelSetCategoryId: any = (Object.entries(categories || {}) as any)?.filter((category: any) => category[1] === "Back Wheel Set")[0]?.[0];
     const groupSetCategoryId: any = (Object.entries(categories || {}) as any)?.filter((category: any) => category[1] === "Group Set - Shifter")[0]?.[0];
+    const frameSetProductTypeId: any = (Object.entries(productTypes || {}) as any)?.filter((productType: any) => productType[1] === "Frame Set")[0]?.[0];
     const wheelProductTypeId: any = (Object.entries(productTypes || {}) as any)?.filter((productType: any) => productType[1] === "Wheel")[0]?.[0];
     const groupSetProductTypeId: any = (Object.entries(productTypes || {}) as any)?.filter((productType: any) => productType[1] === "Group Set")[0]?.[0];
 
@@ -132,7 +133,7 @@ export default function Form({ product, productModels }: { product?: any, produc
     }
 
     const handleFormUpdate = (formData: any) => {
-        updateModel(product.id, formData)
+        updateModel(product.id, formData, linkedStemFormData, linkedHandleBarFormData)
             .then(() => {
                 setLoading(false);
                 toast.success("Component updated!")
@@ -146,7 +147,7 @@ export default function Form({ product, productModels }: { product?: any, produc
     }
 
     const handleFormCreation = (formData: any) => {
-        createModel(formData)
+        createModel(formData, linkedStemFormData, linkedHandleBarFormData)
             .then(() => {
                 setLoading(false);
                 toast.success("Component created!")
@@ -159,7 +160,16 @@ export default function Form({ product, productModels }: { product?: any, produc
             });
     }
 
-    const handleFormSubmission = product ? handleFormUpdate : handleFormCreation;
+    const handleLinkedComponentsSubmit = (formData: FormData) => {
+        setLoading(false);
+        const stemCategoryId = (Object.entries(categories) as any).filter((entries: any) => entries[1] === "Stem")[0][0];
+        const handleBarCategoryId = (Object.entries(categories) as any).filter((entries: any) => entries[1] === "Handle Bar")[0][0];
+        showFormForLinkedComponents === "Stem" ? formData.append("linked_component_category_id", stemCategoryId) : formData.append("linked_component_category_id", handleBarCategoryId);
+        showFormForLinkedComponents === "Stem" ? setLinkedStemFormData(formData) : setLinkedHandleBarFormData(formData);
+        setShowFormForLinkedComponents("");
+    }
+
+    const handleFormSubmission = showFormForLinkedComponents ? handleLinkedComponentsSubmit : (product ? handleFormUpdate : handleFormCreation);
 
     const showOffsets = (Object.values(categories)[0] === categories[categoryId]) || (Object.values(categories)[3] === categories[categoryId]) || Object.values(categories)[4] === categories[categoryId];
     const showFrameSetOffsets = Object.values(categories)[0] === categories[categoryId];
@@ -170,97 +180,57 @@ export default function Form({ product, productModels }: { product?: any, produc
     return (
         <form aria-describedby="form-error" action={handleFormSubmission}>
             <div className="rounded-md bg-gray-100 p-4 md:p-6">
-                <div className="flex gap-4 mb-4">
-                    {/* SKU */}
-                    <TextField name='sku' type='text' readOnly style={{ cursor: "not-allowed" }} label='SKU' value={productTypeId || brandId || model ? getSKU() : product?.sku || "--"} placeholder='SKU' fullWidth />
-                    {/* Product Type */}
-                    <div className='w-full'>
-                        <div className="mb-2 flex items-center justify-between text-sm font-medium">
-                            <label htmlFor="product_type_id">
-                                Product Type
-                            </label>
+                {
+                    !showFormForLinkedComponents && 
+                    <>
+                        <div className="flex gap-4 mb-4">
+                            {/* SKU */}
+                            <TextField name='sku' type='text' readOnly style={{ cursor: "not-allowed" }} label='SKU' value={productTypeId || brandId || model ? getSKU() : product?.sku || "--"} placeholder='SKU' fullWidth />
+                            {/* Product Type */}
+                            <div className='w-full'>
+                                <div className="mb-2 flex items-center justify-between text-sm font-medium">
+                                    <label htmlFor="product_type_id">
+                                        Product Type
+                                    </label>
+                                </div>
+                                <div className="relative">
+                                    <select
+                                        id="product_type_id"
+                                        name="product_type_id"
+                                        className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                                        value={productTypeId ?? product?.product_type_id ?? ""}
+                                        onChange={(e) => setProductTypeId(e.target.value)}
+                                        aria-describedby="product_type_id-error"
+                                    >
+                                        <option value="" disabled>
+                                            Select a product type
+                                        </option>
+                                        {
+                                            Object.entries(productTypes).map((item: any) => (
+                                                <option key={item[1]} value={item[0]}>{item[1]}</option>
+                                            ))
+                                        }
+                                    </select>
+                                    <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+                                </div>
+                            </div>
                         </div>
-                        <div className="relative">
-                            <select
-                                id="product_type_id"
-                                name="product_type_id"
-                                className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                value={productTypeId ?? product?.product_type_id ?? ""}
-                                onChange={(e) => setProductTypeId(e.target.value)}
-                                aria-describedby="product_type_id-error"
-                            >
-                                <option value="" disabled>
-                                    Select a product type
-                                </option>
-                                {
-                                    Object.entries(productTypes).map((item: any) => (
-                                        <option key={item[1]} value={item[0]}>{item[1]}</option>
-                                    ))
-                                }
-                            </select>
-                            <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+
+                        <div className="flex gap-4 mb-4">
+                            {/* Vendor */}
+                            <TextField name='vendor' type='text' defaultValue={product?.vendor} label='Vendor' placeholder='Vendor' fullWidth />
+                            {/* Buy Price US */}
+                            <TextField name='buy_price_us' step={0.01} min={0.0} defaultValue={product ? product?.buy_price_us ?? 0.00 : null} label='Buy Price USD' placeholder='Buy Price USD' fullWidth />
                         </div>
-                    </div>
-                </div>
 
-                <div className="flex gap-4 mb-4">
-                    {/* Vendor */}
-                    <TextField name='vendor' type='text' defaultValue={product?.vendor} label='Vendor' placeholder='Vendor' fullWidth />
-                    {/* Buy Price US */}
-                    <TextField name='buy_price_us' step={0.01} min={0.0} defaultValue={product ? product?.buy_price_us ?? 0.00 : null} label='Buy Price USD' placeholder='Buy Price USD' fullWidth />
-                </div>
-
-                <div className="flex gap-4 mb-4">
-                    {/* Location */}
-                    <TextField name='location' type='text' defaultValue={product?.location} label='Location' placeholder='Location' fullWidth />
-                    {/* Lead Time */}
-                    <TextField name='lead_time' type='text' defaultValue={product?.lead_time} label='Lead Time' placeholder='Lead Time' fullWidth />
-                </div>
-
-                {/* Category */}
-                {/* <div className="mb-4">
-                    <div className="mb-2 flex items-center justify-between text-sm font-medium">
-                        <label htmlFor="category_id">
-                            Category
-                        </label>
-                        <div className="flex items-center gap-2">
-                            <label
-                                htmlFor="is_primary"
-                                className="flex cursor-pointer items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-white"
-                            >
-                                Primary
-                            </label>
-                            <input
-                                id="is_primary"
-                                name="is_primary"
-                                type="checkbox"
-                                defaultChecked={model?.is_primary ?? true}
-                                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 accent-primary"
-                                aria-describedby={`is_primary-error`}
-                            />
+                        <div className="flex gap-4 mb-4">
+                            {/* Location */}
+                            <TextField name='location' type='text' defaultValue={product?.location} label='Location' placeholder='Location' fullWidth />
+                            {/* Lead Time */}
+                            <TextField name='lead_time' type='text' defaultValue={product?.lead_time} label='Lead Time' placeholder='Lead Time' fullWidth />
                         </div>
-                    </div>
-                    <div className="relative">
-                        <select
-                            id="category_id"
-                            name="category_id"
-                            className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                            value={categoryId ?? model?.category_id ?? ""}
-                            onChange={(e) => setCategoryId(e.target.value)}
-                            aria-describedby="category_id-error"
-                        >
-                            <option value="" disabled>
-                                Select a category
-                            </option>
-                            {
-                                Object.entries(categories).map((item: any) => (
-                                    <option key={item[1]} value={item[0]}>{item[1]}</option>
-                                ))
-                            }
-                        </select>
-                        <TimerOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                    </div>
-                </div> */}
+                    </>
+                }
 
                 {/* Brand */}
                 <div className="mb-4">
@@ -394,25 +364,44 @@ export default function Form({ product, productModels }: { product?: any, produc
                 {/* Ratio */}
                 <MultipleInput initialItems={model?.ratios} title='Ratio values' buttonText={<>Add&nbsp;Ratio</>} name='ratios' placeholder='Ratio values' />
 
-                <div className="flex gap-5">
-                    {/* Linked Stem */}
-                    <SelectField name='linked_stem' label='Linked Stem' defaultValue={model?.linked_stem || ""} placeholder='None' placeholderDisabled={false}>
-                        {
-                            models.filter((item: any) => item.category === "Stem" && item.is_primary).map((item: any) => (
-                                <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
-                            ))
-                        }
-                    </SelectField>
+                {
+                    frameSetProductTypeId === productTypeId && 
+                    <div className="flex gap-5 mb-4">
+                        {/* Linked Stem */}
+                        {/* <SelectField name='linked_stem' label='Linked Stem' defaultValue={model?.linked_stem || ""} placeholder='None' placeholderDisabled={false}>
+                            {
+                                models.filter((item: any) => item.category === "Stem" && item.is_primary).map((item: any) => (
+                                    <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
+                                ))
+                            }
+                        </SelectField> */}
+                        <button
+                            className="flex h-10 w-full items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                            onClick={() => setShowFormForLinkedComponents("Stem")}
+                            disabled={user.permission > 1}
+                            type='button'
+                        >
+                            <span className="hidden md:block">Linked Stem</span>
+                        </button>
+                        <button
+                            className="flex h-10 w-full items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                            onClick={() => setShowFormForLinkedComponents("Handle Bar")}
+                            disabled={user.permission > 1}
+                            type='button'
+                        >
+                            <span className="hidden md:block">Linked Handlebar</span>
+                        </button>
 
-                    {/* Linked Handle Bar */}
-                    <SelectField name='linked_handle_bar' label='Linked Handle Bar' defaultValue={model?.linked_handle_bar || ""} placeholder='None' placeholderDisabled={false}>
-                        {
-                            models.filter((item: any) => item.category === "Handle Bar" && item.is_primary).map((item: any) => (
-                                <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
-                            ))
-                        }
-                    </SelectField>
-                </div>
+                        {/* Linked Handle Bar */}
+                        {/* <SelectField name='linked_handle_bar' label='Linked Handle Bar' defaultValue={model?.linked_handle_bar || ""} placeholder='None' placeholderDisabled={false}>
+                            {
+                                models.filter((item: any) => item.category === "Handle Bar" && item.is_primary).map((item: any) => (
+                                    <option key={item.model} value={item.id}>{item.brand + " - " + item.model}</option>
+                                ))
+                            }
+                        </SelectField> */}
+                    </div>
+                }
 
                 {/* Steerer Size */}
                 <TextField name='steerer_size' type='text' defaultValue={model?.steerer_size} label='Steerer Size' placeholder='Steerer Size' fullWidth />
@@ -654,19 +643,42 @@ export default function Form({ product, productModels }: { product?: any, produc
                 }
             </div >
             <div className="mt-6 flex justify-end gap-4">
-                <Link
-                    href="/dashboard/components"
-                    className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-                >
-                    Cancel
-                </Link>
-                <button
-                    className="flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={() => setLoading(true)}
-                    disabled={user.permission > 1}
-                >
-                    <span className="hidden md:block">{product ? "Update Component" : "Create Component"}</span>
-                </button>
+                {
+                    showFormForLinkedComponents ?
+                    <button
+                        className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+                        onClick={(e) => { e.preventDefault(); setShowFormForLinkedComponents("") }}
+                        disabled={user.permission > 1}
+                        type='button'
+                    >
+                        Cancel
+                    </button> :
+                    <Link
+                        href="/dashboard/components"
+                        className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+                    >
+                        Cancel
+                    </Link>
+                }
+                {
+                    showFormForLinkedComponents ?
+                    <button
+                        className="flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={() => setLoading(true)}
+                        disabled={user.permission > 1}
+                        type='submit'
+                    >
+                        <span className="hidden md:block">Link</span>
+                    </button> :
+                    <button
+                        className="flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={() => setLoading(true)}
+                        disabled={user.permission > 1}
+                        type='submit'
+                    >
+                        <span className="hidden md:block">{product ? "Update Component" : "Create Component"}</span>
+                    </button>
+                }
                 {
                     loading ? <div className='self-center'><Loading small /></div> : null
                 }
