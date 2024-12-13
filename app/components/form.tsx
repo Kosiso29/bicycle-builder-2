@@ -14,7 +14,7 @@ import MultipleInput from "@/app/ui/multiple-input";
 import SelectField from "@/app/ui/select-field";
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Form({ product, productModels, showFormForLinkedComponents, setShowFormForLinkedComponents, linkedStemFormData, setLinkedStemFormData, linkedHandleBarFormData, setLinkedHandleBarFormData }: { product?: any, productModels?: any, showFormForLinkedComponents: string, setShowFormForLinkedComponents: Function, linkedStemFormData?: any, setLinkedStemFormData?: any, linkedHandleBarFormData?: any, setLinkedHandleBarFormData?: any }) {
+export default function Form({ product, productModels, showFormForLinkedComponents, setShowFormForLinkedComponents, linkedStemFormData, setLinkedStemFormData, linkedHandleBarFormData, setLinkedHandleBarFormData }: { product?: any, productModels?: any, showFormForLinkedComponents?: string, setShowFormForLinkedComponents?: Function, linkedStemFormData?: any, setLinkedStemFormData?: any, linkedHandleBarFormData?: any, setLinkedHandleBarFormData?: any }) {
     const productTypes = useSelector((state: IRootState) => state.componentsReducer.productTypes);
     const categories: any = useSelector((state: IRootState) => state.componentsReducer.categories);
     const brands = useSelector((state: IRootState) => state.componentsReducer.brands);
@@ -166,7 +166,9 @@ export default function Form({ product, productModels, showFormForLinkedComponen
         const handleBarCategoryId = (Object.entries(categories) as any).filter((entries: any) => entries[1] === "Handle Bar")[0][0];
         showFormForLinkedComponents === "Stem" ? formData.append("linked_component_category_id", stemCategoryId) : formData.append("linked_component_category_id", handleBarCategoryId);
         showFormForLinkedComponents === "Stem" ? setLinkedStemFormData(formData) : setLinkedHandleBarFormData(formData);
-        setShowFormForLinkedComponents("");
+        if (setShowFormForLinkedComponents) {
+            setShowFormForLinkedComponents("");
+        }
     }
 
     const handleFormSubmission = showFormForLinkedComponents ? handleLinkedComponentsSubmit : (product ? handleFormUpdate : handleFormCreation);
@@ -377,7 +379,7 @@ export default function Form({ product, productModels, showFormForLinkedComponen
                         </SelectField> */}
                         <button
                             className="flex h-10 w-full items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={() => setShowFormForLinkedComponents("Stem")}
+                            onClick={() => setShowFormForLinkedComponents && setShowFormForLinkedComponents("Stem")}
                             disabled={user.permission > 1}
                             type='button'
                         >
@@ -385,7 +387,7 @@ export default function Form({ product, productModels, showFormForLinkedComponen
                         </button>
                         <button
                             className="flex h-10 w-full items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={() => setShowFormForLinkedComponents("Handle Bar")}
+                            onClick={() => setShowFormForLinkedComponents && setShowFormForLinkedComponents("Handle Bar")}
                             disabled={user.permission > 1}
                             type='button'
                         >
@@ -647,7 +649,7 @@ export default function Form({ product, productModels, showFormForLinkedComponen
                     showFormForLinkedComponents ?
                     <button
                         className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-                        onClick={(e) => { e.preventDefault(); setShowFormForLinkedComponents("") }}
+                        onClick={(e) => { e.preventDefault(); setShowFormForLinkedComponents && setShowFormForLinkedComponents("") }}
                         disabled={user.permission > 1}
                         type='button'
                     >
