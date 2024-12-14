@@ -1,5 +1,6 @@
 import Form from "@/app/components/form";
 import { fetchProductById, fetchModelsByProductId } from "@/app/lib/data";
+import FormContainer from "@/app/components/form-container";
 
 export default async function Page({ params }: { params: { id: string } }) {
 
@@ -8,12 +9,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
     return (
         <div>
-            <h1 className='text-4xl text-primary'>
-                Edit Component
-            </h1>
-            <div className='bg-white w-full mt-8 rounded-lg md:p-8 py-8 px-2 h-auto'>
-                <Form product={product} productModels={productModels} />
-            </div>
+            <FormContainer product={product} productModels={productModels} />
         </div>
     );
 }

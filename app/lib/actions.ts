@@ -333,6 +333,31 @@ export async function createAccessories(formData: any) {
     revalidatePath('/dashboard/components');
 }
 
+export async function updateLinkedModels(formData: FormData, linkedComponentId: string) { 
+    const formDataObject: any = {};
+
+    formData.forEach((value: any, key: any) => {
+        formDataObject[key] = value;
+    });
+
+    const { category_id, brand_id, model, image_url, image_url_2, image_url_layer, actual_width, actual_width_2, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y,
+        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall,
+        groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level, global_composite_operation_2, canvas_layer_level_2,
+        lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, color_props, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y,
+        ////////////////////////////////////////////////// products props /////////////////////////////////////////////////////////////////
+        sku, product_type_id, vendor, buy_price_us, location, lead_time, linked_component_category_id
+    } = formDataObject;
+
+    await sql`
+        UPDATE models
+        SET category_id = ${linked_component_category_id}, brand_id = ${brand_id}, name = ${model}, image_url = ${image_url}, actual_width = ${actual_width}, stem_x = ${stem_x}, stem_y = ${stem_y}, saddle_x = ${saddle_x}, saddle_y = ${saddle_y}, front_wheel_x = ${front_wheel_x}, front_wheel_y = ${front_wheel_y}, 
+        back_wheel_x = ${back_wheel_x}, back_wheel_y = ${back_wheel_y}, has_stem = ${!!has_stem}, has_handle_bar = ${!!has_handle_bar}, price_sg = ${price_sg}, price_gb = ${price_gb}, price_us = ${price_us}, price_in = ${price_in}, key_metrics = ${key_metrics}, aerodynamics = ${aerodynamics}, weight = ${weight}, comfort = ${comfort}, stiffness = ${stiffness}, overall = ${overall}, 
+        groupset_drivetrain_x = ${groupset_drivetrain_x}, groupset_drivetrain_y = ${groupset_drivetrain_y}, groupset_shifter_x = ${groupset_shifter_x}, groupset_shifter_y = ${groupset_shifter_y}, handle_bar_x = ${handle_bar_x}, handle_bar_y = ${handle_bar_y}, global_composite_operation = ${global_composite_operation}, canvas_layer_level = ${canvas_layer_level},
+        lengths = ${JSON.parse(lengths)}, sizes = ${JSON.parse(sizes)}, ratios = ${JSON.parse(ratios)}, steerer_size = ${steerer_size}, size_chart_url = ${size_chart_url}, is_primary = ${false}, color_name = ${color_name}, color_value = ${color_value}, linked_stem = ${checkForNull(linked_stem)}, linked_handle_bar = ${checkForNull(linked_handle_bar)}, preview_image_url = ${preview_image_url}, canvas_marker_x = ${canvas_marker_x}, canvas_marker_y = ${canvas_marker_y}
+        WHERE id = ${linkedComponentId};
+    `;
+}
+
 export async function updateModel(id: string, formData: any, linkedStemFormData: any, linkedHandleBarFormData: any) {
     const formDataObject: any = {};
 
@@ -372,6 +397,14 @@ export async function updateModel(id: string, formData: any, linkedStemFormData:
         const categories: any = await sql`
             SELECT * FROM categories;
         `;
+
+        if (linkedStemFormData) {
+            await updateLinkedModels(linkedStemFormData, linked_stem);
+        }
+    
+        if (linkedHandleBarFormData) {
+            await updateLinkedModels(linkedHandleBarFormData, linked_handle_bar);
+        }
         
         for (const category of categories.rows) {
             if (category.name.includes(productTypeName)) {

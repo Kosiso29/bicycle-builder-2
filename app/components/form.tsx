@@ -23,7 +23,7 @@ export default function Form({ product, productModels, showFormForLinkedComponen
     const colors = useSelector((state: IRootState) => state.componentsReducer.colors);
     const models = useSelector((state: IRootState) => state.componentsReducer.models);
     const user = useSelector((state: any) => state.authReducer.user);
-    const model: any = product && productModels?.filter(((item: any) => item.is_primary))[0];
+    const model: any = setLinkedStemFormData || setLinkedHandleBarFormData ? product : product && productModels?.filter(((item: any) => item.is_primary))[0];
     const [productTypeId, setProductTypeId] = useState(product?.product_type_id || "");
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [brandId, setBrandId] = useState(model?.brand_id || "");
@@ -90,7 +90,6 @@ export default function Form({ product, productModels, showFormForLinkedComponen
     }
 
     const getCanvasLayerData = (property: string) => {
-        console.log('canvasLayerData', productModels?.filter(((item: any) => (item.category_id === categoryId) && !item.is_primary))[0]?.[property])
         return productModels?.filter(((item: any) => (item.category_id === categoryId) && !item.is_primary))[0]?.[property]
     }
 
@@ -377,6 +376,7 @@ export default function Form({ product, productModels, showFormForLinkedComponen
                                 ))
                             }
                         </SelectField> */}
+                        <input type="hidden" name="linked_stem" value={model?.linked_stem || ""} />
                         <button
                             className="flex h-10 w-full items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={() => setShowFormForLinkedComponents && setShowFormForLinkedComponents("Stem")}
@@ -385,6 +385,7 @@ export default function Form({ product, productModels, showFormForLinkedComponen
                         >
                             <span className="hidden md:block">Linked Stem</span>
                         </button>
+                        <input type="hidden" name="linked_handle_bar" value={model?.linked_handle_bar || ""} />
                         <button
                             className="flex h-10 w-full items-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition-colors hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={() => setShowFormForLinkedComponents && setShowFormForLinkedComponents("Handle Bar")}
