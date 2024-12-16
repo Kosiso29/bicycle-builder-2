@@ -14,7 +14,7 @@ import MultipleInput from "@/app/ui/multiple-input";
 import SelectField from "@/app/ui/select-field";
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Form({ product, productModels, showFormForLinkedComponents, setShowFormForLinkedComponents, linkedStemFormData, setLinkedStemFormData, linkedHandleBarFormData, setLinkedHandleBarFormData }: { product?: any, productModels?: any, showFormForLinkedComponents?: string, setShowFormForLinkedComponents?: Function, linkedStemFormData?: any, setLinkedStemFormData?: any, linkedHandleBarFormData?: any, setLinkedHandleBarFormData?: any }) {
+export default function Form({ product, productModels, showFormForLinkedComponents, setShowFormForLinkedComponents, linkedStemFormData, setLinkedStemFormData, linkedHandleBarFormData, setLinkedHandleBarFormData, linkedComponentProduct }: { product?: any, productModels?: any, showFormForLinkedComponents?: string, setShowFormForLinkedComponents?: Function, linkedStemFormData?: any, setLinkedStemFormData?: any, linkedHandleBarFormData?: any, setLinkedHandleBarFormData?: any, linkedComponentProduct?: any }) {
     const productTypes = useSelector((state: IRootState) => state.componentsReducer.productTypes);
     const categories: any = useSelector((state: IRootState) => state.componentsReducer.categories);
     const brands = useSelector((state: IRootState) => state.componentsReducer.brands);
@@ -23,7 +23,7 @@ export default function Form({ product, productModels, showFormForLinkedComponen
     const colors = useSelector((state: IRootState) => state.componentsReducer.colors);
     const models = useSelector((state: IRootState) => state.componentsReducer.models);
     const user = useSelector((state: any) => state.authReducer.user);
-    const model: any = setLinkedStemFormData || setLinkedHandleBarFormData ? product : product && productModels?.filter(((item: any) => item.is_primary))[0];
+    const model: any = linkedComponentProduct ? linkedComponentProduct : product && productModels?.filter(((item: any) => item.is_primary))[0];
     const [productTypeId, setProductTypeId] = useState(product?.product_type_id || "");
     const [categoryId, setCategoryId] = useState(model?.category_id || "");
     const [brandId, setBrandId] = useState(model?.brand_id || "");

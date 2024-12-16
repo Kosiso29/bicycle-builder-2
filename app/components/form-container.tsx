@@ -12,10 +12,15 @@ export default function FormContainer(props: any) {
     const categories = useSelector((state: IRootState) => state.componentsReducer.categories);
     const { product, productModels } = props;
     const action = product ? "Edit" : "Create";
-    const linkedStemProduct = productModels.filter((productModel: any) => categories[productModel.category_id] === "Stem")[0];
-    const linkedHandleBarProduct = productModels.filter((productModel: any) => categories[productModel.category_id] === "Handle Bar")[0];
-    const linkedStemComponentProps = { product: linkedStemProduct, productModels };
-    const linkedHandleBarComponentProps = { product: linkedHandleBarProduct, productModels };
+    let linkedFrameComponentProps = null, linkedStemComponentProps = null, linkedHandleBarComponentProps = null;
+    const linkedFrameProduct = productModels.filter((productModel: any) => categories[productModel.category_id] === "Frame Set")[0];
+    if (linkedFrameProduct) {
+        const linkedStemProduct = productModels.filter((productModel: any) => categories[productModel.category_id] === "Stem")[0];
+        const linkedHandleBarProduct = productModels.filter((productModel: any) => categories[productModel.category_id] === "Handle Bar")[0];
+        linkedFrameComponentProps = { linkedComponentProduct: linkedFrameProduct };
+        linkedStemComponentProps = { product: linkedStemProduct, linkedComponentProduct: linkedStemProduct, productModels };
+        linkedHandleBarComponentProps = { product: linkedHandleBarProduct, linkedComponentProduct: linkedHandleBarProduct, productModels };
+    }
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -28,7 +33,7 @@ export default function FormContainer(props: any) {
                     {action} Component
                 </h1>
                 <div className='bg-white w-full mt-8 rounded-lg md:p-8 py-8 px-2 h-auto'>
-                    <Form key="Form1" linkedStemFormData={linkedStemFormData} linkedHandleBarFormData={linkedHandleBarFormData} showFormForLinkedComponents={showFormForLinkedComponents} setShowFormForLinkedComponents={setShowFormForLinkedComponents} { ...props } /> :
+                    <Form key="Form1" linkedStemFormData={linkedStemFormData} linkedHandleBarFormData={linkedHandleBarFormData} showFormForLinkedComponents={showFormForLinkedComponents} setShowFormForLinkedComponents={setShowFormForLinkedComponents} { ...props } { ...linkedFrameComponentProps } /> :
                 </div>
             </div>
             <div style={{ display: showFormForLinkedComponents === "Stem" ? "block" : "none" }}>
