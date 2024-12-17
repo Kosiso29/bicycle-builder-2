@@ -13,13 +13,13 @@ export default function FormContainer(props: any) {
     const { product, productModels } = props;
     const action = product ? "Edit" : "Create";
     let linkedFrameComponentProps = null, linkedStemComponentProps = null, linkedHandleBarComponentProps = null;
-    const linkedFrameProduct = productModels.filter((productModel: any) => categories[productModel.category_id] === "Frame Set")[0];
-    if (linkedFrameProduct) {
-        const linkedStemProduct = productModels.filter((productModel: any) => categories[productModel.category_id] === "Stem")[0];
-        const linkedHandleBarProduct = productModels.filter((productModel: any) => categories[productModel.category_id] === "Handle Bar")[0];
-        linkedFrameComponentProps = { linkedComponentProduct: linkedFrameProduct };
-        linkedStemComponentProps = { product: linkedStemProduct, linkedComponentProduct: linkedStemProduct, productModels };
-        linkedHandleBarComponentProps = { product: linkedHandleBarProduct, linkedComponentProduct: linkedHandleBarProduct, productModels };
+    const linkedFrameProductModel = productModels?.filter((productModel: any) => categories[productModel.category_id] === "Frame Set")[0];
+    if (linkedFrameProductModel) {
+        const linkedStemProductModel = productModels.filter((productModel: any) => categories[productModel.category_id] === "Stem")[0];
+        const linkedHandleBarProductModel = productModels.filter((productModel: any) => categories[productModel.category_id] === "Handle Bar")[0];
+        linkedFrameComponentProps = { linkedComponentModel: linkedFrameProductModel };
+        linkedStemComponentProps = { product: linkedStemProductModel, linkedComponentModel: linkedStemProductModel, productModels };
+        linkedHandleBarComponentProps = { product: linkedHandleBarProductModel, linkedComponentModel: linkedHandleBarProductModel, productModels };
     }
 
     useEffect(() => {
