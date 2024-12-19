@@ -68,13 +68,16 @@ export async function fetchModels(): Promise<Models> {
             m.color_name,
             m.color_value,
             m.linked_stem,
-            m.linked_handle_bar
+            m.linked_handle_bar,
+            p.enabled
         FROM
             categories c1
         JOIN
             models m ON c1.id = m.category_id
         JOIN
             brands b ON m.brand_id = b.id
+        JOIN
+            products p ON m.product_id = p.id
         LEFT JOIN
             categories c2 ON m.canvas_layer_level = c2.id 
         ORDER BY
@@ -83,7 +86,7 @@ export async function fetchModels(): Promise<Models> {
         const models: any = data.rows.map((model: QueryResultRow) => ({
             ...model,
             price: model[priceColumn]
-        }));
+        })).filter((model: QueryResultRow) => model.enabled);
         return models;
     } catch (error) {
         console.error('Database Error:', error);
@@ -109,7 +112,8 @@ export async function fetchProducts(): Promise<Models> {
             p.sell_price_gb,
             p.sell_price_in,
             p.location,
-            p.lead_time
+            p.lead_time,
+            p.enabled
         FROM
             product_types pt
         JOIN

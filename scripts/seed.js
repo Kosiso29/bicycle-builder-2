@@ -553,15 +553,14 @@ async function autoCalculateRatings(client) {
 async function addColumns(client) {
     try {
         const addColumn = await client.sql`
-            ALTER TABLE models
-            ADD COLUMN product_id UUID,
-            ADD CONSTRAINT fk_product_id_products
-            FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE;
+            ALTER TABLE products DROP COLUMN disabled;
+            ALTER TABLE products
+            ADD COLUMN enabled BOOLEAN DEFAULT true;
         `
 
-        const modelsTable = await client.sql`SELECT * FROM models;`;
+        const modelsTable = await client.sql`SELECT * FROM products;`;
 
-        console.log(`Created columns in models`, modelsTable.rows);
+        console.log(`Created columns in products`, modelsTable.rows);
 
         return {
             addColumn,

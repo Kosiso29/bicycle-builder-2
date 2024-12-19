@@ -90,7 +90,7 @@ export async function createModel(formData: FormData, linkedStemFormData: any, l
         groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level, global_composite_operation_2, canvas_layer_level_2,
         lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, color_props, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y,
         ////////////////////////////////////////////////// products props /////////////////////////////////////////////////////////////////
-        sku, product_type_id, vendor, buy_price_us, location, lead_time
+        sku, product_type_id, vendor, buy_price_us, location, lead_time, enabled
     } = formDataObject;
 
     const modelsPresets: any = Object.entries(formDataObject).filter(item => item[0].includes("preset_"));
@@ -103,10 +103,10 @@ export async function createModel(formData: FormData, linkedStemFormData: any, l
         // Insert into products table
         await client.query(
             `
-            INSERT INTO products (sku, product_type_id, vendor, buy_price_us, sell_price_sg, sell_price_us, sell_price_gb, sell_price_in, location, lead_time)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-          `,
-            [sku, product_type_id, vendor, buy_price_us, price_sg, price_us, price_gb, price_in, location, lead_time]
+                INSERT INTO products (sku, product_type_id, vendor, buy_price_us, sell_price_sg, sell_price_us, sell_price_gb, sell_price_in, location, lead_time, enabled)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+            `,
+            [sku, product_type_id, vendor, buy_price_us, price_sg, price_us, price_gb, price_in, location, lead_time, !!enabled]
         );
 
         // Select from products
@@ -443,7 +443,7 @@ export async function updateModel(id: string, formData: any, linkedStemFormData:
         groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level, global_composite_operation_2, canvas_layer_level_2,
         lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, color_props, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y,
         ////////////////////////////////////////////////// products props /////////////////////////////////////////////////////////////////
-        sku, product_type_id, vendor, buy_price_us, location, lead_time
+        sku, product_type_id, vendor, buy_price_us, location, lead_time, enabled
     } = formDataObject;
 
 
@@ -451,7 +451,7 @@ export async function updateModel(id: string, formData: any, linkedStemFormData:
     try {
         await sql`
             UPDATE products
-            SET sku = ${sku}, product_type_id = ${product_type_id}, vendor = ${vendor}, buy_price_us = ${buy_price_us}, sell_price_sg = ${price_sg}, sell_price_us = ${price_us}, sell_price_gb = ${price_gb}, sell_price_in = ${price_in}, location = ${location}, lead_time = ${lead_time}
+            SET sku = ${sku}, product_type_id = ${product_type_id}, vendor = ${vendor}, buy_price_us = ${buy_price_us}, sell_price_sg = ${price_sg}, sell_price_us = ${price_us}, sell_price_gb = ${price_gb}, sell_price_in = ${price_in}, location = ${location}, lead_time = ${lead_time}, enabled = ${!!enabled}
             WHERE id = ${id};
         `
 

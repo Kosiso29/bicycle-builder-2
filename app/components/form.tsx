@@ -30,12 +30,16 @@ export default function Form({ product, productModels, showFormForLinkedComponen
     const [modelValue, setModelValue] = useState(model?.name || "");
     const [loading, setLoading] = useState(false);
     const [colorItems, setColorItems] = useState<any>([]);
-    // We are using these to feel the subset parameters of wheels and groupsets.
+    const [isToggled, setIsToggled] = useState(product?.enabled ?? false);
+
+    // We are using these to fill the subset parameters of wheels and groupsets.
     const backWheelSetCategoryId: any = (Object.entries(categories || {}) as any)?.filter((category: any) => category[1] === "Back Wheel Set")[0]?.[0];
     const groupSetCategoryId: any = (Object.entries(categories || {}) as any)?.filter((category: any) => category[1] === "Group Set - Shifter")[0]?.[0];
     const frameSetProductTypeId: any = (Object.entries(productTypes || {}) as any)?.filter((productType: any) => productType[1] === "Frame Set")[0]?.[0];
     const wheelProductTypeId: any = (Object.entries(productTypes || {}) as any)?.filter((productType: any) => productType[1] === "Wheel")[0]?.[0];
     const groupSetProductTypeId: any = (Object.entries(productTypes || {}) as any)?.filter((productType: any) => productType[1] === "Group Set")[0]?.[0];
+
+    console.log('enabled', product?.enabled);
 
     const addModelColors = () => {
         setColorItems((prevState: any) => [...prevState, { name: "", value: "", image_url: "", image_url_2: "", price_sg: "", price_gb: "", price_us: "", price_in: "" }])
@@ -197,6 +201,29 @@ export default function Form({ product, productModels, showFormForLinkedComponen
                                     <label htmlFor="product_type_id">
                                         Product Type
                                     </label>
+                                    <div className="flex items-center gap-2">
+                                        <label
+                                            className=""
+                                        >
+                                            {isToggled ? "Enabled" : "Disabled"}
+                                        </label>
+                                        <div className="flex items-center">
+                                            <input name='enabled' type='checkbox' className='hidden' checked={isToggled  ?? false} />
+                                            <button
+                                                onClick={() => setIsToggled((prevState: boolean) => !prevState)}
+                                                className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${
+                                                    isToggled ? "bg-primary" : "bg-back-color"
+                                                }`}
+                                                type='button'
+                                            >
+                                                <span
+                                                    className={`absolute top-1/2 transform -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                                                        isToggled ? "translate-x-1" : "-translate-x-4"
+                                                    }`}
+                                                ></span>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="relative">
                                     <select
