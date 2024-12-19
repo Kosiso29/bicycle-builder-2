@@ -5,11 +5,37 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from "next/navigation";
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import { Pool } from 'pg';
+
+const pool = new Pool({
+    connectionString: process.env.POSTGRES_URL,
+});
 
 
 const checkForNull = (value: string) => value === "" ? null : value
 
-export async function createLinkedModels(formData: FormData, productId: string) { 
+const executeParameterizedQuery = async (modelData: any, client: any, dataTable: string) => {
+
+    // Extract columns and values
+    const columns = Object.keys(modelData);
+    const values = Object.values(modelData).map((value) =>
+        value === undefined || value === "" ? null : value
+    );
+
+    // Generate placeholders for parameterized query
+    const placeholders = columns.map((_, index) => `$${index + 1}`).join(", ");
+
+    // Create the query string
+    const query = `
+        INSERT INTO ${dataTable} (${columns.join(", ")})
+        VALUES (${placeholders});
+    `;
+
+    // Execute the query with parameterized values
+    await client.query(query, values);
+}
+
+export async function createLinkedModels(formData: FormData, productId: string, client: any) {
     const formDataObject: any = {};
 
     formData.forEach((value: any, key: any) => {
@@ -24,20 +50,24 @@ export async function createLinkedModels(formData: FormData, productId: string) 
         sku, product_type_id, vendor, buy_price_us, location, lead_time, linked_component_category_id
     } = formDataObject;
 
-    await sql`
-        INSERT INTO models (category_id, brand_id, product_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
-        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
-        groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
-        lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y)
-        VALUES (${linked_component_category_id}, ${brand_id}, ${productId}, ${model}, ${image_url}, ${actual_width}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
-        ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price_sg}, ${price_gb}, ${price_us}, ${price_in}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
-        ${groupset_drivetrain_x}, ${groupset_drivetrain_y}, ${groupset_shifter_x}, ${groupset_shifter_y}, ${handle_bar_x}, ${handle_bar_y}, ${global_composite_operation}, ${canvas_layer_level},
-        ${JSON.parse(lengths)}, ${JSON.parse(sizes)}, ${JSON.parse(ratios)}, ${steerer_size}, ${size_chart_url}, ${false}, ${color_name}, ${color_value}, ${checkForNull(linked_stem)}, ${checkForNull(linked_handle_bar)}, ${preview_image_url}, ${canvas_marker_x}, ${canvas_marker_y})
-    `;
-    
-    const selectedModelId = await sql`
-        SELECT * FROM models WHERE product_id = ${productId} AND category_id = ${linked_component_category_id} AND is_primary = ${false};
-    `;
+    const modelData = {
+        category_id: linked_component_category_id, brand_id, product_id: productId, name: model, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, back_wheel_x, back_wheel_y,
+        has_stem: !!has_stem, has_handle_bar: !!has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall, groupset_drivetrain_x, groupset_drivetrain_y,
+        groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
+        lengths: JSON.parse(lengths) || [], sizes: JSON.parse(sizes) || [], ratios: JSON.parse(ratios) || [],
+        steerer_size, size_chart_url, is_primary: true, color_name, color_value, linked_stem: checkForNull(linked_stem), linked_handle_bar: checkForNull(linked_handle_bar),
+        preview_image_url, canvas_marker_x, canvas_marker_y,
+    };
+
+    await executeParameterizedQuery(modelData, client, "models");
+
+    // Select from models table
+    const selectedModelId = await client.query(
+        `
+            SELECT * FROM models WHERE product_id = $1 AND category_id = $2 AND is_primary = $3;
+        `,
+        [productId, linked_component_category_id, true]
+    );
 
     const modelId = selectedModelId.rows[0]?.id;
 
@@ -65,15 +95,27 @@ export async function createModel(formData: FormData, linkedStemFormData: any, l
 
     const modelsPresets: any = Object.entries(formDataObject).filter(item => item[0].includes("preset_"));
 
-    try {
-        await sql`
-            INSERT INTO products (sku, product_type_id, vendor, buy_price_us, sell_price_sg, sell_price_us, sell_price_gb, sell_price_in, location, lead_time)
-            VALUES (${sku}, ${product_type_id}, ${vendor}, ${buy_price_us}, ${price_sg}, ${price_us}, ${price_gb}, ${price_in}, ${location}, ${lead_time})
-        `;
+    const client = await pool.connect();
 
-        const selectedProduct: any = await sql`
-            SELECT * FROM products WHERE sku = ${sku};
-        `;
+    try {
+        await client.query('BEGIN');
+
+        // Insert into products table
+        await client.query(
+            `
+            INSERT INTO products (sku, product_type_id, vendor, buy_price_us, sell_price_sg, sell_price_us, sell_price_gb, sell_price_in, location, lead_time)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+          `,
+            [sku, product_type_id, vendor, buy_price_us, price_sg, price_us, price_gb, price_in, location, lead_time]
+        );
+
+        // Select from products
+        const selectedProduct = await client.query(
+            `
+            SELECT * FROM products WHERE sku = $1;
+          `,
+            [sku]
+        );
 
         const productId = selectedProduct.rows[0]?.id;
 
@@ -81,9 +123,13 @@ export async function createModel(formData: FormData, linkedStemFormData: any, l
             throw new Error('Failed to retrieve product ID');
         }
 
-        const selectedProductType: any = await sql`
-            SELECT * FROM product_types WHERE id = ${product_type_id};
-        `;
+        // Select from product_types
+        const selectedProductType = await client.query(
+            `
+                SELECT * FROM product_types WHERE id = $1;
+            `,
+            [product_type_id]
+        );
 
         const productTypeName = selectedProductType.rows[0]?.name;
 
@@ -91,20 +137,22 @@ export async function createModel(formData: FormData, linkedStemFormData: any, l
             throw new Error('Failed to retrieve product type');
         }
 
-        const categories: any = await sql`
+        // Select from categories
+        const categories = await client.query(`
             SELECT * FROM categories;
-        `;
+        `);
 
-        let linkedStemModelId: any = null, linkedHandleBarModelId: any = null;
+        let linkedStemModelId = null;
+        let linkedHandleBarModelId = null;
 
         if (linkedStemFormData) {
-            linkedStemModelId = await createLinkedModels(linkedStemFormData, productId);
+            linkedStemModelId = await createLinkedModels(linkedStemFormData, productId, client);
         }
-    
+
         if (linkedHandleBarFormData) {
-            linkedHandleBarModelId = await createLinkedModels(linkedHandleBarFormData, productId);
+            linkedHandleBarModelId = await createLinkedModels(linkedHandleBarFormData, productId, client);
         }
-        
+
         for (const category of categories.rows) {
             if (category.name.includes(productTypeName)) {
 
@@ -112,23 +160,27 @@ export async function createModel(formData: FormData, linkedStemFormData: any, l
                     const imageUrl = /Back|Shifter/i.test(category.name) ? image_url_2 : image_url;
                     const actualWidth = Number(/Back|Shifter/i.test(category.name) ? actual_width_2 : actual_width);
                     const isPrimary = /Back|Shifter/i.test(category.name) ? false : true;
-                    await sql`
-                        INSERT INTO models (category_id, brand_id, product_id, name, image_url, actual_width, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, 
-                        back_wheel_x, back_wheel_y, has_stem, has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall, 
-                        groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y, global_composite_operation, canvas_layer_level,
-                        lengths, sizes, ratios, steerer_size, size_chart_url, is_primary, color_name, color_value, linked_stem, linked_handle_bar, preview_image_url, canvas_marker_x, canvas_marker_y)
-                        VALUES (${category.id}, ${brand_id}, ${productId}, ${model}, ${canvasLayerImageUrl || imageUrl}, ${actualWidth}, ${stem_x}, ${stem_y}, ${saddle_x}, ${saddle_y}, ${front_wheel_x}, ${front_wheel_y}, 
-                        ${back_wheel_x}, ${back_wheel_y}, ${!!has_stem}, ${!!has_handle_bar}, ${price_sg}, ${price_gb}, ${price_us}, ${price_in}, ${key_metrics}, ${aerodynamics}, ${weight}, ${comfort}, ${stiffness}, ${overall}, 
-                        ${groupset_drivetrain_x}, ${groupset_drivetrain_y}, ${groupset_shifter_x}, ${groupset_shifter_y}, ${handle_bar_x}, ${handle_bar_y}, ${globalCompositeOperation || global_composite_operation}, ${canvasLayerLevel || canvas_layer_level},
-                        ${JSON.parse(lengths)}, ${JSON.parse(sizes)}, ${JSON.parse(ratios)}, ${steerer_size}, ${size_chart_url}, ${canvasLayerImageUrl ? false : isPrimary}, ${color_name}, ${color_value}, ${checkForNull(linkedStemModelId)}, ${checkForNull(linkedHandleBarModelId)}, ${preview_image_url}, ${canvas_marker_x}, ${canvas_marker_y})
-                    `;
-                }
+
+                    const modelData = {
+                        category_id: category.id, brand_id, product_id: productId, name: model, image_url: canvasLayerImageUrl || imageUrl, actual_width: actualWidth, stem_x, stem_y, saddle_x, saddle_y, front_wheel_x, front_wheel_y, back_wheel_x, back_wheel_y,
+                        has_stem: !!has_stem, has_handle_bar: !!has_handle_bar, price_sg, price_gb, price_us, price_in, key_metrics, aerodynamics, weight, comfort, stiffness, overall, groupset_drivetrain_x, groupset_drivetrain_y, groupset_shifter_x, groupset_shifter_y, handle_bar_x, handle_bar_y,
+                        global_composite_operation: globalCompositeOperation || global_composite_operation, canvas_layer_level: canvasLayerLevel || canvas_layer_level, lengths: JSON.parse(lengths) || [], sizes: JSON.parse(sizes) || [],
+                        ratios: JSON.parse(ratios) || [], steerer_size, size_chart_url, is_primary: canvasLayerImageUrl ? false : isPrimary, color_name, color_value,
+                        linked_stem: checkForNull(linkedStemModelId), linked_handle_bar: checkForNull(linkedHandleBarModelId), preview_image_url, canvas_marker_x, canvas_marker_y,
+                    };
+
+                    await executeParameterizedQuery(modelData, client, "models");
+
+                };
 
                 await modelInsertQuery();
-        
-                const selectedModel: any = await sql`
-                    SELECT * FROM models WHERE name = ${model} AND category_id = ${category.id} AND brand_id = ${brand_id} AND image_url = ${/Back|Shifter/i.test(category.name) ? image_url_2 : image_url};
-                `;
+
+                const selectedModel = await client.query(
+                    `
+                        SELECT * FROM models WHERE name = $1 AND category_id = $2 AND brand_id = $3 AND image_url = $4;
+                    `,
+                    [model, category.id, brand_id, /Back|Shifter/i.test(category.name) ? image_url_2 : image_url]
+                );
 
                 if (!/Back|Shifter/i.test(category.name)) {
                     if (image_url_layer && global_composite_operation_2 && canvas_layer_level_2) {
@@ -141,31 +193,50 @@ export async function createModel(formData: FormData, linkedStemFormData: any, l
                             const splitModelPreset = modelPreset[1].split("_");
                             const model_id = selectedModel.rows[0]?.id;
                             const preset_id = splitModelPreset[1];
-                            await sql`
-                                INSERT INTO models_presets (model_id, preset_id) VALUES (${model_id}::uuid, ${preset_id}::uuid);
-                            `
+
+                            await client.query(
+                                `
+                                    INSERT INTO models_presets (model_id, preset_id)
+                                    VALUES ($1::uuid, $2::uuid);
+                                `,
+                                [model_id, preset_id]
+                            );
                         }
                     }
                 }
-        
-                // create colors
+
                 for (const color_prop of JSON.parse(color_props)) {
                     const model_id = selectedModel.rows[0]?.id;
-                    await sql`
-                        INSERT INTO colors (model_id, name, value, image_url, price_sg, price_gb, price_us, price_in) VALUES (${model_id}::uuid, ${color_prop.name}, ${color_prop.value}, ${/Back|Shifter/i.test(category.name) ? color_prop.image_url_2 : color_prop.image_url}, ${color_prop.price_sg}, ${color_prop.price_gb}, ${color_prop.price_us}, ${color_prop.price_in});
-                    `
+
+                    await client.query(
+                        `
+                            INSERT INTO colors (model_id, name, value, image_url, price_sg, price_gb, price_us, price_in)
+                            VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8);
+                        `,
+                        [
+                            model_id, color_prop.name, color_prop.value,
+                            /Back|Shifter/i.test(category.name) ? color_prop.image_url_2 : color_prop.image_url,
+                            color_prop.price_sg, color_prop.price_gb, color_prop.price_us, color_prop.price_in,
+                        ]
+                    );
                 }
             }
-            
         }
 
         await autoCalculateRatings();
 
-    } catch (error) {
-        console.log('error', error)
+        await client.query('COMMIT');
+
+        return true;
+    } catch (error: any) {
+        await client.query('ROLLBACK');
+        console.log('error', error);
+        return error.message || 'Failed to create model';
+    } finally {
+        client.release(); // Ensure the connection is released
+        revalidatePath('/dashboard/components');
     }
 
-    revalidatePath('/dashboard/components');
 }
 
 export async function createAccessoryModel(formData: FormData) {
@@ -333,7 +404,7 @@ export async function createAccessories(formData: any) {
     revalidatePath('/dashboard/components');
 }
 
-export async function updateLinkedModels(formData: FormData, linkedComponentId: string) { 
+export async function updateLinkedModels(formData: FormData, linkedComponentId: string) {
     const formDataObject: any = {};
 
     formData.forEach((value: any, key: any) => {
@@ -401,16 +472,16 @@ export async function updateModel(id: string, formData: any, linkedStemFormData:
         if (linkedStemFormData) {
             await updateLinkedModels(linkedStemFormData, linked_stem);
         }
-    
+
         if (linkedHandleBarFormData) {
             await updateLinkedModels(linkedHandleBarFormData, linked_handle_bar);
         }
-        
+
         for (const category of categories.rows) {
             if (category.name.includes(productTypeName)) {
 
                 const getSelectedModel = async () => {
-                    if (/Back|Shifter/i.test(category.name)) { 
+                    if (/Back|Shifter/i.test(category.name)) {
                         return await sql`
                             SELECT * FROM models WHERE product_id = ${id} AND category_id = ${category.id} AND is_primary = ${false};
                         `;
@@ -424,7 +495,7 @@ export async function updateModel(id: string, formData: any, linkedStemFormData:
                 const selectedModel: any = await getSelectedModel();
 
                 const modelId = selectedModel.rows[0]?.id;
-        
+
                 if (!modelId) {
                     throw new Error('Failed to retrieve model ID');
                 }
@@ -444,7 +515,7 @@ export async function updateModel(id: string, formData: any, linkedStemFormData:
                 }
 
                 await modelUpdateQuery(modelId);
-        
+
                 // Delete existing presets mapping for the current model so that new ones can be used to overwrite them (this is only required in models update)
                 await sql`
                     DELETE FROM models_presets WHERE model_id = ${modelId};
@@ -456,16 +527,16 @@ export async function updateModel(id: string, formData: any, linkedStemFormData:
                         const layeredImageModel: any = await sql`
                             SELECT * FROM models WHERE product_id = ${id} AND category_id = ${category.id} AND is_primary = ${false};
                         `;
-        
+
                         const layeredImageModelId = layeredImageModel.rows[0]?.id;
-                
+
                         if (!layeredImageModelId) {
                             throw new Error('Failed to retrieve Layered Image model ID');
                         }
 
                         await modelUpdateQuery(layeredImageModelId, image_url_layer, global_composite_operation_2, canvas_layer_level_2);
                     }
-                    
+
                     // Only insert new presets if any were selected, else don't create any presets mapping
                     if (modelsPresets.length > 0) {
                         for (const modelPreset of modelsPresets) {
@@ -478,12 +549,12 @@ export async function updateModel(id: string, formData: any, linkedStemFormData:
                         }
                     }
                 }
-        
+
                 // Delete existing colors
                 await sql`
                     DELETE FROM colors WHERE model_id = ${modelId};
                 `
-        
+
                 // recreate colors
                 for (const color_prop of JSON.parse(color_props)) {
                     await sql`

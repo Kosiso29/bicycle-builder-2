@@ -147,15 +147,19 @@ export default function Form({ product, productModels, showFormForLinkedComponen
 
     const handleFormCreation = (formData: any) => {
         createModel(formData, linkedStemFormData, linkedHandleBarFormData)
-            .then(() => {
+            .then((result) => {
                 setLoading(false);
-                toast.success("Component created!")
+                if (result === true) {
+                    toast.success("Component created!")
+                } else {
+                    toast.error(`Component failed to create: ${result}`);
+                }
             })
             .then(() => {
                 window.location.href = "/dashboard/components"
             })
             .catch(error => {
-                toast.error(`Component failed to create: ${error}`)
+                toast.error(`Unexpected error: ${error.message || error}`);
             });
     }
 
@@ -182,7 +186,7 @@ export default function Form({ product, productModels, showFormForLinkedComponen
         <form aria-describedby="form-error" action={handleFormSubmission}>
             <div className="rounded-md bg-gray-100 p-4 md:p-6">
                 {
-                    !showFormForLinkedComponents && 
+                    !setLinkedStemFormData && !setLinkedHandleBarFormData && 
                     <>
                         <div className="flex gap-4 mb-4">
                             {/* SKU */}

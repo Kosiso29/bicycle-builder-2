@@ -22,6 +22,7 @@
     "next-auth": "^5.0.0-beta.20",
     "nodemailer": "^6.9.16",
     "openai": "^4.52.3",
+    "pg": "^8.13.1",
     "react": "^18",
     "react-dom": "^18",
     "react-redux": "^9.1.0",
