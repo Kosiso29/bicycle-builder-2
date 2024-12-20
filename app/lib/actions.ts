@@ -573,6 +573,21 @@ export async function updateModel(id: string, formData: any, linkedStemFormData:
     }
 }
 
+export async function updateProductEnabled(id: string) {
+
+    try {
+        await sql`
+            UPDATE products
+            SET enabled = NOT enabled
+            WHERE id = ${id};
+        `
+
+        revalidatePath('/dashboard/components');
+    } catch (error) {
+        console.log('error', error);
+    }
+}
+
 export async function updateAccessoryModel(id: string, formData: any) {
     const formDataObject: any = {};
 

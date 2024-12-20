@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Loading from "./loading";
 import { EditOutlined, DeleteOutline } from '@mui/icons-material';
-import { deleteProduct } from "../lib/actions";
+import { deleteProduct, updateProductEnabled } from "../lib/actions";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import YesNo from "./yesno";
@@ -14,13 +14,25 @@ import { useSelector } from "react-redux";
 
 export default function AccessoriesTable({ products }) {
     const [loadingForDelete, setLoadingForDelete] = useState(false);
+    const [loadingForProductEnabled, setLoadingForProductEnabled] = useState(false);
     const [answer, setAnswer] = useState("");
     const [deleteId, setDeleteId] = useState("");
+    const [productEnabledId, setProductEnabledId] = useState("");
+    const [isToggled, setIsToggled] = useState(products?.map((product) => product.enabled));
     const mounted = useRef(false);
     const user = useSelector(state => state.authReducer.user);
 
     const handleDelete = (id) => {
         setDeleteId(id);
+    }
+
+    const handleToggle = (index, product_id) => {
+        setIsToggled((prevState) => {
+            const newState = [...prevState];
+            newState[index] = !newState[index];
+            return [...newState];
+        });
+        setProductEnabledId(product_id);
     }
 
     useEffect(() => {
@@ -30,6 +42,27 @@ export default function AccessoriesTable({ products }) {
             mounted.current = false;
         };
     }, []);
+
+    useEffect(() => {
+        setIsToggled(products?.map((product) => product.enabled));
+    }, [products]);
+
+    useEffect(() => {
+        if (productEnabledId) {
+            setLoadingForProductEnabled(true);
+            updateProductEnabled(productEnabledId).then(() => {
+                setProductEnabledId("");
+                setLoadingForProductEnabled(false);
+                toast.success("Product enabled state updated!")
+            })
+            .then(() => window.location.reload())
+            .catch(error => {
+                setProductEnabledId("");
+                setLoadingForProductEnabled(false);
+                toast.error(`Product failed to update product enabled state: ${error}`)
+            });
+        }
+    }, [setLoadingForProductEnabled, productEnabledId])
 
     useEffect(() => {
         if (answer === "yes") {
@@ -49,7 +82,7 @@ export default function AccessoriesTable({ products }) {
             setAnswer("");
             setDeleteId("");
         }
-    }, [answer, deleteId])
+    }, [answer, deleteId]);
 
     return (
         <div className="flow-root max-w-full">
@@ -62,7 +95,7 @@ export default function AccessoriesTable({ products }) {
                                     SKU
                                 </th>
                                 <th scope="col" className="px-3 py-5 font-medium">
-                                    Product Type
+                                    Enabled
                                 </th>
                                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
                                     Vendor
@@ -94,7 +127,7 @@ export default function AccessoriesTable({ products }) {
                             </tr>
                         </thead>
                         <tbody className="bg-white max-w-full">
-                            {products.length > 0 && products?.map((product) => (
+                            {products.length > 0 && products?.map((product, index) => (
                                 <tr
                                     key={product.id}
                                     className="w-full max-w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
@@ -103,7 +136,25 @@ export default function AccessoriesTable({ products }) {
                                         {product.sku}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
-                                        {product.product_type}
+                                        <div className="flex items-center gap-2">
+                                            <div className="flex items-center">
+                                                <input name='enabled' type='checkbox' className='hidden' checked={isToggled[index]} />
+                                                <button
+                                                    onClick={() => handleToggle(index, product.id)}
+                                                    className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${
+                                                        isToggled[index] ? "bg-primary" : "bg-back-color"
+                                                    }`}
+                                                    type='button'
+                                                >
+                                                    <span
+                                                        className={`absolute top-1/2 transform -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                                                            isToggled[index] ? "translate-x-1" : "-translate-x-4"
+                                                        }`}
+                                                    ></span>
+                                                </button>
+                                            </div>
+                                            <div className="self-center justify-self-end" style={{ visibility: loadingForProductEnabled && (product.id === productEnabledId) ? "visible" : "hidden" }}><Loading small /></div>
+                                        </div>
                                     </td>
                                     <td className="py-3 pl-6 pr-3 max-w-48">
                                         {product.vendor}
