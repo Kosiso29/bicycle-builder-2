@@ -39,8 +39,6 @@ export default function Form({ product, productModels, showFormForLinkedComponen
     const wheelProductTypeId: any = (Object.entries(productTypes || {}) as any)?.filter((productType: any) => productType[1] === "Wheel")[0]?.[0];
     const groupSetProductTypeId: any = (Object.entries(productTypes || {}) as any)?.filter((productType: any) => productType[1] === "Group Set")[0]?.[0];
 
-    console.log('enabled', product?.enabled);
-
     const addModelColors = () => {
         setColorItems((prevState: any) => [...prevState, { name: "", value: "", image_url: "", image_url_2: "", price_sg: "", price_gb: "", price_us: "", price_in: "" }])
     }
