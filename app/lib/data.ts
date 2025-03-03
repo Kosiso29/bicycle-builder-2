@@ -187,7 +187,7 @@ export async function fetchAccessories() {
     }
 }
 
-export async function fetchModelsPresets() {
+export async function fetchModelsPresets(models: Models) {
     noStore();
     try {
         const data = await sql`
@@ -202,7 +202,7 @@ export async function fetchModelsPresets() {
 
         const modelsPresets = data.rows.map((modelPreset) => ({
             ...modelPreset
-        }));
+        })).filter((modelPreset) => models.some((model) => modelPreset.model_id === model.id));
         return modelsPresets;
     } catch (error) {
         console.error('Database Error:', error);

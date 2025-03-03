@@ -10,7 +10,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     const brands = await fetchBrands();
     const presets = await fetchPresets();
     const builds = await fetchBuilds();
-    const modelsPresets = await fetchModelsPresets();
+    const modelsPresets = await fetchModelsPresets(models);
     const colorsPresets = await fetchColorsPresets();
     const users = await fetchUsers();
     const colors = await fetchColors();

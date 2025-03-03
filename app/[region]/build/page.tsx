@@ -8,7 +8,7 @@ export default async function Build() {
 
     const models: Models = await fetchModels();
     const builds = await fetchBuilds();
-    const modelsPresets = await fetchModelsPresets();
+    const modelsPresets = await fetchModelsPresets(models);
     const colorsPresets = await fetchColorsPresets();
     const colors = await fetchColors();
     const accessoryModels = await fetchAccessoryModels();
