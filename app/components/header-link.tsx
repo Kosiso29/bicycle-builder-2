@@ -10,7 +10,11 @@ export default function HeaderLink({ href, children }: { href: string, children:
     const pathname = usePathname();
     const dispatch = useDispatch();
 
-    const handleLinkClick = (link: string) => {
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, link: string) => {
+        if (pathname.includes(href)) {
+            e.preventDefault();
+            window.location.reload();
+        }
         if (link === "/featured-builds" || link === "/build") {
             dispatch(builderActions.updateloadingScreen(true));
         }
@@ -25,7 +29,7 @@ export default function HeaderLink({ href, children }: { href: string, children:
                     "bg-primary-active": pathname === href || (href === "/dashboard/components" && pathname.includes(href))
                 }
             )}
-            onClick={() => handleLinkClick(href)}
+            onClick={(e) => handleLinkClick(e, href)}
         >
             {children}
         </Link>

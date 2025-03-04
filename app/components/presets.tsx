@@ -262,7 +262,7 @@ export default function Presets({ parentProps, setFrameSetDimensions, builds, mo
 
     return (
         <div className="flex flex-col w-28 flex-grow max-h-full overflow-hidden gap-2">
-            <h1 className="font-bold text-2xl">Bike <br /> Ideas</h1>
+            <h1 className="font-bold text-2xl">Build <br /> Ideas</h1>
             <div className="flex flex-col flex-grow w-[6.5rem] max-h-[80%] gap-5 overflow-y-auto pr-3 pt-3">
                 {
                     canvasDrawImageProps.frameSet.id ? builds.filter((build: any) => build.name !== "None" && frameBuildIds.includes(build.id)).map((build: any, index: number) => (
