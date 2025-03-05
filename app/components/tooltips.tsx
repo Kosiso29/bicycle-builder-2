@@ -41,7 +41,7 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
             <div className="flex justify-between relative">
                 <div className="flex flex-col justify-between h-full max-w-[65%]">
                     <div className="flex gap-5 items-center h-10">
-                        {
+                        {/* {
                             showBuildNameTextField ?
                             <TextField size="small" className="text-2xl font-extrabold" value={buildName} onChange={(e) => setBuildName(e.target.value)} onKeyDown={handleTextFieldKeyDown} /> :
                             <h1 className="flex items-center gap-2 text-2xl font-extrabold">{ buildName }</h1>
@@ -50,7 +50,8 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
                             showBuildNameTextField ?
                                 <Button variant="contained" onClick={() => setShowBuildNameTextField(false)}>Set</Button> :
                                 <EditOutlined className="cursor-pointer" fontSize="small" onClick={() => setShowBuildNameTextField(true)} />
-                        }
+                        } */}
+                        {/* TODO: Enable when it is ready to be implemented */}
                     </div>
                     <div className='flex gap-2 items-center mt-3'>
                         <h1 className={`text-xl`}>Total:</h1>

@@ -594,7 +594,7 @@ export default function BikeBuilder({
                     <div className="relative flex-grow">
                         <div className="relative h-[calc(100vh-9rem)] min-h-[560px] max-h-[620px] w-[calc(((100vh-9rem)*900)/620)] min-w-[810px] max-w-[900px] overflow-hidden flex justify-center items-center ml-auto mr-auto">
                             <canvas id="canvas" style={{ transform: `scale(${CANVAS_SCALE})` }} onMouseMove={handleCanvasHover} onClick={handleCanvasClick} width={950} height={680} />
-                            <CanvasIcons />
+                            {/* <CanvasIcons /> */} {/* TODO: Enable when it is ready to be implemented */}
                         </div>
                         {
                             canvasLoading &&
