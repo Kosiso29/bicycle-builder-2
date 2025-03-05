@@ -358,7 +358,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         if ((show || selectionPresetProps) && identifier) {
             setCanvasDrawImageProps(prevState => ({
                 ...prevState,
-                [identifier]: { ...prevState[identifier], selectedFeatures }
+                [identifier]: { ...prevState[identifier], selectedFeatures, sizes: modelData?.sizes }
             }));
         }
     }, [selectedFeatures, show, selectionPresetProps, identifier])

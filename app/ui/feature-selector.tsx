@@ -23,7 +23,7 @@ export default function FeatureSelector(
     { values, label, type, model, modelData, initialModelData, handleModelChange, colors, selectedIndex, databaseModels, selectedFeatures, setSelectedFeatures, setPrice }:
         { values: string[], label: string, type: string, model: string, modelData: any, initialModelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any, selectedFeatures: any, setSelectedFeatures: any, setPrice: any }) {
     const [feature, setFeature] = useState("");
-    const defaultValue = values?.[0];
+    const defaultValue = ""; // values?.[0] - first item in values is no longer used as default value
 
     const handleFeatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: e.target.value }));

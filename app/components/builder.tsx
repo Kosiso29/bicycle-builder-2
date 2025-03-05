@@ -109,6 +109,7 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 setBuildProcessStage={setBuildProcessStage}
                 rerender={rerender}
                 setRerender={setRerender}
+                titles={titles}
             />
             <Summary
                 canvasDrawImageProps={canvasDrawImageProps}
@@ -148,7 +149,7 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
             />
             <ToastContainer
                 autoClose={3500}
-                position="bottom-left"
+                position="top-right"
             />
         </div>
 

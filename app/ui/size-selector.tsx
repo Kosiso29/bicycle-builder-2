@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 export default function SizeSelector(
     { values, label, type, model, modelData, initialModelData, handleModelChange, colors, selectedIndex, databaseModels, selectedFeatures, setSelectedFeatures, setPrice }:
         { values: string[], label: string, type: string, model: string, modelData: any, initialModelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any, selectedFeatures: any, setSelectedFeatures: any, setPrice: any }) {
-    const defaultValue = values?.[0];
+    const defaultValue = ""; // values?.[0] - first item in values is no longer used as default value
 
     const handleSizeChange = (value: string) => {
         setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: value }));

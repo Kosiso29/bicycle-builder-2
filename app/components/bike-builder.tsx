@@ -5,7 +5,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@mui/material";
-import { RotateLeft as RotateLeftIcon, ThreeSixtyOutlined } from '@mui/icons-material';
+import { RotateLeft as RotateLeftIcon, ThreeSixtyOutlined, ReportProblem } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import Link from "next/link";
 import SelectionTabs from "./selection-tabs";
@@ -29,6 +29,7 @@ import Modal from "@/app/components/modal";
 import { useSelector, useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
 import { IRootState } from "@/app/store";
+import { useDebouncedCallback } from "@/app/hooks/useDebouncedCallback";
 
 const FRAMESET_PROP = 'frameSet';
 const FRONTWHEELSET_PROP = 'frontWheelSet';
@@ -40,10 +41,18 @@ const GROUPSET_DRIVETRAIN_PROP = 'groupSet_drivetrain';
 const GROUPSET_SHIFTER_PROP = 'groupSet_shifter';
 const SADDLE_PROP = "saddle";
 
+const selectionLevelCategoryMapping = {
+    1: [FRAMESET_PROP],
+    2: [FRONTWHEELSET_PROP, TIRE_PROP],
+    3: [STEM_PROP, HANDLE_BAR_PROP],
+    4: [GROUPSET_DRIVETRAIN_PROP],
+    5: [SADDLE_PROP],
+}
+
 export default function BikeBuilder({
     canvasDrawImageProps, setCanvasDrawImageProps, initialCanvasDrawImageProps, setInitialCanvasDrawImageProps, setCanvasImage, showSummary, setShowSummary,
     frameSetDimensions, setFrameSetDimensions, models, builds, modelsPresets, colorsPresets, colors, accessoryModels, setResetComponent, stemDimensions, setStemDimensions,
-    handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories, showBilling, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage, rerender, setRerender
+    handleBarDimensions, setHandleBarDimensions, addonAccessories, setAddonAccessories, showBilling, totalPrice, setTotalPrice, buildProcessState, setBuildProcessStage, rerender, setRerender, titles
 }) {
     const [selectionLevel, setSelectionLevel] = useState(1);
     const [selectionLevelProps, setSelectionLevelProps] = useState([]);
@@ -76,6 +85,7 @@ export default function BikeBuilder({
     const dispatch = useDispatch();
 
     const componentRefs = useRef([]);
+    const selectionPanelRef = useRef(null);
 
     const CANVAS_SCALE = 0.75
 
@@ -441,6 +451,32 @@ export default function BikeBuilder({
         setTotalPrice(parseFloat(componentsPrice) + parseFloat(accessoriesPrice));
     }
 
+    const handleScroll = useDebouncedCallback((event: WheelEvent) => {
+        for (const category of selectionLevelCategoryMapping[selectionLevel]) {
+            console.log('output', selectionLevel, category, canvasDrawImageProps[category].model, canvasDrawImageProps[category].selectedFeatures);
+            if (canvasDrawImageProps[category].sizes?.length > 0) {
+                if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.sizes) {
+                    event.preventDefault();
+                    toast.warn(`${titles[category]} size needs to be selected!`, {
+                        progressStyle: { background: "#1A1A1A" },
+                        icon: <ReportProblem style={{ color: "#1A1A1A" }} fontSize="small" />,
+                    });
+
+                    if (selectionPanelRef?.current) {
+                        selectionPanelRef.current.style.pointerEvents = "none";
+                        setTimeout(() => {
+                            if (selectionPanelRef?.current) {
+                                selectionPanelRef.current.style.pointerEvents = "";
+                            }
+                        }, 2000);
+                    }
+        
+                    return;
+                }
+            }
+        }
+    }, 2000);
+
     const handleBarStemConditions = !stemDimensions.hasHandleBar && (canvasDrawImageProps.stem.image && canvasDrawImageProps.stem.model) && !frameSetDimensions.hasHandleBar;
 
     useEffect(() => {
@@ -509,6 +545,14 @@ export default function BikeBuilder({
     }, []);
 
     useEffect(() => {
+        selectionPanelRef?.current.addEventListener("wheel", handleScroll, { passive: false });
+
+        return () => {
+            selectionPanelRef?.current.removeEventListener("wheel", handleScroll);
+        };
+    }, [handleScroll, selectionPanelRef]);
+
+    useEffect(() => {
         if (selectionLevel === 1) {
             setSelectionLevelProps([FRAMESET_PROP])
         }
@@ -564,32 +608,7 @@ export default function BikeBuilder({
             </div>
             <div id="selection-back-color" className="fixed right-0 top-0 h-[calc(100vh-13rem)] w-[20rem] 2xl:w-[26rem] pb-0 z-10 mt-[6rem] mb-[2rem] mr-[2rem] bg-light-01"></div>
             <div id="selection-overflow-fading-top" className="fixed top-16 z-30 h-[2rem] bg-gradient-to-b from-back-color-1 to-back-color-1-transparent via-back-color-1-transparent right-0 w-[20rem] 2xl:w-[26rem] mr-[2rem]"></div>
-            <div id="selection" className={`flex flex-col fixed right-0 top-0 h-[calc(100vh-5rem)] w-[22rem] 2xl:w-[28rem] pb-[4rem] overflow-auto z-20 pt-[4rem] mt-[2rem] mb-[2rem] ${newBuildStart ? "overflow-hidden" : "overflow-y-scroll snap-y snap-mandatory"} pr-[2rem]`}>
-                {/* <div>
-                    <div className="mb-3">
-                    <SelectionTabs indexArray={[1, 2, 3, 4, 5]} value={selectionLevel < 6 ? selectionLevel : false} updateSelectionLevel={updateSelectionLevel} canvasSelectionLevelState={canvasSelectionLevelState} setCanvasSelectionLevelState={setCanvasSelectionLevelState} toast={toast} />
-                    </div>
-                    {
-                        showSummary ?
-                        <>
-                        <div className="flex justify-between pb-3">
-                        <Button size="small" variant="outlined" onClick={() => { setShowSummary(false); setSelectionLevel(prevState => prevState - 1) }}>Back</Button>
-                        <Button size="small" variant="contained">Proceed</Button>
-                        </div>
-                        <Button size="small" fullWidth variant="outlined">Add to Favourites</Button>
-                        </> :
-                        <>
-                        <div className="flex justify-between py-2">
-                        <Button size="small" variant="outlined" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} disabled={selectionLevel === 1} onClick={handleSelectionLevel}>Prev</Button>
-                        {
-                            selectionLevel < 5 ?
-                            <Button size="small" variant="contained" sx={{ "&:disabled": { cursor: "not-allowed", pointerEvents: "all !important" } }} onClick={handleSelectionLevel}>Next</Button> :
-                            <Button size="small" variant="contained" onClick={handleSummary}>Checkout</Button>
-                            }
-                            </div>
-                            </>
-                            }
-                            </div> */}
+            <div id="selection" ref={selectionPanelRef} className={`flex flex-col fixed right-0 top-0 h-[calc(100vh-5rem)] w-[22rem] 2xl:w-[28rem] pb-[4rem] overflow-auto z-20 pt-[4rem] mt-[2rem] mb-[2rem] ${newBuildStart ? "overflow-hidden" : "overflow-y-scroll snap-y snap-mandatory"} pr-[2rem]`}>
                 {
                     newBuildStart && <BuildStart />
                 }
@@ -610,14 +629,6 @@ export default function BikeBuilder({
                 <div ref={(el) => (componentRefs.current[4] = el)} className="snap-center min-h-[calc(100vh-13rem)] min-w-full overflow-auto px-5 pb-20">
                     <Saddle parentProps={parentProps} canvasContext={canvasContext} show={selectionLevel === 5} canvasX={240} canvasY={110} frameSetDimensions={frameSetDimensions} setCanvasDrawImageProps={setCanvasDrawImageProps} />
                 </div>
-                {/* {
-                    showSummary ? <AddonSummary parentProps={parentProps} /> : null
-                } */}
-                {/* <div className="flex flex-col justify-self-end mt-auto shadow-[0_-13px_16px_-16px_rgba(0,0,0,0.3)] gap-3 sticky border-gray-400 w-full bg-gray-100 bottom-0 pb-5 pt-2 z-50">
-                    <div className='flex justify-end items-center'>
-                        <RotateLeftIcon color="error" fontSize="large" onClick={handleReset} className="cursor-pointer self-end" />
-                    </div>
-                </div> */}
             </div>
             <div id="selection-overflow-fading-bottom" className="fixed top-[calc(100vh-7rem)] z-30 h-[4rem] bg-gradient-to-b from-back-color-1-transparent to-back-color-1 via-back-color-1-transparent right-0 w-[20rem] 2xl:w-[26rem] mr-[2rem]"></div>
             {
