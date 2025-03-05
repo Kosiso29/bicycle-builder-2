@@ -13,7 +13,7 @@ const headerData = [
 const headerDataConfigurator = [
     { name: "Configure", href: "/build"},
     { name: "Featured builds", href: "/featured-builds"},
-    { name: "Support", href: "/"},
+    { name: "About Us", href: "/about-us"},
 ]
 
 export default function Header({ textColor, padding }: { textColor?: string, padding?: string }) {
@@ -43,10 +43,11 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                     {
                         textColor === "white" ?
                             <>
-                                <Link href="/login">
+                                {/* <Link href="/login">
                                     <PersonOutline />
                                 </Link>
-                                <HelpOutline />
+                                <HelpOutline /> */}
+                                {/* TODO: re-enable home page header icons when customer accounts are created */}
                             </> :
                             <>
                                 <RegionSelector />

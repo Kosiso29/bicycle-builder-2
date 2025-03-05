@@ -548,7 +548,9 @@ export default function BikeBuilder({
         selectionPanelRef?.current.addEventListener("wheel", handleScroll, { passive: false });
 
         return () => {
-            selectionPanelRef?.current.removeEventListener("wheel", handleScroll);
+            if (selectionPanelRef?.current) {
+                selectionPanelRef?.current.removeEventListener("wheel", handleScroll);
+            }
         };
     }, [handleScroll, selectionPanelRef]);
 

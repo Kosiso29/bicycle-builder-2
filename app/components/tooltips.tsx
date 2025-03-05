@@ -82,6 +82,9 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
                     </div>
                 </div>
             </div>
+            <div className="flex justify-center items-end">
+                <small><i>Images are for illustration purposes only. Actual product may vary.</i></small>
+            </div>
         </div>
     )
 }

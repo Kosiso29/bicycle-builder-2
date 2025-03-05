@@ -11,7 +11,7 @@ export default function HeaderLink({ href, children }: { href: string, children:
     const dispatch = useDispatch();
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, link: string) => {
-        if (pathname.includes(href)) {
+        if (pathname.includes(href) && link === "/build") {
             e.preventDefault();
             window.location.reload();
         }
