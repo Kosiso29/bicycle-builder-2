@@ -3,8 +3,8 @@ import NextAuth from 'next-auth';
 import { authConfig } from './auth.config';
 
 // Define allowed regions and the default region
-const allowedRegions: string[] = ['us', 'sg', 'gb', 'in'];
-const defaultRegion: string = 'us';
+const allowedRegions: string[] = ['in'];
+const defaultRegion: string = 'in';
 
 export async function middleware(request: any) {
 
