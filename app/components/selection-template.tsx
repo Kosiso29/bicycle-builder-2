@@ -226,6 +226,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                 uniqueBrands.push(brandItem.brand);
             }
         });
+        const brandExistsInUniqueBrands = uniqueBrands.some(brandItem => brandItem === brand);
+        if (!brandExistsInUniqueBrands) {
+            setBrand("");
+        }
         setUniqueBrands(uniqueBrands);
     }
 
