@@ -52,8 +52,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setBrand(e.target.value);
         const models = allBrandsData.filter(itemBrand => itemBrand.brand === e.target.value && itemBrand.is_primary);
         if (identifier === 'stem') {
-            const filteredStemBrandsBySteererSize = models.filter(item => item.steerer_size && canvasDrawImageProps.frameSet.steerer_size ? parseFloat(item.steerer_size.match(/\d+(\.\d+)?/)[0]) >= parseFloat(canvasDrawImageProps.frameSet.steerer_size.match(/\d+(\.\d+)?/)[0]) : true);
-            setAllModels(filteredStemBrandsBySteererSize);
+            populateStemSteererModel(models);
         } else {
             setAllModels(models);
         }
@@ -240,12 +239,16 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setDisableSelections(false);
     }
 
+    function populateStemSteererModel(models) {
+        const filteredStemModelsBySteererSize = models.filter(item => item.steerer_size && canvasDrawImageProps.frameSet.steerer_size ? parseFloat(item.steerer_size.match(/\d+(\.\d+)?/)[0]) >= parseFloat(canvasDrawImageProps.frameSet.steerer_size.match(/\d+(\.\d+)?/)[0]) : true);
+        setAllModels(filteredStemModelsBySteererSize);
+    }
+
     const populateStemSteererSizeData = (brandsData) => {
         const filteredStemBrandsBySteererSize = brandsData.filter(item => item.steerer_size && canvasDrawImageProps.frameSet.steerer_size ? parseFloat(item.steerer_size.match(/\d+(\.\d+)?/)[0]) >= parseFloat(canvasDrawImageProps.frameSet.steerer_size.match(/\d+(\.\d+)?/)[0]) : true);
         setAllBrandsData(filteredStemBrandsBySteererSize);
         updateBrandsData(filteredStemBrandsBySteererSize);
-        const filteredStemModelsBySteererSize = allModels.filter(item => item.steerer_size && canvasDrawImageProps.frameSet.steerer_size ? parseFloat(item.steerer_size.match(/\d+(\.\d+)?/)[0]) >= parseFloat(canvasDrawImageProps.frameSet.steerer_size.match(/\d+(\.\d+)?/)[0]) : true);
-        setAllModels(filteredStemModelsBySteererSize);
+        populateStemSteererModel(allModels);
     }
 
     // Linked components are rendered such that they don't interfer with the canvasDrawImageProps data since they don't have images
