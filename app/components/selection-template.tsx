@@ -142,7 +142,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         positionCanvasImages(newCanvasDrawImageProps[identifier], identifier, newCanvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions);
     }
 
-    const handleModelRemove = (index, modelData, stemSteererSize) => {
+    const handleModelRemove = (index, modelData, isNotOnFrameSection) => {
         setModel("");
         setModelData(null);
         setSelectedIndex(null);
@@ -163,7 +163,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
         resetCanvasComponents(canvasProp);
 
-        if (selectionLevelProps.includes('frameSet') && !stemSteererSize) {
+        if (selectionLevelProps.includes('frameSet') && !isNotOnFrameSection) {
             updateFrameSetData(initialCanvasDrawImageProps.frameSet);
         }
         setRerender(prevState => !prevState);
@@ -367,8 +367,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     useEffect(() => {
         if (identifier === 'stem' && modelData) {
             populateStemSteererSizeData(allBrandsData);
-            if (canvasDrawImageProps.frameSet.steerer_size && modelData.steerer_size && modelData.steerer_size < canvasDrawImageProps.frameSet.steerer_size) {
-                handleModelRemove(selectedIndex, modelData, modelData.steerer_size);
+            if (canvasDrawImageProps.frameSet.hasStem || (canvasDrawImageProps.frameSet.steerer_size && modelData.steerer_size && modelData.steerer_size < canvasDrawImageProps.frameSet.steerer_size)) {
+                handleModelRemove(selectedIndex, modelData, true);
+            }
+        }
+        if (identifier === 'handleBar' && modelData) {
+            if (canvasDrawImageProps.frameSet.hasHandleBar) {
+                handleModelRemove(selectedIndex, modelData, true)
             }
         }
     }, [canvasDrawImageProps, show])
