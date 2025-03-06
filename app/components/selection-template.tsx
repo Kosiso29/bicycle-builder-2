@@ -107,20 +107,6 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     const resetCanvasComponents = (canvasProp) => {
         const setCanvasDrawImagePropsFromSelectionLevelProps = (prevState) => {
             selectionLevelProps.forEach(selectionLevelProp => {
-                // // This is for the cockpit of stem and handleBar selectionLevelProps
-                // if ((selectionLevelProps.length > 1 && !selectionLevelProp.includes('Wheel') && !selectionLevelProp.includes('groupSet')) || identifier === "tire") {
-                //     if (selectionLevelProp === identifier) {
-                //         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
-                //     }
-                // } else {
-                //     if (selectionLevelProp === 'groupSet_shifter') {
-                //         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2, stemShifterX: prevState[selectionLevelProp].stemShifterX, stemShifterY: prevState[selectionLevelProp].stemShifterY };
-                //     } else if (identifier === 'saddle') {
-                //         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState.frameSet.saddleY - initialCanvasDrawImageProps[selectionLevelProp]?.height };
-                //     } else {
-                //         prevState[selectionLevelProp] = { ...initialCanvasDrawImageProps[selectionLevelProp], x: prevState[selectionLevelProp]?.x, y: prevState[selectionLevelProp]?.y, x2: prevState[selectionLevelProp]?.x2, y2: prevState[selectionLevelProp]?.y2 };
-                //     }
-                // }
                 if (canvasProp) {
                     if (canvasProp === 'frontWheelSet') {
                         prevState[canvasProp] = { ...initialCanvasDrawImageProps[canvasProp], x: prevState[canvasProp]?.x, y: prevState[canvasProp]?.y, x2: prevState[canvasProp]?.x2, y2: prevState[canvasProp]?.y2 };
@@ -157,7 +143,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         positionCanvasImages(newCanvasDrawImageProps[identifier], identifier, newCanvasDrawImageProps, setCanvasDrawImageProps, frameSetDimensions, stemDimensions);
     }
 
-    const handleModelRemove = (index, modelData) => {
+    const handleModelRemove = (index, modelData, stemSteererSize) => {
         setModel("");
         setModelData(null);
         setSelectedIndex(null);
@@ -178,7 +164,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
         resetCanvasComponents(canvasProp);
 
-        if (selectionLevelProps.includes('frameSet')) {
+        if (selectionLevelProps.includes('frameSet') && !stemSteererSize) {
             updateFrameSetData(initialCanvasDrawImageProps.frameSet);
         }
         setRerender(prevState => !prevState);
@@ -254,6 +240,14 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         setDisableSelections(false);
     }
 
+    const populateStemSteererSizeData = (brandsData) => {
+        const filteredStemBrandsBySteererSize = brandsData.filter(item => item.steerer_size && canvasDrawImageProps.frameSet.steerer_size ? parseFloat(item.steerer_size.match(/\d+(\.\d+)?/)[0]) >= parseFloat(canvasDrawImageProps.frameSet.steerer_size.match(/\d+(\.\d+)?/)[0]) : true);
+        setAllBrandsData(filteredStemBrandsBySteererSize);
+        updateBrandsData(filteredStemBrandsBySteererSize);
+        const filteredStemModelsBySteererSize = allModels.filter(item => item.steerer_size && canvasDrawImageProps.frameSet.steerer_size ? parseFloat(item.steerer_size.match(/\d+(\.\d+)?/)[0]) >= parseFloat(canvasDrawImageProps.frameSet.steerer_size.match(/\d+(\.\d+)?/)[0]) : true);
+        setAllModels(filteredStemModelsBySteererSize);
+    }
+
     // Linked components are rendered such that they don't interfer with the canvasDrawImageProps data since they don't have images
     const getLinkedBrandData = (linkedModel) => {
         const brandsWithLinkedComponents = databaseModels.filter(item => item.category === label && item.is_primary);
@@ -287,7 +281,11 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
 
     useEffect(() => {
         const brandsWithoutLinkedComponents = databaseModels.filter(item => item.category === label && item.is_primary && item.src);
-        updateBrandsData(brandsWithoutLinkedComponents);
+        if (identifier === 'stem') {
+            populateStemSteererSizeData(brandsWithoutLinkedComponents);
+        } else {
+            updateBrandsData(brandsWithoutLinkedComponents);
+        }
         getLinkedBrandData("linkedStem");
         getLinkedBrandData("linkedHandleBar");
     }, [databaseModels, show]);
@@ -362,6 +360,15 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
             }));
         }
     }, [selectedFeatures, show, selectionPresetProps, identifier])
+
+    useEffect(() => {
+        if (identifier === 'stem' && modelData) {
+            populateStemSteererSizeData(allBrandsData);
+            if (canvasDrawImageProps.frameSet.steerer_size && modelData.steerer_size && modelData.steerer_size < canvasDrawImageProps.frameSet.steerer_size) {
+                handleModelRemove(selectedIndex, modelData, modelData.steerer_size);
+            }
+        }
+    }, [canvasDrawImageProps, show])
 
     useEffect(() => {
         if (show) {

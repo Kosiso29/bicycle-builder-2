@@ -453,7 +453,6 @@ export default function BikeBuilder({
 
     const handleScroll = useDebouncedCallback((event: WheelEvent) => {
         for (const category of selectionLevelCategoryMapping[selectionLevel]) {
-            console.log('output', selectionLevel, category, canvasDrawImageProps[category].model, canvasDrawImageProps[category].selectedFeatures);
             if (canvasDrawImageProps[category].sizes?.length > 0) {
                 if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.sizes) {
                     event.preventDefault();
