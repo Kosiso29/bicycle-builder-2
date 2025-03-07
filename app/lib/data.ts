@@ -17,7 +17,7 @@ export async function fetchModels(): Promise<Models> {
     noStore();
     const regionCookie = cookies().get('region')?.value || 'us';
 
-    const priceColumn = regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us'
+    const priceColumn = 'price_in'; // regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us' // TODO: update when we use other regions
     try {
         const data = await sql`
         SELECT
@@ -98,7 +98,7 @@ export async function fetchProducts(): Promise<Models> {
     noStore();
     const regionCookie = cookies().get('region')?.value || 'us';
 
-    const priceColumn = regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us'
+    const priceColumn = 'price_in'; // regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us' // TODO: update when we use other regions
     try {
         const data = await sql`
         SELECT
@@ -136,7 +136,7 @@ export async function fetchAccessoryModels(): Promise<Models> {
     noStore();
     const regionCookie = cookies().get('region')?.value || 'us';
 
-    const priceColumn = regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us'
+    const priceColumn = 'price_in'; // regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us' // TODO: update when we use other regions
     try {
         const data = await sql`
         SELECT
@@ -214,7 +214,7 @@ export async function fetchColorsPresets() {
     noStore();
     const regionCookie = cookies().get('region')?.value || 'us';
 
-    const priceColumn = regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us'
+    const priceColumn = 'price_in'; // regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us' // TODO: update when we use other regions
     try {
         const data = await sql`
             SELECT 
@@ -317,7 +317,7 @@ export async function fetchColors() {
     noStore();
     const regionCookie = cookies().get('region')?.value || 'us';
 
-    const priceColumn = regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us'
+    const priceColumn = 'price_in'; // regionPriceMapping[regionCookie] || 'price_us'; // Fallback to 'price_us' // TODO: update when we use other regions
     try {
         const data = await sql`
         SELECT

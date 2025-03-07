@@ -51,7 +51,7 @@ export default function Header({ textColor, padding }: { textColor?: string, pad
                             </> :
                             <>
                                 <RegionSelector />
-                                <NextImage className='hover:cursor-pointer' src="/Profile-Icon.svg" width={30} height={30} alt='' />
+                                {/* <NextImage className='hover:cursor-pointer' src="/Profile-Icon.svg" width={30} height={30} alt='' /> */}
                             </>
                     }
                 </div>

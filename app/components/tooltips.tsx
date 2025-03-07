@@ -37,7 +37,10 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
     }, [openFullTooltips])
 
     return (
-        <div ref={tooltipsRef} className="flex-grow pb-3 pl-40 pr-5 max-h-24">
+        <div ref={tooltipsRef} className="relative flex-grow pb-3 pl-40 pr-5 max-h-24">
+            <div className="absolute left-0 -top-10 pl-40  w-full flex justify-center items-end">
+                <small><i>*Images are for illustration purposes only. Actual product may vary.</i></small>
+            </div>
             <div className="flex justify-between relative">
                 <div className="flex flex-col justify-between h-full max-w-[65%]">
                     <div className="flex gap-5 items-center h-10">
@@ -81,9 +84,6 @@ export default function Tooltips({ tooltips, canvasDrawImageProps, totalPrice }:
                         {renderProgressBar(tooltips.weight ?? 0.0)}
                     </div>
                 </div>
-            </div>
-            <div className="flex justify-center items-end">
-                <small><i>Images are for illustration purposes only. Actual product may vary.</i></small>
             </div>
         </div>
     )
