@@ -148,7 +148,7 @@ export default function Builder({ models, builds, modelsPresets, colorsPresets, 
                 canvasImage={canvasImage}
             />
             <ToastContainer
-                autoClose={3500}
+                autoClose={2500}
                 position="top-right"
             />
         </div>

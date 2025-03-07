@@ -452,11 +452,11 @@ export default function BikeBuilder({
     }
 
     const handleScroll = useDebouncedCallback((event: WheelEvent) => {
-        for (const category of selectionLevelCategoryMapping[selectionLevel]) {
-            if (canvasDrawImageProps[category].sizes?.length > 0) {
-                if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.sizes) {
+        const preventScrollIfPropertyNotSelected = (property, category) => {
+            if (canvasDrawImageProps[category][property]?.length > 0) {
+                if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.[property]) {
                     event.preventDefault();
-                    toast.warn(`${titles[category]} size needs to be selected!`, {
+                    toast.warn(`${titles[category]} ${property} need to be selected!`, {
                         progressStyle: { background: "#1A1A1A" },
                         icon: <ReportProblem style={{ color: "#1A1A1A" }} fontSize="small" />,
                     });
@@ -473,6 +473,12 @@ export default function BikeBuilder({
                     return;
                 }
             }
+        }
+
+        for (const category of selectionLevelCategoryMapping[selectionLevel]) {
+            preventScrollIfPropertyNotSelected('sizes', category);
+            preventScrollIfPropertyNotSelected('lengths', category);
+            preventScrollIfPropertyNotSelected('ratios', category);
         }
     }, 2000);
 
