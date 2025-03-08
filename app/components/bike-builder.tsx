@@ -29,7 +29,7 @@ import Modal from "@/app/components/modal";
 import { useSelector, useDispatch } from "react-redux";
 import { builderActions } from "@/app/store/builder";
 import { IRootState } from "@/app/store";
-import { useDebouncedCallback } from "@/app/hooks/useDebouncedCallback";
+import { useDebouncedCallback, useDebounce } from "@/app/hooks/useDebouncedCallback";
 
 const FRAMESET_PROP = 'frameSet';
 const FRONTWHEELSET_PROP = 'frontWheelSet';
@@ -86,6 +86,7 @@ export default function BikeBuilder({
 
     const componentRefs = useRef([]);
     const selectionPanelRef = useRef(null);
+    const debouncedSelectionLevel = useDebounce(selectionLevel, 100);
 
     const CANVAS_SCALE = 0.75
 
@@ -451,36 +452,43 @@ export default function BikeBuilder({
         setTotalPrice(parseFloat(componentsPrice) + parseFloat(accessoriesPrice));
     }
 
-    const handleScroll = useDebouncedCallback((event: WheelEvent) => {
-        const preventScrollIfPropertyNotSelected = (property, category) => {
-            if (canvasDrawImageProps[category][property]?.length > 0) {
-                if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.[property]) {
-                    event.preventDefault();
-                    toast.warn(`${titles[category]} ${property} need to be selected!`, {
-                        progressStyle: { background: "#1A1A1A" },
-                        icon: <ReportProblem style={{ color: "#1A1A1A" }} fontSize="small" />,
-                    });
+    // const handleScroll = useDebouncedCallback((event: WheelEvent) => {
+    //     const preventScrollIfPropertyNotSelected = (property, category) => {
+    //         if (canvasDrawImageProps[category][property]?.length > 0) {
+    //             if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.[property]) {
+    //                 if (!componentRefs.current) return;
+              
+    //                 const { scrollTop, scrollHeight, clientHeight } = componentRefs.current[selectionLevel - 1];
+    //                 const atBottom = scrollTop + clientHeight >= scrollHeight - 10;
+              
+    //                 if (atBottom) {
+    //                     event.preventDefault();
+    //                     toast.warn(`${titles[category]} ${property} need to be selected!`, {
+    //                         progressStyle: { background: "#1A1A1A" },
+    //                         icon: <ReportProblem style={{ color: "#1A1A1A" }} fontSize="small" />,
+    //                     });
+    
+    //                     if (selectionPanelRef?.current) {
+    //                         selectionPanelRef.current.style.pointerEvents = "none";
+    //                         setTimeout(() => {
+    //                             if (selectionPanelRef?.current) {
+    //                                 selectionPanelRef.current.style.pointerEvents = "";
+    //                             }
+    //                         }, 2000);
+    //                     }
+            
+    //                     return;
+    //                 }
+    //             }
+    //         }
+    //     }
 
-                    if (selectionPanelRef?.current) {
-                        selectionPanelRef.current.style.pointerEvents = "none";
-                        setTimeout(() => {
-                            if (selectionPanelRef?.current) {
-                                selectionPanelRef.current.style.pointerEvents = "";
-                            }
-                        }, 2000);
-                    }
-        
-                    return;
-                }
-            }
-        }
-
-        for (const category of selectionLevelCategoryMapping[selectionLevel]) {
-            preventScrollIfPropertyNotSelected('sizes', category);
-            preventScrollIfPropertyNotSelected('lengths', category);
-            preventScrollIfPropertyNotSelected('ratios', category);
-        }
-    }, 2000);
+    //     for (const category of selectionLevelCategoryMapping[selectionLevel]) {
+    //         preventScrollIfPropertyNotSelected('sizes', category);
+    //         preventScrollIfPropertyNotSelected('lengths', category);
+    //         preventScrollIfPropertyNotSelected('ratios', category);
+    //     }
+    // }, 2000);
 
     const handleBarStemConditions = !stemDimensions.hasHandleBar && (canvasDrawImageProps.stem.image && canvasDrawImageProps.stem.model) && !frameSetDimensions.hasHandleBar;
 
@@ -524,6 +532,32 @@ export default function BikeBuilder({
         }
     }, [])
 
+    useEffect(() => {
+        const preventScrollIfPropertyNotSelected = (property, category) => {
+            if (canvasDrawImageProps[category][property]?.length > 0) {
+                if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.[property]) {
+                    // We are subtracting one value to get selectionLevel of previous of previous section
+                    // We subtract again to get the index in componentRefs.current. That's why we're subtracting 2.
+                    componentRefs.current[Number(debouncedSelectionLevel) - 2].scrollIntoView({ behavior: 'smooth' });
+                    toast.warn(`${titles[category]} ${property} need to be selected!`, {
+                        progressStyle: { background: "#1A1A1A" },
+                        icon: <ReportProblem style={{ color: "#1A1A1A" }} fontSize="small" />,
+                    });
+        
+                    return;
+                }
+            }
+        }
+
+        if ((debouncedSelectionLevel - 1) > 0) { // Ensure selectionLevel is not at the first level.
+            for (const category of selectionLevelCategoryMapping[debouncedSelectionLevel - 1]) {
+                preventScrollIfPropertyNotSelected('sizes', category);
+                preventScrollIfPropertyNotSelected('lengths', category);
+                preventScrollIfPropertyNotSelected('ratios', category);
+            }
+        }
+    }, [debouncedSelectionLevel])
+
     // Observer to track when a section becomes visible
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -549,15 +583,15 @@ export default function BikeBuilder({
         };
     }, []);
 
-    useEffect(() => {
-        selectionPanelRef?.current.addEventListener("wheel", handleScroll, { passive: false });
+    // useEffect(() => {
+    //     selectionPanelRef?.current.addEventListener("wheel", handleScroll, { passive: false });
 
-        return () => {
-            if (selectionPanelRef?.current) {
-                selectionPanelRef?.current.removeEventListener("wheel", handleScroll);
-            }
-        };
-    }, [handleScroll, selectionPanelRef]);
+    //     return () => {
+    //         if (selectionPanelRef?.current) {
+    //             selectionPanelRef?.current.removeEventListener("wheel", handleScroll);
+    //         }
+    //     };
+    // }, [handleScroll, selectionPanelRef]);
 
     useEffect(() => {
         if (selectionLevel === 1) {
