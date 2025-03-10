@@ -569,7 +569,7 @@ export default function BikeBuilder({
                     }
                 });
             },
-            { threshold: 0.5 } // Trigger when 50% of the section is visible
+            { threshold: 0.9 } // Trigger when 50% of the section is visible
         );
 
         componentRefs.current.forEach((ref) => {
