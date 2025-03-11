@@ -425,12 +425,50 @@ export default function BikeBuilder({
         });
     }
 
+    const reverseLookup = (value: string) => {
+        return Object.keys(selectionLevelCategoryMapping).find(key => selectionLevelCategoryMapping[key as keyof typeof selectionLevelCategoryMapping].includes(value)) || null;
+    };
+
+    const checkIfAllPropertySelected = () => {
+        let allPropertySelected = true;
+        const preventScrollIfPropertyNotSelected = (property, category) => {
+            if (canvasDrawImageProps[category][property]?.length > 0) {
+                if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.[property]) {
+                    // We are subtracting one value to get selectionLevel of previous of previous section
+                    // We subtract again to get the index in componentRefs.current. That's why we're subtracting 2.
+
+                    componentRefs.current[reverseLookup(category) - 1].scrollIntoView({ behavior: 'smooth' });
+                    toast.warn(`${titles[category]} ${property} need to be selected!`, {
+                        progressStyle: { background: "#1A1A1A" },
+                        icon: <ReportProblem style={{ color: "#1A1A1A" }} fontSize="small" />,
+                    });
+                    allPropertySelected = false;
+        
+                    return;
+                }
+            }
+        }
+
+        Object.values(selectionLevelCategoryMapping).forEach(valueArray => {
+            for (const category of valueArray) {
+                preventScrollIfPropertyNotSelected('sizes', category);
+                preventScrollIfPropertyNotSelected('lengths', category);
+                preventScrollIfPropertyNotSelected('ratios', category);
+            }
+        })
+
+        return allPropertySelected;
+    }
+
     const handleSummary = () => {
-        setImage(true, true);
-        const canvas = document.getElementById('canvas');
-        setCanvasImage(canvas.toDataURL());
-        setImage(false, true);
-        setBuildProcessStage("summary");
+        const allPropertySelected = checkIfAllPropertySelected();
+        if (allPropertySelected) {
+            setImage(true, true);
+            const canvas = document.getElementById('canvas');
+            setCanvasImage(canvas.toDataURL());
+            setImage(false, true);
+            setBuildProcessStage("summary");
+        }
     }
 
     const calculateTotalPrice = () => {
