@@ -5,8 +5,8 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
 export default function SizeSelector(
-    { values, label, type, model, modelData, initialModelData, handleModelChange, colors, selectedIndex, databaseModels, selectedFeatures, setSelectedFeatures, setPrice, isModelSelected }:
-        { values: string[], label: string, type: string, model: string, modelData: any, initialModelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any, selectedFeatures: any, setSelectedFeatures: any, setPrice: any, isModelSelected: boolean }) {
+    { values, names, label, type, model, modelData, initialModelData, handleModelChange, colors, selectedIndex, databaseModels, selectedFeatures, setSelectedFeatures, setPrice, isModelSelected }:
+        { values: string[], names: string[], label: string, type: string, model: string, modelData: any, initialModelData: any, handleModelChange: any, colors: any, selectedIndex: number, databaseModels: any, selectedFeatures: any, setSelectedFeatures: any, setPrice: any, isModelSelected: boolean }) {
     const [filteredColors, setFilteredColors] = useState<any>([]);
     const defaultValue = values?.[0];
 
@@ -37,10 +37,10 @@ export default function SizeSelector(
     return (
         <div>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: "0.2rem", minHeight: "1rem" }}>
-                {values?.map((value) => (
+                {values?.map((value, index) => (
                     <div key={value} className='flex items-center'>
                         <span
-                            style={{ border: selectedFeatures?.[type]?.value === value ? "1px solid #1A1A1A" : "" }}
+                            style={{ border: selectedFeatures?.[type]?.value === value && names[index] === selectedFeatures?.[type]?.name ? "1px solid #1A1A1A" : "" }}
                             className='p-[1px] h-5 w-5 rounded-full border border-transparent hover:border-back-color transition-all'
                             onClick={(e) => { isModelSelected && e.stopPropagation(); handleSizeChange(value) }}
                         >

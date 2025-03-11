@@ -433,6 +433,7 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
                             >
                                 <ColorSelector
                                     values={[item.color_value, ...colors?.filter(color => color?.model_id === item?.id).map(color => color.value)]}
+                                    names={[item.color_name, ...colors?.filter(color => color?.model_id === item?.id).map(color => color.name)]}
                                     type="colors"
                                     label={label}
                                     model={model}
