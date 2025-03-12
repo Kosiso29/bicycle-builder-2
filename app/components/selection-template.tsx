@@ -369,15 +369,17 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
     }, [selectedFeatures, show, selectionPresetProps, identifier])
 
     useEffect(() => {
-        if (identifier === 'stem' && modelData) {
-            populateStemSteererSizeData(allBrandsData);
-            if (canvasDrawImageProps.frameSet.hasStem || (canvasDrawImageProps.frameSet.steerer_size && modelData.steerer_size && modelData.steerer_size < canvasDrawImageProps.frameSet.steerer_size)) {
-                handleModelRemove(selectedIndex, modelData, true);
+        if (modelData && !canvasDrawImageProps.frameSet.linkedStem && !canvasDrawImageProps.frameSet.linkedHandleBar) {
+            if (identifier === 'stem') {
+                populateStemSteererSizeData(allBrandsData);
+                if (canvasDrawImageProps.frameSet.hasStem || (canvasDrawImageProps.frameSet.steerer_size && modelData.steerer_size && modelData.steerer_size < canvasDrawImageProps.frameSet.steerer_size)) {
+                    handleModelRemove(selectedIndex, modelData, true);
+                }
             }
-        }
-        if (identifier === 'handleBar' && modelData) {
-            if (canvasDrawImageProps.frameSet.hasHandleBar) {
-                handleModelRemove(selectedIndex, modelData, true)
+            if (identifier === 'handleBar') {
+                if (canvasDrawImageProps.frameSet.hasHandleBar) {
+                    handleModelRemove(selectedIndex, modelData, true)
+                }
             }
         }
     }, [canvasDrawImageProps, show])
