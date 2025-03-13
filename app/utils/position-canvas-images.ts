@@ -109,8 +109,8 @@ export const positionCanvasImages = (values, identifier, canvasDrawImageProps, s
                 ...prevState.handleBar,
                 x: getHandleBarCalculation(handleBarX, prevState, 'x', stemX, hasStem, hasHandleBar),
                 y: getHandleBarCalculation(handleBarY, prevState, 'y', stemY, hasStem, hasHandleBar),
-                stemHandleBarX: identifier === "stem" && handleBarX ? handleBarX : prevState.handleBar.stemHandleBarX,
-                stemHandleBarY: identifier === "stem" && handleBarY ? handleBarY : prevState.handleBar.stemHandleBarY,
+                stemHandleBarX: identifier === "stem" && handleBarX !== undefined && handleBarX !== null ? handleBarX : prevState.handleBar.stemHandleBarX,
+                stemHandleBarY: identifier === "stem" && handleBarY !== undefined && handleBarY !== null ? handleBarY : prevState.handleBar.stemHandleBarY,
             },
             saddle: {
                 ...prevState.saddle,
