@@ -448,14 +448,21 @@ export default function BikeBuilder({
                 }
             }
         }
-
-        Object.values(selectionLevelCategoryMapping).forEach(valueArray => {
+        
+        for (const valueArray of Object.values(selectionLevelCategoryMapping)) {
             for (const category of valueArray) {
                 preventScrollIfPropertyNotSelected('sizes', category);
                 preventScrollIfPropertyNotSelected('lengths', category);
                 preventScrollIfPropertyNotSelected('ratios', category);
+                if (!allPropertySelected) {
+                    componentRefs.current[reverseLookup(category) - 1].scrollIntoView({ behavior: 'smooth' });
+                    break;
+                }
             }
-        })
+            if (!allPropertySelected) {
+                break;
+            }
+        }
 
         return allPropertySelected;
     }
@@ -570,31 +577,31 @@ export default function BikeBuilder({
         }
     }, [])
 
-    useEffect(() => {
-        const preventScrollIfPropertyNotSelected = (property, category) => {
-            if (canvasDrawImageProps[category][property]?.length > 0) {
-                if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.[property]) {
-                    // We are subtracting one value to get selectionLevel of previous of previous section
-                    // We subtract again to get the index in componentRefs.current. That's why we're subtracting 2.
-                    componentRefs.current[Number(debouncedSelectionLevel) - 2].scrollIntoView({ behavior: 'smooth' });
-                    toast.warn(`${titles[category]} ${property} need to be selected!`, {
-                        progressStyle: { background: "#1A1A1A" },
-                        icon: <ReportProblem style={{ color: "#1A1A1A" }} fontSize="small" />,
-                    });
+    // useEffect(() => {
+    //     const preventScrollIfPropertyNotSelected = (property, category) => {
+    //         if (canvasDrawImageProps[category][property]?.length > 0) {
+    //             if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.[property]) {
+    //                 // We are subtracting one value to get selectionLevel of previous of previous section
+    //                 // We subtract again to get the index in componentRefs.current. That's why we're subtracting 2.
+    //                 componentRefs.current[Number(debouncedSelectionLevel) - 2].scrollIntoView({ behavior: 'smooth' });
+    //                 toast.warn(`${titles[category]} ${property} need to be selected!`, {
+    //                     progressStyle: { background: "#1A1A1A" },
+    //                     icon: <ReportProblem style={{ color: "#1A1A1A" }} fontSize="small" />,
+    //                 });
         
-                    return;
-                }
-            }
-        }
+    //                 return;
+    //             }
+    //         }
+    //     }
 
-        if ((debouncedSelectionLevel - 1) > 0) { // Ensure selectionLevel is not at the first level.
-            for (const category of selectionLevelCategoryMapping[debouncedSelectionLevel - 1]) {
-                preventScrollIfPropertyNotSelected('sizes', category);
-                preventScrollIfPropertyNotSelected('lengths', category);
-                preventScrollIfPropertyNotSelected('ratios', category);
-            }
-        }
-    }, [debouncedSelectionLevel])
+    //     if ((debouncedSelectionLevel - 1) > 0) { // Ensure selectionLevel is not at the first level.
+    //         for (const category of selectionLevelCategoryMapping[debouncedSelectionLevel - 1]) {
+    //             preventScrollIfPropertyNotSelected('sizes', category);
+    //             preventScrollIfPropertyNotSelected('lengths', category);
+    //             preventScrollIfPropertyNotSelected('ratios', category);
+    //         }
+    //     }
+    // }, [debouncedSelectionLevel])
 
     // Observer to track when a section becomes visible
     useEffect(() => {
