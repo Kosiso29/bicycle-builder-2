@@ -32,6 +32,9 @@ export default function FeatureSelector(
 
     useEffect(() => {
         setSelectedFeatures((prevState: any) => ({ ...prevState, [type]: selectedFeatures?.[type] || defaultValue }));
+        if (selectedFeatures?.[type] !== feature) {
+            setFeature("");
+        }
     }, [defaultValue, type, modelData, model])
 
     if ((type !== 'colors' && (!values || values.length === 0)) || (type === 'colors' && !modelData)) {
