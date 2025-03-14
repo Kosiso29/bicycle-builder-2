@@ -4,11 +4,12 @@ import React from 'react'
 const quickLinks = [
     { name: "Home", href: "/"},
     { name: "About Us", href: "/about-us"},
-    { name: "FAQ", href: "/faq"},
-    { name: "Terms of Service", href: "/"},
-    { name: "Privacy Policy", href: "/"},
+    { name: "Terms of Service", href: "/terms-of-service"},
+    { name: "Cancellation & Refund Policy", href: "/refund-policy"},
+    { name: "Privacy Policy", href: "/privacy-policy"},
 ]
 
+// Not currently required.
 const supports = [
     { name: "Bike sizing and fit guide", href: "/"},
     { name: "Delivery", href: "/"},
@@ -17,15 +18,15 @@ const supports = [
 ]
 
 const contacts = [
-    { name: "Email: support@bikeconfigurator.com", href: "/"},
-    { name: "Phone: 1-800-555-1234", href: "/"},
-    { name: "Address: 5 Oaxblue Singapore, SF12 3A4", href: "/"},
+    { name: "Email: info@cyke.life", href: "mailto:info@cyke.life"},
+    { name: "Phone: +91-9444160090", href: "tel:+919444160090"},
+    { name: <>Address: No 39/15 Balakrishna Naicken St Extn <br /> West Mambalam, Chennai - 600033 <br /> Tamil Nadu, India</>, href: "#"},
 ]
 
 export default function Footer() {
     return (
         <div className='py-20 wrapper'>
-            <div className='flex justify-between'>
+            <div className='flex justify-evenly gap-[30%]'>
                 <div className='flex gap-36'>
                     <div>
                         <h2 className='text-xl font-[500]'>Quick Links</h2>
@@ -37,7 +38,7 @@ export default function Footer() {
                             ))
                         }
                     </div>
-                    <div>
+                    {/* <div>
                         <h2 className='text-xl font-[500]'>Support</h2>
                         {
                             supports.map((support: any) => (
@@ -46,7 +47,7 @@ export default function Footer() {
                                 </p>
                             ))
                         }
-                    </div>
+                    </div> */}
                 </div>
                 <div>
                     <h2 className='text-xl font-[500] w-[25rem]'>Contact Information</h2>
