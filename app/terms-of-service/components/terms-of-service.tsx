@@ -15,7 +15,7 @@ export default function TermsOfService() {
 
                 <h2 className="text-xl font-bold mt-6">1. Key Terms</h2>
                 <ul className="list-disc pl-6">
-                    <li><strong>Platform:</strong> Our website (<a href="https://www.cyke.life">www.cyke.life</a>) and related services</li>
+                    <li><strong>Platform:</strong> Our website (<a href="https://www.cyke.life" className='underline'>www.cyke.life</a>) and related services</li>
                     <li><strong>Custom Build:</strong> A bicycle assembled to your specifications</li>
                     <li><strong>Components:</strong> Individual bicycle parts and accessories</li>
                     <li><strong>Build Rating:</strong> Our component rating system based on third-party testing</li>
@@ -201,8 +201,8 @@ export default function TermsOfService() {
                 </ul>
 
                 <h2 className="text-xl font-bold mt-6">17. Contact Us</h2>
-                <p>Email: <a href="mailto:info@cyke.life">info@cyke.life</a></p>
-                <p>Customer Support: <a href="tel:+919444160090">+91-9444160090</a></p>
+                <p>Email: <a href="mailto:info@cyke.life" className='underline'>info@cyke.life</a></p>
+                <p>Customer Support: <a href="tel:+919444160090" className='underline'>+91-9444160090</a></p>
                 <p>Operating Hours: Mon to Sat - 11AM to 7PM</p>
             </div>
         </div>
