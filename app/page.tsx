@@ -15,7 +15,7 @@ export default function Home() {
         <main className="relative">
             <Header textColor="white" />
             <HeroSection />
-            <PartnerSection />
+            {/* <PartnerSection /> */}
             <HowItWorks />
             <RoadBikesSection />
             <FeaturedBuildSection />
