@@ -433,7 +433,7 @@ export default function BikeBuilder({
         let allPropertySelected = true;
         const preventScrollIfPropertyNotSelected = (property, category) => {
             if (canvasDrawImageProps[category][property]?.length > 0) {
-                if (canvasDrawImageProps[category].model && !canvasDrawImageProps[category].selectedFeatures?.[property]) {
+                if ((canvasDrawImageProps[category].model || (canvasDrawImageProps.frameSet.linkedStem && category === "stem") || (canvasDrawImageProps.frameSet.linkedHandleBar && category === "handleBar")) && !canvasDrawImageProps[category].selectedFeatures?.[property]) {
                     // We are subtracting one value to get selectionLevel of previous of previous section
                     // We subtract again to get the index in componentRefs.current. That's why we're subtracting 2.
 
