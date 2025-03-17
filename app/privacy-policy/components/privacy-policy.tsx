@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
         <div className="wrapper my-20">
             <div className='max-w-[60%]'>
             <h1 className="text-2xl font-bold mt-6">Privacy Policy</h1>
-            <p className="mt-2">Effective Date: February 14, 2025</p>
+            <h2 className="text-xl font-bold mt-6">Effective Date: February 14, 2025</h2>
             <p className="mt-2">At Cyke.life, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data when you visit our website, www.cyke.life ("Website"), or use our services.</p>
 
             <h2 className="text-xl font-bold mt-6">1. Information We Collect</h2>
@@ -84,7 +84,8 @@ export default function PrivacyPolicy() {
             <p>Tamil Nadu, India</p>
             <p>Email: <a href="mailto:info@cyke.life" className="underline">info@cyke.life</a></p>
 
-            <p className="mt-2">By using Cyke.life, you agree to this Privacy Policy. If you do not agree, please do not use our services.</p>
+            <p className="my-2">By using Cyke.life, you agree to this Privacy Policy. If you do not agree, please do not use our services.</p>
+            <p><b>Last Updated:</b> February 14, 2025</p>
             </div>
         </div>
     );

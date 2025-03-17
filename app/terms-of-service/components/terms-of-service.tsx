@@ -8,7 +8,7 @@ export default function TermsOfService() {
                 <h1 className="text-2xl font-bold">Terms of Service</h1>
                 <p className="text-gray-500">Last Updated: February 14, 2025</p>
 
-                <h2 className="text-xl font-bold mt-6">Welcome to Cyke.life</h2>
+                <h2 className="text-xl font-bold mt-6">Welcome to <a href="https://www.cyke.life" className='underline'>Cyke.life</a></h2>
                 <p>
                     These Terms of Service ("Terms") constitute a legally binding agreement between you and Cyke Life Bicycle Solutions Private Limited ("Cyke.life," "we," "our," or "us"), governing your use of our website, products, and services.
                 </p>
@@ -126,7 +126,7 @@ export default function TermsOfService() {
                     <li>Resolution within 7 working days</li>
                 </ul>
 
-                <h2 className="text-xl font-bold mt-6">9.2 Warranty Claims</h2>
+                <h3 className="text-lg font-bold mt-6">9.2 Warranty Claims</h3>
                 <ul className="list-disc pl-6">
                     <li>Manufacturer warranty support</li>
                     <li>Assistance with claims</li>
@@ -204,6 +204,19 @@ export default function TermsOfService() {
                 <p>Email: <a href="mailto:info@cyke.life" className='underline'>info@cyke.life</a></p>
                 <p>Customer Support: <a href="tel:+919444160090" className='underline'>+91-9444160090</a></p>
                 <p>Operating Hours: Mon to Sat - 11AM to 7PM</p>
+
+                <h2 className="text-xl font-bold mt-6">18. Legal Compliance</h2>
+                <p>We comply with:</p>
+                <ul className="list-disc pl-6">
+                    <li>Consumer Protection Act, 2019</li>
+                    <li>Information Technology Act, 2000</li>
+                    <li>Indian Contract Act, 1872</li>
+                    <li>GST Laws and Regulations</li>
+                </ul>
+
+                <h2 className="text-xl font-bold mt-6">19. Severability</h2>
+                <p>If any provision is found invalid, other provisions remain in effect.</p>
+
             </div>
         </div>
     );
