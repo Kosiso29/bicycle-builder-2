@@ -9,7 +9,7 @@ export default function Logo({ color }: { color?: "white" | "black" }) {
                 xmlns="http://www.w3.org/2000/svg"
                 style={{ width: "100%", maxWidth: "160px", height: "auto" }}
             >
-                <rect width="160" height="60" fill="#C4C4C480" />
+                <rect width="160" height="60" fill="white" />
                 <text
                     x="50%"
                     y="50%"

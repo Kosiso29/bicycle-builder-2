@@ -28,7 +28,7 @@ export default function LoadingScreen() {
 
     return (
         <div className={`fixed flex justify-center items-center z-[100] inset-0 bg-white fade-in-animation ${!loadingScreen && transitioning ? "slide-out-animation" : ""}`} /*style={{ animation: !loadingScreen && transitioning ? "slide-out-right 1.5s 500ms ease-out forwards" : "initial" }}*/>
-            <div className="flex flex-col justify-center gap-8 max-w-[12rem]">
+            <div className="flex flex-col justify-center gap-2 max-w-[12rem]">
                 <Logo color="white" />
                 <LoadingBicycle />
             </div>
