@@ -8,6 +8,7 @@ import Image from "next/image";
 import { DashboardOutlined, ExtensionOutlined, GroupOutlined, GroupAddOutlined, LogoutOutlined } from '@mui/icons-material';
 import { useDispatch } from "react-redux";
 import { componentsActions } from "../store/components";
+import Logo from '@/app/components/logo';
 
 const sideBarData = [
     { name: "DASHBOARD", href: "/dashboard", icon: DashboardOutlined },
@@ -35,13 +36,9 @@ export default function Sidebar({ models, categories, brands, presets, builds, m
     }, [])
     return (
         <div className='flex flex-col justify-between py-12 h-full'>
-            <Image
-                src="/Cadex_50_Disc_Ultra_F-modified.png"
-                width={60}
-                height={60}
-                className="ml-auto mr-auto rounded-[50%] mb-10 bg-white"
-                alt="logo"
-            />
+            <div className='max-w-[80%] mx-auto'>
+                <Logo />
+            </div>
             <div className='flex flex-col gap-8 items-center'>
                 {
                     sideBarData.map(data => {
