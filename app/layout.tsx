@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Open_Sans, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./store/provider";
@@ -15,10 +15,6 @@ export const metadata: Metadata = {
       icon: '/Favicon.ico',
     },
 };
-
-export const viewport: Viewport = {
-    width: '1024',
-}
 
 export default function RootLayout({
     children,
