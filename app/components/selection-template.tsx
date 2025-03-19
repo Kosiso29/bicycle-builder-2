@@ -293,9 +293,13 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         } else {
             updateBrandsData(brandsWithoutLinkedComponents);
         }
-        getLinkedBrandData("linkedStem");
-        getLinkedBrandData("linkedHandleBar");
-    }, [databaseModels, show]);
+        if (canvasDrawImageProps.frameSet.linkedStem) {
+            getLinkedBrandData("linkedStem");
+        }
+        if (canvasDrawImageProps.frameSet.linkedHandleBar) {
+            getLinkedBrandData("linkedHandleBar");
+        }
+    }, [databaseModels, show, canvasDrawImageProps]);
 
     useEffect(() => {
         if (disableSelections) {
