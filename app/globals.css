@@ -64,17 +64,13 @@ button.MuiButton-containedPrimary {
 }
 
 .wrapper {
-    padding-left: 5rem;
-    padding-right: 5rem;
-    max-width: 90rem;
-    margin-left: auto;
-    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .wrapper-margin {
-    max-width: 90rem;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .slide-in-animation {
@@ -123,4 +119,56 @@ button.MuiButton-containedPrimary {
 
 .loading-square:nth-child(5) {
     animation-delay: 0.4s;
+}
+
+@media (min-width: 640px) {
+    .wrapper {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .wrapper-margin {
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .wrapper {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+
+    .wrapper-margin {
+        margin-left: 3rem;
+        margin-right: 3rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .wrapper {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+
+    .wrapper-margin {
+        margin-left: 4rem;
+        margin-right: 4rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .wrapper {
+        padding-left: 5rem;
+        padding-right: 5rem;
+        max-width: 90rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .wrapper-margin {
+        max-width: 90rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

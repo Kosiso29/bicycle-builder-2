@@ -26,7 +26,7 @@ const contacts = [
 export default function Footer() {
     return (
         <div className='py-20 wrapper'>
-            <div className='flex justify-evenly gap-[30%]'>
+            <div className='flex flex-wrap md:flex-nowrap justify-between md:justify-evenly gap-10 lg:gap-[30%]'>
                 <div className='flex gap-36'>
                     <div>
                         <h2 className='text-xl font-[500]'>Quick Links</h2>

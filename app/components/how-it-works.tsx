@@ -10,7 +10,7 @@ export default function HowItWorks() {
     return (
         <div className='py-20 wrapper'>
             <h1 className='flex justify-center text-2xl mb-20 font-extrabold'>HOW IT WORKS</h1>
-            <div className='flex justify-between gap-3'>
+            <div className='flex flex-wrap lg:flex-nowrap justify-evenly lg:justify-between gap-10 lg:gap-3'>
                 {
                     cardData.map((card: any, index: number) => (
                         <HowItWorksCard
@@ -28,7 +28,7 @@ export default function HowItWorks() {
 
 function HowItWorksCard({ title, description, index }: { title: string, description: string, index: number }) {
     return (
-        <div className='w-[30%]'>
+        <div className='w-[30%] min-w-72 lg:min-w-[30%] text-center lg:text-left'>
             <h2 className='text-xl font-bold mb-5'>
                 <span className='relative z-10'>{title}</span>
                 <span className='relative -left-4 z-0 text-4xl font-extrabold text-gray-300'>0{index + 1}</span>

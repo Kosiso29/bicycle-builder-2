@@ -12,7 +12,7 @@ export default function CallToAction({ href, type, children }: { href: string, t
     }
     
     return (
-        <Link href={href} onClick={handleClick} className='inline-flex gap-2 bg-white text-black rounded-none py-4 px-8' type={type}>
+        <Link href={href} onClick={handleClick} className='inline-flex gap-2 bg-white text-black rounded-none py-4 px-4 md:px-8' type={type}>
             {children}
         </Link>
     )
