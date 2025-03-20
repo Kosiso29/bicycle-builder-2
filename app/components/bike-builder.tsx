@@ -438,7 +438,7 @@ export default function BikeBuilder({
                     // We subtract again to get the index in componentRefs.current. That's why we're subtracting 2.
 
                     componentRefs.current[reverseLookup(category) - 1].scrollIntoView({ behavior: 'smooth' });
-                    toast.warn(`${titles[category]} ${property} need to be selected!`, {
+                    toast.warn(`Pick your ${titles[category]} ${property.replace(/s$/, "")}!`, {
                         progressStyle: { background: "#1A1A1A" },
                         icon: <ReportProblem style={{ color: "#1A1A1A" }} fontSize="small" />,
                     });
