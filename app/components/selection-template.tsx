@@ -293,10 +293,10 @@ export default function SelectionTemplate({ parentProps, dataSet, label, show, u
         } else {
             updateBrandsData(brandsWithoutLinkedComponents);
         }
-        if (canvasDrawImageProps.frameSet.linkedStem) {
+        if (identifier === 'stem' && canvasDrawImageProps.frameSet.linkedStem) {
             getLinkedBrandData("linkedStem");
         }
-        if (canvasDrawImageProps.frameSet.linkedHandleBar) {
+        if (identifier === 'handleBar' && canvasDrawImageProps.frameSet.linkedHandleBar) {
             getLinkedBrandData("linkedHandleBar");
         }
     }, [databaseModels, show, canvasDrawImageProps]);
